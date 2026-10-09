@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDate, formatDateTime, formatNumber, formatPercent, pluralCategory } from './format';
+import {
+  formatDate,
+  formatDateTime,
+  formatMoney,
+  formatNumber,
+  formatPercent,
+  pluralCategory,
+} from './format';
 
 describe('formatNumber', () => {
   it('groups thousands in Spanish even with four digits', () => {
@@ -39,5 +46,24 @@ describe('dates on game time', () => {
   it('shows date and time for deadlines', () => {
     expect(formatDateTime('2026-10-11T18:00:00Z', 'es')).toBe('11 de octubre a las 15:00');
     expect(formatDateTime('2026-10-11T18:00:00Z', 'en')).toBe('October 11 at 3:00 PM');
+  });
+});
+
+describe('money', () => {
+  it('shows hundredths with two decimals in each locale', () => {
+    expect(formatMoney(3845000, 'es')).toBe('38.450,00');
+    expect(formatMoney(3845000, 'en')).toBe('38,450.00');
+    expect(formatMoney(504, 'es')).toBe('5,04');
+  });
+
+  it('shows whole units in tight places, never rounding up what the player does not have', () => {
+    expect(formatMoney(3844999, 'es', { whole: true })).toBe('38.449');
+    expect(formatMoney(124000, 'en', { whole: true })).toBe('1,240');
+  });
+
+  it('signs movements with a real minus sign', () => {
+    expect(formatMoney(4200, 'es', { signed: true })).toBe('+42,00');
+    expect(formatMoney(-504, 'es', { signed: true })).toBe('−5,04');
+    expect(formatMoney(-504, 'en', { signed: true })).toBe('−5.04');
   });
 });

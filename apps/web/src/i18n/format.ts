@@ -22,6 +22,25 @@ export function formatPercent(ratio: number, locale: Locale, maximumFractionDigi
   return formatNumber(ratio, locale, { style: 'percent', maximumFractionDigits });
 }
 
+/**
+ * Formats money kept in hundredths: «38.450,00». `whole` drops the decimals without rounding up, for tight
+ * places like the bar; `signed` adds «+» or a real minus sign «−» for movements.
+ */
+export function formatMoney(
+  hundredths: number,
+  locale: Locale,
+  { whole = false, signed = false }: { whole?: boolean; signed?: boolean } = {},
+): string {
+  const units = Math.abs(hundredths) / 100;
+  const digits = whole ? 0 : 2;
+  const text = formatNumber(whole ? Math.trunc(units) : units, locale, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+  if (hundredths < 0) return `−${text}`;
+  return signed && hundredths > 0 ? `+${text}` : text;
+}
+
 /** Picks the plural category for a count with the locale's rules. */
 export function pluralCategory(count: number, locale: Locale): Intl.LDMLPluralRule {
   return new Intl.PluralRules(intlLocale[locale]).select(count);

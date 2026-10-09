@@ -6,7 +6,7 @@ import { Panel } from '@concordia/atlas/Panel';
 import { Segmented } from '@concordia/atlas/Segmented';
 import { useQueryClient } from '@tanstack/react-query';
 import { useId, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { SubmitEvent } from 'react';
 
 import type { Citizen } from '../../features/auth/useCitizen';
 import { parseAmount } from '../../features/ledger/amount';
@@ -172,7 +172,7 @@ function TransferForm({ balances, citizen }: { balances: Balance[]; citizen: Cit
     setSent(null);
   };
 
-  const submit = async (event: FormEvent) => {
+  const submit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setChecked(true);
     setSent(null);

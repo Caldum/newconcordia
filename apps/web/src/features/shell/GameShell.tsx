@@ -1,15 +1,17 @@
 import { Brand } from '@concordia/atlas/Brand';
 import { Button } from '@concordia/atlas/Button';
+import { CreditIcon, GoldIcon } from '@concordia/atlas/GameIcons';
 import { EnergyMeter } from '@concordia/atlas/Track';
 import { Link, Navigate } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
-import { defineMessages, LanguageSwitch, useMessages } from '../../i18n';
+import { defineMessages, formatMoney, LanguageSwitch, useLocale, useMessages } from '../../i18n';
 import { supabase } from '../../lib/supabase';
 import { useIsAdmin } from '../admin/queries';
 import { useAuth } from '../auth/AuthProvider';
 import { useCitizen } from '../auth/useCitizen';
 import type { Citizen } from '../auth/useCitizen';
+import { useBalances } from '../ledger/queries';
 import { initials } from '../profile/initials';
 import { useEnergy, useProfile } from '../profile/useProfile';
 import type { Profile } from '../profile/useProfile';
@@ -29,6 +31,7 @@ const messages = defineMessages({
     energyValue: (energy: number, max: number) => `${String(energy)} de ${String(max)}`,
     recharge: (perHour: number) => `Se recarga ${String(perHour)} por hora`,
     profile: (name: string) => `Tu perfil: ${name}`,
+    account: (gold: string, credit: string) => `Tu cuenta: Oro ${gold} y Crédito ${credit}`,
     loadFailed: 'No se pudo cargar tu ciudadano. Recarga la página para intentar de nuevo.',
   },
   en: {
@@ -43,6 +46,7 @@ const messages = defineMessages({
     energyValue: (energy: number, max: number) => `${String(energy)} of ${String(max)}`,
     recharge: (perHour: number) => `Recharges ${String(perHour)} per hour`,
     profile: (name: string) => `Your profile: ${name}`,
+    account: (gold: string, credit: string) => `Your account: Gold ${gold} and Credit ${credit}`,
     loadFailed: 'Your citizen did not load. Reload the page to try again.',
   },
 });
@@ -76,6 +80,7 @@ export function GameShell({ children }: { children: ReactNode }) {
           ) : null}
         </nav>
         <div className={styles.tools}>
+          <Wallet />
           {profile.data ? <PlayerStatus profile={profile.data} /> : null}
           <LanguageSwitch />
           <Button
@@ -91,6 +96,30 @@ export function GameShell({ children }: { children: ReactNode }) {
       </header>
       {children}
     </div>
+  );
+}
+
+/** Gold and the Credit of the player's country, linking to the account. Hidden until they load. */
+function Wallet() {
+  const copy = useMessages(messages);
+  const { locale } = useLocale();
+  const balances = useBalances();
+  const [gold, credit] = balances.data ?? [];
+  if (!gold || !credit) return null;
+  const goldText = formatMoney(gold.balance, locale, { whole: true });
+  const creditText = formatMoney(credit.balance, locale, { whole: true });
+  return (
+    <Link to="/account" aria-label={copy.account(goldText, creditText)} className={styles.wallet}>
+      <span>
+        <GoldIcon />
+        {goldText}
+      </span>
+      <span className={styles.walletSeparator} aria-hidden="true" />
+      <span>
+        <CreditIcon />
+        {creditText}
+      </span>
+    </Link>
   );
 }
 

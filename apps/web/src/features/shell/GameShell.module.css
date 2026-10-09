@@ -85,3 +85,33 @@
 .avatar:hover {
   background: var(--ink-hover);
 }
+
+.wallet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--touch-min);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-s);
+  color: var(--ink);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+.wallet > span:not(.walletSeparator) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 var(--space-2);
+}
+
+.wallet:hover {
+  background: var(--land-soft);
+}
+
+.walletSeparator {
+  width: 1px;
+  height: 18px;
+  background: var(--line);
+}

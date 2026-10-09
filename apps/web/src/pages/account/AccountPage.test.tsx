@@ -79,14 +79,15 @@ describe('account', () => {
     const table = await screen.findByRole('table', { name: 'Movimientos' });
     const rows = within(table).getAllByRole('row');
     expect(rows).toHaveLength(4);
-    expect(within(rows[1]!).getByText('Por las raciones')).toBeVisible();
-    expect(within(rows[1]!).getByText('Marcos Villalba')).toBeVisible();
-    expect(within(rows[1]!).getByText('−12,50')).toBeVisible();
-    expect(within(rows[1]!).getByText('38.450,04')).toBeVisible();
-    expect(within(rows[2]!).getByText('Regalo de bienvenida')).toBeVisible();
-    expect(within(rows[2]!).getByText('Emisión del juego')).toBeVisible();
-    expect(within(rows[2]!).getByText('+5,00 Oro')).toBeVisible();
-    expect(within(rows[3]!).getByText('Emisión de Argentina')).toBeVisible();
+    const [, transfer, gold, credit] = rows as [HTMLElement, HTMLElement, HTMLElement, HTMLElement];
+    expect(within(transfer).getByText('Por las raciones')).toBeVisible();
+    expect(within(transfer).getByText('Marcos Villalba')).toBeVisible();
+    expect(within(transfer).getByText('−12,50')).toBeVisible();
+    expect(within(transfer).getByText('38.450,04')).toBeVisible();
+    expect(within(gold).getByText('Regalo de bienvenida')).toBeVisible();
+    expect(within(gold).getByText('Emisión del juego')).toBeVisible();
+    expect(within(gold).getByText('+5,00 Oro')).toBeVisible();
+    expect(within(credit).getByText('Emisión de Argentina')).toBeVisible();
 
     await user.click(screen.getByRole('tab', { name: 'Oro' }));
     expect(await screen.findByText('Emisión del juego')).toBeVisible();

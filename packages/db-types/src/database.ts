@@ -96,6 +96,14 @@ export type Database = {
           server_time: string;
         }[];
       };
+      get_my_balances: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          balance: number;
+          country_code: string;
+          currency_code: string;
+        }[];
+      };
       get_my_citizen: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -181,6 +189,21 @@ export type Database = {
           official_name_es: string;
         }[];
       };
+      list_my_movements: {
+        Args: { p_before?: number; p_currency?: string; p_limit?: number };
+        Returns: {
+          amount: number;
+          balance_after: number;
+          counterparty_country_code: string;
+          counterparty_kind: string;
+          counterparty_name: string;
+          created_at: string;
+          currency_code: string;
+          kind: string;
+          memo: string;
+          posting_id: number;
+        }[];
+      };
       list_regions: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -199,6 +222,16 @@ export type Database = {
         }[];
       };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
+      transfer_money: {
+        Args: {
+          p_amount: number;
+          p_currency: string;
+          p_key: string;
+          p_memo: string;
+          p_to_name: string;
+        };
+        Returns: number;
+      };
     };
     Enums: {
       [_ in never]: never;

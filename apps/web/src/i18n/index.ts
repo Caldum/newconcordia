@@ -1,6 +1,13 @@
 export { defineMessages } from './defineMessages';
 export type { Catalog } from './defineMessages';
-export { formatDate, formatDateTime, formatNumber, formatPercent, pluralCategory } from './format';
+export {
+  formatDate,
+  formatDateTime,
+  formatMoney,
+  formatNumber,
+  formatPercent,
+  pluralCategory,
+} from './format';
 export { LocaleProvider } from './LocaleProvider';
 export { LanguageSwitch } from './LanguageSwitch';
 export { defaultLocale, isLocale, localeNames, locales } from './locales';
