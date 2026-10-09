@@ -48,6 +48,7 @@
 
 .tools {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
   margin-left: auto;
@@ -66,11 +67,6 @@
 
 .chip {
   display: inline-flex;
-  align-items: center;
-  min-height: var(--touch-min);
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-s);
-  background: var(--land-soft);
 }
 
 .avatar {

@@ -34,3 +34,13 @@ test('a new citizen has full energy and starts at level 1 with 100 strength', as
     'Se recarga 10 por hora, hasta 100',
   );
 });
+
+test('the game bar and the profile fit a 360 px screen', async ({ page, request }) => {
+  await stubTurnstile(page);
+  const player = await createConfirmedPlayer(request, 'ARG');
+  await page.setViewportSize({ width: 360, height: 800 });
+  await signIn(page, player);
+  await page.goto('/profile');
+  await expect(page.getByRole('heading', { level: 2, name: 'Trayectoria' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+});
