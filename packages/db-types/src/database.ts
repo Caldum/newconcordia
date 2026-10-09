@@ -17,6 +17,29 @@ export type Database = {
           server_time: string;
         }[];
       };
+      list_countries: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          code: string;
+          color: string;
+          is_active: boolean;
+          iso2: string;
+          name_en: string;
+          name_es: string;
+          official_name_en: string;
+          official_name_es: string;
+        }[];
+      };
+      list_regions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          code: string;
+          home_country_code: string;
+          is_enabled: boolean;
+          name: string;
+          owner_country_code: string;
+        }[];
+      };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
     };
     Enums: {

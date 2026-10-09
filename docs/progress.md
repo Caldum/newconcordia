@@ -11,8 +11,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | --- | --- | --- | --- | --- |
 | D01 | Repository and automated delivery | 0 · Base | Merged | [Caldum/newconcordia#1](https://github.com/Caldum/newconcordia/pull/1) |
 | D02 | Clock and game day | 0 · Base | Merged | [Caldum/newconcordia#3](https://github.com/Caldum/newconcordia/pull/3) |
-| — | Atlas in code (`packages/atlas`) | 0 · Base | In PR | [Caldum/newconcordia#4](https://github.com/Caldum/newconcordia/pull/4) |
-| D03 | World: countries, regions and owners | 1 · World and accounts | Pending | — |
+| — | Atlas in code (`packages/atlas`) | 0 · Base | Merged | [Caldum/newconcordia#4](https://github.com/Caldum/newconcordia/pull/4) |
+| D03 | World: countries, regions and owners | 1 · World and accounts | In PR | [Caldum/newconcordia#5](https://github.com/Caldum/newconcordia/pull/5) |
 | D04 | Game map | 1 · World and accounts | Pending | — |
 | D05 | Accounts | 1 · World and accounts | Pending | — |
 | D06 | Citizenship | 1 · World and accounts | Pending | — |
@@ -50,7 +50,9 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · D01 merged. D02: game clock, game day, idempotent jobs and the clock Worker, verified end to end against local Supabase.
 
 - 2026-10-09 · D02 merged. Atlas: tokens, base styles, 16 components plus Icon, Flag and Brand, gallery with axe, contrast, 360 px and keyboard checks.
+- 2026-10-09 · Atlas merged.
+- 2026-10-09 · D03: fixed region codes, world.json (250 countries, 78 regions), countries and regions tables with public reads.
 
 ## Next step
 
-Atlas in review. Next: D03 (world: countries, regions and owners) on `feat/d03-world`.
+D03 in review. Next: D04 (map) on `feat/d04-map`.
