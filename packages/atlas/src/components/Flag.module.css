@@ -1,0 +1,21 @@
+.flag {
+  position: relative;
+  display: block;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--radius-s);
+}
+
+/* A thin inner border so white flags do not dissolve into white panels. */
+.flag::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgb(19 32 46 / 18%);
+}
+
+.flag svg {
+  width: 100%;
+  height: 100%;
+}

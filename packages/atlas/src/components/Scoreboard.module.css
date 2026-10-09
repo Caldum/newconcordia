@@ -1,0 +1,62 @@
+.scoreboard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 28px 32px;
+  border-radius: var(--radius-l);
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+}
+
+.side:first-child {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.country {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.percent {
+  font-size: 86px;
+  line-height: 0.9;
+}
+
+.unit {
+  font-size: 36px;
+}
+
+.own {
+  color: var(--nation-on-ink);
+}
+
+.rival {
+  color: var(--war-on-ink);
+}
+
+.role {
+  color: var(--on-ink-muted);
+  font-size: var(--support-font-size);
+}
+
+.region {
+  width: 150px;
+}
+
+@media (width < 720px) {
+  .percent {
+    font-size: 56px;
+  }
+
+  .region {
+    width: 96px;
+  }
+}

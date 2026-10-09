@@ -1,5 +1,6 @@
 pnpm-lock.yaml
 dist/
+dist-gallery/
 coverage/
 .wrangler/
 playwright-report/
@@ -10,3 +11,5 @@ data/map/
 supabase/.temp/
 *.md
 apps/clock/worker-configuration.d.ts
+packages/atlas/src/*.generated.ts
+packages/atlas/src/tokens.css

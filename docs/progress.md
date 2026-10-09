@@ -10,8 +10,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | Code | Module | Phase | Status | PR |
 | --- | --- | --- | --- | --- |
 | D01 | Repository and automated delivery | 0 · Base | Merged | [Caldum/newconcordia#1](https://github.com/Caldum/newconcordia/pull/1) |
-| D02 | Clock and game day | 0 · Base | In PR | `feat/d02-clock` |
-| — | Atlas in code (`packages/atlas`) | 0 · Base | Pending | — |
+| D02 | Clock and game day | 0 · Base | Merged | [Caldum/newconcordia#3](https://github.com/Caldum/newconcordia/pull/3) |
+| — | Atlas in code (`packages/atlas`) | 0 · Base | In PR | [Caldum/newconcordia#4](https://github.com/Caldum/newconcordia/pull/4) |
 | D03 | World: countries, regions and owners | 1 · World and accounts | Pending | — |
 | D04 | Game map | 1 · World and accounts | Pending | — |
 | D05 | Accounts | 1 · World and accounts | Pending | — |
@@ -49,6 +49,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 
 - 2026-10-09 · D01 merged. D02: game clock, game day, idempotent jobs and the clock Worker, verified end to end against local Supabase.
 
+- 2026-10-09 · D02 merged. Atlas: tokens, base styles, 16 components plus Icon, Flag and Brand, gallery with axe, contrast, 360 px and keyboard checks.
+
 ## Next step
 
-D02 in review (`feat/d02-clock`). Next: Atlas in code (`feat/atlas`).
+Atlas in review. Next: D03 (world: countries, regions and owners) on `feat/d03-world`.
