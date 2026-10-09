@@ -12,7 +12,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D01 | Repository and automated delivery | 0 · Base | Merged | [Caldum/newconcordia#1](https://github.com/Caldum/newconcordia/pull/1) |
 | D02 | Clock and game day | 0 · Base | Merged | [Caldum/newconcordia#3](https://github.com/Caldum/newconcordia/pull/3) |
 | — | Atlas in code (`packages/atlas`) | 0 · Base | Merged | [Caldum/newconcordia#4](https://github.com/Caldum/newconcordia/pull/4) |
-| D03 | World: countries, regions and owners | 1 · World and accounts | In PR | [Caldum/newconcordia#5](https://github.com/Caldum/newconcordia/pull/5) |
+| D03 | World: countries, regions and owners | 1 · World and accounts | Merged | [Caldum/newconcordia#5](https://github.com/Caldum/newconcordia/pull/5) |
 | D04 | Game map | 1 · World and accounts | In PR | `feat/d04-map` |
 | D05 | Accounts | 1 · World and accounts | Pending | — |
 | D06 | Citizenship | 1 · World and accounts | Pending | — |
@@ -57,4 +57,4 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 
 ## Next step
 
-D03 and D04 in review. Next: D05 (accounts) on `feat/d05-accounts`.
+D04 in review. Next: D05 (accounts) on `feat/d05-accounts`.
