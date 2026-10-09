@@ -25,6 +25,8 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm lint
       - run: pnpm typecheck
+      - name: Worker binding types are up to date
+        run: pnpm --filter @concordia/clock types:check
       - name: Unit tests with coverage
         run: pnpm -r --if-present test:coverage
       - run: pnpm build

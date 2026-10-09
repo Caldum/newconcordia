@@ -1,0 +1,2 @@
+# Copy to .dev.vars for `pnpm dev`. Local Supabase prints its secret key with `supabase status`.
+SUPABASE_SECRET_KEY=sb_secret_local_example

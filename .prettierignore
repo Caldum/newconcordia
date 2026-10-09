@@ -9,3 +9,4 @@ docs/
 data/map/
 supabase/.temp/
 *.md
+apps/clock/worker-configuration.d.ts

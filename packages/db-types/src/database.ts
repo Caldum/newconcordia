@@ -9,7 +9,15 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_game_clock: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          game_day: string;
+          next_day_starts_at: string;
+          server_time: string;
+        }[];
+      };
+      run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
     };
     Enums: {
       [_ in never]: never;

@@ -28,6 +28,15 @@ deployment).
   change, following the «Rollback» note in the header of the original migration.
 - **Code:** `git revert` the merge commit on `develop` and open a new PR.
 
+## Scheduled jobs
+
+- Every run is in `game.job_runs` (job, slot, status, attempts, duration, error). Recent failures:
+  `select job, slot, attempts, error from game.job_runs where status = 'failed' order by slot desc;`
+- Re-run a failed slot from the SQL editor (the same call the Worker makes):
+  `select public.run_job('day_change', '2026-10-09 03:00:00+00');`. A slot that already succeeded is
+  skipped, so re-running is always safe.
+- Logs: Cloudflare dashboard → Workers → `concordia-clock` → Logs (JSON lines with `job`, `status`, `slot`).
+
 ## Restore a backup
 
 Completed with D29 (encrypted daily copy in R2 and a restore tested once a month).

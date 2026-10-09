@@ -16,6 +16,7 @@ Golden rule: **no secret goes in the repository or in the browser**. Secrets go 
 | 2 | Two Supabase projects (staging and production) | Migrations in the cloud |
 | 3 | Cloudflare account and API token | Web and clock in the cloud |
 | 4 | Protect `main` and `develop` | Merges without review |
+| 5 | Clock secret and failure alert | The daily job in the cloud |
 
 The Turnstile, Resend, Google OAuth, Sentry and backup steps are added when the module that uses them arrives.
 
@@ -43,9 +44,9 @@ The Turnstile, Resend, Google OAuth, Sentry and backup steps are added when the 
    | Secret | `SUPABASE_DB_PASSWORD` | The database password |
    | Variable | `SUPABASE_PROJECT_REF` | Project Settings → General → *Project ID* (for example `abcdefghijklmnop`) |
    | Variable | `SUPABASE_PUBLISHABLE_KEY` | Project Settings → API Keys → *Publishable key* (`sb_publishable_...`) |
+   | Secret | `SUPABASE_SECRET_KEY` | Project Settings → API Keys → *Secret keys* → create one named `clock` (`sb_secret_...`) |
 
-   The *secret* / `service_role` key does **not** go to GitHub or the web: only the clock Worker uses it, as a
-   Wrangler secret (step added with D02).
+   The secret key never reaches the web: the deploy job uploads it only to the clock Worker (step 5).
 
 ## 3. Cloudflare
 
@@ -74,3 +75,12 @@ The Turnstile, Resend, Google OAuth, Sentry and backup steps are added when the 
 4. **Settings → General → Pull Requests**: leave only *Allow squash merging* enabled.
 5. **Settings → Code security**: enable *Dependabot alerts*, *Dependabot security updates* and *Secret
    scanning* with *Push protection*.
+
+## 5. Clock secret and failure alert
+
+1. The deploy job uploads `SUPABASE_SECRET_KEY` (step 2) to the `concordia-clock` Worker on every deploy;
+   nothing else to do for the secret.
+2. Cloudflare dashboard → **Notifications → Add → Workers → Workers Weekly/Event Alerts** (the name may vary):
+   create an alert for failed invocations of `concordia-clock` and `concordia-clock-staging`, sent to your
+   email. A failed day change makes the invocation fail on purpose.
+
