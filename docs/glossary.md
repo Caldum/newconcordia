@@ -42,3 +42,8 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Presidente, vicepresidenta | President, vice president | `president`, `vice_president` |
 | Ministro del Interior | Interior minister | `interior_minister` |
 | Adaptación (primeros 7 días) | Adaptation period | `adaptation_period` |
+| Perfil | Profile | `profile` (`get_my_profile`) |
+| Nivel, experiencia | Level, experience | `level`, `experience` |
+| Influencia | Influence | `influence` |
+| Daño total (acumulado) | Total damage | `player_stats.damage` |
+| Estadísticas del jugador | Player stats | `player_stats` |

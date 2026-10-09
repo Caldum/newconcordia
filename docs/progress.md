@@ -17,7 +17,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D05 | Accounts | 1 · World and accounts | Merged | [Caldum/newconcordia#7](https://github.com/Caldum/newconcordia/pull/7) |
 | D06 | Citizenship | 1 · World and accounts | Merged | [Caldum/newconcordia#8](https://github.com/Caldum/newconcordia/pull/8) |
 | D07 | Admin panel | 1 · World and accounts | Merged | [Caldum/newconcordia#9](https://github.com/Caldum/newconcordia/pull/9) |
-| D08 | Profile and energy | 2 · Basic economy | Pending | — |
+| D08 | Profile and energy | 2 · Basic economy | In review | `feat/d08-profile` |
 | D09 | Ledger and currencies | 2 · Basic economy | Pending | — |
 | D10 | Companies and work | 2 · Basic economy | Pending | — |
 | D11 | Market | 2 · Basic economy | Pending | — |
@@ -58,13 +58,18 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · D05 merged. D06: citizen numbers and capital residence, 7-day adaptation rules, waitlist at sign-up, citizenship changes with review by the Interior minister or president and the hourly 72-hour job, welcome document.
 - 2026-10-09 · D06 merged. D07: admins table, country and region switches applied at the day change, append-only action log, admin panel, inactive countries gray on the map.
 - 2026-10-09 · D07 merged. Phase 1 complete.
+- 2026-10-09 · D08: balance parameters table, player stats, energy computed on arrival (10 per hour up to
+  100) and spent under a lock, level and rank derived (ADR 0009), energy in the game bar, profile screen.
+  The web now uses auth-js and postgrest-js instead of supabase-js (initial JS 167.7 → 147.2 kB), auth
+  errors no longer call every server failure «no connection», and `.gitattributes` keeps LF on Windows.
 
 ## Next step
 
-Phases 0 and 1 are merged into `develop` (D01–D07 and Atlas). Next:
+D08 is in review on `feat/d08-profile`. Next:
 
-1. D08 (profile and energy) on `feat/d08-profile`.
-2. Before adding screens to the first load: a lighter Supabase client (Auth and PostgREST only), since the
-   initial JavaScript is at 167.7 of 170 kB (ADR 0006).
-3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+1. Merge D08 once CI is green, then D09 (ledger and currencies) on `feat/d09-ledger`.
+2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts, first admin) to see the game in staging.
+3. Developing on Windows: ESLint, squawk and the clock Worker's tests need the Microsoft Visual C++
+   Redistributable (x64). Antivirus HTTPS scanning (Avast, for example) breaks local sign-ups because the
+   Auth container cannot verify Cloudflare's certificate: exclude `challenges.cloudflare.com`.
