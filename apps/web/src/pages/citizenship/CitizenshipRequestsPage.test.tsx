@@ -48,7 +48,7 @@ describe('CitizenshipRequestsPage', () => {
     await renderRoute('/citizenship/requests');
     expect(await screen.findByText('Viene de España, cuenta de 1 día.')).toBeVisible();
     expect(
-      screen.getByText('Si nadie responde, se aprueba el 11 de octubre, 15:00.'),
+      screen.getByText('Si nadie responde, se aprueba el 11 de octubre a las 15:00.'),
     ).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Aprobar el pedido de Pierre Martin' }));
     expect(await screen.findByText('Aprobaste el pedido de Pierre Martin.')).toBeVisible();

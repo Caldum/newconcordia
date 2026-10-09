@@ -37,7 +37,7 @@ describe('dates on game time', () => {
   });
 
   it('shows date and time for deadlines', () => {
-    expect(formatDateTime('2026-10-11T18:00:00Z', 'es')).toBe('11 de octubre, 15:00');
+    expect(formatDateTime('2026-10-11T18:00:00Z', 'es')).toBe('11 de octubre a las 15:00');
     expect(formatDateTime('2026-10-11T18:00:00Z', 'en')).toBe('October 11 at 3:00 PM');
   });
 });

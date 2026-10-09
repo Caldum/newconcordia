@@ -99,7 +99,7 @@ describe('CitizenshipPage', () => {
     await renderRoute('/citizenship');
     expect(
       await screen.findByText(
-        'Pediste la ciudadanía de España. Si nadie responde antes, se aprueba el 11 de octubre, 15:00.',
+        'Pediste la ciudadanía de España. Si nadie responde antes, se aprueba el 11 de octubre a las 15:00.',
       ),
     ).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Cancelar el pedido' }));
