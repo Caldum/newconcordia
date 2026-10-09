@@ -1,0 +1,17 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Install scripts run only for packages listed here (supply-chain hygiene).
+ignoredBuiltDependencies:
+  - unrs-resolver
+
+onlyBuiltDependencies:
+  - esbuild
+  - supabase
+  - workerd
+  - sharp
+
+engineStrict: true
+saveExact: true
+strictPeerDependencies: true
