@@ -1,7 +1,7 @@
-# Origen
+# Source
 
-- Repositorio: https://github.com/anthropics/skills
-- Ruta: `skills/webapp-testing`
+- Repository: https://github.com/anthropics/skills
+- Path: `skills/webapp-testing`
 - Commit: `683bc88e56f3e09ba94f7055977f3d3aa499f202`
-- Licencia: Apache 2.0 (LICENSE.txt incluido)
-- Copiado sin cambios el 2026-10-09.
+- License: Apache 2.0 (LICENSE.txt included)
+- Copied unchanged on 2026-10-09.
