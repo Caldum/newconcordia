@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "size": "node scripts/check-bundle-size.js",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@tanstack/react-query": "5.104.1",

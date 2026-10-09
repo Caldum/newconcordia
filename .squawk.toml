@@ -1,0 +1,3 @@
+# Migration linter. Supabase applies each migration file inside a transaction.
+pg_version = "17.0"
+assume_in_transaction = true

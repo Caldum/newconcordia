@@ -9,7 +9,7 @@ Ramas: `main` (producción, solo cambia con aprobación del dueño) · `develop`
 
 | Código | Módulo | Fase | Estado | PR |
 | --- | --- | --- | --- | --- |
-| D01 | Repositorio y entrega automática | 0 · Base | Pendiente | — |
+| D01 | Repositorio y entrega automática | 0 · Base | En PR | `feat/d01-repositorio` |
 | D02 | Reloj y día de juego | 0 · Base | Pendiente | — |
 | — | Atlas en código (`packages/atlas`) | 0 · Base | Pendiente | — |
 | D03 | Mundo: países, regiones y dueños | 1 · Mundo y cuentas | Pendiente | — |
@@ -45,6 +45,8 @@ Ramas: `main` (producción, solo cambia con aprobación del dueño) · `develop`
 
 - 2026-10-09 · Commit inicial en `main`: brief, GDD, voz, canvas, Atlas, recursos, mapa y skills.
 
+- 2026-10-09 · D01: monorepo, web base, migración de seguridad, CI, CodeQL, despliegue (omitido sin credenciales).
+
 ## Siguiente paso
 
-D01 en `feat/d01-repositorio` desde `develop`.
+Terminar D01 (CI verde y fusión) y seguir con D02 en `feat/d02-reloj`.

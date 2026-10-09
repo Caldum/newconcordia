@@ -7,3 +7,5 @@ como «Reemplazada por NNNN».
 | N.º | Decisión | Estado |
 | --- | --- | --- |
 | 0001 | Ramas y ubicación del kit de traspaso | Aceptada |
+| 0002 | Acceso a datos: esquema privado y solo funciones expuestas | Aceptada |
+| 0003 | Versiones de herramientas y enrutado | Aceptada |
