@@ -7,7 +7,8 @@ test('landing renders and is accessible', async ({ page }) => {
   await expect(
     page.getByRole('heading', { level: 1, name: 'El mundo está cambiando' }),
   ).toBeVisible();
-  await expect(page.getByText('13 países en juego')).toBeVisible();
+  // Not an exact count: the admin journey turns a country off and on while this runs.
+  await expect(page.getByText(/^\d+ países en juego$/)).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expectNoA11yViolations(page);
 });

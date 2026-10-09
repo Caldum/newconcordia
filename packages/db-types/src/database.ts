@@ -9,6 +9,61 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      admin_list_countries: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          apply_on: string;
+          citizens: number;
+          code: string;
+          is_active: boolean;
+          name_en: string;
+          name_es: string;
+          regions: number;
+          scheduled: boolean;
+          waiting: number;
+        }[];
+      };
+      admin_list_log: {
+        Args: { p_limit?: number };
+        Returns: {
+          action: string;
+          actor_name: string;
+          after: Json;
+          before: Json;
+          created_at: string;
+          id: number;
+          target: string;
+        }[];
+      };
+      admin_list_regions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          apply_on: string;
+          code: string;
+          home_country_code: string;
+          is_enabled: boolean;
+          name: string;
+          owner_country_code: string;
+          scheduled: boolean;
+        }[];
+      };
+      admin_list_team: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          added_at: string;
+          email: string;
+          name: string;
+        }[];
+      };
+      admin_schedule_country: {
+        Args: { p_active: boolean; p_country_code: string };
+        Returns: number;
+      };
+      admin_schedule_region: {
+        Args: { p_enabled: boolean; p_region_code: string };
+        Returns: number;
+      };
+      am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };

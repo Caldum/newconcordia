@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 
 import { defineMessages, LanguageSwitch, useMessages } from '../../i18n';
 import { supabase } from '../../lib/supabase';
+import { useIsAdmin } from '../admin/queries';
 import { useAuth } from '../auth/AuthProvider';
 import { useCitizen } from '../auth/useCitizen';
 import type { Citizen } from '../auth/useCitizen';
@@ -18,6 +19,7 @@ const messages = defineMessages({
     home: 'Inicio',
     map: 'Mapa',
     citizenship: 'Ciudadanía',
+    admin: 'Administración',
     signOut: 'Cerrar sesión',
     loadFailed: 'No se pudo cargar tu ciudadano. Recarga la página para intentar de nuevo.',
   },
@@ -27,6 +29,7 @@ const messages = defineMessages({
     home: 'Home',
     map: 'Map',
     citizenship: 'Citizenship',
+    admin: 'Administration',
     signOut: 'Sign out',
     loadFailed: 'Your citizen did not load. Reload the page to try again.',
   },
@@ -35,6 +38,7 @@ const messages = defineMessages({
 /** The frame of the signed-in screens until the game bar arrives (D08). */
 export function GameShell({ children }: { children: ReactNode }) {
   const copy = useMessages(messages);
+  const isAdmin = useIsAdmin();
   const linkProps = { activeProps: { 'aria-current': 'page' as const } };
   return (
     <div className={styles.page}>
@@ -52,6 +56,11 @@ export function GameShell({ children }: { children: ReactNode }) {
           <Link to="/citizenship" {...linkProps}>
             {copy.citizenship}
           </Link>
+          {isAdmin.data ? (
+            <Link to="/admin" {...linkProps}>
+              {copy.admin}
+            </Link>
+          ) : null}
         </nav>
         <div className={styles.tools}>
           <LanguageSwitch />

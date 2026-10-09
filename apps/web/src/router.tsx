@@ -138,6 +138,12 @@ const citizenshipRequestsRoute = createRoute({
   ),
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin',
+  component: lazyRouteComponent(() => import('./pages/admin/AdminPage'), 'AdminPage'),
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   mapRoute,
@@ -153,6 +159,7 @@ const routeTree = rootRoute.addChildren([
   citizenshipRoute,
   changeCitizenshipRoute,
   citizenshipRequestsRoute,
+  adminRoute,
 ]);
 
 export function buildRouter(queryClient: QueryClient, history?: RouterHistory) {

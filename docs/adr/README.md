@@ -13,3 +13,4 @@ marked «Superseded by NNNN».
 | 0005 | Internationalization: typed catalogs for Spanish and English | Accepted |
 | 0006 | Accounts: Supabase Auth, Turnstile and the citizen created with the sign-up | Accepted |
 | 0007 | Citizenship: numbers, adaptation, waitlist and changes | Accepted |
+| 0008 | Admin panel: admins, scheduled world changes and the action log | Accepted |

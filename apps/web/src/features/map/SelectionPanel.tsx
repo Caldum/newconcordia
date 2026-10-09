@@ -107,7 +107,7 @@ export function SelectionPanel({
             </>
           ) : null}
         </dl>
-        {region.is_enabled ? (
+        {region.is_enabled && countries.get(region.home_country_code)?.is_active ? (
           <p className={styles.status}>
             {region.owner_country_code === region.home_country_code
               ? copy.underControl(home)
@@ -134,7 +134,9 @@ export function SelectionPanel({
   if (!country) return null;
   const name = countryName(country.code);
   // Disputed territories that are not enabled do not count until the admin panel enables them.
-  const inPlay = [...regions.values()].filter((region) => region.is_enabled);
+  const inPlay = [...regions.values()].filter(
+    (region) => region.is_enabled && countries.get(region.home_country_code)?.is_active,
+  );
   const owned = inPlay.filter((region) => region.owner_country_code === country.code);
   const home = inPlay.filter((region) => region.home_country_code === country.code);
   const kept = home.filter((region) => region.owner_country_code === country.code).length;
