@@ -1,76 +1,112 @@
-Atlas de Concordia es el sistema visual de Concordia, un juego de estrategia en el navegador donde los jugadores trabajan, votan y combaten por regiones reales. La interfaz se dibuja como un atlas: el mar es el fondo, la tierra son los paneles y cada país tiñe lo que le pertenece.
+Concordia Atlas is the visual system of Concordia, a strategy game in the browser where players work, vote
+and fight for real regions. The interface is drawn like an atlas: the sea is the background, land is the
+panels, and each country tints what belongs to it.
 
-## Principios
+Token, class and component names are in English (ADR 0004). Quoted interface copy is Spanish, the source
+language of the game.
 
-1. **Primero el juego, después la interfaz.** Cada pantalla abre con algo que solo existe en Concordia: una batalla en vivo, una región, un país. Nunca una ilustración genérica ni un titular de venta.
-2. **Se entiende de un vistazo.** Los datos de la partida (energía, marcador, tiempo de ronda) se leen sin buscar: `marcador`, `cifra` y cifras tabulares.
-3. **El color nunca informa solo.** Todo estado lleva una palabra o un ícono; cada país, su nombre. Las ganancias llevan signo +.
-4. **Un solo protagonista por pantalla.** Un escenario, un marcador o un documento; el resto, en tono neutro.
-5. **Accesible desde cualquier entrada.** Todo se alcanza con Tab, todo lo táctil mide al menos `toque-min` y el foco siempre se ve. No hay atajos de teclado: cada acción es un botón con su verbo.
+## Principles
 
-## Voz y texto
+1. **The game first, then the interface.** Every screen opens with something that only exists in Concordia:
+   a live battle, a region, a country. Never a generic illustration or a sales headline.
+2. **Understood at a glance.** Match data (energy, scoreboard, round time) reads without searching:
+   `score`, `figure` and tabular figures.
+3. **Color never informs alone.** Every state carries a word or an icon; every country, its name. Gains
+   carry a + sign.
+4. **One protagonist per screen.** A stage, a scoreboard or a document; everything else in a neutral tone.
+5. **Accessible from any input.** Everything is reachable with Tab, everything touchable measures at least
+   `touch-min` and focus is always visible. There are no keyboard shortcuts: every action is a button with
+   its verb.
 
-- Español neutro con tuteo: «Elige tu país», «Entra a la batalla», «¿Ya tienes cuenta?». Sin voseo ni regionalismos: «aquí», «dinero», «combustible». Frases cortas y verbos claros.
-- Mayúscula solo al principio de la oración y en nombres propios. Nunca todo en mayúsculas.
-- Botones con verbo primero en infinitivo que dicen lo que pasa: «Crear mi ciudadano», «Entrar a combatir». El aviso repite el verbo en pasado: «Compraste 10 raciones».
-- Los errores dicen qué pasó y cómo seguir, sin disculpas: «Falta el dominio, por ejemplo camila@gmail.com».
-- Números con punto de miles y coma decimal: 38.450, 36,96, 58 %. Las monedas se llaman Oro y Crédito, con mayúscula.
-- Sin emoji. Sin signos de exclamación salvo en un logro real.
-- Que no suene a IA: di el dato o la acción y nada más. Sin contrastes de relleno («no es X, es Y»), sin fragmentos en fila («Gratis. Sin descargas.»), sin palabras de venta (épico, increíble, descubre, desbloquea, experiencia), sin rayas como conector, sin preguntas retóricas y sin muletillas como «¡Listo!» o «No te preocupes». Mejor «es», «tiene» o «hay» que «funciona como» o «cuenta con».
+## Voice and copy
+
+- Neutral Spanish with *tú*: «Elige tu país», «Entra a la batalla», «¿Ya tienes cuenta?». No *voseo* or
+  regionalisms: «aquí», «dinero», «combustible». Short sentences and clear verbs. English copy follows the
+  same rules (`docs/voice.md`, section 4).
+- Capital letter only at the start of the sentence and in proper names. Never all caps.
+- Buttons start with an infinitive verb that says what happens: «Crear mi ciudadano», «Entrar a combatir».
+  The notice repeats the verb in the past tense: «Compraste 10 raciones».
+- Errors say what happened and how to continue, without apologizing: «Falta el dominio, por ejemplo
+  camila@gmail.com».
+- Numbers follow the locale: in Spanish, a period for thousands and a comma for decimals (38.450, 36,96,
+  58 %). The currencies are called Oro and Crédito (Gold and Credit), capitalized.
+- No emoji. No exclamation marks except for a real achievement.
+- It must not sound AI-written: state the fact or the action and nothing else. No filler contrasts, no runs
+  of fragments, no sales words, no dashes as connectors, no rhetorical questions and no chatbot filler.
 
 ## Color
 
-- Fondo `mar`; paneles `tierra`; texto `tinta` y `texto-suave`. `texto-tenue` solo para metadatos sobre `tierra`.
-- `nacion` es el color del país del jugador (celeste para Argentina) y cambia por jugador: tiñe la barra, su territorio y la bienvenida. Sobre él, texto `sobre-nacion`.
-- `guerra` es el único rojo de acción: botón de combate y En vivo. Uno por pantalla.
-- `positivo`, `aviso` e `info` son estados; se usan con su `-tinte` de fondo y su `-texto`.
-- Los 13 `pais-*` se usan en mapas, siluetas, leyendas y la franja de marca. Nunca como fondo de texto pequeño.
-- Contraste: todo texto de interfaz cumple 4,5:1 sobre su fondo; los bordes de control (`linea-control`) y el foco, 3:1.
+- Background `sea`; panels `land`; text `ink` and `text-muted`. `text-faint` only for metadata on `land`.
+- `nation` is the color of the player's country (light blue for Argentina) and changes per player: it tints
+  the bar, their territory and the welcome. Text on it: `on-nation`.
+- `war` is the only action red: the combat button and Live. One per screen.
+- `positive`, `warning` and `info` are states; they are used with their `-tint` background and their `-text`.
+- The 13 `country-*` colors are used on maps, silhouettes, legends and the brand stripe. Never as the
+  background of small text.
+- Contrast: all interface text meets 4.5:1 on its background; control borders (`line-control`) and focus, 3:1.
 
-## Tipografía
+## Typography
 
-- **Archivo** para todo lo que no es un lugar. Títulos en 800 con ancho 112 a 122 % (`font-stretch`), cifras en 800 a 124 % y tabulares, como en un marcador deportivo.
-- **EB Garamond itálica** solo para nombres de lugar (países, regiones, provincias, océanos), como en un atlas. Nunca para destacar una palabra dentro de una frase.
-- Escala: `portada` 76, `titulo-1` 44, `titulo-2` 23, `titulo-3` 17, `cuerpo-l` 18, `cuerpo` 16, `etiqueta` y `apoyo` 14, `chip` 13. Nada de interfaz por debajo de 14 px salvo los chips.
+- **Archivo** for everything that is not a place. Titles at 800 with 112 to 122 % width (`font-stretch`),
+  figures at 800 and 124 %, tabular, like a sports scoreboard.
+- **EB Garamond italic** only for place names (countries, regions, provinces, oceans), as in an atlas. Never
+  to emphasize a word inside a sentence.
+- Scale: `display` 76, `title-1` 44, `title-2` 23, `title-3` 17, `body-l` 18, `body` 16, `label` and
+  `support` 14, `chip` 13. No interface text below 14 px except chips.
 
-## Forma, espacio y profundidad
+## Shape, space and depth
 
-- Radios pequeños y con función: `radio-xs` pistas, `radio-s` chips y avatares, `radio-m` controles, `radio-l` paneles, `radio-xl` escenarios.
-- Los paneles no tienen sombra: solo `borde-panel`. La sombra `flotante` es para lo que flota sobre el mapa y `documento` para el documento de ciudadanía.
-- Espaciado de `espacio-1` (4 px) a `espacio-10` (88 px). Paneles con `espacio-6` de relleno y `espacio-5` entre sí. Contenido hasta `pagina-max`, con `espacio-7` de margen.
-- Superficies según contenido: `tierra` lo cotidiano, `tinta` decisiones y marcadores, `nacion` lo propio, `mar-profundo` el mapa. Ver el componente Panel.
+- Small radii with a purpose: `radius-xs` tracks, `radius-s` chips and avatars, `radius-m` controls,
+  `radius-l` panels, `radius-xl` stages.
+- Panels have no shadow: only `panel-border`. The `floating` shadow is for what floats over the map and
+  `document` for the citizenship document.
+- Spacing from `space-1` (4 px) to `space-10` (88 px). Panels with `space-6` of padding and `space-5`
+  between them. Content up to `page-max`, with `space-7` of margin.
+- Surfaces by content: `land` for everyday content, `ink` for decisions and scoreboards, `nation` for what
+  belongs to the player, `sea-deep` for the map. See the Panel component.
 
-## Movimiento
+## Motion
 
-- Lo único que se mueve solo es el punto de En vivo.
-- Las respuestas a una acción duran 150 ms al entrar y hasta 300 ms al salir; nada pasa de 500 ms.
-- El documento de ciudadanía entra una vez al confirmar el correo.
-- Con `prefers-reduced-motion` todo queda quieto.
+- The only thing that moves on its own is the Live dot.
+- Responses to an action last 150 ms entering and up to 300 ms leaving; nothing goes past 500 ms.
+- The citizenship document enters once, when the email is confirmed.
+- With `prefers-reduced-motion` everything stays still.
 
-## Entrada y accesibilidad
+## Input and accessibility
 
-- Solo escritorio adaptable: contenido hasta 1320 px que se reacomoda en columnas al reducir la ventana. Las pantallas de Entrada se dividen en escenario y formulario.
-- Foco: anillo de 3 px en `info` con halo blanco (`foco`), visible sobre tierra, tinta y nación.
-- Toque: 44 px mínimo, 56 px para el botón principal y Golpear.
+- Adaptive desktop only: content up to 1320 px that reflows into columns as the window shrinks. Entry
+  screens split into stage and form.
+- Focus: a 3 px ring in `info` with a white halo (`focus`), visible on land, ink and nation.
+- Touch: 44 px minimum, 56 px for the primary button and Hit.
 
-## Iconografía
+## Iconography
 
-- Íconos propios de trazo, 1,8 px sobre una cuadrícula de 24, puntas y uniones redondeadas, en `tinta` o `currentColor`. Tamaños 14, 16, 18, 20 y 24.
-- Siempre junto a una palabra, salvo en botones de un solo ícono, que llevan `aria-label`.
-- Los íconos de Oro y energía son de color: moneda en `oro` con aro `oro-borde`, rayo en `energia`.
-- Las siluetas de países y regiones (grupo Siluetas) son la imagen del juego en Entrada, Inicio y las fichas de país. Sus archivos traen el color de cada país.
+- Our own stroke icons, 1.8 px on a 24 grid, round caps and joins, in `ink` or `currentColor`. Sizes 14, 16,
+  18, 20 and 24.
+- Always next to a word, except in icon-only buttons, which carry `aria-label`.
+- The Gold and energy icons are colored: a coin in `gold` with a `gold-border` ring, a bolt in `energy`.
+- Country and region silhouettes (assets/silhouettes) are the game's imagery on Entry, Home and the
+  country cards. Their files carry each country's color.
 
-## Ilustraciones
+## Illustrations
 
-- Siete láminas planas de 16:9, una por sección: economía, mercado, bancos, guerra, política, prensa y recursos (grupo Ilustraciones). Solo van en el componente Cabecera, una por pantalla.
-- Formas simples sin degradados ni texturas, sin personas y sin texto. Suelo en `tinta`, fondo en el tinte de la sección y acentos con la paleta de Atlas; el rojo `guerra` solo en la lámina de guerra.
-- Cada lámina incluye algo de Concordia: un contorno de región, el toldo con los 13 colores o una línea de frente.
-- Nunca reemplazan un dato: si una pantalla tiene un marcador o un mapa, no lleva lámina.
+- Seven flat 16:9 plates, one per section: economy, market, banks, war, politics, press and resources
+  (assets/illustrations). They only go in the SectionHeader component, one per screen.
+- Simple shapes without gradients or textures, without people and without text. Ground in `ink`,
+  background in the section's tint and accents from the Atlas palette; the `war` red only on the war plate.
+- Each plate includes something from Concordia: a region outline, the awning with the 13 colors or a front line.
+- They never replace data: if a screen has a scoreboard or a map, it has no plate.
 
-## Marca
+## Brand
 
-- Marca: un círculo dividido en ocho regiones de fronteras irregulares, como un mapa político visto desde arriba. Siete regiones van en colores nacionales y una en rojo `guerra`: la región en disputa, porque en Concordia siempre hay una. Dentro del juego esa región puede tomar el color `nacion` del jugador.
-- Versiones (grupo Logos): `concordia-marca` con fronteras blancas para fondos claros y `nacion`; `concordia-marca-sobre-tinta` con fronteras en `tinta`; `concordia-icono-app` sobre cuadrado `tinta` de radio 14/64 para app y favicon.
-- En la barra va sobre un cuadrado blanco de 38 px. Tamaño mínimo 20 px; por debajo se usa el ícono de app.
-- Logotipo: «Concordia» en Archivo 800 al 125 % de ancho, en `tinta` o en blanco sobre `tinta`, a la derecha de la marca con un espacio igual a un tercio de su ancho. No se deforma, no se recolorea región por región y no lleva sombra.
-- La franja de 13 colores nacionales cierra escenarios y bandas de color.
+- Mark: a circle divided into eight regions with irregular borders, like a political map seen from above.
+  Seven regions are in national colors and one in `war` red: the disputed region, because in Concordia
+  there always is one. Inside the game that region can take the player's `nation` color.
+- Versions (assets/logos): `concordia-mark` with white borders for light backgrounds and `nation`;
+  `concordia-mark-on-ink` with borders in `ink`; `concordia-app-icon` on an `ink` square with a 14/64 radius
+  for the app and favicon.
+- In the bar it sits on a 38 px white square. Minimum size 20 px; below that, use the app icon.
+- Logotype: «Concordia» in Archivo 800 at 125 % width, in `ink` or in white on `ink`, to the right of the mark
+  with a gap equal to a third of its width. It is not distorted, not recolored region by region and has no
+  shadow.
+- The 13-color national stripe closes stages and color bands.

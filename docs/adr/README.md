@@ -1,11 +1,13 @@
-# Registro de decisiones de arquitectura (ADR)
+# Architecture decision records (ADR)
 
-Un archivo por decisión que cambia la arquitectura o se aparta del brief: `NNNN-titulo-corto.md`, con
-**Contexto**, **Opciones**, **Decisión** y **Consecuencias**. Una decisión reemplazada no se borra: se marca
-como «Reemplazada por NNNN».
+One file per decision that changes the architecture or departs from the brief: `NNNN-short-title.md`, with
+**Context**, **Options**, **Decision** and **Consequences**. A superseded decision is not deleted: it is
+marked «Superseded by NNNN».
 
-| N.º | Decisión | Estado |
+| No. | Decision | Status |
 | --- | --- | --- |
-| 0001 | Ramas y ubicación del kit de traspaso | Aceptada |
-| 0002 | Acceso a datos: esquema privado y solo funciones expuestas | Aceptada |
-| 0003 | Versiones de herramientas y enrutado | Aceptada |
+| 0001 | Branches and location of the handoff kit | Accepted |
+| 0002 | Data access: private schema and functions-only API | Accepted |
+| 0003 | Tool versions and routing | Accepted |
+| 0004 | The whole repository is in English | Accepted |
+| 0005 | Internationalization: typed catalogs for Spanish and English | Accepted |

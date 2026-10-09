@@ -20,7 +20,7 @@
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
     "db:lint": "squawk supabase/migrations/*.sql",
-    "db:types": "supabase gen types typescript --local --schema public > packages/tipos/src/database.ts && prettier --write packages/tipos/src/database.ts"
+    "db:types": "supabase gen types typescript --local --schema public > packages/db-types/src/database.ts && prettier --write packages/db-types/src/database.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Desplegar a ${{ github.ref_name == 'main' && 'producción' || 'pruebas' }}
+    name: Deploy to ${{ github.ref_name == 'main' && 'production' || 'staging' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
@@ -35,7 +35,7 @@ jobs:
             if [ -z "${!name}" ]; then missing="$missing $name"; fi
           done
           if [ -n "$missing" ]; then
-            echo "::warning title=Despliegue omitido::Faltan credenciales en el environment '${{ github.ref_name == 'main' && 'production' || 'staging' }}':$missing. Ver docs/setup.md."
+            echo "::warning title=Deployment skipped::Missing credentials in the '$WRANGLER_ENV' environment:$missing. See docs/setup.md."
             echo "ready=false" >> "$GITHUB_OUTPUT"
           else
             echo "ready=true" >> "$GITHUB_OUTPUT"

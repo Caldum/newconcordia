@@ -1,77 +1,76 @@
-# Pasos del dueño del proyecto
+# Owner steps
 
-Todo lo que depende de cuentas o credenciales del dueño. El código ya está listo para usarlas: mientras no
-existan, los trabajos de CI que las necesitan terminan en verde con un aviso «Despliegue omitido» y el resto
-sigue funcionando.
+Everything that depends on the owner's accounts or credentials. The code is ready to use them: until they
+exist, the CI jobs that need them finish green with a «Deployment skipped» warning and everything else keeps
+working.
 
-Regla de oro: **ningún secreto va en el repositorio ni en el navegador**. Los secretos van en GitHub
-(Settings → Environments → *environment* → Secrets) o en Wrangler (`wrangler secret put`). Los valores
-públicos (URL de Supabase, clave publicable, *site key* de Turnstile, DSN de Sentry) van como *Variables*.
+Golden rule: **no secret goes in the repository or in the browser**. Secrets go in GitHub
+(Settings → Environments → *environment* → Secrets) or in Wrangler (`wrangler secret put`). Public values
+(Supabase URL, publishable key, Turnstile site key, Sentry DSN) go in as *Variables*.
 
-## Resumen
+## Summary
 
-| # | Paso | Desbloquea |
+| # | Step | Unblocks |
 | --- | --- | --- |
-| 1 | Crear los *environments* `staging` y `production` en GitHub | Despliegues |
-| 2 | Dos proyectos de Supabase (pruebas y producción) | Migraciones en la nube |
-| 3 | Cuenta de Cloudflare y token de API | Web y reloj en la nube |
-| 4 | Proteger `main` y `develop` | Fusiones sin revisión |
+| 1 | Create the `staging` and `production` *environments* on GitHub | Deployments |
+| 2 | Two Supabase projects (staging and production) | Migrations in the cloud |
+| 3 | Cloudflare account and API token | Web and clock in the cloud |
+| 4 | Protect `main` and `develop` | Merges without review |
 
-Los pasos de Turnstile, Resend, Google OAuth, Sentry y copias de seguridad se agregan cuando llega el
-módulo que los usa.
+The Turnstile, Resend, Google OAuth, Sentry and backup steps are added when the module that uses them arrives.
 
-## 1. *Environments* de GitHub
+## 1. GitHub *environments*
 
-1. GitHub → repositorio `Caldum/newconcordia` → **Settings → Environments → New environment**.
-2. Crea `staging`. En *Deployment branches and tags* elige *Selected branches* y agrega `develop`.
-3. Crea `production`. Marca **Required reviewers** y agrégate. En *Deployment branches* agrega solo `main`.
+1. GitHub → `Caldum/newconcordia` → **Settings → Environments → New environment**.
+2. Create `staging`. Under *Deployment branches and tags* choose *Selected branches* and add `develop`.
+3. Create `production`. Check **Required reviewers** and add yourself. Under *Deployment branches* add only `main`.
 
-## 2. Supabase (dos proyectos)
+## 2. Supabase (two projects)
 
-1. En https://supabase.com/dashboard crea dos proyectos en la región más cercana a los jugadores
-   (por ejemplo `sa-east-1`, São Paulo): `concordia-pruebas` y `concordia-produccion`.
-   Guarda la contraseña de la base de cada uno en tu gestor de contraseñas.
-2. En cada proyecto: **Project Settings → Data API**:
-   - *Exposed schemas*: deja solo `public` (quita `graphql_public`).
-   - Si existe la opción de exponer tablas nuevas automáticamente, desactívala.
-3. Crea un token de acceso personal con alcance limitado: **Account → Access Tokens → Generate new token**
-   (si permite elegir alcance, limítalo a los dos proyectos). Es el mismo para los dos *environments*.
-4. Copia estos valores en GitHub → Settings → Environments:
+1. At https://supabase.com/dashboard create two projects in the region closest to the players (for example
+   `sa-east-1`, São Paulo): `concordia-staging` and `concordia-production`. Keep each database password in
+   your password manager.
+2. In each project, **Project Settings → Data API**:
+   - *Exposed schemas*: leave only `public` (remove `graphql_public`).
+   - If there is an option to expose new tables automatically, turn it off.
+3. Create a personal access token with limited scope: **Account → Access Tokens → Generate new token** (if
+   it allows choosing a scope, limit it to the two projects). The same token serves both *environments*.
+4. Copy these values into GitHub → Settings → Environments, once per *environment*:
 
-   | Dónde | Nombre | Valor (de cada proyecto) |
+   | Where | Name | Value (from each project) |
    | --- | --- | --- |
-   | Secret | `SUPABASE_ACCESS_TOKEN` | El token del paso 3 |
-   | Secret | `SUPABASE_DB_PASSWORD` | La contraseña de la base |
-   | Variable | `SUPABASE_PROJECT_REF` | Project Settings → General → *Project ID* (por ejemplo `abcdefghijklmnop`) |
+   | Secret | `SUPABASE_ACCESS_TOKEN` | The token from step 3 |
+   | Secret | `SUPABASE_DB_PASSWORD` | The database password |
+   | Variable | `SUPABASE_PROJECT_REF` | Project Settings → General → *Project ID* (for example `abcdefghijklmnop`) |
    | Variable | `SUPABASE_PUBLISHABLE_KEY` | Project Settings → API Keys → *Publishable key* (`sb_publishable_...`) |
 
-   La clave `service_role` / *secret key* **no** va en GitHub ni en la web: solo la usará el Worker del reloj
-   como secreto de Wrangler (paso que llega con D02).
+   The *secret* / `service_role` key does **not** go to GitHub or the web: only the clock Worker uses it, as a
+   Wrangler secret (step added with D02).
 
 ## 3. Cloudflare
 
-1. Crea la cuenta en https://dash.cloudflare.com (plan gratuito). Copia el *Account ID* de la columna
-   derecha de **Workers & Pages**.
-2. **My Profile → API Tokens → Create Token → Edit Cloudflare Workers** (plantilla). Agrega el permiso
-   *Account → Workers R2 Storage → Edit* (para las copias de seguridad de D29). Limítalo a tu cuenta.
-3. En GitHub, en los dos *environments*:
+1. Create the account at https://dash.cloudflare.com (free plan). Copy the *Account ID* from the right
+   column of **Workers & Pages**.
+2. **My Profile → API Tokens → Create Token → Edit Cloudflare Workers** (template). Add the permission
+   *Account → Workers R2 Storage → Edit* (for the D29 backups). Limit it to your account.
+3. On GitHub, in both *environments*:
 
-   | Dónde | Nombre | Valor |
+   | Where | Name | Value |
    | --- | --- | --- |
-   | Secret | `CLOUDFLARE_API_TOKEN` | El token del paso 2 |
-   | Variable | `CLOUDFLARE_ACCOUNT_ID` | El *Account ID* |
+   | Secret | `CLOUDFLARE_API_TOKEN` | The token from step 2 |
+   | Variable | `CLOUDFLARE_ACCOUNT_ID` | The *Account ID* |
 
-4. La web queda en `concordia-web.<tu-subdominio>.workers.dev` (producción) y
-   `concordia-web-staging.<tu-subdominio>.workers.dev` (pruebas).
+4. The web will live at `concordia-web.<your-subdomain>.workers.dev` (production) and
+   `concordia-web-staging.<your-subdomain>.workers.dev` (staging).
 
-## 4. Proteger las ramas
+## 4. Protect the branches
 
 1. GitHub → **Settings → Rules → Rulesets → New branch ruleset**.
-2. Nombre `main`, objetivo `main`: *Restrict deletions*, *Block force pushes*, *Require a pull request
-   before merging* (1 aprobación) y *Require status checks to pass* con el check **`verde`** (aparece tras
-   la primera ejecución del CI).
-3. Nombre `develop`, objetivo `develop`: *Restrict deletions*, *Block force pushes*, *Require a pull request*
-   (0 aprobaciones) y el check **`verde`**.
-4. **Settings → General → Pull Requests**: deja activo solo *Allow squash merging*.
-5. **Settings → Code security**: activa *Dependabot alerts*, *Dependabot security updates* y
-   *Secret scanning* con *Push protection*.
+2. Name `main`, target `main`: *Restrict deletions*, *Block force pushes*, *Require a pull request before
+   merging* (1 approval) and *Require status checks to pass* with the **`ci-passed`** check (it appears after
+   the first CI run).
+3. Name `develop`, target `develop`: *Restrict deletions*, *Block force pushes*, *Require a pull request*
+   (0 approvals) and the **`ci-passed`** check.
+4. **Settings → General → Pull Requests**: leave only *Allow squash merging* enabled.
+5. **Settings → Code security**: enable *Dependabot alerts*, *Dependabot security updates* and *Secret
+   scanning* with *Push protection*.

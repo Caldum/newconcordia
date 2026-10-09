@@ -7,8 +7,8 @@ import {
 } from '@tanstack/react-router';
 import type { RouterHistory } from '@tanstack/react-router';
 
-import { HomePage } from './pages/inicio/HomePage';
-import { NotFoundPage } from './pages/no-encontrada/NotFoundPage';
+import { HomePage } from './pages/home/HomePage';
+import { NotFoundPage } from './pages/not-found/NotFoundPage';
 
 export interface RouterContext {
   queryClient: QueryClient;

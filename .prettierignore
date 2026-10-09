@@ -6,6 +6,6 @@ playwright-report/
 test-results/
 .claude/
 docs/
-datos/mapa/
+data/map/
 supabase/.temp/
 *.md

@@ -1,54 +1,54 @@
-# Runbook de operación
+# Operations runbook
 
-## Entornos
+## Environments
 
-| Entorno | Rama | Base | Web | Aprobación |
+| Environment | Branch | Database | Web | Approval |
 | --- | --- | --- | --- | --- |
-| Local | cualquiera | `pnpm db:start` (Docker) | `pnpm --filter @concordia/web dev` | — |
-| Pruebas | `develop` | Supabase `concordia-pruebas` | `concordia-web-staging` | Automática |
-| Producción | `main` | Supabase `concordia-produccion` | `concordia-web` | Manual (*environment* `production`) |
+| Local | any | `pnpm db:start` (Docker) | `pnpm --filter @concordia/web dev` | — |
+| Staging | `develop` | Supabase `concordia-staging` | `concordia-web-staging` | Automatic |
+| Production | `main` | Supabase `concordia-production` | `concordia-web` | Manual (`production` *environment*) |
 
-## Desplegar
+## Deploy
 
-1. Fusiona el PR en `develop`. El workflow **Deploy** aplica las migraciones al proyecto de pruebas y
-   publica la web de pruebas.
-2. Revisa el entorno de pruebas.
-3. Abre un PR de `develop` a `main`. Al fusionarlo, **Deploy** espera la aprobación del *environment*
-   `production` y despliega igual que en pruebas.
+1. Merge the PR into `develop`. The **Deploy** workflow applies the migrations to the staging project and
+   publishes the staging web.
+2. Check the staging environment.
+3. Open a PR from `develop` to `main`. When it merges, **Deploy** waits for the `production` *environment*
+   approval and deploys the same way as staging.
 
-Las migraciones van antes que la web y siempre son compatibles con la versión anterior de la web
-(expandir y después contraer: columnas nuevas opcionales, funciones nuevas con nombre nuevo, y se borra
-lo viejo en un despliegue posterior).
+Migrations go before the web and are always compatible with the previous web version (expand, then
+contract: new optional columns, new functions under new names, and the old ones are removed in a later
+deployment).
 
-## Revertir
+## Roll back
 
-- **Web:** `pnpm --filter @concordia/web exec wrangler rollback [--env staging]` vuelve a la versión
-  anterior en segundos. También desde el panel: Workers → concordia-web → Deployments → Rollback.
-- **Base:** no se revierte una migración aplicada. Se escribe una migración nueva hacia adelante que
-  deshace el cambio, siguiendo el «Rollback» escrito en la cabecera de la migración original.
-- **Código:** `git revert` del commit de fusión en `develop` y nuevo PR.
+- **Web:** `pnpm --filter @concordia/web exec wrangler rollback [--env staging]` returns to the previous
+  version in seconds. Also from the dashboard: Workers → concordia-web → Deployments → Rollback.
+- **Database:** an applied migration is never reverted. Write a new forward migration that undoes the
+  change, following the «Rollback» note in the header of the original migration.
+- **Code:** `git revert` the merge commit on `develop` and open a new PR.
 
-## Restaurar una copia
+## Restore a backup
 
-Se completa con D29 (copia diaria cifrada en R2 y restauración probada una vez por mes).
+Completed with D29 (encrypted daily copy in R2 and a restore tested once a month).
 
-## Rotar secretos
+## Rotate secrets
 
-1. Genera el valor nuevo en el proveedor (Supabase, Cloudflare, Resend, Sentry).
-2. Actualízalo en GitHub → Settings → Environments → *environment* → Secrets, o con
-   `wrangler secret put NOMBRE [--env staging]` para los secretos del Worker.
-3. Vuelve a ejecutar **Deploy** (*Run workflow*) para que tome el valor nuevo.
-4. Revoca el valor viejo en el proveedor.
+1. Generate the new value at the provider (Supabase, Cloudflare, Resend, Sentry).
+2. Update it in GitHub → Settings → Environments → *environment* → Secrets, or with
+   `wrangler secret put NAME [--env staging]` for Worker secrets.
+3. Run **Deploy** again (*Run workflow*) so it picks up the new value.
+4. Revoke the old value at the provider.
 
-## Base local
+## Local database
 
 ```bash
-pnpm db:start      # levanta Postgres, Auth y la API en Docker con todas las migraciones
-pnpm db:reset      # borra la base local y la recrea desde las migraciones
-pnpm db:test       # pruebas pgTAP
-pnpm db:lint       # squawk sobre las migraciones
-pnpm db:types      # regenera packages/tipos
+pnpm db:start      # starts Postgres, Auth and the API in Docker with every migration
+pnpm db:reset      # wipes the local database and rebuilds it from the migrations
+pnpm db:test       # pgTAP tests
+pnpm db:lint       # squawk on the migrations
+pnpm db:types      # regenerates packages/db-types
 ```
 
-Si Docker no puede bajar imágenes de `public.ecr.aws`, baja las mismas desde Docker Hub
-(`docker pull supabase/postgres:<versión>`) y etiquétalas con el nombre que pide el CLI.
+If Docker cannot pull images from `public.ecr.aws`, pull the same ones from Docker Hub
+(`docker pull supabase/postgres:<version>`) and tag them with the name the CLI asks for.

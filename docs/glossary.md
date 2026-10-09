@@ -1,0 +1,43 @@
+# Glossary: game terms and code names
+
+Code, database and commits are in English; the interface is in Spanish (source) and English. This table
+fixes the correspondence. When a new term appears in the code, it is added here in the same PR.
+
+| Game (Spanish interface) | English interface | Code and database |
+| --- | --- | --- |
+| Ciudadano, ciudadana | Citizen | `citizen` |
+| Ciudadanía | Citizenship | `citizenship` |
+| Lista de espera | Waitlist | `waitlist` |
+| País | Country | `country` |
+| Región | Region | `region` |
+| Dueño de la región | Region owner | `owner` (`region_owner`) |
+| País de origen de la región | Home country | `home_country` |
+| Ocupada | Occupied | `occupied` |
+| En juego / fuera de juego | In play / not in play | `active` / `inactive` |
+| Territorio en disputa | Disputed territory | `disputed` |
+| Día de juego | Game day | `game_day` (`game.game_day()`) |
+| Reloj del juego | Game clock | `game.now()` |
+| Tarea programada | Scheduled job | `scheduled job` |
+| Ejecución de una tarea | Job run | `job_run` |
+| Franja (de una tarea) | Slot | `slot` |
+| Parámetros de balance | Balance parameters | `balance_params` |
+| Registro de administración | Admin audit log | `admin_audit_log` |
+| Oro | Gold | `gold` |
+| Crédito | Credit | `credit` |
+| Ración | Ration | `ration` |
+| Arma | Weapon | `weapon` |
+| Combustible | Fuel | `fuel` |
+| Golpe | Hit | `hit` |
+| Daño | Damage | `damage` |
+| Batalla, ronda | Battle, round | `battle`, `round` |
+| Energía | Energy | `energy` |
+| Fuerza | Strength | `strength` |
+| Rango | Rank | `rank` |
+| Empresa, empleo, salario | Company, job, wage | `company`, `job`, `wage` |
+| Tesoro | Treasury | `treasury` |
+| Congreso, congresista | Congress, member of Congress | `congress`, `congress_member` |
+| Banca (escaño) | Seat | `seat` |
+| Ley | Law | `law` |
+| Presidente, vicepresidenta | President, vice president | `president`, `vice_president` |
+| Ministro del Interior | Interior minister | `interior_minister` |
+| Adaptación (primeros 7 días) | Adaptation period | `adaptation_period` |

@@ -3,6 +3,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import { LocaleProvider } from './i18n';
 import { buildRouter } from './router';
 
 const queryClient = new QueryClient({
@@ -15,8 +16,10 @@ if (!container) throw new Error('Missing #root element in index.html');
 
 createRoot(container).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <LocaleProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </LocaleProvider>
   </StrictMode>,
 );

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Entrenamiento</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="inicio" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<nav aria-label="Sección" style="display:flex;gap:28px;flex-wrap:wrap;margin:0 0 28px;box-shadow:inset 0 -1px 0 #C3CDD5"><a href="Train.dc.html" aria-current="page" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid #13202E;color:#13202E">Entrenamiento</a><a href="Missions.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Misiones</a></nav>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px"><div><h1 style="font-stretch:112%;font-weight:800;font-size:44px;line-height:1.04;letter-spacing:-.018em;margin:0">Entrenamiento</h1><p style="color:#556372;margin:6px 0 0;font-size:17px">La fuerza multiplica tu daño en cada golpe. Puedes entrenar una vez al día, desde las 00:00.</p></div><a style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:transparent;color:#13202E" href="Home.dc.html" class="bg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1.3 1 560px;min-width:0">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Elige cómo entrenar</h2><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:#FFF2D4;color:#7A4800;font-variant-numeric:tabular-nums"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M13 2.5 4.5 13.5H11L10 21.5l8.5-11H12l1-8z"/></svg>84 de energía</span></div>
+<div style="padding:20px 22px;display:flex;flex-direction:column;gap:12px">
+<div role="radiogroup" aria-label="Tipo de entrenamiento" style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{tipos}}" as="t" hint-placeholder-count="2"><button type="button" role="radio" aria-checked="{{t.on}}" onClick="{{t.pick}}" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:6px;text-align:left;border:0;width:100%;font-size:15px;cursor:pointer;color:#13202E;min-height:84px;{{t.borde}}"><span style="width:22px;height:22px;border-radius:50%;box-sizing:border-box;flex:none;{{t.circulo}}"></span><span style="flex:1;display:flex;flex-direction:column;line-height:1.3"><b style="font-weight:700;font-size:17px">{{t.nombre}}</b><span style="font-size:14px;color:#556372">{{t.costo}}</span></span><span style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:30px;color:#1F7A52">+{{t.fuerza}}</span></button></sc-for>
+</div>
+<sc-if value="{{hecho}}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:12px;padding:14px 16px;border-radius:6px;font-size:15px;line-height:1.45;background:#E1F4EC;color:#085C3F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Entrenaste. Ahora tienes <b>{{fuerzaFinal}}</b> de fuerza y tu golpe con arma Q3 hace <b>{{golpeFinal}}</b>. Vuelve mañana.</span></div></sc-if>
+<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:6px"><button type="button" class="bp" onClick="{{entrenar}}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF;min-height:52px;padding:0 24px;font-size:16px;border-radius:6px;min-height:56px;font-size:17px;{{btn}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M6.5 7.5v9M17.5 7.5v9M3.5 10v4M20.5 10v4M6.5 12h11"/></svg>{{btnTxt}}</button><span style="font-size:14px;color:#556372">Cuesta 10 de energía{{oroTxt}}.</span></div>
+</div>
+</section>
+<aside style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<section style="background:#13202E;color:#FFFFFF;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px;color:#AEB9C6">Tu fuerza</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:rgba(255,255,255,.1);color:#FFFFFF">Racha de 41 días</span></div>
+<div style="display:flex;align-items:baseline;gap:12px"><span style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:64px;line-height:1">{{fuerza}}</span><span style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:24px;color:#8FD39A">{{suma}}</span></div>
+<div style="display:flex;align-items:flex-end;gap:6px;height:96px" aria-label="Fuerza ganada en los últimos 14 días">
+<sc-for list="{{barras}}" as="b" hint-placeholder-count="14"><span style="flex:1;border-radius:2px 2px 0 0;{{b.estilo}}" title="{{b.dia}}: +{{b.v}}"></span></sc-for>
+</div>
+<div style="font-size:13px;display:flex;justify-content:space-between;color:#AEB9C6"><span>Hace 14 días</span><span>Hoy</span></div>
+</section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Qué cambia en combate</h2></div>
+<div style="padding:20px 22px">
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Tu golpe hoy con arma Q3</span><b>{{golpe}}</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Con 2.000 de fuerza</span><b>655</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px;border:0"><span style="color:#556372">Con 3.000 de fuerza</span><b>775</b></div>
+<p style="font-size:13px;color:#556372;margin:8px 0 0">El daño crece con la raíz cuadrada de la fuerza: cada punto suma un poco menos que el anterior, así que siempre se puede alcanzar a los jugadores más fuertes.</p>
+</div>
+</section>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { t: 'basico', hecho: false }; }
+  renderVals() {
+    var s = this, st = this.state;
+    function dmg(f) { return Math.round(50 * (1 + Math.sqrt(f) / 10) * 1.36 * 1.1 * 1.6); }
+    var T = [['basico', 'Básico', 'Solo energía', 10], ['intensivo', 'Intensivo', 'Energía y 1 Oro', 20]];
+    var sel = T.filter(function (t) { return t[0] === st.t; })[0];
+    var f = 1840 + (st.hecho ? sel[3] : 0);
+    var hist = [10, 10, 20, 10, 10, 10, 20, 10, 10, 10, 10, 20, 10, st.hecho ? sel[3] : 0];
+    return {
+      tipos: T.map(function (t) { var on = st.t === t[0]; return { nombre: t[1], costo: t[2], fuerza: t[3], on: on ? 'true' : 'false',
+        borde: on ? 'box-shadow:inset 0 0 0 2px #13202E;background:#F7F9FB' : 'box-shadow:inset 0 0 0 1px #B5C0CA;background:#FFFFFF',
+        circulo: on ? 'border:7px solid #13202E' : 'border:1.5px solid #7F8B99', pick: function () { if (!st.hecho) s.setState({ t: t[0] }); } }; }),
+      fuerza: f.toLocaleString('es-AR'), suma: st.hecho ? '+' + sel[3] : '', fuerzaFinal: f.toLocaleString('es-AR'), golpe: dmg(f), golpeFinal: dmg(f),
+      hecho: st.hecho, btnTxt: st.hecho ? 'Ya entrenaste hoy' : 'Entrenar', btn: st.hecho ? 'background:#E1E7EC;color:#556372;cursor:default' : '',
+      oroTxt: st.t === 'intensivo' ? ' y 1 Oro' : '', entrenar: function () { s.setState({ hecho: true }); },
+      barras: hist.map(function (v, i) { return { v: v, dia: i === 13 ? 'Hoy' : 'Hace ' + (13 - i) + ' días', estilo: (i === 13 ? 'background:#8FD39A;' : 'background:#46566A;') + 'height:' + Math.max(4, v * 4) + 'px' }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-# Origen
+# Source
 
-- Repositorio: https://github.com/obra/superpowers
-- Ruta: `skills/test-driven-development`
+- Repository: https://github.com/obra/superpowers
+- Path: `skills/test-driven-development`
 - Commit: `8ca22dba9a94f28898bbce59f2537ff4d87c747d`
-- Licencia: MIT (Copyright (c) 2025 Jesse Vincent)
-- Copiado sin cambios el 2026-10-09.
+- License: MIT (Copyright (c) 2025 Jesse Vincent)
+- Copied unchanged on 2026-10-09.

@@ -1,1000 +1,1124 @@
-# Concordia · Documento de diseño del juego
+# Concordia · Game design document
 
-Oct 7, 2026 · @Nacho
+Oct 7, 2026 · @Nacho · English translation of the original Spanish document (October 9, 2026).
+Where this document and `docs/brief.md` section 3 disagree, the brief wins. Each rule is updated here in the
+PR that implements it.
 
-## Cómo usar este documento
+## How to use this document
 
-Concordia se documenta en 12 módulos que completamos de a uno. Cada módulo responde una pregunta, recoge lo ya propuesto en los bocetos y deja a la vista lo que falta decidir.
+Concordia is documented in 12 modules that we complete one at a time. Each module answers one question,
+collects what the sketches already proposed and shows what is still open.
 
-| Módulo | Pregunta que responde | Estado |
+| Module | Question it answers | Status |
 | --- | --- | --- |
-| 1 · Visión del juego | ¿Qué juego es, para quién y qué lo hace distinto? | Por empezar |
-| 2 · Mundo y tiempo | ¿Dónde ocurre todo y cómo pasa el tiempo? | En borrador |
-| 3 · Ciudadano y progresión | ¿Quién es el jugador y cómo crece? | Por empezar |
-| 4 · Economía | ¿Cómo se produce, se gana y se gasta? | Por empezar |
-| 5 · Política | ¿Quién decide las reglas de cada país? | Por empezar |
-| 6 · Guerra y conquista | ¿Cómo cambia de dueño una región? | Por empezar |
-| 7 · Sociedad y prensa | ¿Cómo se comunican y organizan los jugadores? | Por empezar |
-| 8 · Ciclo diario y retención | ¿Por qué vuelve el jugador mañana? | Por empezar |
-| 9 · Monetización | ¿Cómo se sostiene el juego sin que pagar sea ganar? | Por empezar |
-| 10 · Interfaz y experiencia | ¿Cómo ve y opera todo esto el jugador? | En borrador |
-| 11 · Tecnología y juego limpio | ¿Cómo corre, escala y se protege de trampas? | Por empezar |
-| 12 · Balance, métricas y glosario | ¿Qué números ajustamos y cómo sabemos si funciona? | Por empezar |
+| 1 · Game vision | What game is it, who is it for and what makes it different? | Not started |
+| 2 · World and time | Where does everything happen and how does time pass? | Draft |
+| 3 · Citizen and progression | Who is the player and how do they grow? | Not started |
+| 4 · Economy | How is value produced, earned and spent? | Not started |
+| 5 · Politics | Who decides the rules of each country? | Not started |
+| 6 · War and conquest | How does a region change hands? | Not started |
+| 7 · Society and press | How do players communicate and organize? | Not started |
+| 8 · Daily loop and retention | Why does the player come back tomorrow? | Not started |
+| 9 · Monetization | How does the game pay for itself without pay-to-win? | Not started |
+| 10 · Interface and experience | How does the player see and operate all this? | Draft |
+| 11 · Technology and fair play | How does it run, scale and protect itself from cheating? | Not started |
+| 12 · Balance, metrics and glossary | Which numbers do we tune and how do we know it works? | Not started |
 
-Orden sugerido: 1, 2, 3 y 4 primero, porque fijan las reglas que usan todos los demás. Después 6 y 5, que dependen de la economía. El 9 y el 12 se cierran al final, cuando hay números para balancear.
+Suggested order: 1, 2, 3 and 4 first, because they set the rules every other module uses. Then 6 and 5,
+which depend on the economy. 9 and 12 close at the end, when there are numbers to balance.
 
-## 1 · Visión del juego
+## 1 · Game vision
 
-Concordia es un juego de estrategia por navegador, multijugador y persistente, donde los ciudadanos de países reales trabajan, votan y combaten por el territorio. Es el módulo que define el tono de todos los demás.
+Concordia is a persistent multiplayer strategy game for the browser, where citizens of real countries work,
+vote and fight for territory. This module sets the tone for all the others.
 
-**Incluye**
+**Includes**
 
-- Concepto en una frase y propuesta de valor
-- Pilares de diseño: las 3 o 4 ideas que deciden cuando hay dudas
-- Público objetivo y tiempo de juego por día
-- Plataformas: web de escritorio y móvil
-- Referencias (eRepublik y otros) y en qué nos diferenciamos
+- One-sentence concept and value proposition
+- Design pillars: the 3 or 4 ideas that decide when in doubt
+- Target audience and playing time per day
+- Platforms: desktop and mobile web
+- References (eRepublik and others) and how we differ
 
-**Ya propuesto**
+**Already proposed**
 
-- Mundo con países y regiones reales; cada país tiene un color y las regiones conquistadas toman el del conquistador.
-- Tres esferas de juego: economía, política y guerra.
+- A world with real countries and regions; each country has a color and conquered regions take the
+  conqueror's color.
+- Three spheres of play: economy, politics and war.
 
-**Por decidir**
+**Open**
 
-- [ ] ¿Los países son reales con nombre real, o ficticios sobre el mapa real?
-- [ ] ¿Cuánto dura una sesión típica: 10 minutos al día o más?
-- [ ] ¿Hay temporadas con reinicio del mundo o un solo mundo permanente?
-- [ ] Pilares de diseño
+- [ ] Are countries real with their real names, or fictional on the real map?
+- [ ] How long is a typical session: 10 minutes a day or more?
+- [ ] Are there seasons that reset the world, or a single permanent world?
+- [ ] Design pillars
 
-## 2 · Mundo y tiempo
+## 2 · World and time
 
-El mundo es un planisferio de 250 países y 4.594 regiones, y cada región tiene un dueño que puede cambiar. Este módulo fija qué vale cada región y cómo avanza el reloj del juego.
+The world is a world map of 250 countries and 4,594 regions, and every region has an owner that can change.
+This module sets what each region is worth and how the game clock moves.
 
-**Incluye**
+**Includes**
 
-- Países: cuáles son jugables, capital, color, población inicial
-- Regiones: límites, vecinos, recursos y qué aporta controlarlas
-- Fronteras y adyacencia: qué regiones se pueden atacar desde dónde
-- El día de juego: hora de corte, recarga de energía, cierre de mercados y elecciones
-- Qué pasa con un país que pierde todas sus regiones
+- Countries: which are playable, capital, color, starting population
+- Regions: borders, neighbors, resources and what controlling them gives
+- Borders and adjacency: which regions can be attacked from where
+- The game day: cutoff time, energy recharge, market and election closings
+- What happens to a country that loses all its regions
 
-**Ya propuesto**
+**Already proposed**
 
-- Límites de Natural Earth (dominio público), con colores que no se repiten entre vecinos.
-- Argentina celeste y España roja; una región conquistada toma el color del conquistador.
-- Mapa interactivo en la landing, con búsqueda y zoom.
-- Países participantes: desde el panel de administración se elige qué países forman parte del mundo. Los demás se ven en gris en el mapa, bloqueados y sin interacción.
-- Territorios en disputa (por ejemplo, Malvinas): deshabilitados por defecto, en gris como los países que no participan. El panel puede habilitarlos.
-- Territorios iniciales de cada país: se definen más adelante.
-- Horario del juego: GMT−3 para todos. El día de juego cambia a las 00:00 GMT−3.
+- Natural Earth borders (public domain), with colors that do not repeat between neighbors.
+- Argentina light blue and Spain red; a conquered region takes the conqueror's color.
+- Interactive map on the landing, with search and zoom.
+- Participating countries: the admin panel chooses which countries are part of the world. The rest show in
+  gray on the map, locked and without interaction.
+- Disputed territories (for example, the Falklands/Malvinas): disabled by default, gray like the countries
+  that do not participate. The panel can enable them.
+- Starting territories of each country: defined later.
+- Game time: GMT−3 for everyone. The game day changes at 00:00 GMT−3.
 
-**Regionalización**
+**Regionalization**
 
-Todos los países usan el mismo nivel de región: una región es un grupo de provincias o estados vecinos completos, y ningún país juega con sus provincias sueltas. Con este criterio el mundo pasa de 4.594 provincias a unas 820 regiones.
+Every country uses the same region level: a region is a group of complete neighboring provinces or states,
+and no country plays with its individual provinces. With this criterion the world goes from 4,594 provinces
+to about 820 regions.
 
-- La cantidad de regiones de cada país sale de la misma fórmula para todos, con un mínimo de 3 y un máximo de 12:
+- The number of regions of each country comes from the same formula for everyone, with a minimum of 3 and a
+  maximum of 12:
 
 ```latex
-\text{Regiones} = \operatorname{redondeo}\left(\frac{\sqrt{\text{Superficie en km}^2}}{500} + \frac{\sqrt{\text{Población en millones}}}{2{,}5}\right)
+\text{Regions} = \operatorname{round}\left(\frac{\sqrt{\text{Area in km}^2}}{500} + \frac{\sqrt{\text{Population in millions}}}{2.5}\right)
 ```
 
-- Si el país tiene una regionalización oficial con una cantidad parecida (hasta 3 regiones de diferencia), se usa esa. Es el mismo principio de las regiones NUTS de la Unión Europea: partir de divisiones administrativas existentes y buscar regiones de tamaño comparable ([Eurostat](https://ec.europa.eu/eurostat/web/nuts/principles)).
-- Si no la tiene, se agrupan provincias vecinas buscando regiones de población y superficie parecidas.
-- Un país con menos provincias que el mínimo conserva las que tiene; son casi todos microestados o islas.
-- El equipo revisa y puede corregir cada agrupación en el panel de administración antes de habilitar el país.
+- If the country has an official regionalization with a similar count (up to 3 regions apart), that one is
+  used. It is the same principle as the European Union NUTS regions: start from existing administrative
+  divisions and look for regions of comparable size ([Eurostat](https://ec.europa.eu/eurostat/web/nuts/principles)).
+- If it does not, neighboring provinces are grouped looking for regions of similar population and area.
+- A country with fewer provinces than the minimum keeps the ones it has; they are almost all microstates or
+  islands.
+- The team reviews and can correct each grouping in the admin panel before enabling the country.
 
-Cada región lleva un nombre geográfico o histórico propio, nunca solo un punto cardinal: «Grão-Pará» en lugar de «Norte», «Mezzogiorno» en lugar de «Sur».
+Each region carries its own geographic or historical name, never just a compass point: «Grão-Pará» instead
+of «North», «Mezzogiorno» instead of «South».
 
-Regiones de los 13 países que participan hoy (78 en total):
+Regions of the 13 countries in play today (78 in total):
 
-| País | Provincias o estados | Según la fórmula | Regiones en el mapa | Agrupación usada |
+| Country | Provinces or states | By the formula | Regions on the map | Grouping used |
 | --- | --- | --- | --- | --- |
-| Brasil | 27 | 12 | 12 | Estados vecinos dentro de las 5 grandes regiones del IBGE |
-| Estados Unidos | 51 | 12 | 9 | Las 9 divisiones del censo |
-| México | 33 | 7 | 7 | Estados vecinos |
-| España | 52 | 4 | 7 | NUTS 1 |
-| Argentina | 24 | 6 | 6 | Regiones interprovinciales, con el Norte Grande dividido en dos |
-| Canadá | 13 | 9 | 6 | Agrupación habitual de provincias y territorios |
-| Francia | 101 | 5 | 6 | Regiones administrativas vecinas, más Ultramar |
-| Chile | 16 | 3 | 5 | Macrozonas |
-| Italia | 110 | 4 | 5 | NUTS 1 |
-| Alemania | 16 | 5 | 5 | Estados federados vecinos |
-| Reino Unido | 232 | 4 | 4 | Sus cuatro naciones |
-| Paraguay | 18 | 3 | 3 | Chaco y Región Oriental dividida en dos |
+| Brazil | 27 | 12 | 12 | Neighboring states within the 5 large IBGE regions |
+| United States | 51 | 12 | 9 | The 9 census divisions |
+| Mexico | 33 | 7 | 7 | Neighboring states |
+| Spain | 52 | 4 | 7 | NUTS 1 |
+| Argentina | 24 | 6 | 6 | Interprovincial regions, with the Norte Grande split in two |
+| Canada | 13 | 9 | 6 | Usual grouping of provinces and territories |
+| France | 101 | 5 | 6 | Neighboring administrative regions, plus Overseas |
+| Chile | 16 | 3 | 5 | Macrozones |
+| Italy | 110 | 4 | 5 | NUTS 1 |
+| Germany | 16 | 5 | 5 | Neighboring federal states |
+| United Kingdom | 232 | 4 | 4 | Its four nations |
+| Paraguay | 18 | 3 | 3 | Chaco and the Eastern Region split in two |
 | Portugal | 20 | 3 | 3 | NUTS 1 |
 
-| País | Nombres de las regiones |
+Region names are proper names and keep their in-game spelling in every language:
+
+| Country | Region names |
 | --- | --- |
 | Argentina | Buenos Aires · Córdoba y el Litoral · Norte Andino · Gran Chaco y Misiones · Cuyo · Patagonia |
-| Brasil | Alto Amazonas · Grão-Pará · Acre y Rondônia · Meio-Norte · Ceará y Borborema · Pernambuco y São Francisco · Bahía · Planalto Central y Pantanal · Minas Gerais · São Paulo · Rio de Janeiro y Espírito Santo · Pampa Gaúcha y Paraná |
+| Brazil | Alto Amazonas · Grão-Pará · Acre y Rondônia · Meio-Norte · Ceará y Borborema · Pernambuco y São Francisco · Bahía · Planalto Central y Pantanal · Minas Gerais · São Paulo · Rio de Janeiro y Espírito Santo · Pampa Gaúcha y Paraná |
 | Chile | Norte Grande · Norte Chico · Valle Central · Biobío y Los Lagos · Patagonia Chilena |
 | Paraguay | Chaco Paraguayo · Alto Paraná y Amambay · Asunción e Itapúa |
-| México | Sonora y las Californias · Chihuahua y Durango · Sierra Madre Oriental · Jalisco y Michoacán · Valle de México y el Bajío · Oaxaca y Chiapas · Yucatán y el Golfo |
-| Estados Unidos | Nueva Inglaterra · Atlántico Medio · Grandes Lagos · Grandes Llanuras · Carolinas y Florida · Tennessee y Misisipi · Texas y Luisiana · Montañas Rocosas · Pacífico y Alaska |
-| Canadá | Provincias Atlánticas · Quebec · Ontario · Praderas · Columbia Británica · Yukón y el Ártico |
-| España | Galicia y el Cantábrico · País Vasco y el Ebro · Madrid · Castillas y Extremadura · Cataluña y Levante · Andalucía y Murcia · Canarias |
-| Italia | Lombardía y Piamonte · Véneto y Emilia · Toscana y Lacio · Mezzogiorno · Sicilia y Cerdeña |
+| Mexico | Sonora y las Californias · Chihuahua y Durango · Sierra Madre Oriental · Jalisco y Michoacán · Valle de México y el Bajío · Oaxaca y Chiapas · Yucatán y el Golfo |
+| United States | Nueva Inglaterra · Atlántico Medio · Grandes Lagos · Grandes Llanuras · Carolinas y Florida · Tennessee y Misisipi · Texas y Luisiana · Montañas Rocosas · Pacífico y Alaska |
+| Canada | Provincias Atlánticas · Quebec · Ontario · Praderas · Columbia Británica · Yukón y el Ártico |
+| Spain | Galicia y el Cantábrico · País Vasco y el Ebro · Madrid · Castillas y Extremadura · Cataluña y Levante · Andalucía y Murcia · Canarias |
+| Italy | Lombardía y Piamonte · Véneto y Emilia · Toscana y Lacio · Mezzogiorno · Sicilia y Cerdeña |
 | Portugal | Portugal Continental · Azores · Madeira |
-| Alemania | Mar del Norte y Báltico · Renania del Norte-Westfalia · Valle del Rin · Berlín y Sajonia · Baviera |
-| Francia | París y el Canal · Bretaña y Loira · Alsacia y Borgoña · Aquitania y Occitania · Ródano y Provenza · Francia de Ultramar |
-| Reino Unido | Inglaterra · Escocia · Gales · Irlanda del Norte |
+| Germany | Mar del Norte y Báltico · Renania del Norte-Westfalia · Valle del Rin · Berlín y Sajonia · Baviera |
+| France | París y el Canal · Bretaña y Loira · Alsacia y Borgoña · Aquitania y Occitania · Ródano y Provenza · Francia de Ultramar |
+| United Kingdom | Inglaterra · Escocia · Gales · Irlanda del Norte |
 
-Mendoza queda dentro de Cuyo, así que el ejemplo de la landing es «España conquista Cuyo».
+Mendoza is inside Cuyo, so the landing example is «Spain conquers Cuyo».
 
-**Por decidir**
+**Open**
 
-- [x] ¿Todas las 4.594 regiones son jugables, o agrupamos las de países con muchas (Reino Unido tiene 232)? Se compactan en regiones, con el mismo criterio para todos los países.
-- [x] ¿Las islas y regiones sin frontera terrestre se atacan por mar? Sí, por aire o por mar (ver módulo 6).
-- [x] Territorios en disputa (por ejemplo, Malvinas): ¿de quién son al empezar? Quedan deshabilitados por defecto.
-- [x] Recursos por región y su distribución: cada región tiene sus recursos reales (ver módulo 4)
-- [x] Hora de corte del día de juego y zona horaria: GMT−3 para todo el juego
+- [x] Are all 4,594 regions playable, or do we group those of countries with many (the United Kingdom has
+  232)? They are compacted into regions, with the same criterion for every country.
+- [x] Are islands and regions without a land border attacked by sea? Yes, by air or by sea (see module 6).
+- [x] Disputed territories (for example, the Falklands/Malvinas): whose are they at the start? They are
+  disabled by default.
+- [x] Resources per region and their distribution: each region has its real resources (see module 4)
+- [x] Game day cutoff time and time zone: GMT−3 for the whole game
 
-* [ ] Territorios iniciales de cada país
-* [ ] Revisar la agrupación de regiones de cada país habilitado
+* [ ] Starting territories of each country
+* [ ] Review the region grouping of each enabled country
 
-## 3 · Ciudadano y progresión
+## 3 · Citizen and progression
 
-El jugador es un ciudadano de un país, y la energía es el recurso que limita todo lo que hace cada día. Este módulo define sus atributos y cómo suben.
+The player is a citizen of a country, and energy is the resource that limits everything they do each day.
+This module defines their attributes and how they grow.
 
-**Incluye**
+**Includes**
 
-- Alta: elegir nombre y ciudadanía
-- Atributos: nivel, experiencia, energía, bienestar, fuerza, rango, influencia
-- Recarga de energía y cómo se recupera más rápido
-- Curva de niveles y qué desbloquea cada uno
-- Cambio de ciudadanía y migración entre países
-- Inventario personal
+- Sign-up: choose a name and citizenship
+- Attributes: level, experience, energy, well-being, strength, rank, influence
+- Energy recharge and how to recover faster
+- Level curve and what each level unlocks
+- Citizenship change and migration between countries
+- Personal inventory
 
-**Ya propuesto (valores de ejemplo de los bocetos)**
+**Already proposed (sample values from the sketches)**
 
-| Atributo | Valor de ejemplo |
+| Attribute | Sample value |
 | --- | --- |
-| Energía | 84 de 100; cada acción cuesta 10 |
-| Experiencia | 6.420 de 8.000 para el nivel 28 |
-| Nivel | 27 · rango Capitana |
-| Fuerza | 1.840 |
-| Bienestar | 92 de 100 |
-| Influencia | 340 |
+| Energy | 84 of 100; each action costs 10 |
+| Experience | 6,420 of 8,000 for level 28 |
+| Level | 27 · rank Captain |
+| Strength | 1,840 |
+| Well-being | 92 of 100 |
+| Influence | 340 |
 
-**Ciudadanía**
+**Citizenship**
 
-Toda ciudadanía la aprueba el ministro del Interior o el presidente del país, y cada país fija por ley los criterios de admisión.
+> Superseded by `docs/brief.md` section 3: citizenship is immediate at sign-up, with a 7-day adaptation
+> period, a waitlist for countries not in play, and later changes approved automatically after 72 hours.
+> The text below is the original proposal, kept for the admission criteria table.
 
-- La solicitud se responde en 72 horas. Si nadie responde, la primera ciudadanía de un jugador nuevo se aprueba sola, para que un gobierno inactivo no frene a quien recién llega. Un cambio de ciudadanía sin respuesta se rechaza.
-- Mientras espera, el jugador es residente: puede trabajar y entrenar, pero no puede votar, postularse ni ocupar cargos. En las batallas solo puede sumarse como voluntario.
-- Un jugador puede cambiar de ciudadanía como máximo una vez cada 30 días. Al cambiar pierde sus cargos y su afiliación a un partido.
+Every citizenship is approved by the country's Interior minister or president, and each country sets the
+admission criteria by law.
 
-Criterios que cada país fija por ley:
+- The request is answered within 72 hours. If nobody answers, a new player's first citizenship is approved
+  automatically, so an inactive government does not hold back newcomers. A citizenship change with no answer
+  is rejected.
+- While waiting, the player is a resident: they can work and train, but cannot vote, run for office or hold
+  office. In battles they can only join as a volunteer.
+- A player can change citizenship at most once every 30 days. On changing, they lose their offices and their
+  party membership.
 
-| Criterio | Opciones | Valor inicial |
+Criteria each country sets by law:
+
+| Criterion | Options | Initial value |
 | --- | --- | --- |
-| Modo de admisión | Revisión por el ministro · Automática · Cerrada | Revisión por el ministro |
-| Nivel mínimo del solicitante | 0 a 30 | 0 |
-| Antigüedad mínima de la cuenta | 0 a 60 días | 0 |
-| Ciudadanos de países en guerra con el nuestro | Se admiten · No se admiten | No se admiten |
-| Cupo de nuevas ciudadanías por día | Sin cupo, o de 1 a 500 | Sin cupo |
-| Tasa de naturalización (va al tesoro) | 0 a 500 Crédito | 0 |
-| Espera para votar y postularse | 0 a 30 días | 7 días |
+| Admission mode | Review by the minister · Automatic · Closed | Review by the minister |
+| Applicant minimum level | 0 to 30 | 0 |
+| Minimum account age | 0 to 60 days | 0 |
+| Citizens of countries at war with ours | Admitted · Not admitted | Not admitted |
+| Quota of new citizenships per day | No quota, or 1 to 500 | No quota |
+| Naturalization fee (goes to the treasury) | 0 to 500 Credit | 0 |
+| Wait to vote and run for office | 0 to 30 days | 7 days |
 
-La espera para votar y el cupo diario protegen al país de una toma política: que jugadores de otro país se naturalicen en masa para ganar una elección.
+The voting wait and the daily quota protect the country from a political takeover: players from another
+country naturalizing en masse to win an election.
 
-**Por decidir**
+**Open**
 
-- [x] Ritmo de recarga de energía: 10 por hora, máximo 100 (ver módulo 6)
-- [ ] ¿Qué hace el bienestar? ¿Afecta la energía o la productividad?
-- [ ] Diferencia entre nivel y rango militar
-- [x] Reglas y costo de cambiar de ciudadanía: ver Ciudadanía
+- [x] Energy recharge rate: 10 per hour, maximum 100 (see module 6)
+- [ ] What does well-being do? Does it affect energy or productivity?
+- [ ] Difference between level and military rank
+- [x] Rules and cost of changing citizenship: see Citizenship
 
-## 4 · Economía
+## 4 · Economy
 
-La economía la hacen los jugadores: producen en empresas, venden en el mercado y pagan impuestos a su país. Es el módulo más difícil de balancear y conviene cerrarlo antes que la guerra.
+Players make the economy: they produce in companies, sell on the market and pay taxes to their country. It
+is the hardest module to balance and should close before war.
 
-**Incluye**
+**Includes**
 
-- Monedas: Oro (común a todo el mundo) y Crédito (moneda de cada país, o una sola)
-- Trabajo y salario
-- Empresas: tipos, creación, empleados, producción
-- Materias primas y productos: trigo, hierro, petróleo y lo que se fabrica con ellos
-- Mercado: compra, venta, precios y cambio de moneda
-- Impuestos y tesoro nacional
-- De dónde sale el dinero y por dónde se va (fuentes y sumideros)
+- Currencies: Gold (shared by the whole world) and Credit (each country's currency, or a single one)
+- Work and wages
+- Companies: types, creation, employees, production
+- Raw materials and products: wheat, iron, oil and what is made from them
+- Market: buying, selling, prices and currency exchange
+- Taxes and the national treasury
+- Where money comes from and where it goes (sources and sinks)
 
-**Ya propuesto (valores de ejemplo de los bocetos)**
+**Already proposed (sample values from the sketches)**
 
-- Trabajar cuesta 10 de energía; el salario de referencia es 42 Crédito.
-- Impuesto al trabajo del 12 %.
-- Precios de ejemplo: trigo 4,20 · hierro 7,85 · petróleo 12,10.
-- Cada país tiene un banco central que maneja el ministro de Finanzas. Solo puede transferir entre cuentas oficiales.
-- El Congreso puede abrir licitaciones para bancos privados. Los gestionan jugadores que dejan suficientes recursos en garantía.
-- Un banco privado otorga préstamos a los jugadores y paga rendimientos por sus depósitos.
-- Los jugadores pueden formar sociedades entre ellos.
+- Working costs 10 energy; the reference wage is 42 Credit.
+- Work tax of 12 %.
+- Sample prices: wheat 4.20 · iron 7.85 · oil 12.10.
+- Each country has a central bank run by the Finance minister. It can only transfer between official accounts.
+- Congress can open tenders for private banks. Players run them, leaving enough resources as collateral.
+- A private bank grants loans to players and pays interest on its deposits.
+- Players can form partnerships with each other.
 
-### Balance propuesto: economía
+### Proposed balance: economy
 
-Todo el valor sale del trabajo: una jornada vale 10 puntos de producción, y los precios de lanzamiento se derivan de un salario de referencia de 42 Crédito.
+All value comes from work: a workday is worth 10 production points, and launch prices derive from a
+reference wage of 42 Credit.
 
-**Monedas**
+**Currencies**
 
-- El Oro es la única moneda global y la única que crea el juego. Se gana con misiones, niveles y medallas, y se compra con dinero real.
-- Cada país tiene su moneda local (Crédito, con el código del país). Solo la crea la ley de emisión: el Congreso aprueba un monto y el tesoro paga 1 Oro por cada 100 Crédito emitidos.
-- El Oro y las monedas locales se cambian en un mercado entre jugadores, con precio libre. El banco central no participa.
-- Un ciudadano nuevo recibe 5 Oro y 50 Crédito de su país.
+- Gold is the only global currency and the only one the game creates. It is earned with missions, levels and
+  medals, and bought with real money.
+- Each country has its local currency (Credit, with the country code). Only the issuance law creates it:
+  Congress approves an amount and the treasury pays 1 Gold for every 100 Credit issued.
+- Gold and local currencies are exchanged on a player market, at a free price. The central bank does not
+  take part.
+- A new citizen receives 5 Gold and 50 Credit of their country.
 
-**Trabajo**
+**Work**
 
-- Cada jugador trabaja una vez por día: cuesta 10 de energía y aporta 10 puntos de producción a la empresa.
-- El salario lo fija el dueño de la empresa. El Congreso puede fijar un salario mínimo por ley.
-- Quien trabaja en su propia empresa no cobra salario: la producción queda para él.
+- Each player works once per day: it costs 10 energy and contributes 10 production points to the company.
+- The company owner sets the wage. Congress can set a minimum wage by law.
+- Whoever works in their own company earns no wage: the production stays with them.
 
-**Productos**
+**Products**
 
-| Producto | Insumos por unidad | Unidades por jornada | Para qué sirve | Precio de lanzamiento (Crédito) |
+> `docs/brief.md` section 3 updates the recipes: ration = 1 wheat + 2 work points; fuel = 1 oil + 0.5 points.
+
+| Product | Inputs per unit | Units per workday | Used for | Launch price (Credit) |
 | --- | --- | --- | --- | --- |
-| Trigo | — | 10 | Raciones | 4,20 |
-| Hierro | — | 5 | Armas | 8,40 |
-| Petróleo | — | 4 | Combustible | 10,50 |
-| Ración | 2 trigo + 1 punto de producción | 10 | +10 de energía | 12,60 |
-| Arma Q1 a Q5 | Q hierro + Q puntos de producción | 10 ÷ Q | Daño ×(1 + 0,2 × Q) en un golpe | 12,60 × Q |
-| Combustible | 1 petróleo + 0,5 puntos de producción | 20 | Abrir batallas (módulo 6) | 12,60 |
+| Wheat | — | 10 | Rations | 4.20 |
+| Iron | — | 5 | Weapons | 8.40 |
+| Oil | — | 4 | Fuel | 10.50 |
+| Ration | 2 wheat + 1 production point | 10 | +10 energy | 12.60 |
+| Weapon Q1 to Q5 | Q iron + Q production points | 10 ÷ Q | Damage ×(1 + 0.2 × Q) on one hit | 12.60 × Q |
+| Fuel | 1 oil + 0.5 production points | 20 | Opening battles (module 6) | 12.60 |
 
-El precio de lanzamiento es el costo de los insumos al salario de referencia; después lo mueve el mercado. Todas las calidades de arma cuestan lo mismo por cada punto de daño extra, pero una Q5 rinde más por energía, que es lo escaso.
+The launch price is the cost of the inputs at the reference wage; afterwards the market moves it. Every
+weapon quality costs the same per point of extra damage, but a Q5 yields more per energy, which is what is
+scarce.
 
-**Recursos por región**
+**Resources per region**
 
-Cada región tiene los recursos que tiene en la realidad, y un país solo los aprovecha si invierte en explorarlos y mantenerlos.
+Each region has the resources it has in reality, and a country only benefits from them if it invests in
+exploring and maintaining them.
 
-- Los tres recursos del juego agrupan a los reales: trigo reúne los cereales (trigo, maíz, arroz, soja), hierro los minerales metálicos y petróleo el petróleo y el gas.
-- Cada región tiene un yacimiento de nivel 0 a 3 por recurso, según su producción real frente al resto del mundo: 0 no tiene y 3 está entre los mayores productores. Se calcula una vez, al armar el mapa.
-- Un yacimiento pasa por tres estados: sin explorar, en exploración y en explotación.
-- Explorar lo ordena el presidente o el ministro de Finanzas, solo en regiones propias. Cuesta 2.000 Crédito del tesoro por nivel del yacimiento, tarda 3 días y ese dinero sale del juego.
-- Mantener un yacimiento en explotación cuesta 50 Crédito por nivel y por día. Si el tesoro no paga, el yacimiento queda en pausa.
-- La producción de cada materia prima en todo el país es 50 % más 15 % por cada nivel en explotación, hasta 150 %. Un yacimiento de nivel 2 la lleva al 80 %; dos de nivel 3, al 140 %.
-- Si se conquista una región, sus yacimientos pasan al conquistador en pausa, y reactivarlos cuesta la mitad de la exploración.
-- Compra y venta entre países: un país puede ceder a otro un yacimiento en explotación por un precio diario. Mientras dura el contrato, ese nivel cuenta para el comprador y no para el vendedor. Lo firman el presidente o el ministro de Finanzas de cada país; si dura más de 30 días, también lo aprueba cada Congreso. El pago sale cada día del tesoro del comprador, y si no hay fondos el contrato se suspende.
-- Las materias primas en sí se siguen comprando y vendiendo entre jugadores en el mercado, con aranceles.
+- The game's three resources group the real ones: wheat covers cereals (wheat, corn, rice, soy), iron covers
+  metallic minerals and oil covers oil and gas.
+- Each region has a deposit of level 0 to 3 per resource, according to its real production compared to the
+  rest of the world: 0 has none and 3 is among the largest producers. It is computed once, when the map is
+  built.
+- A deposit goes through three states: unexplored, under exploration and in production.
+- Exploration is ordered by the president or the Finance minister, only in their own regions. It costs
+  2,000 treasury Credit per deposit level, takes 3 days, and that money leaves the game.
+- Keeping a deposit in production costs 50 Credit per level per day. If the treasury does not pay, the
+  deposit is paused.
+- Nationwide production of each raw material is 50 % plus 15 % per level in production, up to 150 %. A
+  level 2 deposit takes it to 80 %; two level 3 deposits, to 140 %.
+- If a region is conquered, its deposits pass to the conqueror paused, and reactivating them costs half the
+  exploration.
+- Trade between countries: a country can lease a producing deposit to another for a daily price. While the
+  contract lasts, that level counts for the buyer and not for the seller. The president or Finance minister
+  of each country signs it; if it lasts more than 30 days, each Congress also approves it. Payment leaves the
+  buyer's treasury every day, and if there are no funds the contract is suspended.
+- Raw materials themselves keep being bought and sold between players on the market, with tariffs.
 
-Fuentes de datos a evaluar para los niveles (falta revisar licencia, cobertura y fecha de cada una): cultivos de [MapSPAM, de IFPRI](https://www.ifpri.org/blog/webinar-launching-spam2020-latest-innovation-global-crop-mapping/), petróleo y gas del [rastreador de extracción de Global Energy Monitor](https://www.gem.wiki/Global_Gas_and_Oil_Extraction_Tracker_Methodology) y minerales del [sistema MRDS del USGS](https://www.usgs.gov/publications/mineral-resources-data-system-mrds).
+Data sources to evaluate for the levels (license, coverage and date still to review for each): crops from
+[MapSPAM, by IFPRI](https://www.ifpri.org/blog/webinar-launching-spam2020-latest-innovation-global-crop-mapping/),
+oil and gas from the [Global Energy Monitor extraction tracker](https://www.gem.wiki/Global_Gas_and_Oil_Extraction_Tracker_Methodology)
+and minerals from the [USGS MRDS system](https://www.usgs.gov/publications/mineral-resources-data-system-mrds).
 
-**Empresas**
+**Companies**
 
-| Acción | Costo (Oro) |
+| Action | Cost (Gold) |
 | --- | --- |
-| Crear una empresa de materia prima | 20 |
-| Crear una fábrica | 40 |
-| Subir a nivel 2 (de 10 a 20 empleados) | 30 |
-| Subir a nivel 3 (hasta 40 empleados) | 60 |
-| Subir la calidad de una fábrica de armas de Q a Q+1 | 20 × Q |
+| Create a raw material company | 20 |
+| Create a factory | 40 |
+| Upgrade to level 2 (from 10 to 20 employees) | 30 |
+| Upgrade to level 3 (up to 40 employees) | 60 |
+| Raise a weapons factory's quality from Q to Q+1 | 20 × Q |
 
-**Impuestos**
+**Taxes**
 
-| Impuesto | Se cobra sobre | Rango legal | Valor inicial |
+| Tax | Charged on | Legal range | Initial value |
 | --- | --- | --- | --- |
-| Al trabajo | El salario | 0 a 30 % | 12 % |
-| Al valor agregado | Las ventas en el mercado del país | 0 a 25 % | 5 % |
-| Arancel | Las ventas de empresas extranjeras | 0 a 50 % | 10 % |
+| Work | The wage | 0 to 30 % | 12 % |
+| Value added | Sales on the country's market | 0 to 25 % | 5 % |
+| Tariff | Sales by foreign companies | 0 to 50 % | 10 % |
 
-Todo va al tesoro nacional. Con los precios de lanzamiento, un país de 500 jugadores activos recauda unos 4.250 Crédito por día.
+Everything goes to the national treasury. At launch prices, a country with 500 active players collects about
+4,250 Credit per day.
 
-**Bancos privados**
+**Private banks**
 
-- El Congreso abre la licitación y gana quien ofrece la garantía más alta, con un mínimo de 500 Oro.
-- Un banco puede captar depósitos hasta 5 veces el valor de su garantía.
-- Cada banco fija sus tasas. La ley fija una tasa máxima de préstamo; la inicial es 3 % semanal.
-- Préstamos a 7, 14 o 30 días, por hasta 30 veces el salario promedio del deudor en los últimos 7 días.
-- Si un jugador no paga, se le descuenta su saldo y el 50 % de cada salario hasta cubrir la deuda. Mientras tanto no puede pedir otro préstamo.
-- Si un banco no puede devolver depósitos, su garantía se reparte entre los depositantes y pierde la licencia.
+> `docs/brief.md` section 3 replaces the auction by a tender with 2 licenses per round and a scoring formula.
 
-**Sociedades**
+- Congress opens the tender and the highest collateral wins, with a minimum of 500 Gold.
+- A bank can take deposits up to 5 times the value of its collateral.
+- Each bank sets its rates. The law sets a maximum loan rate; the initial one is 3 % per week.
+- Loans for 7, 14 or 30 days, for up to 30 times the borrower's average wage over the last 7 days.
+- If a player does not pay, their balance is deducted and 50 % of each wage until the debt is covered.
+  Meanwhile they cannot ask for another loan.
+- If a bank cannot return deposits, its collateral is split among depositors and it loses its license.
 
-- De 2 a 5 socios, cada uno con un porcentaje de participación.
-- La sociedad puede tener empresas, y las ganancias se reparten según la participación.
-- Las deudas son de la sociedad: los socios no responden con su dinero personal.
+**Partnerships**
 
-**Cuentas oficiales**
+- From 2 to 5 partners, each with an ownership percentage.
+- The partnership can own companies, and profits are split by ownership.
+- Debts belong to the partnership: partners are not liable with their personal money.
 
-- Tesoro nacional, una cuenta por ministerio, el presupuesto de cada hospital de campaña y el depósito nacional de combustible y armas.
-- Solo el banco central mueve dinero entre ellas, por orden del ministro de Finanzas.
+**Official accounts**
 
-**Contra la inflación**
+- National treasury, one account per ministry, the budget of each field hospital and the national depot of
+  fuel and weapons.
+- Only the central bank moves money between them, by order of the Finance minister.
 
-- Oro que sale del juego: crear y mejorar empresas, entrenamiento avanzado, emisión de moneda, crear partidos y periódicos, iniciar resistencias.
-- Moneda local que sale del juego: una comisión del 1 % en cada venta del mercado, el presupuesto que consumen los hospitales y lo que cuesta explorar y mantener yacimientos.
-- Raciones, armas y combustible se destruyen al usarse.
-- Oro que entra: 1 por completar las misiones diarias, 3 extra por 7 días seguidos, 3 por cada nivel y 2 por medalla de batalla. Según el cálculo, entran unos 1,7 Oro por jugador activo al día y salen 1,25.
+**Against inflation**
 
-### Por validar en pruebas
+- Gold that leaves the game: creating and upgrading companies, advanced training, currency issuance,
+  creating parties and newspapers, starting resistances.
+- Local currency that leaves the game: a 1 % fee on every market sale, the budget hospitals consume and what
+  exploring and maintaining deposits costs.
+- Rations, weapons and fuel are destroyed when used.
+- Gold that comes in: 1 for completing the daily missions, 3 extra for 7 days in a row, 3 per level and 2 per
+  battle medal. According to the calculation, about 1.7 Gold come in per active player per day and 1.25 leave.
 
-- [ ] Que el salario real se mantenga cerca del de referencia (42 Crédito)
-- [ ] Que ninguna materia prima quede sin demanda o con exceso permanente
-- [ ] Que la garantía mínima de 500 Oro no deje los bancos solo en manos de los jugadores más ricos
-- [ ] Que el Oro neto quede entre 0 y +0,5 por jugador activo al día (ver módulo 12)
+### To validate in testing
 
-## 5 · Política
+- [ ] That the real wage stays close to the reference (42 Credit)
+- [ ] That no raw material ends up without demand or with a permanent surplus
+- [ ] That the minimum collateral of 500 Gold does not leave banks only in the hands of the richest players
+- [ ] That net Gold stays between 0 and +0.5 per active player per day (see module 12)
 
-Cada país lo gobiernan sus propios jugadores, que eligen presidente y Congreso y votan las leyes. Este módulo define los cargos, los plazos y qué puede cambiar cada uno.
+## 5 · Politics
 
-**Incluye**
+Each country is governed by its own players, who elect a president and Congress and vote on laws. This
+module defines the offices, the terms and what each one can change.
 
-- Partidos: crear, afiliarse, líder
-- Elecciones: presidente y Congreso, frecuencia, quién puede votar y postularse
-- Leyes: qué tipos existen (impuestos, aranceles, declarar guerra, paz, presupuesto)
-- Poderes del presidente y del Congreso
-- Diplomacia: alianzas, tratados, embargos
+> `docs/brief.md` section 3 sets who votes laws (only the 20 members of Congress, 24 hours, vice president
+> breaks ties within 12 hours, the president never votes) and who proposes them.
 
-**Ya propuesto**
+**Includes**
 
-- Elección de presidente cada 30 días.
-- Elección del Congreso cada 30 días, 15 días después de la presidencial: hay una elección cada 15 días, alternando presidente y Congreso.
-- El presidente designa al vicepresidente, a los ministros y a los embajadores.
-- Ministerios ya mencionados: Guerra (módulo 6), Finanzas (módulo 4) e Interior, que aprueba las ciudadanías (módulo 3).
-- Votación de leyes con plazo de cierre (ejemplo: Ley de aranceles agrícolas, cierra en 14 h).
-- El nombre del presidente se ve en el panel del país.
+- Parties: creating, joining, leader
+- Elections: president and Congress, frequency, who can vote and run
+- Laws: which types exist (taxes, tariffs, declaring war, peace, budget)
+- Powers of the president and of Congress
+- Diplomacy: alliances, treaties, embargoes
 
-**Por decidir**
+**Already proposed**
 
-- [ ] Qué ministerios existen además de Guerra, Finanzas e Interior, y qué puede hacer cada uno
-- [ ] Qué hace un embajador
-- [x] Quién declara la guerra: propone el presidente y aprueba el Congreso por mayoría simple (ver módulo 6)
-- [ ] Cuántos votos o qué porcentaje aprueba una ley
-- [ ] Qué se puede votar sin ser miembro de un partido
+- Presidential election every 30 days.
+- Congressional election every 30 days, 15 days after the presidential one: there is an election every 15
+  days, alternating president and Congress.
+- The president appoints the vice president, ministers and ambassadors.
+- Ministries already mentioned: War (module 6), Finance (module 4) and Interior, which approves citizenships
+  (module 3).
+- Law voting with a closing time (example: Agricultural tariffs law, closes in 14 h).
+- The president's name shows on the country panel.
 
-## 6 · Guerra y conquista
+**Open**
 
-Las regiones cambian de dueño ganando batallas, y la batalla se gana sumando el daño de todos los ciudadanos de cada bando. Es el núcleo que hace visible el juego en el mapa.
+- [ ] Which ministries exist besides War, Finance and Interior, and what each one can do
+- [ ] What an ambassador does
+- [x] Who declares war: the president proposes and Congress approves by simple majority (see module 6)
+- [ ] How many votes or what percentage passes a law
+- [ ] What can be voted without being a party member
 
-**Incluye**
+## 6 · War and conquest
 
-- Declarar la guerra y abrir una batalla por una región vecina
-- Rondas, duración y cómo se decide el ganador
-- Fórmula de daño: fuerza, rango, armas, bonificaciones
-- Unidades militares: grupos de jugadores con líder
-- Quién puede combatir por cada bando (ciudadanos, aliados, mercenarios)
-- Resistencia: cómo un país recupera una región ocupada
+Regions change hands by winning battles, and a battle is won by adding up the damage of every citizen on
+each side. It is the core that makes the game visible on the map.
 
-**Ya propuesto (valores de ejemplo de los bocetos)**
+**Includes**
 
-- Batalla por rondas, con un marcador de dominio (ejemplo: ronda 3 de 5, Valdoria 58 % contra Karelia 42 %).
-- Cada golpe cuesta 10 de energía y da +1 de experiencia.
-- Entrenar cuesta 10 de energía y da +10 de fuerza.
-- Al ganar, la región toma el color del conquistador y la frontera se mueve.
-- Una región sin frontera terrestre con el atacante se puede atacar por aire o por mar.
-- El ataque marítimo exige costa disponible: el país atacante debe administrar en ese momento al menos una región con salida al mar. Si no tiene ninguna, o todas sus regiones costeras están ocupadas por otro país, no puede hacer ataques navales.
-- Hospitales de campaña: el presidente o el ministro de Guerra los instala en regiones en guerra y les asigna un presupuesto. Los jugadores recuperan energía en ellos; cada uso consume parte del presupuesto y el hospital funciona hasta agotarlo.
+- Declaring war and opening a battle for a neighboring region
+- Rounds, duration and how the winner is decided
+- Damage formula: strength, rank, weapons, bonuses
+- Military units: groups of players with a leader
+- Who can fight for each side (citizens, allies, mercenaries)
+- Resistance: how a country recovers an occupied region
 
-### Balance propuesto: guerra
+**Already proposed (sample values from the sketches)**
 
-La energía es lo que limita la guerra: cada golpe cuesta 10, y nadie puede dar más de 52 golpes por día.
+- Battle by rounds, with a dominance scoreboard (example: round 3 of 5, Valdoria 58 % against Karelia 42 %).
+- Each hit costs 10 energy and gives +1 experience.
+- Training costs 10 energy and gives +10 strength.
+- On winning, the region takes the conqueror's color and the border moves.
+- A region without a land border with the attacker can be attacked by air or by sea.
+- A naval attack needs available coast: the attacking country must administer at that moment at least one
+  region with sea access. If it has none, or all its coastal regions are occupied by another country, it
+  cannot launch naval attacks.
+- Field hospitals: the president or the War minister installs them in regions at war and assigns them a
+  budget. Players recover energy there; each use consumes part of the budget and the hospital works until it
+  runs out.
 
-**Energía** (también define el módulo 3)
+### Proposed balance: war
 
-- Máximo 100. Se recarga 10 por hora.
-- Las raciones recuperan hasta 200 por día, y los hospitales de campaña hasta 100 más.
-- Quien entra dos veces por día junta unos 200 de recarga. El techo absoluto es 540 de energía: 52 golpes después de trabajar y entrenar.
+Energy is what limits war: each hit costs 10, and nobody can land more than 52 hits per day.
 
-**Declarar la guerra** (también define el módulo 5)
+**Energy** (also defined in module 3)
 
-- El presidente propone la ley y el Congreso la aprueba por mayoría simple.
-- La guerra sigue hasta firmar la paz, que deben aprobar los Congresos de los dos países.
+- Maximum 100. Recharges 10 per hour.
+- Rations recover up to 200 per day, and field hospitals up to 100 more.
+- Someone who logs in twice a day collects about 200 of recharge. The absolute ceiling is 540 energy: 52 hits
+  after working and training.
 
-**Abrir una batalla**
+**Declaring war** (also defined in module 5)
 
-| Tipo | Región que se puede atacar | Requisito | Combustible del depósito nacional | Daño del atacante |
+- The president proposes the law and Congress approves it by simple majority.
+- The war continues until peace is signed, which both countries' Congresses must approve.
+
+**Opening a battle**
+
+| Type | Region that can be attacked | Requirement | Fuel from the national depot | Attacker damage |
 | --- | --- | --- | --- | --- |
-| Terrestre | Limítrofe con una región que el atacante administra | — | 200 | 100 % |
-| Marítima | Cualquier región enemiga con salida al mar | Costa disponible | 800 | 90 % |
-| Aérea | Cualquier región enemiga a 1.500 km o menos de una región del atacante | — | 1.500 | 90 % |
+| Land | Bordering a region the attacker administers | — | 200 | 100 % |
+| Naval | Any enemy region with sea access | Available coast | 800 | 90 % |
+| Air | Any enemy region within 1,500 km of a region of the attacker | — | 1,500 | 90 % |
 
-- La abre el presidente o el ministro de Guerra. Un país puede tener 2 batallas ofensivas abiertas a la vez; defensivas, sin límite.
-- Una región que resistió un ataque no puede ser atacada de nuevo por el mismo país durante 24 horas.
-- Para un país de 500 jugadores activos, un ataque terrestre cuesta medio día de recaudación, uno marítimo 2,4 días y uno aéreo 4,4 días.
+- The president or the War minister opens it. A country can have 2 offensive battles open at once;
+  defensive ones, unlimited.
+- A region that resisted an attack cannot be attacked again by the same country for 24 hours.
+- For a country of 500 active players, a land attack costs half a day of tax revenue, a naval one 2.4 days and
+  an air one 4.4 days.
 
-**Rondas**
+**Rounds**
 
-- Cada ronda dura 4 horas, y la gana el bando que hizo más daño en ella.
-- Gana la batalla el primero que gana 3 rondas: como máximo 5 rondas y 20 horas, así cada batalla cubre un día en cualquier zona horaria.
-- Si gana el atacante, la región cambia de dueño al cerrar la batalla.
+- Each round lasts 4 hours, and the side that dealt more damage in it wins it.
+- The battle goes to whoever first wins 3 rounds: at most 5 rounds and 20 hours, so each battle covers a day
+  in any time zone.
+- If the attacker wins, the region changes hands when the battle closes.
 
-**Daño por golpe**
+**Damage per hit**
 
 ```latex
-\text{Daño} = 50 \times \left(1 + \frac{\sqrt{\text{Fuerza}}}{10}\right) \times (1 + 0{,}03 \times \text{Rango}) \times \text{Arma} \times \text{Bonificaciones}
+\text{Damage} = 50 \times \left(1 + \frac{\sqrt{\text{Strength}}}{10}\right) \times (1 + 0.03 \times \text{Rank}) \times \text{Weapon} \times \text{Bonuses}
 ```
 
-- Arma: ×1 sin arma, de ×1,2 a ×2,0 según la calidad. Se gasta un arma por golpe.
-- La raíz cuadrada de la fuerza frena la ventaja de los veteranos: al máximo, un veterano pega unas 13 veces más que un jugador nuevo.
+- Weapon: ×1 without a weapon, from ×1.2 to ×2.0 depending on quality. One weapon is spent per hit.
+- The square root of strength slows down the veterans' advantage: at the maximum, a veteran hits about 13
+  times harder than a new player.
 
-| Perfil | Fuerza | Rango | Arma | Daño por golpe |
+| Profile | Strength | Rank | Weapon | Damage per hit |
 | --- | --- | --- | --- | --- |
-| Nuevo, día 1 | 100 | 0 | Q1 | 120 |
-| 1 mes | 550 | 3 | Q2 | 255 |
-| 6 meses | 1.840 | 12 | Q3 | 576 |
-| 1 año, al máximo | 7.400 | 20 | Q5 | 1.536 |
+| New, day 1 | 100 | 0 | Q1 | 120 |
+| 1 month | 550 | 3 | Q2 | 255 |
+| 6 months | 1,840 | 12 | Q3 | 576 |
+| 1 year, maxed out | 7,400 | 20 | Q5 | 1,536 |
 
-**Bonificaciones y quién combate**
+**Bonuses and who fights**
 
-- Defensa: +10 % para el país que administra la región.
-- Resistencia: +10 % para el país de origen de la región, si hoy está ocupada.
-- Combaten los ciudadanos de los dos países y los de sus aliados con tratado. Cualquier otro jugador puede sumarse como voluntario, con −25 % de daño.
+- Defense: +10 % for the country that administers the region.
+- Resistance: +10 % for the region's country of origin, if it is occupied today.
+- Citizens of both countries and of their treaty allies fight. Any other player can join as a volunteer,
+  with −25 % damage.
 
-**Entrenar, experiencia y rango**
+**Training, experience and rank**
 
-- Entrenar: una vez por día, 10 de energía, +10 de fuerza. El entrenamiento avanzado da +20 de fuerza por 1 Oro.
-- El rango sube con el daño acumulado: llegar al rango n pide 10.000 × n² de daño. El rango 12 pide 1,44 millones, y el máximo es 20.
+- Training: once per day, 10 energy, +10 strength. Advanced training gives +20 strength for 1 Gold.
+- Rank rises with accumulated damage: reaching rank n needs 10,000 × n² damage. Rank 12 needs 1.44 million,
+  and the maximum is 20.
 
-**Hospitales de campaña**
+**Field hospitals**
 
-- Cada uso recupera 10 de energía y consume 15 Crédito del presupuesto, que salen del juego.
-- Lo usa cualquier jugador del bando que lo instaló, hasta 100 de energía por día entre todos los hospitales.
-- 200 usos cuestan 3.000 Crédito, menos de un día de recaudación de un país de 500 jugadores.
+- Each use recovers 10 energy and consumes 15 Credit of the budget, which leave the game.
+- Any player on the side that installed it can use it, up to 100 energy per day across all hospitals.
+- 200 uses cost 3,000 Credit, less than a day of tax revenue for a country of 500 players.
 
-**Recompensas**
+**Rewards**
 
-- Héroe de la ronda: quien hace más daño en cada bando gana 2 Oro y una medalla.
+- Round hero: whoever deals the most damage on each side in each round gets 2 Gold and a medal.
 
-**País sin regiones**
+**Country without regions**
 
-- Queda ocupado: sus ciudadanos conservan la ciudadanía, pero no hay elecciones ni impuestos.
-- Cualquier ciudadano puede iniciar una resistencia en una de sus regiones de origen por 20 Oro. Se lucha como una batalla normal.
-- Si un país pierde su capital, la capital pasa a su región más poblada.
+- It becomes occupied: its citizens keep their citizenship, but there are no elections or taxes.
+- Any citizen can start a resistance in one of its home regions for 20 Gold. It is fought like a normal battle.
+- If a country loses its capital, the capital moves to its most populated region.
 
-### Por validar en pruebas
+### To validate in testing
 
-- [ ] Que los jugadores muy activos (52 golpes por día) no se despeguen demasiado del resto
-- [ ] Que el ataque aéreo valga su costo frente al marítimo
-- [ ] Que las rondas de 4 horas no se sientan lentas
-- [ ] Que las resistencias no hagan imposible sostener una conquista
+- [ ] That very active players (52 hits per day) do not pull too far ahead of the rest
+- [ ] That the air attack is worth its cost compared to the naval one
+- [ ] That 4-hour rounds do not feel slow
+- [ ] That resistances do not make holding a conquest impossible
 
-## 7 · Sociedad y prensa
+## 7 · Society and press
 
-Los jugadores se organizan y discuten dentro del juego, sobre todo a través de periódicos propios. Este módulo cubre todo lo que pasa entre personas.
+Players organize and debate inside the game, above all through their own newspapers. This module covers
+everything that happens between people.
 
-**Incluye**
+**Includes**
 
-- Periódicos: crear uno, publicar artículos, suscriptores, votos
-- Noticias automáticas del mundo (batallas, leyes, récords)
-- Mensajes privados, amigos y chat por país o unidad
-- Notificaciones
-- Moderación de contenido y reportes
+- Newspapers: creating one, publishing articles, subscribers, votes
+- Automatic world news (battles, laws, records)
+- Private messages, friends and chat per country or unit
+- Notifications
+- Content moderation and reports
 
-**Ya propuesto**
+**Already proposed**
 
-- Sección de noticias en la pantalla principal, con fuente y antigüedad (ejemplo: Prensa nacional, hace 12 min).
+- News section on the home screen, with source and age (example: National press, 12 min ago).
 
-**Por decidir**
+**Open**
 
-- [ ] ¿Los artículos dan influencia o dinero a su autor?
-- [ ] Idiomas: ¿un mundo en español o varios idiomas en el mismo mundo?
-- [ ] Reglas de moderación y quién modera
+- [ ] Do articles give influence or money to their author?
+- [ ] Languages: one world in Spanish, or several languages in the same world?
+- [ ] Moderation rules and who moderates
 
-## 8 · Ciclo diario y retención
+## 8 · Daily loop and retention
 
-El jugador vuelve cada día porque la energía se recarga, hay misiones nuevas y su país lo necesita en una batalla o una votación. Este módulo ordena esa rutina.
+The player comes back every day because energy recharges, there are new missions and their country needs
+them in a battle or a vote. This module orders that routine.
 
-**Incluye**
+**Includes**
 
-- La rutina diaria: qué se hace en una sesión de pocos minutos
-- Misiones diarias y semanales, y sus recompensas
-- Logros y medallas
-- Primeros días: tutorial y guía del nuevo ciudadano
-- Eventos especiales del mundo
+- The daily routine: what is done in a session of a few minutes
+- Daily and weekly missions, and their rewards
+- Achievements and medals
+- First days: tutorial and new citizen guide
+- Special world events
 
-**Ya propuesto (valores de ejemplo de los bocetos)**
+**Already proposed (sample values from the sketches)**
 
-- Cuatro misiones diarias: trabajar, entrenar, combatir y votar. Completarlas da 1 Oro, y 7 días seguidos dan 3 Oro extra (valores ajustados por balance, módulo 4).
-- Pantalla principal con "asuntos pendientes" y un registro de qué cambió tras cada acción.
+> `docs/brief.md` section 3 replaces «vote» with «read an article» and «fight» with «land 5 hits».
 
-**Por decidir**
+- Four daily missions: work, train, fight and vote. Completing them gives 1 Gold, and 7 days in a row give 3
+  extra Gold (values adjusted for balance, module 4).
+- Home screen with "pending matters" and a log of what changed after each action.
 
-- [ ] ¿Las misiones son siempre las mismas o cambian?
-- [ ] Pasos del tutorial
-- [ ] Qué pierde quien no entra un día (si pierde algo)
+**Open**
 
-## 9 · Monetización
+- [ ] Are the missions always the same or do they change?
+- [ ] Tutorial steps
+- [ ] What does someone who skips a day lose (if anything)
 
-El juego se financia vendiendo Oro y comodidades, con un límite claro para que pagar no decida las guerras. Este módulo fija qué se vende y dónde está ese límite.
+## 9 · Monetization
 
-**Incluye**
+The game is funded by selling Gold and conveniences, with a clear limit so that paying does not decide wars.
+This module sets what is sold and where that limit is.
 
-- Qué se puede comprar con dinero real: Oro, suscripción, cosméticos
-- Qué nunca se vende
-- Precios y paquetes
-- Publicidad (si la hay)
+**Includes**
 
-**Por decidir**
+- What can be bought with real money: Gold, subscription, cosmetics
+- What is never sold
+- Prices and packs
+- Advertising (if any)
 
-- [ ] ¿El Oro comprado se puede usar para comprar energía o armas?
-- [ ] ¿Suscripción mensual con ventajas, o solo compras sueltas?
-- [ ] Tope de gasto diario o de ventaja por pagar
+**Open**
 
-## 10 · Interfaz y experiencia
+- [ ] Can purchased Gold be used to buy energy or weapons?
+- [ ] Monthly subscription with perks, or only one-off purchases?
+- [ ] Daily spending cap or cap on the advantage from paying
 
-La interfaz ya tiene una primera versión: una pantalla principal en escritorio y móvil, un sistema visual y una landing con el mapa. Este módulo reúne todas las pantallas y las reglas visuales.
+## 10 · Interface and experience
 
-**Incluye**
+The interface has a first version: a home screen on desktop and mobile, a visual system and a landing with
+the map. This module gathers every screen and the visual rules.
 
-- Mapa de pantallas y navegación
-- Sistema visual: tipografía, colores, espaciado, componentes
-- Estados de cada acción: normal, cargando, éxito, error, deshabilitado
-- Adaptación a móvil
-- Accesibilidad
+> `docs/brief.md` section 3 and the Atlas design system supersede the notes below: Archivo and EB Garamond,
+> adaptive desktop web only, and Spanish plus English interface languages.
 
-**Ya propuesto**
+**Includes**
 
-- Base clara, sin modo oscuro. IBM Plex Sans Condensed para títulos e IBM Plex Sans para el resto.
-- El rojo queda reservado para la acción de combate; un solo botón rojo por pantalla.
-- Cada acción muestra costo, beneficio y resultado.
-- Pantallas hechas: pantalla principal (escritorio y móvil), hoja de estados, landing con mapa.
+- Screen map and navigation
+- Visual system: typography, colors, spacing, components
+- States of each action: normal, loading, success, error, disabled
+- Mobile adaptation
+- Accessibility
 
-**Por decidir**
+**Already proposed**
 
-- [ ] Lista completa de pantallas por módulo
-- [ ] ¿App móvil propia o web adaptada?
+- Light base, no dark mode. IBM Plex Sans Condensed for titles and IBM Plex Sans for the rest.
+- Red is reserved for the combat action; a single red button per screen.
+- Every action shows cost, benefit and result.
+- Screens done: home screen (desktop and mobile), state sheet, landing with map.
 
-## 11 · Tecnología, operación y juego limpio
+**Open**
 
-Un mundo compartido y persistente necesita un servidor que procese el día de juego para todos a la vez y frene a quien hace trampa. Este módulo describe cómo funciona por dentro.
+- [ ] Full list of screens per module
+- [ ] Own mobile app or adapted web?
 
-**Incluye**
+## 11 · Technology, operations and fair play
 
-- Arquitectura: cliente web, servidor, base de datos
-- Procesos del día de juego: recarga, producción, cierre de batallas y elecciones
-- Estado compartido del mapa en tiempo real
-- Multicuentas, bots y otras trampas: detección y sanciones
-- Cuentas, seguridad y privacidad
-- Herramientas internas para el equipo (administración, soporte)
+A shared, persistent world needs a server that processes the game day for everyone at once and stops
+cheaters. This module describes how it works inside.
 
-**Ya propuesto**
+**Includes**
 
-- Panel de administración para el equipo, con estas funciones:
-  - Elegir qué países participan. Los demás quedan en gris, bloqueados y sin interacción en el mapa.
-  - Habilitar los territorios en disputa, que empiezan deshabilitados.
-  - Revisar y corregir la agrupación de regiones de cada país antes de habilitarlo.
-  - Asignar los territorios iniciales de cada país (criterio pendiente, módulo 2).
-- Todos los procesos del día de juego corren en GMT−3.
+- Architecture: web client, server, database
+- Game day processes: recharge, production, closing battles and elections
+- Shared real-time map state
+- Multi-accounts, bots and other cheating: detection and sanctions
+- Accounts, security and privacy
+- Internal tools for the team (administration, support)
 
-### Infraestructura con presupuesto de $0
+**Already proposed**
 
-La propuesta es Supabase para los datos, las cuentas y las batallas en vivo, y Cloudflare para servir la web y disparar las tareas programadas. Las dos tienen plan gratuito sin tarjeta de crédito, y alcanzan para una beta cerrada de unos cientos de jugadores diarios.
+- Admin panel for the team, with these functions:
+  - Choose which countries take part. The rest stay gray, locked and without interaction on the map.
+  - Enable the disputed territories, which start disabled.
+  - Review and correct each country's region grouping before enabling it.
+  - Assign each country's starting territories (criterion pending, module 2).
+- Every game day process runs in GMT−3.
 
-| Pieza del juego | Servicio | Límite clave del plan gratuito |
+### Infrastructure on a $0 budget
+
+The proposal is Supabase for data, accounts and live battles, and Cloudflare to serve the web and trigger
+the scheduled jobs. Both have a free plan without a credit card, and they are enough for a closed beta of a
+few hundred daily players.
+
+| Game piece | Service | Key free plan limit |
 | --- | --- | --- |
-| Web del juego y archivo del mapa | Cloudflare Workers, archivos estáticos | Solicitudes de archivos estáticos gratis e ilimitadas |
-| Tareas programadas (rondas, día de juego, elecciones) | Cloudflare Cron Triggers | 100.000 solicitudes por día y 10 ms de CPU por ejecución |
-| Base de datos: economía, política, guerra | Supabase Postgres | 500 MB y 5 GB de transferencia por mes |
-| Cuentas y acceso | Supabase Auth | 50.000 usuarios activos por mes |
-| Batallas en vivo | Supabase Realtime | 200 conexiones simultáneas y 2 millones de mensajes por mes |
-| Lógica del servidor | Funciones de Postgres y Supabase Edge Functions | 500.000 invocaciones por mes |
-| Correos (verificación, avisos) | Resend | 3.000 por mes y 100 por día |
-| Copias de seguridad | Copia diaria de la base con GitHub Actions | Supabase Free no incluye copias automáticas |
+| Game web and map file | Cloudflare Workers, static assets | Static asset requests free and unlimited |
+| Scheduled jobs (rounds, game day, elections) | Cloudflare Cron Triggers | 100,000 requests per day and 10 ms of CPU per run |
+| Database: economy, politics, war | Supabase Postgres | 500 MB and 5 GB of egress per month |
+| Accounts and access | Supabase Auth | 50,000 monthly active users |
+| Live battles | Supabase Realtime | 200 concurrent connections and 2 million messages per month |
+| Server logic | Postgres functions and Supabase Edge Functions | 500,000 invocations per month |
+| Email (verification, notices) | Resend | 3,000 per month and 100 per day |
+| Backups | Daily database copy with GitHub Actions | Supabase Free does not include automatic backups |
 
-**Por qué esta combinación**
+**Why this combination**
 
-- La economía mueve dinero entre jugadores, empresas y tesoros, y eso pide transacciones de verdad. Postgres las tiene, y cada operación de dinero puede ser una función de la base que valida y registra todo junto. Eso también frena trampas, porque el navegador no decide saldos.
-- Supabase trae cuentas, tiempo real y base en un solo proyecto, lo que reduce las piezas a mantener.
-- Cloudflare sirve el mapa (0,9 MB) y la web sin costo. Así no se gasta la transferencia mensual de Supabase, que es el límite más ajustado.
-- Es Postgres estándar: si el juego crece o cambian las condiciones, la base se puede mudar a otro proveedor.
+- The economy moves money between players, companies and treasuries, and that calls for real transactions.
+  Postgres has them, and every money operation can be a database function that validates and records
+  everything together. That also stops cheating, because the browser does not decide balances.
+- Supabase brings accounts, real time and the database in a single project, which reduces the pieces to
+  maintain.
+- Cloudflare serves the map (0.9 MB) and the web at no cost. That way Supabase's monthly egress, the
+  tightest limit, is not spent.
+- It is standard Postgres: if the game grows or conditions change, the database can move to another provider.
 
-**Reglas para no pasarse del plan gratuito**
+**Rules to stay within the free plan**
 
-- La energía y los cambios de día se calculan cuando el jugador entra, a partir de la hora de su última acción. No hay una tarea que recorra a todos los jugadores.
-- El daño se guarda sumado por jugador y por batalla, no un registro por golpe.
-- Solo la pantalla de batalla usa tiempo real. El resto se actualiza cuando el jugador hace algo.
-- Las tareas programadas solo disparan funciones de la base: el cierre de cada ronda cada 4 horas y el cambio de día a las 00:00 GMT−3 (03:00 UTC). Los límites diarios de Cloudflare se reinician a las 00:00 UTC, que son las 21:00 en GMT−3.
-- El juego vive en un subdominio gratuito de Cloudflare hasta que haya presupuesto para un dominio propio, que se paga por año.
+- Energy and day changes are computed when the player arrives, from the time of their last action. There is
+  no job that walks over every player.
+- Damage is stored aggregated per player and per battle, not one record per hit.
+- Only the battle screen uses real time. The rest updates when the player does something.
+- Scheduled jobs only trigger database functions: closing each round every 4 hours and the day change at
+  00:00 GMT−3 (03:00 UTC). Cloudflare's daily limits reset at 00:00 UTC, which is 21:00 in GMT−3.
+- The game lives on a free Cloudflare subdomain until there is budget for its own domain, paid yearly.
 
-**Cuándo empezar a pagar**
+**When to start paying**
 
-| Señal | Paso siguiente | Costo |
+| Signal | Next step | Cost |
 | --- | --- | --- |
-| Transferencia de Supabase cerca de 5 GB por mes, base cerca de 500 MB o más de 150 jugadores conectados a la vez en batallas | Supabase Pro | Desde US$25 por mes |
-| Más de 100.000 solicitudes por día en Cloudflare | Workers Paid | Mínimo US$5 por mes |
-| Muchos correos de verificación por día | Plan pago de Resend o verificación por otro medio | A definir |
+| Supabase egress close to 5 GB per month, database close to 500 MB or more than 150 players connected at once in battles | Supabase Pro | From US$25 per month |
+| More than 100,000 requests per day on Cloudflare | Workers Paid | Minimum US$5 per month |
+| Many verification emails per day | Paid Resend plan or verification by other means | To be defined |
 
-**Opciones descartadas**
+**Discarded options**
 
-- Vercel Hobby: es solo para uso personal y no comercial, y el juego va a tener monetización (módulo 9).
-- Neon: su plan gratuito da 100 horas de cómputo por proyecto y por mes, y la base se suspende tras 5 minutos sin uso. No cubre un juego encendido las 24 horas.
-- Solo Cloudflare (D1 y Durable Objects): D1 permite 100.000 filas escritas por día y los Workers gratuitos tienen 10 ms de CPU por solicitud. Es ajustado para la economía, y además faltaría un servicio de cuentas. Queda como opción para las batallas en vivo si Realtime se queda corto.
-- Oracle Cloud Always Free: es el más potente (2 núcleos Arm, 12 GB de memoria, 200 GB de disco y 10 TB de transferencia por mes), pero exige administrar un servidor propio. Además, Oracle puede recuperar una máquina que pase 7 días con menos del 20 % de uso, que es justo lo que pasa antes del lanzamiento. Sirve como paso intermedio cuando haya alguien que lo mantenga.
+- Vercel Hobby: it is for personal, non-commercial use only, and the game will have monetization (module 9).
+- Neon: its free plan gives 100 compute hours per project per month, and the database suspends after 5
+  minutes without use. It does not cover a game that is on 24 hours a day.
+- Cloudflare only (D1 and Durable Objects): D1 allows 100,000 rows written per day and free Workers have
+  10 ms of CPU per request. It is tight for the economy, and an accounts service would also be missing. It
+  stays as an option for live battles if Realtime falls short.
+- Oracle Cloud Always Free: the most powerful (2 Arm cores, 12 GB of memory, 200 GB of disk and 10 TB of
+  egress per month), but it requires running our own server. Also, Oracle can reclaim a machine that spends 7
+  days under 20 % usage, which is exactly what happens before launch. It works as an intermediate step when
+  someone is there to maintain it.
 
-**Riesgos**
+**Risks**
 
-- Supabase pausa un proyecto gratuito tras una semana sin actividad. Antes del lanzamiento puede pasar; se reactiva desde el panel.
-- Las condiciones de los planes gratuitos cambian. Conviene revisarlas antes de abrir el juego.
-- No pude confirmar en sus páginas de precios si Supabase Cron está incluido en el plan gratuito, ni las condiciones de uso comercial del plan gratuito de Cloudflare. Por eso las tareas programadas quedan en Cloudflare Cron Triggers.
+- Supabase pauses a free project after a week without activity. It can happen before launch; it is
+  reactivated from the dashboard.
+- Free plan conditions change. They should be reviewed before opening the game.
+- I could not confirm on their pricing pages whether Supabase Cron is included in the free plan, nor the
+  commercial use conditions of Cloudflare's free plan. That is why the scheduled jobs stay on Cloudflare Cron
+  Triggers.
 
-Fuentes consultadas el 8 de octubre de 2026: [precios de Supabase](https://supabase.com/pricing), [precios de Cloudflare Workers](https://developers.cloudflare.com/workers/platform/pricing/), [límites de Cloudflare Workers](https://developers.cloudflare.com/workers/platform/limits/), [precios de Durable Objects](https://developers.cloudflare.com/durable-objects/platform/pricing), [precios de D1](https://developers.cloudflare.com/d1/platform/pricing/), [plan Hobby de Vercel](https://vercel.com/docs/plans/hobby), [precios de Neon](https://neon.com/pricing), [recursos Always Free de Oracle](https://docs.oracle.com/en-us/iaas/Content/FreeTier/resourceref.htm), [precios de Resend](https://resend.com/pricing) y [Supabase Cron](https://supabase.com/docs/guides/cron).
+Sources consulted on October 8, 2026: [Supabase pricing](https://supabase.com/pricing), [Cloudflare Workers pricing](https://developers.cloudflare.com/workers/platform/pricing/), [Cloudflare Workers limits](https://developers.cloudflare.com/workers/platform/limits/), [Durable Objects pricing](https://developers.cloudflare.com/durable-objects/platform/pricing), [D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/), [Vercel Hobby plan](https://vercel.com/docs/plans/hobby), [Neon pricing](https://neon.com/pricing), [Oracle Always Free resources](https://docs.oracle.com/en-us/iaas/Content/FreeTier/resourceref.htm), [Resend pricing](https://resend.com/pricing) and [Supabase Cron](https://supabase.com/docs/guides/cron).
 
-### Arquitectura técnica
+### Technical architecture
 
-Las reglas del juego viven en la base de datos y el navegador solo muestra y pide: ningún saldo, daño ni voto se calcula en la computadora del jugador. Todo se escribe en TypeScript y SQL.
+The game rules live in the database and the browser only shows and asks: no balance, damage or vote is
+computed on the player's computer. Everything is written in TypeScript and SQL.
 
-&#91;embedded content: arquitectura técnica · navegador, Cloudflare, Supabase y apoyo\]
+[embedded content: technical architecture · browser, Cloudflare, Supabase and support]
 
-El navegador descarga la app y el mapa desde Cloudflare y todo lo demás se lo pide a Supabase; el reloj de Cloudflare dispara las mismas funciones del juego que usa el jugador.
+The browser downloads the app and the map from Cloudflare and asks Supabase for everything else; the
+Cloudflare clock triggers the same game functions the player uses.
 
-| Capa | Tecnología | Por qué |
+| Layer | Technology | Why |
 | --- | --- | --- |
-| Lenguaje | TypeScript en la web y las funciones; SQL en la base | Un solo lenguaje de punta a punta, con tipos generados desde la base |
-| Web del juego | React con Vite, como aplicación de una sola página | El juego vive detrás del login y no necesita un servidor propio para la interfaz |
-| Datos en la web | TanStack Query | Caché, reintentos y actualización en segundo plano sin escribir esa lógica |
-| Mapa | SVG con d3-geo y el TopoJSON propio | Ya funciona en la landing. Con unas 820 regiones no hace falta un motor de mapas; si en móvil se vuelve lento, se pasa a Canvas |
-| Reglas del juego | Funciones de Postgres (PL/pgSQL) llamadas por RPC | Cada acción se valida y se aplica en una sola transacción, sin forma de saltarse una regla |
-| Datos | Postgres en Supabase, con permisos por fila (RLS) | Cada jugador lee solo lo que le corresponde y nadie escribe las tablas directamente |
-| Dinero | Libro contable de doble entrada | Cada movimiento registra origen, destino y motivo; los saldos se pueden auditar y reconstruir |
-| Tiempo real | Supabase Realtime, un canal por batalla | El marcador se publica sumado cada pocos segundos, no por cada golpe |
-| Tareas programadas | Cloudflare Cron Triggers que llaman a funciones de la base | Cada tarea se puede repetir sin efecto doble: si corre dos veces, la segunda no cambia nada |
-| Cuentas | Supabase Auth, con Turnstile de Cloudflare en el registro | Login resuelto. Turnstile es gratuito y frena registros automáticos |
-| Correos | Resend, enviado desde Supabase Edge Functions | Verificación de cuenta y avisos |
-| Pruebas | pgTAP para las funciones de la base, Vitest para la web y Playwright para recorridos completos | Las reglas se prueban donde viven |
-| Entrega | GitHub Actions: pruebas, migraciones y despliegue | Dos proyectos gratuitos de Supabase: uno de pruebas y uno de producción |
-| Errores | Sentry (límites del plan gratuito a confirmar) | Errores de la web con contexto para reproducirlos |
-| Mapa de origen | Scripts de Python que generan el TopoJSON desde Natural Earth | Ya existen. Cada región tiene un código fijo, compartido por el mapa y la base |
+| Language | TypeScript on the web and in functions; SQL in the database | A single language end to end, with types generated from the database |
+| Game web | React with Vite, as a single-page application | The game lives behind the login and does not need its own server for the interface |
+| Data on the web | TanStack Query | Cache, retries and background refresh without writing that logic |
+| Map | SVG with d3-geo and our own TopoJSON | It already works on the landing. With about 820 regions there is no need for a map engine; if it gets slow on mobile, it moves to Canvas |
+| Game rules | Postgres functions (PL/pgSQL) called through RPC | Each action is validated and applied in a single transaction, with no way to skip a rule |
+| Data | Postgres on Supabase, with row level security (RLS) | Each player reads only what concerns them and nobody writes tables directly |
+| Money | Double-entry ledger | Each movement records source, destination and reason; balances can be audited and rebuilt |
+| Real time | Supabase Realtime, one channel per battle | The scoreboard is published aggregated every few seconds, not per hit |
+| Scheduled jobs | Cloudflare Cron Triggers that call database functions | Every job can be repeated without a double effect: if it runs twice, the second run changes nothing |
+| Accounts | Supabase Auth, with Cloudflare Turnstile on sign-up | Login solved. Turnstile is free and stops automated sign-ups |
+| Email | Resend, sent from Supabase Edge Functions | Account verification and notices |
+| Tests | pgTAP for database functions, Vitest for the web and Playwright for full journeys | Rules are tested where they live |
+| Delivery | GitHub Actions: tests, migrations and deployment | Two free Supabase projects: staging and production |
+| Errors | Sentry (free plan limits to confirm) | Web errors with context to reproduce them |
+| Map source | Python scripts that generate the TopoJSON from Natural Earth | They already exist. Each region has a fixed code, shared by the map and the database |
 
-**Cómo se organiza el código**
+**How the code is organized**
 
-Un solo repositorio con todas las piezas, para que un cambio de regla, su prueba y su pantalla viajen juntos:
+A single repository with every piece, so that a rule change, its test and its screen travel together
+(English folder names per ADR 0004):
 
 ```text
 concordia/
-  apps/web/              React: juego, landing y panel de administración
-  apps/reloj/            Worker de Cloudflare con las tareas programadas
-  supabase/migrations/   tablas, funciones y permisos, en SQL
-  supabase/tests/        pruebas de las reglas (pgTAP)
-  supabase/functions/    Edge Functions (correos)
-  packages/tipos/        tipos de TypeScript generados desde la base
-  datos/mapa/            scripts del mapa y TopoJSON generado
+  apps/web/              React: game, landing and admin panel
+  apps/clock/            Cloudflare Worker with the scheduled jobs
+  supabase/migrations/   tables, functions and permissions, in SQL
+  supabase/tests/        rule tests (pgTAP)
+  supabase/functions/    Edge Functions (email)
+  packages/db-types/     TypeScript types generated from the database
+  data/map/              map scripts and generated TopoJSON
 ```
 
-**Datos principales, por módulo**
+**Main data, by module**
 
-| Módulo | Tablas |
+| Module | Tables |
 | --- | --- |
-| Mundo (2) | países, regiones, dueño actual de cada región |
-| Ciudadano (3) | ciudadanos, solicitudes de ciudadanía, inventario |
-| Economía (4) | empresas, empleos, ofertas del mercado, movimientos del libro contable, bancos, préstamos, yacimientos, contratos entre países |
-| Política (5) | partidos, cargos, elecciones, leyes, votos |
-| Guerra (6) | guerras, batallas, rondas, daño sumado por jugador y batalla, hospitales |
-| Sociedad (7) | periódicos, artículos, mensajes, notificaciones |
-| Operación (11) | registro de tareas programadas, registro de acciones de administración |
+| World (2) | countries, regions, current owner of each region |
+| Citizen (3) | citizens, citizenship requests, inventory |
+| Economy (4) | companies, jobs, market offers, ledger movements, banks, loans, deposits, contracts between countries |
+| Politics (5) | parties, offices, elections, laws, votes |
+| War (6) | wars, battles, rounds, damage aggregated per player and battle, hospitals |
+| Society (7) | newspapers, articles, messages, notifications |
+| Operations (11) | scheduled job log, admin action log |
 
-**Reglas técnicas**
+**Technical rules**
 
-- La base es la autoridad: el navegador pide «trabajar» y la base decide si puede, cuánto cobra y qué cambia.
-- Cada acción tiene un límite de frecuencia por jugador, controlado en la misma función.
-- Las horas se guardan en UTC. El día de juego (GMT−3) se calcula con una sola función de la base.
-- Toda acción de administración queda registrada: quién, qué y cuándo.
-- Los cambios de la base se hacen solo con migraciones en el repositorio, probadas antes en el proyecto de pruebas.
+- The database is the authority: the browser asks to "work" and the database decides whether it can, how
+  much it pays and what changes.
+- Each action has a rate limit per player, enforced in the same function.
+- Times are stored in UTC. The game day (GMT−3) is computed by a single database function.
+- Every admin action is logged: who, what and when.
+- Database changes are made only with migrations in the repository, tested first in the staging project.
 
-**Cuándo cambiaría algo**
+**When something would change**
 
-- Si las batallas en vivo superan lo que da Supabase Realtime, cada batalla pasa a un Durable Object de Cloudflare con WebSockets.
-- Si se pide una app para el teléfono, primero la misma web como aplicación instalable; una app nativa, solo si esa no alcanza.
+- If live battles exceed what Supabase Realtime offers, each battle moves to a Cloudflare Durable Object with
+  WebSockets.
+- If a phone app is requested, first the same web as an installable app; a native app only if that is not
+  enough.
 
-**Por decidir**
+**Open**
 
-- [x] Tecnología del servidor y dónde se aloja: Supabase y Cloudflare (ver Infraestructura con presupuesto de $0)
-- [ ] Cuántos jugadores debe soportar el primer mundo
-- [ ] Política de multicuentas
+- [x] Server technology and where it is hosted: Supabase and Cloudflare (see Infrastructure on a $0 budget)
+- [ ] How many players the first world must support
+- [ ] Multi-account policy
 
-## 12 · Balance, métricas y glosario
+## 12 · Balance, metrics and glossary
 
-Todos los números del juego viven en una sola tabla de parámetros, para ajustarlos sin reescribir los módulos. Este módulo se llena a medida que los demás fijan valores.
+All the game's numbers live in a single parameters table, so they can be tuned without rewriting modules.
+This module fills in as the others set values.
 
-**Incluye**
+**Includes**
 
-- Tabla de parámetros: costos de energía, recompensas, impuestos, fórmulas
-- Métricas de salud: jugadores activos por día, retención, inflación, batallas por día
-- Glosario de términos del juego
-- Registro de decisiones tomadas y su fecha
+- Parameters table: energy costs, rewards, taxes, formulas
+- Health metrics: daily active players, retention, inflation, battles per day
+- Glossary of game terms
+- Log of decisions made and their date
 
-**Indicadores para ajustar el balance**
+**Indicators to tune the balance**
 
-Los valores de los módulos 4 y 6 son el punto de partida. Estos indicadores dicen cuándo cambiarlos.
+The values in modules 4 and 6 are the starting point. These indicators say when to change them.
 
-| Indicador | Rango sano | Si se sale del rango |
+| Indicator | Healthy range | If it leaves the range |
 | --- | --- | --- |
-| Oro neto por jugador activo y día | 0 a +0,5 | Bajar la recompensa por racha semanal o subir el costo de las empresas |
-| Precio de la ración en el mercado | 10 a 20 Crédito | Ajustar el rendimiento del trigo o frenar la emisión |
-| Daño por golpe del veterano frente al jugador nuevo | 15 veces o menos | Bajar el factor de rango (hoy 0,03) |
-| Batallas abiertas por país y día | 0,5 a 2 | Ajustar el combustible que cuesta abrir una batalla |
-| Jugadores que usan el entrenamiento avanzado | Menos del 50 % | Si son más, el Oro pesa demasiado en la guerra: subir su costo |
-| Regiones que cambian de dueño por semana | 1 a 5 % del total | Ajustar las bonificaciones de defensa y resistencia |
+| Net Gold per active player per day | 0 to +0.5 | Lower the weekly streak reward or raise the cost of companies |
+| Ration price on the market | 10 to 20 Credit | Adjust wheat yield or slow down issuance |
+| Veteran damage per hit compared to a new player | 15 times or less | Lower the rank factor (0.03 today) |
+| Battles opened per country per day | 0.5 to 2 | Adjust the fuel needed to open a battle |
+| Players who use advanced training | Less than 50 % | If more, Gold weighs too much in war: raise its cost |
+| Regions that change hands per week | 1 to 5 % of the total | Adjust the defense and resistance bonuses |
 
-**Glosario inicial**
+**Initial glossary** (the full mapping to code names is in `docs/glossary.md`)
 
-- **Región:** unidad mínima de territorio; siempre tiene un país dueño.
-- **Ocupada:** región cuyo dueño actual no es su país de origen.
-- **Energía:** recurso diario que gastan las acciones.
-- **Oro:** moneda común a todo el mundo.
-- **Crédito:** moneda que se gana trabajando.
+- **Region:** the smallest unit of territory; it always has an owner country.
+- **Occupied:** a region whose current owner is not its country of origin.
+- **Energy:** the daily resource that actions spend.
+- **Gold:** the currency shared by the whole world.
+- **Credit:** the currency earned by working.
 
-## Plan de desarrollo
+## Development plan
 
-El juego se construye en 30 módulos de desarrollo, agrupados en 8 fases. Cada módulo se programa, se prueba con un criterio concreto y se cierra antes de empezar el siguiente que dependa de él. Los códigos D01 a D30 los distinguen de los 12 módulos de diseño.
+The game is built in 30 development modules, grouped in 8 phases. Each module is programmed, tested against
+a concrete criterion and closed before starting the next one that depends on it. The codes D01 to D30 tell
+them apart from the 12 design modules.
 
-Ya hecho: el documento de diseño, y el mapa por regiones con la landing de prueba, que son la base de D03 y D04.
+Already done: the design document, and the region map with the test landing, which are the base of D03 and D04.
 
-| Código | Módulo | Fase | Depende de | Avance |
+| Code | Module | Phase | Depends on | Progress |
 | --- | --- | --- | --- | --- |
-| D01 | Repositorio y entrega automática | 0 · Base | — | Pendiente |
-| D02 | Reloj y día de juego | 0 · Base | D01 | Pendiente |
-| D03 | Mundo: países, regiones y dueños | 1 · Mundo y cuentas | D01 | Pendiente |
-| D04 | Mapa del juego | 1 · Mundo y cuentas | D03 | Pendiente |
-| D05 | Cuentas | 1 · Mundo y cuentas | D01 | Pendiente |
-| D06 | Ciudadanía | 1 · Mundo y cuentas | D03, D05 | Pendiente |
-| D07 | Panel de administración | 1 · Mundo y cuentas | D03, D05 | Pendiente |
-| D08 | Perfil y energía | 2 · Economía básica | D05 | Pendiente |
-| D09 | Libro contable y monedas | 2 · Economía básica | D01 | Pendiente |
-| D10 | Empresas y trabajo | 2 · Economía básica | D08, D09 | Pendiente |
-| D11 | Mercado | 2 · Economía básica | D10 | Pendiente |
-| D12 | Productos y consumo | 2 · Economía básica | D11 | Pendiente |
-| D13 | Misiones diarias | 2 · Economía básica | D10, D12 | Pendiente |
-| D14 | Entrenamiento | 3 · Guerra | D08 | Pendiente |
-| D15 | Batallas y rondas | 3 · Guerra | D02, D03, D12 | Pendiente |
-| D16 | Combate y daño | 3 · Guerra | D14, D15 | Pendiente |
-| D17 | Batalla en vivo | 3 · Guerra | D16 | Pendiente |
-| D18 | Conquista y hospitales | 3 · Guerra | D16 | Pendiente |
-| D19 | Partidos y elecciones | 4 · Política | D06 | Pendiente |
-| D20 | Cargos de gobierno | 4 · Política | D19 | Pendiente |
-| D21 | Leyes y votaciones | 4 · Política | D20 | Pendiente |
-| D22 | Recursos y yacimientos | 5 · Economía avanzada | D10, D18 | Pendiente |
-| D23 | Bancos y sociedades | 5 · Economía avanzada | D09, D21 | Pendiente |
-| D24 | Cambio de monedas y emisión | 5 · Economía avanzada | D21 | Pendiente |
-| D25 | Prensa y noticias | 6 · Sociedad y retención | D05 | Pendiente |
-| D26 | Mensajes y notificaciones | 6 · Sociedad y retención | D05 | Pendiente |
-| D27 | Tutorial y logros | 6 · Sociedad y retención | D13 | Pendiente |
-| D28 | Juego limpio | 7 · Beta cerrada | D10, D16 | Pendiente |
-| D29 | Operación y monitoreo | 7 · Beta cerrada | D02 | Pendiente |
-| D30 | Lanzamiento de la beta | 7 · Beta cerrada | D28, D29 | Pendiente |
+| D01 | Repository and automated delivery | 0 · Base | — | See `docs/progress.md` |
+| D02 | Clock and game day | 0 · Base | D01 | |
+| D03 | World: countries, regions and owners | 1 · World and accounts | D01 | |
+| D04 | Game map | 1 · World and accounts | D03 | |
+| D05 | Accounts | 1 · World and accounts | D01 | |
+| D06 | Citizenship | 1 · World and accounts | D03, D05 | |
+| D07 | Admin panel | 1 · World and accounts | D03, D05 | |
+| D08 | Profile and energy | 2 · Basic economy | D05 | |
+| D09 | Ledger and currencies | 2 · Basic economy | D01 | |
+| D10 | Companies and work | 2 · Basic economy | D08, D09 | |
+| D11 | Market | 2 · Basic economy | D10 | |
+| D12 | Products and consumption | 2 · Basic economy | D11 | |
+| D13 | Daily missions | 2 · Basic economy | D10, D12 | |
+| D14 | Training | 3 · War | D08 | |
+| D15 | Battles and rounds | 3 · War | D02, D03, D12 | |
+| D16 | Combat and damage | 3 · War | D14, D15 | |
+| D17 | Live battle | 3 · War | D16 | |
+| D18 | Conquest and hospitals | 3 · War | D16 | |
+| D19 | Parties and elections | 4 · Politics | D06 | |
+| D20 | Government offices | 4 · Politics | D19 | |
+| D21 | Laws and votes | 4 · Politics | D20 | |
+| D22 | Resources and deposits | 5 · Advanced economy | D10, D18 | |
+| D23 | Banks and partnerships | 5 · Advanced economy | D09, D21 | |
+| D24 | Currency exchange and issuance | 5 · Advanced economy | D21 | |
+| D25 | Press and news | 6 · Society and retention | D05 | |
+| D26 | Messages and notifications | 6 · Society and retention | D05 | |
+| D27 | Tutorial and achievements | 6 · Society and retention | D13 | |
+| D28 | Fair play | 7 · Closed beta | D10, D16 | |
+| D29 | Operations and monitoring | 7 · Closed beta | D02 | |
+| D30 | Beta launch | 7 · Closed beta | D28, D29 | |
 
-Las pruebas que dependen del tiempo (rondas, 72 horas, recarga de energía) usan un reloj simulado, para no esperar horas reales.
+Time-dependent tests (rounds, 72 hours, energy recharge) use a simulated clock, so they do not wait real hours.
 
-### Fase 0 · Base
+### Phase 0 · Base
 
-#### D01 · Repositorio y entrega automática
+#### D01 · Repository and automated delivery
 
-- [ ] Repositorio único con la estructura del módulo 11
-- [ ] Dos proyectos de Supabase (pruebas y producción) y una cuenta de Cloudflare
-- [ ] GitHub Actions: revisión de código y tipos, pruebas, migraciones y despliegue
+- [ ] Single repository with the module 11 layout
+- [ ] Two Supabase projects (staging and production) and a Cloudflare account
+- [ ] GitHub Actions: code and type review, tests, migrations and deployment
 
-**Prueba:** un cambio mínimo pasa las pruebas, llega solo al proyecto de pruebas y, al aprobarlo, a producción.
+**Test:** a minimal change passes the tests, reaches the staging project on its own and, once approved,
+production.
 
-#### D02 · Reloj y día de juego
+#### D02 · Clock and game day
 
-- [ ] Función del día de juego en GMT−3
-- [ ] Worker de Cloudflare con las tareas programadas
-- [ ] Registro de tareas, para que una tarea repetida no aplique su efecto dos veces
+- [ ] Game day function in GMT−3
+- [ ] Cloudflare Worker with the scheduled jobs
+- [ ] Job log, so that a repeated job does not apply its effect twice
 
-**Prueba:** a las 03:00 UTC cambia el día de juego, y ejecutar la misma tarea dos veces deja un solo efecto.
+**Test:** at 03:00 UTC the game day changes, and running the same job twice leaves a single effect.
 
-### Fase 1 · Mundo y cuentas
+### Phase 1 · World and accounts
 
-#### D03 · Mundo: países, regiones y dueños
+#### D03 · World: countries, regions and owners
 
-- [ ] Tablas de países, regiones y dueño actual
-- [ ] Carga de las 78 regiones de los 13 países con su código fijo
-- [ ] Lectura pública del estado del mapa
+- [ ] Tables for countries, regions and current owner
+- [ ] Load the 78 regions of the 13 countries with their fixed code
+- [ ] Public read of the map state
 
-**Prueba:** la base devuelve 13 países activos y 78 regiones, cada una con su dueño.
+**Test:** the database returns 13 active countries and 78 regions, each with its owner.
 
-#### D04 · Mapa del juego
+#### D04 · Game map
 
-- [ ] Mapa de la landing pasado a la app
-- [ ] Dueños y colores leídos desde la base
+- [ ] Landing map moved into the app
+- [ ] Owners and colors read from the database
 
-**Prueba:** cambiar el dueño de una región en la base cambia su color en el mapa al recargar.
+**Test:** changing a region's owner in the database changes its color on the map after reloading.
 
-#### D05 · Cuentas
+#### D05 · Accounts
 
-- [ ] Registro e inicio de sesión con Supabase Auth
-- [ ] Turnstile en el registro
-- [ ] Correo de verificación con Resend
+- [ ] Sign-up and sign-in with Supabase Auth
+- [ ] Turnstile on sign-up
+- [ ] Verification email with Resend
 
-**Prueba:** una persona se registra, verifica su correo, entra y sale; un registro sin Turnstile se rechaza.
+**Test:** a person signs up, verifies their email, signs in and signs out; a sign-up without Turnstile is
+rejected.
 
-#### D06 · Ciudadanía
+#### D06 · Citizenship
 
-- [ ] Alta de ciudadano y solicitud de ciudadanía
-- [ ] Aprobación por el ministro del Interior o el presidente, con estado de residente mientras espera
-- [ ] Aprobación automática a las 72 horas para jugadores nuevos
+> Updated by `docs/brief.md` section 3 (immediate citizenship, adaptation period, waitlist).
 
-**Prueba:** una solicitud aprobada da la ciudadanía; otra sin respuesta se aprueba sola a las 72 horas.
+- [ ] Citizen creation and citizenship request
+- [ ] Approval by the Interior minister or the president, with resident status while waiting
+- [ ] Automatic approval at 72 hours for new players
 
-#### D07 · Panel de administración
+**Test:** an approved request grants citizenship; another without an answer is approved on its own at 72 hours.
 
-- [ ] Activar y desactivar países
-- [ ] Habilitar territorios en disputa y revisar regiones
-- [ ] Registro de cada acción de administración
+#### D07 · Admin panel
 
-**Prueba:** desactivar un país lo pone en gris en el mapa y queda registrado quién lo hizo.
+- [ ] Activate and deactivate countries
+- [ ] Enable disputed territories and review regions
+- [ ] Log of every admin action
 
-### Fase 2 · Economía básica
+**Test:** deactivating a country turns it gray on the map and records who did it.
 
-#### D08 · Perfil y energía
+### Phase 2 · Basic economy
 
-- [ ] Perfil con nivel, experiencia, fuerza, rango e influencia
-- [ ] Energía calculada al entrar: 10 por hora, máximo 100
+#### D08 · Profile and energy
 
-**Prueba:** con el reloj adelantado 3 horas, la energía sube 30 y nunca pasa de 100.
+- [ ] Profile with level, experience, strength, rank and influence
+- [ ] Energy computed on arrival: 10 per hour, maximum 100
 
-#### D09 · Libro contable y monedas
+**Test:** with the clock moved 3 hours forward, energy rises by 30 and never goes above 100.
 
-- [ ] Libro contable de doble entrada
-- [ ] Oro y una moneda local por país
-- [ ] Transferencias como funciones de la base
+#### D09 · Ledger and currencies
 
-**Prueba:** después de 1.000 transferencias al azar, el total de dinero no cambia y ningún saldo queda negativo.
+- [ ] Double-entry ledger
+- [ ] Gold and one local currency per country
+- [ ] Transfers as database functions
 
-#### D10 · Empresas y trabajo
+**Test:** after 1,000 random transfers, the total money does not change and no balance is negative.
 
-- [ ] Crear empresas de materia prima y fábricas, pagando en Oro
-- [ ] Ofertas de empleo, trabajar una vez por día y cobrar salario
-- [ ] Impuesto al trabajo hacia el tesoro
+#### D10 · Companies and work
 
-**Prueba:** trabajar dos veces el mismo día se rechaza, y el salario cobrado es el bruto menos el 12 %.
+- [ ] Create raw material companies and factories, paying in Gold
+- [ ] Job offers, working once per day and collecting a wage
+- [ ] Work tax to the treasury
 
-#### D11 · Mercado
+**Test:** working twice on the same day is rejected, and the wage collected is the gross minus 12 %.
 
-- [ ] Publicar ofertas y comprar
-- [ ] IVA, arancel y comisión del 1 %
+#### D11 · Market
 
-**Prueba:** en una compra, el dinero que sale del comprador es exactamente lo que reciben el vendedor y el tesoro, más la comisión que sale del juego.
+- [ ] Post offers and buy
+- [ ] VAT, tariff and the 1 % fee
 
-#### D12 · Productos y consumo
+**Test:** in a purchase, the money that leaves the buyer is exactly what the seller and the treasury receive,
+plus the fee that leaves the game.
 
-- [ ] Raciones, armas Q1 a Q5 y combustible
-- [ ] Comer raciones, con tope de 200 de energía por día
+#### D12 · Products and consumption
 
-**Prueba:** recuperar más de 200 de energía con comida en un mismo día se rechaza.
+- [ ] Rations, Q1 to Q5 weapons and fuel
+- [ ] Eating rations, capped at 200 energy per day
 
-#### D13 · Misiones diarias
+**Test:** recovering more than 200 energy from food on the same day is rejected.
 
-- [ ] Cuatro misiones diarias con 1 Oro de recompensa
-- [ ] Racha de 7 días con 3 Oro extra
+#### D13 · Daily missions
 
-**Prueba:** completar las cuatro paga 1 Oro una sola vez por día.
+- [ ] Four daily missions with a 1 Gold reward
+- [ ] 7-day streak with 3 extra Gold
 
-### Fase 3 · Guerra
+**Test:** completing all four pays 1 Gold only once per day.
 
-Mientras no exista el Congreso (D21), las guerras las declara el panel de administración.
+### Phase 3 · War
 
-#### D14 · Entrenamiento
+While Congress does not exist (D21), wars are declared from the admin panel.
 
-- [ ] Entrenar una vez por día: +10 de fuerza
-- [ ] Entrenamiento avanzado: +20 por 1 Oro
+#### D14 · Training
 
-**Prueba:** entrenar dos veces el mismo día se rechaza.
+- [ ] Train once per day: +10 strength
+- [ ] Advanced training: +20 for 1 Gold
 
-#### D15 · Batallas y rondas
+**Test:** training twice on the same day is rejected.
 
-- [ ] Abrir batallas terrestres, marítimas y aéreas, con sus requisitos y su combustible
-- [ ] Rondas de 4 horas cerradas por el reloj, al mejor de 5
-- [ ] Máximo de 2 batallas ofensivas por país
+#### D15 · Battles and rounds
 
-**Prueba:** un país sin costa disponible no puede abrir una batalla marítima, y una batalla termina cuando un bando gana 3 rondas.
+- [ ] Open land, naval and air battles, with their requirements and fuel
+- [ ] 4-hour rounds closed by the clock, best of 5
+- [ ] At most 2 offensive battles per country
 
-#### D16 · Combate y daño
+**Test:** a country without available coast cannot open a naval battle, and a battle ends when a side wins 3
+rounds.
 
-- [ ] Golpe con la fórmula de daño, armas y bonificaciones
-- [ ] Voluntarios con −25 %
-- [ ] Daño sumado por jugador y batalla, y héroe de la ronda
+#### D16 · Combat and damage
 
-**Prueba:** el daño por golpe coincide con la tabla de perfiles del módulo 6.
+- [ ] Hit with the damage formula, weapons and bonuses
+- [ ] Volunteers at −25 %
+- [ ] Damage aggregated per player and battle, and the round hero
 
-#### D17 · Batalla en vivo
+**Test:** damage per hit matches the module 6 profile table.
 
-- [ ] Canal de Realtime por batalla
-- [ ] Marcador publicado sumado cada pocos segundos
+#### D17 · Live battle
 
-**Prueba:** dos navegadores ven el mismo marcador mientras un tercero combate.
+- [ ] One Realtime channel per battle
+- [ ] Scoreboard published aggregated every few seconds
 
-#### D18 · Conquista y hospitales
+**Test:** two browsers see the same scoreboard while a third one fights.
 
-- [ ] Cambio de dueño y de color al ganar
-- [ ] Hospitales de campaña con presupuesto
+#### D18 · Conquest and hospitals
 
-**Prueba:** al ganar una batalla, la región cambia de color en el mapa de todos los jugadores.
+- [ ] Change of owner and color on winning
+- [ ] Field hospitals with a budget
 
-### Fase 4 · Política
+**Test:** on winning a battle, the region changes color on every player's map.
 
-Antes de empezar hay que cerrar los pendientes del módulo 5.
+### Phase 4 · Politics
 
-#### D19 · Partidos y elecciones
+The open items of module 5 must be closed before starting.
 
-- [ ] Partidos y afiliación
-- [ ] Elecciones de presidente y de Congreso, alternadas cada 15 días
+#### D19 · Parties and elections
 
-**Prueba:** con el reloj simulado, se alternan una elección presidencial y una del Congreso cada 15 días, y gana quien tiene más votos.
+- [ ] Parties and membership
+- [ ] Presidential and congressional elections, alternating every 15 days
 
-#### D20 · Cargos de gobierno
+**Test:** with the simulated clock, a presidential and a congressional election alternate every 15 days, and
+whoever has the most votes wins.
 
-- [ ] Vicepresidente, ministros y embajadores designados por el presidente
-- [ ] Permisos de cada cargo
+#### D20 · Government offices
 
-**Prueba:** solo el presidente y el ministro de Guerra pueden abrir una batalla.
+- [ ] Vice president, ministers and ambassadors appointed by the president
+- [ ] Permissions of each office
 
-#### D21 · Leyes y votaciones
+**Test:** only the president and the War minister can open a battle.
 
-- [ ] Tipos de ley: impuestos, guerra y paz, salario mínimo y criterios de ciudadanía
-- [ ] Votación con plazo y aplicación del efecto
+#### D21 · Laws and votes
 
-**Prueba:** una ley aprobada que sube un impuesto cambia lo que se cobra desde el día siguiente.
+- [ ] Law types: taxes, war and peace, minimum wage and citizenship criteria
+- [ ] Voting with a deadline and applying the effect
 
-### Fase 5 · Economía avanzada
+**Test:** a passed law that raises a tax changes what is charged from the next day.
 
-Antes de empezar hay que elegir la fuente de datos de recursos reales.
+### Phase 5 · Advanced economy
 
-#### D22 · Recursos y yacimientos
+The source of real resource data must be chosen before starting.
 
-- [ ] Yacimientos de cada región calculados desde datos reales
-- [ ] Exploración, mantenimiento y bonificación de producción
-- [ ] Contratos de yacimientos entre países
+#### D22 · Resources and deposits
 
-**Prueba:** explorar un yacimiento de nivel 2 lleva la producción de esa materia prima del 50 % al 80 %.
+- [ ] Deposits of each region computed from real data
+- [ ] Exploration, maintenance and production bonus
+- [ ] Deposit contracts between countries
 
-#### D23 · Bancos y sociedades
+**Test:** exploring a level 2 deposit takes the production of that raw material from 50 % to 80 %.
 
-- [ ] Banco central y cuentas oficiales
-- [ ] Licitación de bancos privados: depósitos, préstamos, garantía e impago
-- [ ] Sociedades entre jugadores
+#### D23 · Banks and partnerships
 
-**Prueba:** un préstamo impago descuenta el 50 % de cada salario del deudor hasta saldarlo.
+- [ ] Central bank and official accounts
+- [ ] Private bank tender: deposits, loans, collateral and default
+- [ ] Partnerships between players
 
-#### D24 · Cambio de monedas y emisión
+**Test:** an unpaid loan deducts 50 % of each of the borrower's wages until it is settled.
 
-- [ ] Mercado de cambio entre Oro y monedas locales
-- [ ] Ley de emisión: 1 Oro del tesoro por cada 100 Crédito
+#### D24 · Currency exchange and issuance
 
-**Prueba:** emitir 1.000 Crédito descuenta 10 Oro del tesoro.
+- [ ] Exchange market between Gold and local currencies
+- [ ] Issuance law: 1 treasury Gold for every 100 Credit
 
-### Fase 6 · Sociedad y retención
+**Test:** issuing 1,000 Credit deducts 10 Gold from the treasury.
 
-#### D25 · Prensa y noticias
+### Phase 6 · Society and retention
 
-- [ ] Periódicos y artículos
-- [ ] Noticias automáticas de batallas, leyes y conquistas
+#### D25 · Press and news
 
-**Prueba:** una conquista publica una noticia automática en el país conquistado.
+- [ ] Newspapers and articles
+- [ ] Automatic news of battles, laws and conquests
 
-#### D26 · Mensajes y notificaciones
+**Test:** a conquest publishes an automatic news item in the conquered country.
 
-- [ ] Mensajes entre jugadores
-- [ ] Notificaciones de batallas, votaciones y ciudadanía
+#### D26 · Messages and notifications
 
-**Prueba:** abrir una votación notifica a todos los ciudadanos del país.
+- [ ] Messages between players
+- [ ] Notifications of battles, votes and citizenship
 
-#### D27 · Tutorial y logros
+**Test:** opening a vote notifies every citizen of the country.
 
-- [ ] Tutorial del nuevo ciudadano
-- [ ] Logros y medallas
+#### D27 · Tutorial and achievements
 
-**Prueba:** un jugador nuevo completa el tutorial y termina con su primera jornada de trabajo hecha.
+- [ ] New citizen tutorial
+- [ ] Achievements and medals
 
-### Fase 7 · Beta cerrada
+**Test:** a new player completes the tutorial and ends with their first workday done.
 
-La monetización queda para después de esta fase, con el módulo 9 cerrado.
+### Phase 7 · Closed beta
 
-#### D28 · Juego limpio
+Monetization comes after this phase, once module 9 is closed.
 
-- [ ] Límites de frecuencia en cada acción
-- [ ] Detección de multicuentas
+#### D28 · Fair play
 
-**Prueba:** un script que repite una acción muy rápido queda frenado por el límite.
+- [ ] Rate limits on every action
+- [ ] Multi-account detection
 
-#### D29 · Operación y monitoreo
+**Test:** a script that repeats an action very fast is stopped by the limit.
 
-- [ ] Copia diaria de la base y una restauración probada
-- [ ] Registro de errores con Sentry
-- [ ] Tablero con los indicadores del módulo 12
+#### D29 · Operations and monitoring
 
-**Prueba:** se restaura la copia del día anterior en el proyecto de pruebas y el juego funciona.
+- [ ] Daily database backup and a tested restore
+- [ ] Error logging with Sentry
+- [ ] Dashboard with the module 12 indicators
 
-#### D30 · Lanzamiento de la beta
+**Test:** the previous day's backup is restored in the staging project and the game works.
 
-- [ ] Revisar las condiciones de los planes gratuitos
-- [ ] Términos de uso y política de privacidad
-- [ ] Invitar a los primeros jugadores
+#### D30 · Beta launch
 
-**Prueba:** los primeros jugadores invitados se registran y juegan un día completo sin errores bloqueantes.
+- [ ] Review the free plan conditions
+- [ ] Terms of use and privacy policy
+- [ ] Invite the first players
+
+**Test:** the first invited players sign up and play a full day without blocking errors.

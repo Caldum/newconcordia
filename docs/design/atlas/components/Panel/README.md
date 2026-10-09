@@ -1,9 +1,10 @@
 # Panel
 
-Las cuatro superficies de Atlas. Cada una dice qué tipo de contenido tiene; no se elige por gusto.
+The four Atlas surfaces. Each one says what kind of content it holds; it is not chosen by taste.
 
-- `at-panel` (tierra, `borde-panel`, sin sombra): lo cotidiano. Con cabecera `at-panel-cab` cuando tiene título y acción.
-- `at-panel-tinta`: decisiones (votar) y marcadores. Texto en `sobre-tinta` y `sobre-tinta-suave`.
-- `at-panel-nacion`: lo que pertenece al país del jugador. Texto en `sobre-nacion`.
-- Mapa (`mar-profundo`): escenario para paneles flotantes con sombra `flotante`.
-- No apilar paneles iguales en fila para todo: mezclar superficies según el contenido.
+- `at-panel` (land, `panel-border`, no shadow): everyday content. With an `at-panel-head` header when it has
+  a title and an action.
+- `at-panel-ink`: decisions (voting) and scoreboards. Text in `on-ink` and `on-ink-muted`.
+- `at-panel-nation`: what belongs to the player's country. Text in `on-nation`.
+- Map (`sea-deep`): the stage for floating panels with the `floating` shadow.
+- Do not stack identical panels in a row for everything: mix surfaces by content.

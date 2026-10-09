@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Ciudadanía</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="politica" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<nav aria-label="Sección" style="display:flex;gap:28px;flex-wrap:wrap;margin:0 0 28px;box-shadow:inset 0 -1px 0 #C3CDD5"><a href="Country.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Argentina</a><a href="Cabinet.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Gabinete</a><a href="Treasury.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Tesoro</a><a href="Congress.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Congreso</a><a href="Elections.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Elecciones</a><a href="CitizenshipRequests.dc.html" aria-current="page" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid #13202E;color:#13202E">Ciudadanía</a><a href="Resources.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Recursos</a></nav>
+<div style="display:flex;gap:12px;padding:14px 16px;border-radius:6px;font-size:15px;line-height:1.45;background:#E6EDFC;color:#1A3A8F;margin-bottom:20px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.1"/></svg><span>Esta pantalla solo la ven el ministro del Interior, Marcos Villalba, y el presidente. Cada jugador es ciudadano de su país desde que se registra. Aquí llegan los pedidos de quienes quieren <b>cambiarse</b> a Argentina.</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:2 1 640px;min-width:0;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><h1 style="font-stretch:112%;font-weight:800;font-size:44px;line-height:1.04;letter-spacing:-.018em;margin:0">Pedidos de ciudadanía</h1><span style="font-size:14px;color:#556372;font-variant-numeric:tabular-nums">{{pendientes}} pendientes</span></div>
+<sc-for list="{{pedidos}}" as="p" hint-placeholder-count="4"><article style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;padding:20px 22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+<span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:48px;height:48px;border-radius:6px;background:#EDF1F4;color:#13202E;font-size:15px">{{p.ini}}</span>
+<div style="flex:1 1 240px;min-width:0"><b style="font-weight:700;font-size:17px;display:block">{{p.nombre}}</b><span style="font-size:14px;color:#556372;display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:14px;height:14px;border-radius:2px;flex:none;box-shadow:inset 0 0 0 1px rgba(19,32,46,.14);width:12px;height:12px;background:{{p.color}}"></span>Viene de {{p.pais}}, nivel {{p.nivel}}, cuenta de {{p.dias}} días</span><span style="font-size:13px;display:block;margin-top:4px;{{p.critTono}}">{{p.crit}}</span></div>
+<sc-if value="{{p.abierto}}" hint-placeholder-val="{{ true }}"><div style="display:flex;gap:8px"><button type="button" class="bp" onClick="{{p.aprobar}}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF;min-height:40px">Aprobar</button><button type="button" class="bs" onClick="{{p.rechazar}}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99;min-height:40px">Rechazar</button></div></sc-if>
+<sc-if value="{{p.cerrado}}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;{{p.resTono}}">{{p.res}}</span></sc-if>
+</article></sc-for>
+</div>
+<aside style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 300px;min-width:0">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Criterios por ley</h2></div>
+<div style="padding:20px 22px">
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Modo</span><b>Revisión del ministro</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Nivel mínimo</span><b>5</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Antigüedad mínima de la cuenta</span><b>3 días</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Cupo diario</span><b>Sin cupo</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px"><span style="color:#556372">Si nadie responde</span><b>Se aprueba en 72 h</b></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px;border:0"><span style="color:#556372">Tras el cambio, vota en elecciones a los</span><b>7 días</b></div>
+<a href="ProposeLaw.dc.html" class="bs" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99;width:100%;margin-top:10px">Proponer cambios</a>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1050}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { r: {} }; }
+  renderVals() {
+    var s = this, r = this.state.r;
+    var P = [['Tomás Herrera','TH','la lista de espera de Uruguay','#B5C0CA',3,4,'Cumple los criterios',true],['Jordi Puig','JP','España','#D0453A',22,180,'Cumple, pero viene de un país enemigo',false],['Ana Souza','AS','Brasil','#4FA35A',12,61,'Cumple los criterios',true],['Kevin Muller','KM','Alemania','#D9B737',2,1,'No cumple: nivel 2 y cuenta de 1 día',false]];
+    var pend = 0;
+    var pedidos = P.map(function (p, i) { var res = r[i]; if (!res) pend++;
+      return { nombre: p[0], ini: p[1], pais: p[2], color: p[3], nivel: p[4], dias: p[5], crit: p[6], critTono: p[7] ? 'color:#0A6A49;font-weight:600' : 'color:#7A4800;font-weight:600',
+        abierto: !res, cerrado: !!res, res: res === 'si' ? 'Aprobado' : 'Rechazado', resTono: res === 'si' ? 'background:#E1F4EC;color:#0A6A49' : 'background:#FCE8E6;color:#A3241B',
+        aprobar: function () { var n = Object.assign({}, r); n[i] = 'si'; s.setState({ r: n }); }, rechazar: function () { var n = Object.assign({}, r); n[i] = 'no'; s.setState({ r: n }); } }; });
+    return { pedidos: pedidos, pendientes: pend };
+  }
+}
+</script>
+</body>
+</html>

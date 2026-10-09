@@ -2,12 +2,12 @@
   "v": 3,
   "attachments": {},
   "boards": {
-    "AbrirBatalla.dc.html": {
+    "OpenBattle.dc.html": {
       "expand": "fill",
       "h": 1150,
       "is_interactive": true,
-      "page": "guerra",
-      "title": "Abrir una batalla",
+      "page": "war",
+      "title": "Open a battle",
       "w": 1440,
       "x": 0,
       "y": 1920
@@ -17,145 +17,145 @@
       "h": 1250,
       "is_interactive": true,
       "page": "admin",
-      "title": "Panel · países y temporada",
+      "title": "Admin · countries and season",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "AdminJugadores.dc.html": {
+    "AdminPlayers.dc.html": {
       "expand": "fill",
       "h": 1050,
       "is_interactive": true,
       "page": "admin",
-      "title": "Panel · jugadores y moderación",
+      "title": "Admin · players and moderation",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "Ajustes.dc.html": {
+    "Settings.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Ajustes de la cuenta",
+      "page": "society",
+      "title": "Account settings",
       "w": 1440,
       "x": 1520,
       "y": 2020
     },
-    "Articulo.dc.html": {
+    "Article.dc.html": {
       "expand": "fill",
       "h": 1200,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Artículo",
+      "page": "society",
+      "title": "Article",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "Banco.dc.html": {
+    "Bank.dc.html": {
       "expand": "fill",
       "h": 1450,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Bancos",
+      "page": "economy",
+      "title": "Banks",
       "w": 1440,
       "x": 6080,
       "y": 0
     },
-    "Barra.dc.html": {
+    "NavBar.dc.html": {
       "h": 68,
-      "page": "sistema",
-      "title": "Barra de navegación",
+      "page": "system",
+      "title": "Navigation bar",
       "w": 1440,
       "x": 4560,
       "y": 0
     },
-    "Batalla.dc.html": {
+    "Battle.dc.html": {
       "expand": "fill",
       "h": 1300,
       "is_interactive": true,
-      "page": "guerra",
-      "title": "Batalla en vivo",
+      "page": "war",
+      "title": "Live battle",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "BatallaFin.dc.html": {
+    "BattleEnd.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "guerra",
-      "title": "Batalla terminada",
+      "page": "war",
+      "title": "Battle over",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "Bienvenida.dc.html": {
+    "Welcome.dc.html": {
       "expand": "fill",
       "h": 1250,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Bienvenida al país",
+      "page": "entry",
+      "title": "Welcome to the country",
       "w": 1440,
       "x": 6080,
       "y": 0
     },
-    "CambiarCiudadania.dc.html": {
+    "ChangeCitizenship.dc.html": {
       "expand": "fill",
       "h": 1250,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Cambiar de país",
+      "page": "society",
+      "title": "Change country",
       "w": 1440,
       "x": 3040,
       "y": 2020
     },
-    "Ciudadanias.dc.html": {
+    "CitizenshipRequests.dc.html": {
       "expand": "fill",
       "h": 1050,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Solicitudes de ciudadanía",
+      "page": "politics",
+      "title": "Citizenship requests",
       "w": 1440,
       "x": 1520,
       "y": 2260
     },
-    "Congreso.dc.html": {
+    "Congress.dc.html": {
       "expand": "fill",
       "h": 1950,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Congreso y leyes",
+      "page": "politics",
+      "title": "Congress and laws",
       "w": 1440,
       "x": 4560,
       "y": 0
     },
-    "Elecciones.dc.html": {
+    "Elections.dc.html": {
       "expand": "fill",
       "h": 1150,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Elecciones",
+      "page": "politics",
+      "title": "Elections",
       "w": 1440,
       "x": 0,
       "y": 2260
     },
-    "Empresa.dc.html": {
+    "Company.dc.html": {
       "expand": "fill",
       "h": 1250,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Mi empresa",
+      "page": "economy",
+      "title": "My company",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "Entrenar.dc.html": {
+    "Train.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "inicio",
-      "title": "Entrenamiento",
+      "page": "home",
+      "title": "Training",
       "w": 1440,
       "x": 0,
       "y": 2020
@@ -164,48 +164,48 @@
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "sistema",
-      "title": "Página no encontrada",
+      "page": "system",
+      "title": "Page not found",
       "w": 1440,
       "x": 0,
       "y": 2020
     },
-    "Escribir.dc.html": {
+    "WriteArticle.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Escribir un artículo",
+      "page": "society",
+      "title": "Write an article",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "FundarEmpresa.dc.html": {
+    "FoundCompany.dc.html": {
       "expand": "fill",
       "h": 1250,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Fundar una empresa",
+      "page": "economy",
+      "title": "Found a company",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "Gabinete.dc.html": {
+    "Cabinet.dc.html": {
       "expand": "fill",
       "h": 1150,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Gabinete",
+      "page": "politics",
+      "title": "Cabinet",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "Guerras.dc.html": {
+    "Wars.dc.html": {
       "expand": "fill",
       "h": 1400,
       "is_interactive": true,
-      "page": "guerra",
-      "title": "Guerras y batallas",
+      "page": "war",
+      "title": "Wars and battles",
       "w": 1440,
       "x": 0,
       "y": 0
@@ -214,26 +214,26 @@
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "guerra",
-      "title": "Hospitales de campaña",
+      "page": "war",
+      "title": "Field hospitals",
       "w": 1440,
       "x": 1520,
       "y": 1920
     },
-    "Ilustraciones.dc.html": {
+    "Illustrations.dc.html": {
       "h": 1500,
-      "page": "sistema",
-      "title": "Ilustraciones de sección",
+      "page": "system",
+      "title": "Section illustrations",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "Inventario.dc.html": {
+    "Inventory.dc.html": {
       "expand": "fill",
       "h": 1300,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Inventario y cuenta",
+      "page": "economy",
+      "title": "Inventory and account",
       "w": 1440,
       "x": 4560,
       "y": 0
@@ -242,166 +242,166 @@
       "expand": "fill",
       "h": 2297,
       "is_interactive": true,
-      "page": "entrada",
+      "page": "entry",
       "title": "Landing",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "Licitacion.dc.html": {
+    "BankTender.dc.html": {
       "expand": "fill",
       "h": 1150,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Licitación de bancos",
+      "page": "economy",
+      "title": "Bank tender",
       "w": 1440,
       "x": 7600,
       "y": 0
     },
-    "Login.dc.html": {
+    "SignIn.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Iniciar sesión",
+      "page": "entry",
+      "title": "Sign in",
       "w": 1440,
       "x": 0,
       "y": 4320
     },
-    "Main.dc.html": {
+    "Home.dc.html": {
       "expand": "fill",
       "h": 1500,
       "is_interactive": true,
-      "page": "inicio",
-      "title": "Inicio",
+      "page": "home",
+      "title": "Home",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "Mantenimiento.dc.html": {
+    "Maintenance.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "sistema",
-      "title": "Mantenimiento",
+      "page": "system",
+      "title": "Maintenance",
       "w": 1440,
       "x": 1520,
       "y": 2020
     },
-    "Mapa.dc.html": {
+    "Map.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "inicio",
-      "title": "Mapa",
+      "page": "home",
+      "title": "Map",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "Marca.dc.html": {
+    "Brand.dc.html": {
       "h": 1250,
-      "page": "sistema",
-      "title": "Marca",
+      "page": "system",
+      "title": "Brand",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "Mensajes.dc.html": {
+    "Messages.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Mensajes y avisos",
+      "page": "society",
+      "title": "Messages and notices",
       "w": 1440,
       "x": 4560,
       "y": 0
     },
-    "Mercado.dc.html": {
+    "Market.dc.html": {
       "expand": "fill",
       "h": 1400,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Mercado",
+      "page": "economy",
+      "title": "Market",
       "w": 1440,
       "x": 0,
       "y": 1970
     },
-    "Misiones.dc.html": {
+    "Missions.dc.html": {
       "expand": "fill",
       "h": 950,
       "is_interactive": true,
-      "page": "inicio",
-      "title": "Misiones",
+      "page": "home",
+      "title": "Missions",
       "w": 1440,
       "x": 1520,
       "y": 2020
     },
-    "Noticias.dc.html": {
+    "News.dc.html": {
       "expand": "fill",
       "h": 1500,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Prensa",
+      "page": "society",
+      "title": "Press",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "NuevaClave.dc.html": {
+    "NewPassword.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Crear contraseña nueva",
+      "page": "entry",
+      "title": "Create a new password",
       "w": 1440,
       "x": 4560,
       "y": 4320
     },
-    "Pais.dc.html": {
+    "Country.dc.html": {
       "expand": "fill",
       "h": 1350,
       "is_interactive": true,
-      "page": "politica",
-      "title": "País",
+      "page": "politics",
+      "title": "Country",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "PaisNoJugable.dc.html": {
+    "CountryNotPlayable.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Registro · país no jugable",
+      "page": "entry",
+      "title": "Sign-up · country not in play",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "Perfil.dc.html": {
+    "Profile.dc.html": {
       "expand": "fill",
       "h": 1200,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Perfil",
+      "page": "society",
+      "title": "Profile",
       "w": 1440,
       "x": 0,
       "y": 2020
     },
-    "PerfilPublico.dc.html": {
+    "PublicProfile.dc.html": {
       "expand": "fill",
       "h": 1150,
       "is_interactive": true,
-      "page": "sociedad",
-      "title": "Perfil de otro jugador",
+      "page": "society",
+      "title": "Another player's profile",
       "w": 1440,
       "x": 4560,
       "y": 2020
     },
-    "ProponerLey.dc.html": {
+    "ProposeLaw.dc.html": {
       "expand": "fill",
       "h": 1100,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Proponer una ley",
+      "page": "politics",
+      "title": "Propose a law",
       "w": 1440,
       "x": 6080,
       "y": 0
@@ -410,106 +410,106 @@
       "expand": "fill",
       "h": 1150,
       "is_interactive": true,
-      "page": "sociedad",
+      "page": "society",
       "title": "Rankings",
       "w": 1440,
       "x": 6080,
       "y": 0
     },
-    "Recuperar.dc.html": {
+    "RecoverPassword.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Olvidé mi contraseña",
+      "page": "entry",
+      "title": "Forgot my password",
       "w": 1440,
       "x": 1520,
       "y": 4320
     },
-    "RecuperarEnviado.dc.html": {
+    "RecoverPasswordSent.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Correo de recuperación enviado",
+      "page": "entry",
+      "title": "Recovery email sent",
       "w": 1440,
       "x": 3040,
       "y": 4320
     },
-    "Recursos.dc.html": {
+    "Resources.dc.html": {
       "expand": "fill",
       "h": 1450,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Recursos y yacimientos",
+      "page": "politics",
+      "title": "Resources and deposits",
       "w": 1440,
       "x": 3040,
       "y": 2260
     },
-    "Registro.dc.html": {
+    "SignUp.dc.html": {
       "expand": "fill",
       "h": 1300,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Registro · paso 1",
+      "page": "entry",
+      "title": "Sign-up · step 1",
       "w": 1440,
       "x": 1520,
       "y": 0
     },
-    "SesionVencida.dc.html": {
+    "SessionExpired.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "sistema",
-      "title": "Sesión vencida",
+      "page": "system",
+      "title": "Session expired",
       "w": 1440,
       "x": 3040,
       "y": 2020
     },
-    "Sistema.dc.html": {
+    "System.dc.html": {
       "h": 1400,
-      "page": "sistema",
-      "title": "Sistema y estados",
+      "page": "system",
+      "title": "System and states",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "Tesoro.dc.html": {
+    "Treasury.dc.html": {
       "expand": "fill",
       "h": 1200,
       "is_interactive": true,
-      "page": "politica",
-      "title": "Tesoro",
+      "page": "politics",
+      "title": "Treasury",
       "w": 1440,
       "x": 3040,
       "y": 0
     },
-    "Trabajo.dc.html": {
+    "Work.dc.html": {
       "expand": "fill",
       "h": 1400,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Empleo",
+      "page": "economy",
+      "title": "Work",
       "w": 1440,
       "x": 0,
       "y": 0
     },
-    "Vender.dc.html": {
+    "Sell.dc.html": {
       "expand": "fill",
       "h": 1000,
       "is_interactive": true,
-      "page": "economia",
-      "title": "Vender un producto",
+      "page": "economy",
+      "title": "Sell a product",
       "w": 1440,
       "x": 1520,
       "y": 1970
     },
-    "Verificacion.dc.html": {
+    "EmailVerification.dc.html": {
       "expand": "fill",
       "h": 900,
       "is_interactive": true,
-      "page": "entrada",
-      "title": "Verificación de correo",
+      "page": "entry",
+      "title": "Email verification",
       "w": 1440,
       "x": 4560,
       "y": 0
@@ -524,23 +524,23 @@
       "artifact": "https://claude.ai/artifact/XPws22DAhLW4kjGiDxDvg1",
       "copiedAt": "2026-10-09T01:32:00Z",
       "namespace": "atlas",
-      "title": "Atlas de Concordia",
+      "title": "Concordia Atlas",
       "version": "1791508143-a28b"
     }
   ],
   "launch": {
-    "page": "entrada",
+    "page": "entry",
     "view": "canvas"
   },
   "notes": {
     "note-9iw3qn": {
-      "text": "Esto tiene que ser un contenedor.",
+      "text": "This has to be a container.",
       "w": 240,
       "x": 2244,
       "y": 534
     },
     "note-rez8p1": {
-      "text": "Usar banderas de países.",
+      "text": "Use country flags.",
       "w": 240,
       "x": 3806,
       "y": 456
@@ -549,225 +549,225 @@
       "kind": "title1",
       "maxW": 2960,
       "page": "admin",
-      "text": "Administración del juego",
+      "text": "Game administration",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-economia-0": {
+    "t-economy-0": {
       "kind": "title1",
       "maxW": 8000,
-      "page": "economia",
-      "text": "Economía · trabajar, producir y administrar tu dinero",
+      "page": "economy",
+      "text": "Economy · work, produce and manage your money",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-economia-1": {
+    "t-economy-1": {
       "kind": "title1",
       "maxW": 2960,
-      "page": "economia",
-      "text": "Economía · comprar y vender",
+      "page": "economy",
+      "text": "Economy · buy and sell",
       "w": 240,
       "x": 0,
       "y": 1710
     },
-    "t-entrada-0": {
+    "t-entry-0": {
       "kind": "title1",
       "maxW": 7520,
-      "page": "entrada",
-      "text": "Entrada · conocer el juego y crear tu ciudadano",
+      "page": "entry",
+      "text": "Entry · learn the game and create your citizen",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-entrada-1": {
+    "t-entry-1": {
       "kind": "title1",
       "maxW": 6000,
-      "page": "entrada",
-      "text": "Entrada · iniciar sesión y recuperar la contraseña",
+      "page": "entry",
+      "text": "Entry · sign in and recover the password",
       "w": 240,
       "x": 0,
       "y": 4060
     },
-    "t-guerra-0": {
+    "t-war-0": {
       "kind": "title1",
       "maxW": 4480,
-      "page": "guerra",
-      "text": "Guerra · del frente a la batalla",
+      "page": "war",
+      "text": "War · from the front to the battle",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-guerra-1": {
+    "t-war-1": {
       "kind": "title1",
       "maxW": 2960,
-      "page": "guerra",
-      "text": "Guerra · decisiones del gobierno",
+      "page": "war",
+      "text": "War · government decisions",
       "w": 240,
       "x": 0,
       "y": 1660
     },
-    "t-inicio-0": {
+    "t-home-0": {
       "kind": "title1",
       "maxW": 2960,
-      "page": "inicio",
-      "text": "Inicio y mapa",
+      "page": "home",
+      "text": "Home and map",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-inicio-1": {
+    "t-home-1": {
       "kind": "title1",
       "maxW": 2960,
-      "page": "inicio",
-      "text": "Inicio · entrenamiento y misiones",
+      "page": "home",
+      "text": "Home · training and missions",
       "w": 240,
       "x": 0,
       "y": 1760
     },
-    "t-politica-0": {
+    "t-politics-0": {
       "kind": "title1",
       "maxW": 7520,
-      "page": "politica",
-      "text": "Política · tu país y su Congreso",
+      "page": "politics",
+      "text": "Politics · your country and its Congress",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-politica-1": {
+    "t-politics-1": {
       "kind": "title1",
       "maxW": 4480,
-      "page": "politica",
-      "text": "Política · elecciones, ciudadanía y recursos",
+      "page": "politics",
+      "text": "Politics · elections, citizenship and resources",
       "w": 240,
       "x": 0,
       "y": 2000
     },
-    "t-sistema-0": {
+    "t-system-0": {
       "kind": "title1",
       "maxW": 6000,
-      "page": "sistema",
-      "text": "Marca, ilustraciones y sistema visual",
+      "page": "system",
+      "text": "Brand, illustrations and visual system",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-sistema-1": {
+    "t-system-1": {
       "kind": "title1",
       "maxW": 4480,
-      "page": "sistema",
-      "text": "Estados del sistema",
+      "page": "system",
+      "text": "System states",
       "w": 240,
       "x": 0,
       "y": 1760
     },
-    "t-sociedad-0": {
+    "t-society-0": {
       "kind": "title1",
       "maxW": 7520,
-      "page": "sociedad",
-      "text": "Sociedad · prensa y mensajes",
+      "page": "society",
+      "text": "Society · press and messages",
       "w": 240,
       "x": 0,
       "y": -260
     },
-    "t-sociedad-1": {
+    "t-society-1": {
       "kind": "title1",
       "maxW": 6000,
-      "page": "sociedad",
-      "text": "Sociedad · tu perfil y tu cuenta",
+      "page": "society",
+      "text": "Society · your profile and your account",
       "w": 240,
       "x": 0,
       "y": 1760
     }
   },
   "order": [
-    "Entrenar.dc.html",
-    "Misiones.dc.html",
-    "Trabajo.dc.html",
-    "Empresa.dc.html",
-    "FundarEmpresa.dc.html",
-    "Inventario.dc.html",
-    "Banco.dc.html",
-    "Licitacion.dc.html",
-    "Mercado.dc.html",
-    "Vender.dc.html",
-    "Guerras.dc.html",
-    "Batalla.dc.html",
-    "BatallaFin.dc.html",
-    "AbrirBatalla.dc.html",
+    "Train.dc.html",
+    "Missions.dc.html",
+    "Work.dc.html",
+    "Company.dc.html",
+    "FoundCompany.dc.html",
+    "Inventory.dc.html",
+    "Bank.dc.html",
+    "BankTender.dc.html",
+    "Market.dc.html",
+    "Sell.dc.html",
+    "Wars.dc.html",
+    "Battle.dc.html",
+    "BattleEnd.dc.html",
+    "OpenBattle.dc.html",
     "Hospital.dc.html",
-    "Pais.dc.html",
-    "Gabinete.dc.html",
-    "Tesoro.dc.html",
-    "Congreso.dc.html",
-    "ProponerLey.dc.html",
-    "Elecciones.dc.html",
-    "Ciudadanias.dc.html",
-    "Recursos.dc.html",
-    "Noticias.dc.html",
-    "Articulo.dc.html",
-    "Escribir.dc.html",
-    "Mensajes.dc.html",
+    "Country.dc.html",
+    "Cabinet.dc.html",
+    "Treasury.dc.html",
+    "Congress.dc.html",
+    "ProposeLaw.dc.html",
+    "Elections.dc.html",
+    "CitizenshipRequests.dc.html",
+    "Resources.dc.html",
+    "News.dc.html",
+    "Article.dc.html",
+    "WriteArticle.dc.html",
+    "Messages.dc.html",
     "Rankings.dc.html",
-    "Perfil.dc.html",
-    "Ajustes.dc.html",
-    "CambiarCiudadania.dc.html",
-    "PerfilPublico.dc.html",
+    "Profile.dc.html",
+    "Settings.dc.html",
+    "ChangeCitizenship.dc.html",
+    "PublicProfile.dc.html",
     "Admin.dc.html",
-    "AdminJugadores.dc.html",
-    "Marca.dc.html",
-    "Ilustraciones.dc.html",
-    "Sistema.dc.html",
-    "Barra.dc.html",
+    "AdminPlayers.dc.html",
+    "Brand.dc.html",
+    "Illustrations.dc.html",
+    "System.dc.html",
+    "NavBar.dc.html",
     "Error404.dc.html",
-    "Mantenimiento.dc.html",
-    "SesionVencida.dc.html",
-    "Main.dc.html",
-    "Mapa.dc.html",
+    "Maintenance.dc.html",
+    "SessionExpired.dc.html",
+    "Home.dc.html",
+    "Map.dc.html",
     "Landing.dc.html",
-    "Registro.dc.html",
-    "PaisNoJugable.dc.html",
-    "Verificacion.dc.html",
-    "Bienvenida.dc.html",
-    "Login.dc.html",
-    "Recuperar.dc.html",
-    "RecuperarEnviado.dc.html",
-    "NuevaClave.dc.html"
+    "SignUp.dc.html",
+    "CountryNotPlayable.dc.html",
+    "EmailVerification.dc.html",
+    "Welcome.dc.html",
+    "SignIn.dc.html",
+    "RecoverPassword.dc.html",
+    "RecoverPasswordSent.dc.html",
+    "NewPassword.dc.html"
   ],
   "pages": [
     {
-      "id": "entrada",
-      "name": "Entrada"
+      "id": "entry",
+      "name": "Entry"
     },
     {
-      "id": "inicio",
-      "name": "Inicio y mapa"
+      "id": "home",
+      "name": "Home and map"
     },
     {
-      "id": "economia",
-      "name": "Economía"
+      "id": "economy",
+      "name": "Economy"
     },
     {
-      "id": "guerra",
-      "name": "Guerra"
+      "id": "war",
+      "name": "War"
     },
     {
-      "id": "politica",
-      "name": "Política y gobierno"
+      "id": "politics",
+      "name": "Politics and government"
     },
     {
-      "id": "sociedad",
-      "name": "Sociedad y perfil"
+      "id": "society",
+      "name": "Society and profile"
     },
     {
       "id": "admin",
-      "name": "Administración"
+      "name": "Administration"
     },
     {
-      "id": "sistema",
-      "name": "Sistema"
+      "id": "system",
+      "name": "System"
     }
   ],
-  "title": "Concordia – Diseño de la app"
+  "title": "Concordia – App design"
 }

@@ -1,10 +1,9 @@
-# Base de datos
+# Database
 
-- `migrations/`: cambios versionados, solo hacia adelante. Cada archivo explica en la cabecera qué hace y
-  cómo se deshace. Squawk los revisa en el CI (`pnpm db:lint`).
-- `tests/database/`: pruebas pgTAP. `000_security_invariants` recorre el catálogo y falla si una tabla no
-  tiene RLS, si `anon` o `authenticated` pueden escribir una tabla, o si una función expuesta no fija
-  `search_path`.
-- `seed.sql`: solo datos de desarrollo local. Los datos de referencia del juego van en migraciones.
+- `migrations/`: versioned, forward-only changes. Each file explains in its header what it does and how to
+  undo it. Squawk reviews them in CI (`pnpm db:lint`).
+- `tests/database/`: pgTAP tests. `000_security_invariants` scans the catalog and fails if a table has no
+  RLS, if `anon` or `authenticated` can write a table, or if an exposed function does not pin `search_path`.
+- `seed.sql`: local development fixtures only. The game's reference data ships in migrations.
 
-Modelo de acceso: ADR 0002 (`docs/adr/0002-acceso-a-datos.md`).
+Access model: ADR 0002 (`docs/adr/0002-data-access.md`).

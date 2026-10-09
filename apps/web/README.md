@@ -1,17 +1,20 @@
 # @concordia/web
 
-SPA de React 19 con Vite: landing, juego y panel de administración. Se sirve desde Cloudflare Workers con
-*static assets*, *fallback* de SPA y las cabeceras de seguridad de `public/_headers`.
+React 19 SPA built with Vite: landing, game and admin panel. Served by Cloudflare Workers static assets,
+with SPA fallback and the security headers in `public/_headers`.
 
 ```bash
-pnpm dev            # servidor de desarrollo en http://localhost:5173
+pnpm dev            # dev server on http://localhost:5173
 pnpm test           # Vitest (jsdom)
-pnpm test:coverage  # con cobertura mínima del 80 %
-pnpm build          # build de producción en dist/
-pnpm size           # presupuesto de JavaScript inicial (170 kB brotli)
-pnpm e2e            # Playwright + axe contra `wrangler dev` con el build real
+pnpm test:coverage  # with the 80 % coverage floor
+pnpm build          # production build in dist/
+pnpm size           # initial JavaScript budget (170 kB brotli)
+pnpm e2e            # Playwright + axe against `wrangler dev` with the real build
 ```
 
-- Rutas en `src/router.tsx` (TanStack Router definido en código, ADR 0003).
-- Cada pantalla vive en `src/pages/<pantalla>/` con su `messages.ts` (textos en español neutro).
-- En entornos con Chromium preinstalado: `PLAYWRIGHT_CHROMIUM_PATH=/ruta/a/chrome pnpm e2e`.
+- Routes live in `src/router.tsx` (TanStack Router defined in code, ADR 0003). URL paths are English.
+- Each screen lives in `src/pages/<screen>/` with its `messages.ts`: Spanish (source) and English copy,
+  declared with `defineMessages` so a missing translation is a type error (ADR 0005).
+- `src/i18n/`: locale detection (saved choice, browser languages, Spanish), the provider that keeps
+  `<html lang>` in sync, and `Intl` formatting helpers.
+- Where Chromium is preinstalled: `PLAYWRIGHT_CHROMIUM_PATH=/path/to/chrome pnpm e2e`.

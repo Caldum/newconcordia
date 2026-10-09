@@ -1,22 +1,22 @@
-## Qué cambia
+## What changes
 
-<!-- Módulo D y resumen en dos o tres frases. -->
+<!-- D module and a two- or three-sentence summary. -->
 
 ## Plan
 
-<!-- Enlace a docs/planes/ o los pasos en una lista corta. -->
+<!-- Link to docs/plans/ or the steps in a short list. -->
 
-## Pruebas
+## Tests
 
-- [ ] pgTAP de cada función y política nueva, con casos de abuso
-- [ ] Vitest de hooks y componentes
-- [ ] Playwright con axe en cada pantalla nueva
-- [ ] Prueba de aceptación del GDD para este módulo
+- [ ] pgTAP for every new function and policy, with abuse cases
+- [ ] Vitest for hooks and components
+- [ ] Playwright with axe on every new screen
+- [ ] GDD acceptance test for this module
 
-## Revisión
+## Review
 
-- [ ] Migraciones hacia adelante, con plan de vuelta, revisadas por squawk
-- [ ] Ninguna tabla nueva sin RLS; ningún permiso de escritura directa para `anon` o `authenticated`
-- [ ] Textos según `docs/voz.md`; sin atajos de teclado
-- [ ] Dependencias nuevas justificadas
-- [ ] `docs/progreso.md` actualizado
+- [ ] Forward-only migrations with a way back, reviewed by squawk
+- [ ] No new table without RLS; no direct write privilege for `anon` or `authenticated`
+- [ ] Copy follows `docs/voice.md` in Spanish and English; no keyboard shortcuts
+- [ ] New dependencies justified
+- [ ] `docs/progress.md` updated

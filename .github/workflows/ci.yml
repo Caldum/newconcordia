@@ -14,8 +14,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  calidad:
-    name: Lint, tipos, pruebas y build
+  quality:
+    name: Lint, types, tests and build
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -33,8 +33,8 @@ jobs:
       - name: Dependency audit
         run: pnpm audit --audit-level high
 
-  base-de-datos:
-    name: Migraciones y pgTAP
+  database:
+    name: Migrations and pgTAP
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -51,10 +51,10 @@ jobs:
       - name: Generated types are up to date
         run: |
           pnpm db:types
-          git diff --exit-code -- packages/tipos/src/database.ts
+          git diff --exit-code -- packages/db-types/src/database.ts
 
   e2e:
-    name: Recorridos y accesibilidad
+    name: Journeys and accessibility
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -72,10 +72,10 @@ jobs:
           path: apps/web/playwright-report
           retention-days: 7
 
-  verde:
-    name: verde
+  ci-passed:
+    name: ci-passed
     if: always()
-    needs: [calidad, base-de-datos, e2e]
+    needs: [quality, database, e2e]
     runs-on: ubuntu-24.04
     steps:
       - name: Every required job passed

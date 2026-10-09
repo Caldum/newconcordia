@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   analyze:
-    name: Analizar JavaScript y TypeScript
+    name: Analyze JavaScript and TypeScript
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:

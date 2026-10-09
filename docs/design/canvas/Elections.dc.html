@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Elecciones</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="politica" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<nav aria-label="Sección" style="display:flex;gap:28px;flex-wrap:wrap;margin:0 0 28px;box-shadow:inset 0 -1px 0 #C3CDD5"><a href="Country.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Argentina</a><a href="Cabinet.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Gabinete</a><a href="Treasury.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Tesoro</a><a href="Congress.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Congreso</a><a href="Elections.dc.html" aria-current="page" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid #13202E;color:#13202E">Elecciones</a><a href="CitizenshipRequests.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Ciudadanía</a><a href="Resources.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Recursos</a></nav>
+<div style="margin-bottom:20px"><h1 style="font-stretch:112%;font-weight:800;font-size:44px;line-height:1.04;letter-spacing:-.018em;margin:0">Elecciones</h1><p style="color:#556372;margin:6px 0 0">Cada 15 días hay elecciones, que se alternan entre Congreso y presidencia. Cada mandato dura 30 días.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:2 1 640px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><div><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Congreso</h2><span style="font-size:14px;color:#556372">Se vota el 14 de octubre, de 00:00 a 23:59</span></div><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:#E6EDFC;color:#1D47B0;font-variant-numeric:tabular-nums"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>En 6 días</span></div>
+<div style="padding:20px 22px">
+<p style="font-size:14px;color:#556372;margin:0 0 12px">Hay 31 candidatos para 20 bancas. Las candidaturas cierran 24 horas antes.</p>
+<sc-for list="{{cands}}" as="c" hint-placeholder-count="5"><div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:10px 6px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;border-radius:4px;{{c.tono}}">{{c.ini}}</span><span style="flex:1"><b style="font-weight:600;display:block">{{c.nombre}}</b><span style="font-size:13px;color:#556372">{{c.lema}}</span></span><span style="font-size:13px;color:#556372;font-variant-numeric:tabular-nums">Nivel {{c.nivel}}</span></div></sc-for>
+<a href="#" style="font-size:14px;font-weight:600;display:inline-block;margin-top:8px">Ver los 31 candidatos</a>
+</div>
+</section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><div><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Presidencia: resultado anterior</h2><span style="font-size:14px;color:#556372">30 de septiembre, votaron 2.104 ciudadanos</span></div></div>
+<div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+<div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="display:flex;align-items:center;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:32px;height:32px;border-radius:4px;background:#13202E;color:#fff;font-size:12px">AS</span><b style="font-weight:600">Adrián Sosa</b><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:#E1F4EC;color:#0A6A49">Electo</span></span><b style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:20px">54 %</b></div><div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;height:10px"><div style="height:100%;border-radius:2px;width:54%;background:#13202E"></div></div></div>
+<div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="display:flex;align-items:center;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:32px;height:32px;border-radius:4px;background:#E3EFF9;color:#1C5B8C;font-size:12px">RL</span><b style="font-weight:600">Ramiro Ledesma</b></span><b style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:20px">33 %</b></div><div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;height:10px"><div style="height:100%;border-radius:2px;width:33%;background:#6CACE4"></div></div></div>
+<div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="display:flex;align-items:center;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:32px;height:32px;border-radius:4px;background:#E3EFF9;color:#1C5B8C;font-size:12px">IC</span><b style="font-weight:600">Inés Carranza</b></span><b style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:20px">13 %</b></div><div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;height:10px"><div style="height:100%;border-radius:2px;width:13%;background:#6CACE4"></div></div></div>
+</div>
+</section>
+</div>
+<aside style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 320px;min-width:0">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Candidatura al Congreso</h2></div>
+<div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+<sc-if value="{{postulada}}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:12px;padding:14px 16px;border-radius:6px;font-size:15px;line-height:1.45;background:#E1F4EC;color:#085C3F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Eres candidata. Tu nombre aparecerá en la boleta del 14 de octubre.</span></div><button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99" type="button" class="bs" onClick="{{toggle}}">Retirar mi candidatura</button></sc-if>
+<sc-if value="{{noPostulada}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:14px;display:flex;gap:10px;align-items:center"><span style="color:#0E8F63;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>Nivel 20 o más: tienes 27</div>
+<div style="font-size:14px;display:flex;gap:10px;align-items:center"><span style="color:#0E8F63;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>30 días de ciudadanía: tienes 41</div>
+<div style="font-size:14px;display:flex;gap:10px;align-items:center"><span style="color:#0E8F63;display:flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>Tasa de 5 Oro</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:600;font-size:14px" for="lema">Tu propuesta en una línea</label><input style="height:48px;padding:0 14px;border-radius:6px;border:1px solid #7F8B99;background:#FFFFFF;box-sizing:border-box;width:100%;font-size:16px;color:#13202E" id="lema" class="in" value="Hospitales en cada frente y combustible para recuperar Cuyo"><span style="font-size:13px;color:#556372">Aparece junto a tu nombre en la boleta.</span></div>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF;min-height:52px;padding:0 24px;font-size:16px;border-radius:6px" type="button" class="bp" onClick="{{toggle}}">Postularme por 5 Oro</button>
+</sc-if>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1150}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { p: false }; }
+  renderVals() {
+    var s = this;
+    var C = [['Valeria Ibarra','Proteger a los productores argentinos',34,'VI'],['Martín Acosta','Más daño, menos debate: recuperar Cuyo ya',41,'MA'],['Lucía Ferraro','Un banco central que cuide el Crédito',38,'LF'],['Ramiro Ledesma','Paz con España y comercio con Europa',30,'RL'],['Nadia Prieto','Embajadas activas en toda América',22,'NP']];
+    return { cands: C.map(function (c, i) { return { nombre: c[0], lema: c[1], nivel: c[2], ini: c[3], tono: i % 2 ? 'background:#E3EFF9;color:#1C5B8C' : 'background:#13202E;color:#FFFFFF' }; }),
+      postulada: this.state.p, noPostulada: !this.state.p, toggle: function () { s.setState({ p: !s.state.p }); } };
+  }
+}
+</script>
+</body>
+</html>

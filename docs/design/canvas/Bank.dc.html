@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Bancos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="economia" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<nav aria-label="Sección" style="display:flex;gap:28px;flex-wrap:wrap;margin:0 0 28px;box-shadow:inset 0 -1px 0 #C3CDD5"><a href="Work.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Empleo</a><a href="Company.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Mi empresa</a><a href="FoundCompany.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Fundar empresa</a><a href="Inventory.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Inventario y cuenta</a><a href="Bank.dc.html" aria-current="page" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid #13202E;color:#13202E">Bancos</a><a href="BankTender.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Licitaciones</a></nav>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;display:flex;flex-wrap:wrap;overflow:hidden;margin-bottom:20px;min-height:220px"><div style="flex:1 1 440px;min-width:0;padding:32px 36px;display:flex;flex-direction:column;justify-content:center;gap:10px"><h1 style="font-stretch:112%;font-weight:800;font-size:44px;line-height:1.04;letter-spacing:-.018em;margin:0">Bancos</h1><p style="color:#556372;margin:0;font-size:17px;max-width:36em">El Banco Central adjudica los bancos privados por licitación. Cada uno puede captar hasta 5 veces su garantía y pagar como máximo 3 % por semana.</p></div><div style="flex:1 1 420px;min-height:220px;position:relative;border-radius:0 8px 8px 0;overflow:hidden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block;position:absolute;inset:0" role="img" aria-label="bancos"><rect width="640" height="360" fill="#E3EFF9"/><circle cx="320" cy="180" r="150" fill="#D3E6F6"/><path d="M170 128 L320 52 L470 128Z" fill="#13202E"/><circle cx="320" cy="104" r="20" fill="#E8B923" stroke="#A97F07" stroke-width="4"/><rect x="178" y="128" width="284" height="18" fill="#13202E"/><rect x="196" y="150" width="28" height="112" fill="#FFFFFF"/><rect x="192" y="150" width="36" height="8" fill="#FFFFFF"/><rect x="252" y="150" width="28" height="112" fill="#FFFFFF"/><rect x="248" y="150" width="36" height="8" fill="#FFFFFF"/><rect x="308" y="150" width="28" height="112" fill="#FFFFFF"/><rect x="304" y="150" width="36" height="8" fill="#FFFFFF"/><rect x="364" y="150" width="28" height="112" fill="#FFFFFF"/><rect x="360" y="150" width="36" height="8" fill="#FFFFFF"/><rect x="420" y="150" width="28" height="112" fill="#FFFFFF"/><rect x="416" y="150" width="36" height="8" fill="#FFFFFF"/><rect x="166" y="262" width="308" height="14" fill="#13202E"/><rect x="152" y="276" width="336" height="14" fill="#26364A"/><rect x="138" y="290" width="364" height="14" fill="#13202E"/><circle cx="80" cy="250" r="54" fill="#7F8B99"/><circle cx="80" cy="250" r="40" fill="#26364A"/><path d="M80 250 L110.0 250.0" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><path d="M80 250 L65.0 276.0" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><path d="M80 250 L65.0 224.0" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round"/><circle cx="80" cy="250" r="9" fill="#E8B923"/><path d="M520 298 L528 272 L572 272 L580 298 Z" fill="#E8B923" stroke="#A97F07" stroke-width="3" stroke-linejoin="round"/><path d="M580 298 L588 272 L632 272 L640 298 Z" fill="#E8B923" stroke="#A97F07" stroke-width="3" stroke-linejoin="round"/><path d="M550 270 L558 244 L602 244 L610 270 Z" fill="#E8B923" stroke="#A97F07" stroke-width="3" stroke-linejoin="round"/><rect x="0" y="304" width="640" height="56" fill="#13202E"/></svg></div></section>
+
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;padding:24px;display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;margin-bottom:20px">
+<div style="display:flex;align-items:center;gap:14px;flex:1 1 280px"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;flex:none;width:52px;height:52px;border-radius:6px;background:#E4F0FA;color:#1C5B8C"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M3 9.5 12 4l9 5.5M5 10v7.5M9.6 10v7.5M14.4 10v7.5M19 10v7.5M3 20h18"/></svg></span><div><b style="font-weight:700;font-size:17px;display:block">Banco Central de Argentina</b><span style="font-size:14px;color:#556372">Lo preside Inés Carranza</span></div></div>
+<div style="display:flex;gap:36px;flex-wrap:wrap">
+<div><div style="font-size:13px;color:#556372">Tasa de referencia</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:24px">1,5 %</div></div>
+<div><div style="font-size:13px;color:#556372">Tope a depósitos</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:24px">3 %</div></div>
+<div><div style="font-size:13px;color:#556372">Banda del Oro</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:24px">28–34</div></div>
+<div><div style="font-size:13px;color:#556372">Próxima licitación</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:24px">9 días</div></div>
+</div>
+</section>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:2 1 620px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px">
+<sc-for list="{{bancos}}" as="b" hint-placeholder-count="3"><button type="button" role="radio" aria-checked="{{b.on}}" onClick="{{b.pick}}" style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;padding:20px;border:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:12px;color:#13202E;{{b.borde}}">
+<div style="display:flex;justify-content:space-between;align-items:center;width:100%"><b style="font-weight:700;font-size:16px">{{b.nombre}}</b><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;{{b.chipTono}}">{{b.chip}}</span></div>
+<span style="font-size:13px;color:#556372">{{b.duenio}}, garantía de {{b.garantia}}</span>
+<div style="display:flex;gap:24px"><div><div style="font-size:13px;color:#556372">Paga</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:22px;color:#0E8F63">{{b.paga}}</div></div><div><div style="font-size:13px;color:#556372">Presta a</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:22px">{{b.presta}}</div></div></div>
+<div style="width:100%"><div style="font-size:13px;color:#556372;font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;margin-bottom:4px"><span>Cupo usado</span><span>{{b.uso}} %</span></div><div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;height:6px"><div style="height:100%;border-radius:2px;width:{{b.uso}}%;{{b.barra}}"></div></div></div>
+</button></sc-for>
+</section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;padding:24px">
+<h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0;margin-bottom:12px">Tus productos</h2>
+<div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:12px 8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;flex:none;background:#E1F4EC;color:#0A6A49"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M3.5 17 9 11.5l4 4L20.5 8M15 8h5.5v5.5"/></svg></span><span style="flex:1"><b style="font-weight:600;display:block">Depósito en Banco del Plata</b><span style="font-size:13px;color:#556372">Rinde 2,1 % cada lunes. Puedes retirarlo cuando quieras.</span></span><span style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:20px">10.000,00</span><button type="button" class="bs" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99;min-height:38px;font-size:14px">Retirar</button></div>
+<div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:12px 8px"><span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;flex:none;background:#FCE8E6;color:#A3241B"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M3.5 7 9 12.5l4-4 7.5 7.5M15 16h5.5v-5.5"/></svg></span><span style="flex:1"><b style="font-weight:600;display:block">Préstamo en Banco del Plata</b><span style="font-size:13px;color:#556372">3 % semanal. Quedan 6 de 8 cuotas de 520,00.</span></span><span style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:20px;color:#A3241B">−4.000,00</span><button type="button" class="bs" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99;min-height:38px;font-size:14px">Cancelar</button></div>
+<p style="font-size:13px;color:#556372;margin:12px 0 0">Si un banco quiebra, su garantía se reparte entre los depositantes según lo que tenía cada uno.</p>
+</section>
+</div>
+<aside style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 320px;min-width:0;padding:24px;display:flex;flex-direction:column;gap:16px">
+<sc-if value="{{listo}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;flex:none;width:52px;height:52px;border-radius:6px;background:#E1F4EC;color:#0A6A49"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+<h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">{{listoTit}}</h2><p style="color:#556372;font-size:14px;margin:0">{{listoTxt}}</p>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99" type="button" class="bs" onClick="{{otra}}">Hacer otra operación</button>
+</div>
+</sc-if>
+<sc-if value="{{form}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div role="tablist" aria-label="Operación" style="display:inline-flex;padding:3px;border-radius:8px;background:#E1E7EC;gap:2px;display:flex"><sc-for list="{{ops}}" as="o" hint-placeholder-count="2"><button type="button" role="tab" aria-selected="{{o.on}}" onClick="{{o.pick}}" class="segb" style="border:0;min-height:36px;padding:0 14px;border-radius:6px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;flex:1;{{o.estilo}}">{{o.nombre}}</button></sc-for></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px;padding-top:0"><span style="color:#556372">Banco</span><b>{{banco.nombre}}</b></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600;font-size:14px">Monto en Crédito</span>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{montos}}" as="m" hint-placeholder-count="4"><button type="button" onClick="{{m.pick}}" style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;height:34px;padding:0 14px;border:0;cursor:pointer;{{m.estilo}}">{{m.txt}}</button></sc-for></div></div>
+<div style="font-variant-numeric:tabular-nums;padding:16px;border-radius:6px;background:#F2F5F7">{{detalle}}</div>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF;min-height:52px;padding:0 24px;font-size:16px;border-radius:6px" type="button" class="bp" onClick="{{confirmar}}">{{boton}}</button>
+<span style="font-size:13px;color:#556372">{{nota}}</span>
+</div>
+</sc-if>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1450}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { op: 'dep', banco: 0, monto: 5000, listo: false }; }
+  renderVals() {
+    var s = this, st = this.state, d = st.op === 'dep';
+    function f(n) { return n.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    var B = [['Banco del Plata','Lucía Ferraro','800 Oro',2.1,3.0,68],['Banco Federal Austral','Ramiro Ledesma','1.200 Oro',1.8,2.6,41],['Caja Mutual Rioplatense','3 socios','500 Oro',2.5,3.4,96]];
+    var bancos = B.map(function (b, i) { var on = st.banco === i; return { nombre: b[0], duenio: b[1], garantia: b[2], paga: f(b[3]).replace(/0$/, '') + ' %', presta: f(b[4]).replace(/0$/, '') + ' %', uso: b[5], on: on ? 'true' : 'false',
+      borde: on ? 'box-shadow:inset 0 0 0 2px #13202E' : '', chip: i === 0 ? 'Tu banco' : (b[5] > 90 ? 'Casi lleno' : 'Abierto'),
+      chipTono: i === 0 ? 'background:#E4F0FA;color:#1C5B8C' : (b[5] > 90 ? 'background:#FFF2D4;color:#7A4800' : 'background:#E1F4EC;color:#0A6A49'),
+      barra: b[5] > 90 ? 'background:#F2B200' : 'background:#13202E', pick: function () { s.setState({ banco: i }); } }; });
+    var b = B[st.banco], tasa = d ? b[3] / 100 : b[4] / 100;
+    var cuota = st.monto * tasa / (1 - Math.pow(1 + tasa, -8));
+    var montos = [1000, 5000, 10000, 20000].map(function (m) { var on = st.monto === m; return { txt: m.toLocaleString('es-AR'), estilo: on ? 'background:#13202E;color:#FFFFFF' : 'background:#EDF0F4;color:#13202E', pick: function () { s.setState({ monto: m }); } }; });
+    var ops = [['dep','Depositar'],['pre','Pedir préstamo']].map(function (o) { var on = st.op === o[0]; return { nombre: o[1], on: on ? 'true' : 'false', estilo: on ? 'background:#FFFFFF;color:#13202E;box-shadow:0 1px 2px rgba(19,32,46,.14)' : 'background:transparent;color:#556372', pick: function () { s.setState({ op: o[0] }); } }; });
+    return { bancos: bancos, banco: { nombre: b[0] }, ops: ops, montos: montos, listo: st.listo, form: !st.listo,
+      detalle: d ? 'Ganas ' + f(st.monto * tasa) + ' por semana al ' + f(b[3]) + ' %.' : '8 cuotas semanales de ' + f(cuota) + '. Total ' + f(cuota * 8) + '.',
+      boton: (d ? 'Depositar ' : 'Pedir ') + st.monto.toLocaleString('es-AR'),
+      nota: d ? 'Si el banco cambia la tasa, la nueva se aplica desde el lunes siguiente.' : 'Si no pagas una cuota, se descuenta de tu próximo salario.',
+      confirmar: function () { s.setState({ listo: true }); }, otra: function () { s.setState({ listo: false }); },
+      listoTit: d ? 'Depositaste ' + st.monto.toLocaleString('es-AR') : 'Préstamo aprobado',
+      listoTxt: d ? 'El dinero ya está en ' + b[0] + '. El primer interés llega el lunes.' : 'Recibiste ' + f(st.monto) + ' en tu cuenta. La primera cuota es el lunes.' };
+  }
+}
+</script>
+</body>
+</html>

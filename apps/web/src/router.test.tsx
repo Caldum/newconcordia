@@ -20,6 +20,14 @@ describe('router', () => {
     expect(document.title).toBe('Página no encontrada · Concordia');
   });
 
+  it('renders the not-found page in English', async () => {
+    await renderRoute('/missing', 'en');
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'This page is not on the map.' }),
+    ).toBeVisible();
+    expect(document.title).toBe('Page not found · Concordia');
+  });
+
   it('uses the browser history when none is given', () => {
     window.history.replaceState(null, '', '/inicio-de-prueba');
     const router = buildRouter(new QueryClient());
