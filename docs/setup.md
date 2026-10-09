@@ -161,6 +161,8 @@ The database tests run on PostgreSQL installed on your computer, and the web run
    `postgres` for the `postgres` user, port 5432). Check it with `pnpm db:test:native`: it creates a fresh
    `concordia_test` database on every run and must end with «All … files passed». To use another password
    or port, set `PGPASSWORD` or `PGPORT` before running it.
+   After changing a migration, `pnpm db:types:native` regenerates `packages/db-types` from that database
+   (run `pnpm db:test:native` first so it has every migration).
 2. **Development project.** At https://supabase.com/dashboard create a third project, `concordia-dev`, in
    the same region. Under **Project Settings → Data API** leave only `public` exposed, as in step 2.
 3. **Its Auth settings** (as in step 6, with these values):

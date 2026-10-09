@@ -79,6 +79,14 @@ export type Database = {
         Args: { p_approve: boolean; p_request_id: number };
         Returns: undefined;
       };
+      found_company: {
+        Args: { p_good_code: string; p_key: string; p_name: string; p_region_code: string };
+        Returns: number;
+      };
+      fund_company: {
+        Args: { p_amount: number; p_company_id: number; p_key: string };
+        Returns: number;
+      };
       get_citizenship_rules: {
         Args: { p_country_code: string };
         Returns: {
@@ -86,6 +94,22 @@ export type Database = {
           country_code: string;
           election_wait_days: number;
           mode: string;
+        }[];
+      };
+      get_company_employees: {
+        Args: { p_company_id: number };
+        Returns: {
+          hired_at: string;
+          name: string;
+          streak: number;
+          worked_today: boolean;
+        }[];
+      };
+      get_company_stock: {
+        Args: { p_company_id: number };
+        Returns: {
+          good_code: string;
+          quantity: number;
         }[];
       };
       get_game_clock: {
@@ -131,6 +155,22 @@ export type Database = {
           to_country_code: string;
         }[];
       };
+      get_my_job: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          company_id: number;
+          company_name: string;
+          good_code: string;
+          hired_at: string;
+          next_change_at: string;
+          owner_name: string;
+          region_code: string;
+          streak: number;
+          wage: number;
+          work_tax: number;
+          worked_today: boolean;
+        }[];
+      };
       get_my_profile: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -163,7 +203,19 @@ export type Database = {
           place: number;
         }[];
       };
+      get_my_workday: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          company_id: number;
+          good_code: string;
+          gross: number;
+          net: number;
+          produced: number;
+          tax: number;
+        }[];
+      };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
+      leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
       list_citizenship_requests: {
         Args: Record<PropertyKey, never>;
@@ -187,6 +239,47 @@ export type Database = {
           name_es: string;
           official_name_en: string;
           official_name_es: string;
+        }[];
+      };
+      list_goods: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          code: string;
+          input_good_code: string;
+          input_per_unit: number;
+          kind: string;
+          points_per_unit: number;
+          quality: number;
+          raw_yield: number;
+        }[];
+      };
+      list_job_offers: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          company_id: number;
+          good_code: string;
+          name: string;
+          owner_name: string;
+          region_code: string;
+          vacancies: number;
+          wage: number;
+        }[];
+      };
+      list_my_companies: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          capacity: number;
+          cash: number;
+          created_at: string;
+          employees: number;
+          good_code: string;
+          id: number;
+          level: number;
+          name: string;
+          points: number;
+          region_code: string;
+          vacancies: number;
+          wage: number;
         }[];
       };
       list_my_movements: {
@@ -222,6 +315,11 @@ export type Database = {
         }[];
       };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
+      set_company_offer: {
+        Args: { p_company_id: number; p_vacancies: number; p_wage: number };
+        Returns: undefined;
+      };
+      take_job: { Args: { p_company_id: number }; Returns: undefined };
       transfer_money: {
         Args: {
           p_amount: number;
@@ -231,6 +329,23 @@ export type Database = {
           p_to_name: string;
         };
         Returns: number;
+      };
+      upgrade_company: { Args: { p_company_id: number; p_key: string }; Returns: number };
+      upgrade_company_quality: { Args: { p_company_id: number; p_key: string }; Returns: number };
+      withdraw_from_company: {
+        Args: { p_amount: number; p_company_id: number; p_key: string };
+        Returns: number;
+      };
+      work: {
+        Args: { p_company_id: number; p_key: string };
+        Returns: {
+          energy: number;
+          good_code: string;
+          gross: number;
+          net: number;
+          produced: number;
+          tax: number;
+        }[];
       };
     };
     Enums: {

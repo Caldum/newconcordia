@@ -21,7 +21,8 @@
     "db:test": "supabase test db",
     "db:test:native": "node supabase/scripts/run-native-tests.js",
     "db:lint": "squawk supabase/migrations/*.sql",
-    "db:types": "supabase gen types typescript --local --schema public > packages/db-types/src/database.ts && prettier --write packages/db-types/src/database.ts"
+    "db:types": "supabase gen types typescript --local --schema public > packages/db-types/src/database.ts && prettier --write packages/db-types/src/database.ts",
+    "db:types:native": "supabase gen types typescript --db-url \"postgresql://postgres:postgres@127.0.0.1:5432/concordia_test?sslmode=disable\" --schema public > packages/db-types/src/database.ts && prettier --write packages/db-types/src/database.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
