@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -54,7 +54,8 @@ describe('MapPage', () => {
     await screen.findByRole('img', { name: /Planisferio/ });
     const cuyo = container.querySelector('[data-shape="ARG-05"]');
     if (!cuyo) throw new Error('Cuyo is missing');
-    await userEvent.click(cuyo);
+    // fireEvent sends only the click: user-event's mousedown has no `view`, which d3-zoom reads.
+    fireEvent.click(cuyo);
     expect(screen.getByRole('heading', { level: 2, name: 'Cuyo' })).toBeInTheDocument();
     expect(screen.getByText('Elegiste Cuyo.')).toBeInTheDocument();
   });

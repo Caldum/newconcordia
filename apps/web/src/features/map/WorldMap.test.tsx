@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -49,15 +49,16 @@ function renderMap(props: Partial<Parameters<typeof WorldMap>[0]> = {}) {
 }
 
 describe('WorldMap', () => {
-  it('is one labeled image whose playable shapes respond to clicks', async () => {
+  it('is one labeled image whose playable shapes respond to clicks', () => {
     const { container, onSelect } = renderMap();
     expect(screen.getByRole('img', { name: 'Mapa del mundo' })).toBeInTheDocument();
     const cuyo = container.querySelector('[data-shape="ARG-05"]');
     expect(cuyo?.getAttribute('class')).toContain('selected');
-    if (cuyo) await userEvent.click(cuyo);
+    // fireEvent sends only the click: user-event's mousedown has no `view`, which d3-zoom reads.
+    if (cuyo) fireEvent.click(cuyo);
     expect(onSelect).toHaveBeenCalledWith('ARG-05');
     const uruguay = container.querySelector('[data-shape="URY"]');
-    if (uruguay) await userEvent.click(uruguay);
+    if (uruguay) fireEvent.click(uruguay);
     expect(onSelect).toHaveBeenCalledTimes(1);
   });
 
