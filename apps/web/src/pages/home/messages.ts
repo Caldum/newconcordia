@@ -2,15 +2,25 @@ import { defineMessages } from '../../i18n';
 
 export const messages = defineMessages({
   es: {
-    documentTitle: 'Concordia',
-    title: 'Concordia',
-    body: 'Juego de estrategia en el navegador: trabaja, combate por regiones reales, vota y gobierna tu país.',
+    documentTitle: 'Inicio · Concordia',
+    homeLabel: 'Concordia, ir al inicio',
+    nav: 'Principal',
+    map: 'Mapa',
+    signOut: 'Cerrar sesión',
+    citizenOf: (country: string) => `Ciudadanía: ${country}`,
+    body: 'Tu cuenta está lista. Mientras se abren el trabajo, el entrenamiento y las batallas, puedes recorrer el mapa y ver quién controla cada región.',
     openMap: 'Ver el mapa',
+    loadFailed: 'No se pudo cargar tu ciudadano. Recarga la página para intentar de nuevo.',
   },
   en: {
-    documentTitle: 'Concordia',
-    title: 'Concordia',
-    body: 'A strategy game in the browser: work, fight for real regions, vote and govern your country.',
+    documentTitle: 'Home · Concordia',
+    homeLabel: 'Concordia, go to home',
+    nav: 'Main',
+    map: 'Map',
+    signOut: 'Sign out',
+    citizenOf: (country: string) => `Citizenship: ${country}`,
+    body: 'Your account is ready. Until work, training and battles open, you can explore the map and see who controls each region.',
     openMap: 'See the map',
+    loadFailed: 'Your citizen did not load. Reload the page to try again.',
   },
 });

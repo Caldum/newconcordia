@@ -13,8 +13,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D02 | Clock and game day | 0 · Base | Merged | [Caldum/newconcordia#3](https://github.com/Caldum/newconcordia/pull/3) |
 | — | Atlas in code (`packages/atlas`) | 0 · Base | Merged | [Caldum/newconcordia#4](https://github.com/Caldum/newconcordia/pull/4) |
 | D03 | World: countries, regions and owners | 1 · World and accounts | Merged | [Caldum/newconcordia#5](https://github.com/Caldum/newconcordia/pull/5) |
-| D04 | Game map | 1 · World and accounts | In PR | `feat/d04-map` |
-| D05 | Accounts | 1 · World and accounts | Pending | — |
+| D04 | Game map | 1 · World and accounts | Merged | [Caldum/newconcordia#6](https://github.com/Caldum/newconcordia/pull/6) |
+| D05 | Accounts | 1 · World and accounts | In PR | `feat/d05-accounts` |
 | D06 | Citizenship | 1 · World and accounts | Pending | — |
 | D07 | Admin panel | 1 · World and accounts | Pending | — |
 | D08 | Profile and energy | 2 · Basic economy | Pending | — |
@@ -54,7 +54,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · D03: fixed region codes, world.json (250 countries, 78 regions), countries and regions tables with public reads.
 
 - 2026-10-09 · D04: map route with owners and colors from the database, keyboard search, zoom buttons, CSP with the exact Supabase origin, e2e acceptance against local Supabase.
+- 2026-10-09 · D04 merged. D05: Supabase Auth with email and Google, Turnstile through Auth, citizen created with the sign-up (unique, immutable name; reservations), bilingual email templates, landing, sign-up, sign-in, recovery and verification screens, e2e journeys reading the local mailbox.
 
 ## Next step
 
-D04 in review. Next: D05 (accounts) on `feat/d05-accounts`.
+D05 in review on `feat/d05-accounts`. Next: D06 (citizenship) on `feat/d06-citizenship`.

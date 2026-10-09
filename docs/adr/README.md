@@ -11,3 +11,4 @@ marked «Superseded by NNNN».
 | 0003 | Tool versions and routing | Accepted |
 | 0004 | The whole repository is in English | Accepted |
 | 0005 | Internationalization: typed catalogs for Spanish and English | Accepted |
+| 0006 | Accounts: Supabase Auth, Turnstile and the citizen created with the sign-up | Accepted |

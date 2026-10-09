@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-router';
 import type { RouterHistory } from '@tanstack/react-router';
 
-import { HomePage } from './pages/home/HomePage';
+import { IndexPage } from './pages/home/IndexPage';
 import { NotFoundPage } from './pages/not-found/NotFoundPage';
 
 export interface RouterContext {
@@ -20,20 +20,107 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
   notFoundComponent: NotFoundPage,
 });
 
-const homeRoute = createRoute({
+const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: HomePage,
+  component: IndexPage,
 });
 
-// The map and its 0.9 MB geometry load only when the map is opened.
+// Everything but the landing loads on demand; the map also brings its 0.9 MB geometry.
 const mapRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/map',
   component: lazyRouteComponent(() => import('./pages/map/MapPage'), 'MapPage'),
 });
 
-const routeTree = rootRoute.addChildren([homeRoute, mapRoute]);
+const signUpRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/sign-up',
+  component: lazyRouteComponent(() => import('./pages/sign-up/SignUpPage'), 'SignUpPage'),
+});
+
+const signInRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/sign-in',
+  component: lazyRouteComponent(() => import('./pages/sign-in/SignInPage'), 'SignInPage'),
+});
+
+const verifyEmailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/verify-email',
+  component: lazyRouteComponent(
+    () => import('./pages/verify-email/VerifyEmailPage'),
+    'VerifyEmailPage',
+  ),
+});
+
+const recoverPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/recover-password',
+  component: lazyRouteComponent(
+    () => import('./pages/recover-password/RecoverPasswordPage'),
+    'RecoverPasswordPage',
+  ),
+});
+
+const recoverPasswordSentRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/recover-password/sent',
+  component: lazyRouteComponent(
+    () => import('./pages/recover-password/RecoverPasswordSentPage'),
+    'RecoverPasswordSentPage',
+  ),
+});
+
+const newPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/new-password',
+  component: lazyRouteComponent(
+    () => import('./pages/new-password/NewPasswordPage'),
+    'NewPasswordPage',
+  ),
+});
+
+const authConfirmRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auth/confirm',
+  component: lazyRouteComponent(
+    () => import('./pages/auth-confirm/AuthConfirmPage'),
+    'AuthConfirmPage',
+  ),
+});
+
+const authCallbackRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/auth/callback',
+  component: lazyRouteComponent(
+    () => import('./pages/auth-confirm/AuthCallbackPage'),
+    'AuthCallbackPage',
+  ),
+});
+
+const citizenRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/citizen',
+  component: lazyRouteComponent(
+    () => import('./pages/citizen/CreateCitizenPage'),
+    'CreateCitizenPage',
+  ),
+});
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  mapRoute,
+  signUpRoute,
+  signInRoute,
+  verifyEmailRoute,
+  recoverPasswordRoute,
+  recoverPasswordSentRoute,
+  newPasswordRoute,
+  authConfirmRoute,
+  authCallbackRoute,
+  citizenRoute,
+]);
 
 export function buildRouter(queryClient: QueryClient, history?: RouterHistory) {
   return createRouter({

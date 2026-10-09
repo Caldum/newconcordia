@@ -9,12 +9,29 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
+      create_my_citizen: {
+        Args: { p_country_code: string; p_locale: string; p_name: string };
+        Returns: {
+          country_code: string;
+          locale: string;
+          name: string;
+        }[];
+      };
       get_game_clock: {
         Args: Record<PropertyKey, never>;
         Returns: {
           game_day: string;
           next_day_starts_at: string;
           server_time: string;
+        }[];
+      };
+      get_my_citizen: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          locale: string;
+          name: string;
         }[];
       };
       list_countries: {

@@ -8,3 +8,6 @@ export const defaultLocale: Locale = 'es';
 export function isLocale(value: unknown): value is Locale {
   return typeof value === 'string' && (locales as readonly string[]).includes(value);
 }
+
+/** Each language named in itself, for the language switch. */
+export const localeNames: Readonly<Record<Locale, string>> = { es: 'Español', en: 'English' };

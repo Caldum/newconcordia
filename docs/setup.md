@@ -17,8 +17,11 @@ Golden rule: **no secret goes in the repository or in the browser**. Secrets go 
 | 3 | Cloudflare account and API token | Web and clock in the cloud |
 | 4 | Protect `main` and `develop` | Merges without review |
 | 5 | Clock secret and failure alert | The daily job in the cloud |
+| 6 | Accounts: Auth settings, Turnstile, Resend, email templates | Sign-up and sign-in in the cloud |
+| 7 | Google sign-in (optional) | «Continuar con Google» |
+| 8 | Terms of use and privacy policy texts | Linking them from sign-up |
 
-The Turnstile, Resend, Google OAuth, Sentry and backup steps are added when the module that uses them arrives.
+The Sentry and backup steps are added when the module that uses them arrives.
 
 ## 1. GitHub *environments*
 
@@ -84,3 +87,50 @@ The Turnstile, Resend, Google OAuth, Sentry and backup steps are added when the 
    create an alert for failed invocations of `concordia-clock` and `concordia-clock-staging`, sent to your
    email. A failed day change makes the invocation fail on purpose.
 
+
+## 6. Accounts (D05)
+
+`supabase/config.toml` holds the local Auth settings only (it has Cloudflare's test CAPTCHA secret and a high
+email limit for the tests), so it is **not** pushed to the hosted projects. Repeat these steps in each
+Supabase project (staging and production), with each environment's own web address.
+
+1. **Turnstile.** Cloudflare dashboard → **Turnstile → Add widget**: name `concordia-staging` (and later
+   `concordia-production`), hostname the web address of that environment
+   (`concordia-web-staging.<your-subdomain>.workers.dev`), mode *Managed*. Copy the two keys:
+   - *Site key* → GitHub *environment* **Variable** `TURNSTILE_SITE_KEY` (public, goes into the web build).
+   - *Secret key* → Supabase → **Authentication → Attack Protection (Bot and Abuse Protection) → Enable
+     CAPTCHA protection**, provider *Turnstile*, paste the secret. It never goes to GitHub or the web.
+2. **URLs.** Supabase → **Authentication → URL Configuration**:
+   - *Site URL*: the web address of that environment, without a trailing slash.
+   - *Redirect URLs*: the same address, and the same address followed by `/**`.
+3. **Email sign-in rules.** **Authentication → Sign In / Providers → Email**: *Confirm email* on, *Minimum
+   password length* 10, *Email OTP expiration* 1800 seconds. Under **Attack Protection**, turn on *Prevent
+   use of leaked passwords* if your plan offers it.
+4. **Resend (SMTP).** At https://resend.com create the account, verify your domain (or use the test domain
+   meanwhile) and create an API key with *Sending access* only. Supabase → **Authentication → Emails → SMTP
+   Settings**: enable custom SMTP with host `smtp.resend.com`, port `465`, user `resend`, password the API
+   key, sender `no-reply@<your-domain>` and sender name `Concordia`. The key stays in Supabase.
+5. **Email templates.** Supabase → **Authentication → Emails → Templates**. For *Confirm signup*, *Reset
+   password* and *Change email address*, paste the subject and the HTML of `supabase/templates/
+   confirmation.html`, `recovery.html` and `email_change.html` (the subjects are in `supabase/config.toml`).
+   They write Spanish or English following the language chosen at sign-up, and their links go to
+   `/auth/confirm`, which works on any device.
+6. Check it: sign up on the staging web with a real address, open the email on your phone, and sign in.
+
+## 7. Google sign-in (optional)
+
+1. https://console.cloud.google.com → create a project `Concordia` → **APIs & Services → OAuth consent
+   screen**: *External*, app name Concordia, your support email, scopes `email`, `profile` and `openid`.
+2. **Credentials → Create credentials → OAuth client ID → Web application**. *Authorized JavaScript
+   origins*: the web address of each environment. *Authorized redirect URIs*:
+   `https://<project-ref>.supabase.co/auth/v1/callback` for each Supabase project.
+3. Supabase → **Authentication → Sign In / Providers → Google**: enable it and paste the client ID and the
+   client secret (the secret stays in Supabase).
+4. GitHub *environment* **Variable** `GOOGLE_SIGN_IN` = `true`. The next deploy shows «Continuar con Google».
+   Players who come in with Google choose their citizen name and country on the next screen.
+
+## 8. Terms of use and privacy policy
+
+The sign-up screen in the canvas asks to accept the terms of use and the privacy policy. Those texts are a
+legal decision, so the form does not show the checkbox yet (ADR 0006). When you have both texts, add them to
+`docs/legal/` (or send them) and they will be published as pages and linked from the sign-up form.

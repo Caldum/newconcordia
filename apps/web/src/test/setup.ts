@@ -20,3 +20,17 @@ if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
     }),
   });
 }
+
+// Turnstile comes from Cloudflare at runtime; tests get a widget that answers with a token at once.
+if (typeof window !== 'undefined') {
+  window.turnstile = {
+    render: (_container, options) => {
+      queueMicrotask(() => {
+        options.callback('turnstile-test-token');
+      });
+      return 'turnstile-test-widget';
+    },
+    reset: () => undefined,
+    remove: () => undefined,
+  };
+}

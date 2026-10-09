@@ -13,3 +13,6 @@ supabase/.temp/
 apps/clock/worker-configuration.d.ts
 packages/atlas/src/*.generated.ts
 packages/atlas/src/tokens.css
+
+# Auth email templates use Go template syntax, which Prettier cannot parse.
+supabase/templates/

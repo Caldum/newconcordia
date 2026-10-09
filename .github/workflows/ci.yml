@@ -22,6 +22,7 @@ jobs:
       # Build-time public configuration; this build is checked, never deployed.
       VITE_SUPABASE_URL: http://127.0.0.1:54321
       VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_build_only
+      VITE_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -65,15 +66,18 @@ jobs:
     name: Journeys and accessibility
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    env:
+      # Cloudflare's Turnstile test site key; local Auth checks tokens with the matching test secret.
+      VITE_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
-      - name: Start local Supabase (database, API and auth)
+      - name: Start local Supabase (database, API, auth and the test mailbox)
         run: >-
           pnpm exec supabase start
-          -x studio,imgproxy,vector,logflare,storage-api,edge-runtime,postgres-meta,supavisor,mailpit,realtime
+          -x studio,imgproxy,vector,logflare,storage-api,edge-runtime,postgres-meta,supavisor,realtime
       - name: Public configuration for the web build
         run: |
           pnpm exec supabase status -o env \

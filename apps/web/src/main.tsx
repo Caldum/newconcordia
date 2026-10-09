@@ -5,6 +5,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import { AuthProvider } from './features/auth/AuthProvider';
 import { LocaleProvider } from './i18n';
 import { buildRouter } from './router';
 
@@ -20,7 +21,9 @@ createRoot(container).render(
   <StrictMode>
     <LocaleProvider>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </QueryClientProvider>
     </LocaleProvider>
   </StrictMode>,
