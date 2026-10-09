@@ -16,7 +16,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D04 | Game map | 1 · World and accounts | Merged | [Caldum/newconcordia#6](https://github.com/Caldum/newconcordia/pull/6) |
 | D05 | Accounts | 1 · World and accounts | Merged | [Caldum/newconcordia#7](https://github.com/Caldum/newconcordia/pull/7) |
 | D06 | Citizenship | 1 · World and accounts | Merged | [Caldum/newconcordia#8](https://github.com/Caldum/newconcordia/pull/8) |
-| D07 | Admin panel | 1 · World and accounts | In PR | `feat/d07-admin` |
+| D07 | Admin panel | 1 · World and accounts | Merged | [Caldum/newconcordia#9](https://github.com/Caldum/newconcordia/pull/9) |
 | D08 | Profile and energy | 2 · Basic economy | Pending | — |
 | D09 | Ledger and currencies | 2 · Basic economy | Pending | — |
 | D10 | Companies and work | 2 · Basic economy | Pending | — |
@@ -57,7 +57,14 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · D04 merged. D05: Supabase Auth with email and Google, Turnstile through Auth, citizen created with the sign-up (unique, immutable name; reservations), bilingual email templates, landing, sign-up, sign-in, recovery and verification screens, e2e journeys reading the local mailbox.
 - 2026-10-09 · D05 merged. D06: citizen numbers and capital residence, 7-day adaptation rules, waitlist at sign-up, citizenship changes with review by the Interior minister or president and the hourly 72-hour job, welcome document.
 - 2026-10-09 · D06 merged. D07: admins table, country and region switches applied at the day change, append-only action log, admin panel, inactive countries gray on the map.
+- 2026-10-09 · D07 merged. Phase 1 complete.
 
 ## Next step
 
-D07 in review on `feat/d07-admin`. Phase 1 is complete once it merges. Next: D08 (profile and energy).
+Phases 0 and 1 are merged into `develop` (D01–D07 and Atlas). Next:
+
+1. D08 (profile and energy) on `feat/d08-profile`.
+2. Before adding screens to the first load: a lighter Supabase client (Auth and PostgREST only), since the
+   initial JavaScript is at 167.7 of 170 kB (ADR 0006).
+3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+   Google, legal texts, first admin) to see the game in staging.
