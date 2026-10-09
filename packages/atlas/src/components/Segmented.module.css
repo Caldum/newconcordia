@@ -1,0 +1,61 @@
+.segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-l);
+  background: #e1e7ec;
+}
+
+.segment {
+  min-height: var(--touch-min);
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-m);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--label-font-size);
+  font-weight: var(--label-font-weight);
+  cursor: pointer;
+}
+
+.segment[aria-selected='true'] {
+  background: var(--land);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(19 32 46 / 14%);
+}
+
+/* The 26 px track sits inside a 44 px touch target. */
+.switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.track {
+  display: inline-flex;
+  justify-content: flex-start;
+  width: 46px;
+  height: 26px;
+  padding: 3px;
+  border-radius: 13px;
+  background: var(--line-control);
+}
+
+.track::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--land);
+}
+
+.switch[aria-checked='true'] .track {
+  justify-content: flex-end;
+  background: var(--ink);
+}

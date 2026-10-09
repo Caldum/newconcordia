@@ -1,0 +1,63 @@
+.split {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar {
+  display: flex;
+  gap: 3px;
+  height: 10px;
+}
+
+.bar > span {
+  height: 100%;
+  border-radius: var(--radius-xs);
+}
+
+.legend {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--label-font-size);
+  font-weight: var(--label-font-weight);
+}
+
+.energy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px 0 10px;
+  border-radius: var(--radius-m);
+  background: var(--land);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.energyTrack {
+  width: 64px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--energy-track);
+}
+
+.energyTrack > span {
+  display: block;
+  height: 100%;
+  background: var(--energy);
+}
+
+.meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  background: #e1e7ec;
+}
+
+.meter > span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}

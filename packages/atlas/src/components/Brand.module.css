@@ -1,0 +1,18 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.onInk {
+  color: var(--on-ink);
+}
+
+/* Logotype: Archivo 800 at 125 % width; the gap is a third of the mark's width. */
+.logotype {
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
