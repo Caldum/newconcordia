@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatNumber, formatPercent, pluralCategory } from './format';
+import { formatDate, formatDateTime, formatNumber, formatPercent, pluralCategory } from './format';
 
 describe('formatNumber', () => {
   it('groups thousands in Spanish even with four digits', () => {
@@ -26,5 +26,18 @@ describe('pluralCategory', () => {
   it('follows each language rules', () => {
     expect(pluralCategory(1, 'es')).toBe('one');
     expect(pluralCategory(2, 'en')).toBe('other');
+  });
+});
+
+describe('dates on game time', () => {
+  it('shows the GMT−3 date, not the browser one', () => {
+    // 01:30 UTC on October 9 is still October 8 in the game.
+    expect(formatDate('2026-10-09T01:30:00Z', 'es')).toBe('8 de octubre de 2026');
+    expect(formatDate('2026-10-09T01:30:00Z', 'en')).toBe('October 8, 2026');
+  });
+
+  it('shows date and time for deadlines', () => {
+    expect(formatDateTime('2026-10-11T18:00:00Z', 'es')).toBe('11 de octubre a las 15:00');
+    expect(formatDateTime('2026-10-11T18:00:00Z', 'en')).toBe('October 11 at 3:00 PM');
   });
 });

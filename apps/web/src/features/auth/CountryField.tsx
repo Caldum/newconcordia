@@ -20,6 +20,7 @@ const messages = defineMessages({
           : `${String(count)} países coinciden.`,
     loadFailed: 'No se pudo cargar la lista de países. Recarga la página para intentar de nuevo.',
     required: 'Elige el país donde vas a empezar.',
+    other: 'Otro país',
   },
   en: {
     title: 'Choose your country',
@@ -34,6 +35,7 @@ const messages = defineMessages({
           : `${String(count)} countries match.`,
     loadFailed: 'The country list did not load. Reload the page to try again.',
     required: 'Choose the country where you start.',
+    other: 'Another country',
   },
 });
 
@@ -41,10 +43,20 @@ interface CountryFieldProps {
   value: string | null;
   onChange: (code: string) => void;
   showErrors: boolean;
+  /** Adds «Otro país» (value `otherCountry`) for the countries not in play. */
+  allowOther?: boolean;
+  /** Replaces «Elige tu país» as the group's title. */
+  title?: string;
 }
 
 /** The countries in play, from the database, with their names in the player's language. */
-export function CountryField({ value, onChange, showErrors }: CountryFieldProps) {
+export function CountryField({
+  value,
+  onChange,
+  showErrors,
+  allowOther = false,
+  title,
+}: CountryFieldProps) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const world = useWorld();
@@ -63,7 +75,7 @@ export function CountryField({ value, onChange, showErrors }: CountryFieldProps)
 
   return (
     <fieldset className={styles.fieldset} aria-busy={world.isPending}>
-      <legend className={`at-label ${styles.legend}`}>{copy.title}</legend>
+      <legend className={`at-label ${styles.legend}`}>{title ?? copy.title}</legend>
       <CountryPicker
         label={copy.label}
         countries={countries}
@@ -72,6 +84,7 @@ export function CountryField({ value, onChange, showErrors }: CountryFieldProps)
         searchLabel={copy.search}
         countText={copy.count(countries.length)}
         resultsText={copy.results}
+        {...(allowOther ? { otherLabel: copy.other } : {})}
       />
       {showErrors && !value ? (
         <p className={`at-support ${styles.error}`} role="alert">

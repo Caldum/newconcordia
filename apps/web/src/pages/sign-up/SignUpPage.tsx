@@ -1,4 +1,5 @@
 import { Button } from '@concordia/atlas/Button';
+import { otherCountry } from '@concordia/atlas/CountryPicker';
 import { Field } from '@concordia/atlas/Field';
 import { Note } from '@concordia/atlas/Note';
 import { Steps } from '@concordia/atlas/Steps';
@@ -23,6 +24,7 @@ import { newSignupKey, readSignupDraft, saveSignupDraft } from '../../features/a
 import { Story } from '../../features/auth/Story';
 import { Turnstile } from '../../features/auth/Turnstile';
 import type { TurnstileHandle } from '../../features/auth/Turnstile';
+import { WaitlistChoice } from '../../features/citizenship/WaitlistChoice';
 import { useLocale, useMessages } from '../../i18n';
 import { supabase } from '../../lib/supabase';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
@@ -46,7 +48,16 @@ function SignUpForm() {
   const [email, setEmail] = useState(draft?.email ?? '');
   const [password, setPassword] = useState('');
   const [citizenName, setCitizenName] = useState(draft?.citizenName ?? '');
-  const [countryCode, setCountryCode] = useState<string | null>(draft?.countryCode ?? null);
+  // «Otro país» keeps the picker on `otherCountry`; the player then waits for one and starts in another.
+  const [countryCode, setCountryCode] = useState<string | null>(
+    draft?.waitlistCountryCode ? otherCountry : (draft?.countryCode ?? null),
+  );
+  const [waitlistCountry, setWaitlistCountry] = useState<string | null>(
+    draft?.waitlistCountryCode ?? null,
+  );
+  const [startCountry, setStartCountry] = useState<string | null>(
+    draft?.waitlistCountryCode ? draft.countryCode : null,
+  );
   const [nameStatus, setNameStatus] = useState<NameStatus | 'unknown'>('unknown');
   const [forcedNameStatus, setForcedNameStatus] = useState<NameStatus | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -90,7 +101,9 @@ function SignUpForm() {
       nameInput.current?.focus();
       return;
     }
-    if (!countryCode) return;
+    const waits = countryCode === otherCountry;
+    const startsIn = waits ? startCountry : countryCode;
+    if (!startsIn || (waits && !waitlistCountry)) return;
     if (!captchaToken) {
       setProblem('captcha');
       return;
@@ -105,9 +118,10 @@ function SignUpForm() {
         emailRedirectTo: emailRedirectTo(),
         data: {
           citizen_name: trimmedName,
-          country_code: countryCode,
+          country_code: startsIn,
           locale,
           signup_key: signupKey,
+          ...(waits && waitlistCountry ? { waitlist_country_code: waitlistCountry } : {}),
         },
       },
     });
@@ -129,7 +143,13 @@ function SignUpForm() {
       return;
     }
 
-    saveSignupDraft({ email: trimmedEmail, citizenName: trimmedName, countryCode, signupKey });
+    saveSignupDraft({
+      email: trimmedEmail,
+      citizenName: trimmedName,
+      countryCode: startsIn,
+      waitlistCountryCode: waits ? waitlistCountry : null,
+      signupKey,
+    });
     await navigate({ to: '/verify-email' });
   };
 
@@ -181,7 +201,21 @@ function SignUpForm() {
         showErrors={showErrors}
         forcedStatus={forcedNameStatus}
       />
-      <CountryField value={countryCode} onChange={setCountryCode} showErrors={showErrors} />
+      <CountryField
+        value={countryCode}
+        onChange={setCountryCode}
+        showErrors={showErrors}
+        allowOther
+      />
+      {countryCode === otherCountry ? (
+        <WaitlistChoice
+          waitlistCountry={waitlistCountry}
+          onWaitlistCountry={setWaitlistCountry}
+          startCountry={startCountry}
+          onStartCountry={setStartCountry}
+          showErrors={showErrors}
+        />
+      ) : null}
       <Turnstile
         ref={turnstile}
         action="signup"

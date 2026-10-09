@@ -26,3 +26,25 @@ export function formatPercent(ratio: number, locale: Locale, maximumFractionDigi
 export function pluralCategory(count: number, locale: Locale): Intl.LDMLPluralRule {
   return new Intl.PluralRules(intlLocale[locale]).select(count);
 }
+
+/** Dates are shown on game time (GMT−3), the clock every player shares. */
+const gameTimeZone = 'America/Argentina/Buenos_Aires';
+
+/** «8 de octubre de 2026» / «October 8, 2026». */
+export function formatDate(value: Date | string, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale[locale], {
+    dateStyle: 'long',
+    timeZone: gameTimeZone,
+  }).format(new Date(value));
+}
+
+/** «8 de octubre, 15:00» / «October 8, 3:00 PM». */
+export function formatDateTime(value: Date | string, locale: Locale): string {
+  return new Intl.DateTimeFormat(intlLocale[locale], {
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: gameTimeZone,
+  }).format(new Date(value));
+}

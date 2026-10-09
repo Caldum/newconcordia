@@ -6,6 +6,8 @@ const draftSchema = z.object({
   email: z.string(),
   citizenName: z.string(),
   countryCode: z.string().nullable(),
+  /** A country not in play the player waits for (D06). */
+  waitlistCountryCode: z.string().nullable().default(null),
   /**
    * Random value sent with the sign-up. Signing up again from this browser with the same key takes back
    * the name the first attempt reserved, so a mistyped email can be fixed without losing the name.

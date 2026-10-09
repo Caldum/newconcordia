@@ -42,7 +42,7 @@ const messages = defineMessages({
   },
 });
 
-function CreateCitizenForm({ email }: { email: string }) {
+function CreateCitizenForm({ email, onCreated }: { email: string; onCreated: () => void }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const navigate = useNavigate();
@@ -87,8 +87,10 @@ function CreateCitizenForm({ email }: { email: string }) {
       }
       return;
     }
+    // Tell the page first, so the refreshed citizen does not trigger its «already has one» redirect.
+    onCreated();
     await queryClient.invalidateQueries({ queryKey: ['me'] });
-    await navigate({ to: '/' });
+    await navigate({ to: '/citizenship', search: { welcome: true } });
   };
 
   return (
@@ -123,14 +125,20 @@ export function CreateCitizenPage() {
   useDocumentTitle(copy.documentTitle);
   const auth = useAuth();
   const citizen = useCitizen();
+  const [created, setCreated] = useState(false);
 
   if (auth.status === 'signedOut') return <Navigate to="/sign-in" replace />;
   if (auth.status === 'loading' || citizen.isPending) return null;
-  if (citizen.data) return <Navigate to="/" replace />;
+  if (citizen.data && !created) return <Navigate to="/" replace />;
 
   return (
     <AuthLayout story={<Story title={copy.storyTitle}>{copy.storyBody}</Story>}>
-      <CreateCitizenForm email={auth.session.user.email ?? ''} />
+      <CreateCitizenForm
+        email={auth.session.user.email ?? ''}
+        onCreated={() => {
+          setCreated(true);
+        }}
+      />
     </AuthLayout>
   );
 }

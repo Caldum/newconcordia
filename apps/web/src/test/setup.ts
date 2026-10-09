@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
+import { cleanup, configure } from '@testing-library/react';
 import { afterEach } from 'vitest';
+
+// Screens load lazily and answer through mocked queries; give CI machines some slack.
+configure({ asyncUtilTimeout: 3000 });
 
 afterEach(() => {
   cleanup();

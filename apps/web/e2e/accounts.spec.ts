@@ -2,20 +2,11 @@ import { expect, test } from '@playwright/test';
 
 import { expectNoA11yViolations } from './a11y';
 import { linkFromLatestEmail } from './mailbox';
+import { newPlayer } from './players';
 import { stubTurnstile } from './turnstile';
 
 const apiUrl = process.env.VITE_SUPABASE_URL ?? 'http://127.0.0.1:54321';
 const publishableKey = process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? '';
-
-/** Unique per run: the local database keeps accounts between runs. */
-function newPlayer() {
-  const id = `${String(Date.now()).slice(-7)}${String(Math.floor(Math.random() * 100))}`;
-  return {
-    email: `e2e-${id}@example.com`,
-    name: `Jugador ${id}`,
-    password: 'clave-de-prueba-larga',
-  };
-}
 
 test.beforeEach(async ({ page }) => {
   await stubTurnstile(page);
@@ -40,10 +31,20 @@ test('a person signs up, verifies the email, signs out and signs in again', asyn
   await expect(page.getByText(player.email)).toBeVisible();
   await expectNoA11yViolations(page);
 
+  // Acceptance (D06): citizenship is immediate, with the document and the first-week limits.
   await page.goto(await linkFromLatestEmail(player.email));
+  await expect(
+    page.getByRole('heading', {
+      level: 1,
+      name: `Te damos la bienvenida a Argentina, ${player.name}.`,
+    }),
+  ).toBeVisible();
+  await expect(page.getByText(/^ARG-\d{6}$/)).toBeVisible();
+  await expect(page.getByText('Día 1 de 7')).toBeVisible();
+  await expectNoA11yViolations(page);
+  await page.getByRole('link', { name: 'Entrar a mi país' }).click();
   await expect(page.getByRole('heading', { level: 1, name: player.name })).toBeVisible();
   await expect(page.getByText('Ciudadanía: Argentina')).toBeVisible();
-  await expectNoA11yViolations(page);
 
   await page.getByRole('button', { name: 'Cerrar sesión' }).click();
   await expect(
@@ -80,7 +81,9 @@ test('a person who forgot the password gets back in with a new one', async ({
   });
   expect(signUp.ok()).toBe(true);
   await page.goto(await linkFromLatestEmail(player.email));
-  await expect(page.getByRole('heading', { level: 1, name: player.name })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 1, name: /Te damos la bienvenida/ }),
+  ).toBeVisible();
   await page.getByRole('button', { name: 'Cerrar sesión' }).click();
 
   await page.goto('/sign-in');

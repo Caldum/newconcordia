@@ -7,6 +7,10 @@ describe('jobForCron', () => {
     expect(jobForCron('0 3 * * *')).toBe('day_change');
   });
 
+  it('maps the hourly trigger to the citizenship timeouts', () => {
+    expect(jobForCron('0 * * * *')).toBe('citizenship_timeouts');
+  });
+
   it('returns undefined for a cron the Worker does not know', () => {
     expect(jobForCron('*/5 * * * *')).toBeUndefined();
   });

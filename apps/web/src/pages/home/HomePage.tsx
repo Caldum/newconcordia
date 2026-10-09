@@ -1,11 +1,10 @@
-import { Brand } from '@concordia/atlas/Brand';
-import { Button, buttonClassName } from '@concordia/atlas/Button';
+import { buttonClassName } from '@concordia/atlas/Button';
 import { Link } from '@tanstack/react-router';
 
 import type { Citizen } from '../../features/auth/useCitizen';
+import { GameShell } from '../../features/shell/GameShell';
 import { useWorld } from '../../features/world/useWorld';
-import { LanguageSwitch, useLocale, useMessages } from '../../i18n';
-import { supabase } from '../../lib/supabase';
+import { useLocale, useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 import styles from './HomePage.module.css';
@@ -25,35 +24,23 @@ export function HomePage({ citizen }: { citizen: Citizen }) {
     : citizen.country_code;
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <Link to="/" aria-label={copy.homeLabel} className={styles.brand}>
-          <Brand size={30} />
-        </Link>
-        <nav aria-label={copy.nav}>
-          <Link to="/map">{copy.map}</Link>
-        </nav>
-        <div className={styles.tools}>
-          <LanguageSwitch />
-          <Button
-            variant="ghost"
-            icon="logout"
-            onClick={() => {
-              void supabase.auth.signOut();
-            }}
-          >
-            {copy.signOut}
-          </Button>
-        </div>
-      </header>
+    <GameShell>
       <main className={styles.main}>
         <p className={styles.eyebrow}>{copy.citizenOf(countryName)}</p>
         <h1 className="at-place-xl">{citizen.name}</h1>
         <p className="at-body-l">{copy.body}</p>
-        <Link to="/map" className={buttonClassName({ size: 'large' })}>
-          {copy.openMap}
-        </Link>
+        <div className={styles.actions}>
+          <Link to="/map" className={buttonClassName({ size: 'large' })}>
+            {copy.openMap}
+          </Link>
+          <Link
+            to="/citizenship"
+            className={buttonClassName({ variant: 'secondary', size: 'large' })}
+          >
+            {copy.citizenship}
+          </Link>
+        </div>
       </main>
-    </div>
+    </GameShell>
   );
 }

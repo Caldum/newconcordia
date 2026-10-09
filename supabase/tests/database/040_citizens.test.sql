@@ -151,7 +151,7 @@ select throws_ok(
   'an account has a single citizen'
 );
 select results_eq(
-  $$ select * from public.get_my_citizen() $$,
+  $$ select name, country_code, locale from public.get_my_citizen() $$,
   $$ values ('Tomás Vera', 'ESP', 'en') $$,
   'a player reads only their own citizen'
 );
