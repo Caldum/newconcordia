@@ -1,0 +1,2 @@
+# LF everywhere, so Prettier, the tests and the hosted Worker see the same bytes on every system.
+* text=auto eol=lf
