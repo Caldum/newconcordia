@@ -1,0 +1,1 @@
+`flags.py` genera las banderas simplificadas (4:3) del selector de país. Las de dibujo simple vienen de lipis/flag-icons (MIT); México, España, Paraguay, Brasil, Portugal, Argentina y Uruguay están simplificadas para leerse a 32-56 px. Reimplementar como componente `Bandera` en React, con un SVG por país y la atribución de flag-icons.

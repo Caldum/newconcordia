@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Hospitales de campaña</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="guerra" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<nav aria-label="Sección" style="display:flex;gap:28px;flex-wrap:wrap;margin:0 0 28px;box-shadow:inset 0 -1px 0 #C3CDD5"><a href="Guerras.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Frentes</a><a href="AbrirBatalla.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Abrir batalla</a><a href="Hospital.dc.html" aria-current="page" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid #13202E;color:#13202E">Hospitales</a></nav>
+<div style="margin-bottom:20px"><h1 style="font-stretch:112%;font-weight:800;font-size:44px;line-height:1.04;letter-spacing:-.018em;margin:0">Hospitales de campaña</h1><p style="color:#556372;margin:6px 0 0;max-width:44em">El gobierno los instala cerca de cada frente con dinero del tesoro. Cada kit devuelve 50 de energía, hasta 100 por día y por persona.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<div style="flex:2 1 620px;min-width:0;display:flex;flex-direction:column;gap:16px">
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;padding:24px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;box-shadow:inset 0 0 0 2px #0E8F63,0 1px 2px rgba(19,32,46,.05)">
+<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;flex:none;width:56px;height:56px;border-radius:6px;background:#E1F4EC;color:#0A6A49"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M9.5 4h5v5.5H20v5h-5.5V20h-5v-5.5H4v-5h5.5V4z"/></svg></span>
+<div style="flex:1 1 260px;min-width:0"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-weight:700;font-size:18px">Hospital de Mendoza Norte</b><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:#E1F4EC;color:#0A6A49">Cerca de tu batalla</span></div><span style="font-size:14px;color:#556372">Frente de Cuyo. Presupuesto: 40.000 Crédito, quedan 31.200.</span>
+<div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;margin-top:10px;height:6px"><div style="height:100%;border-radius:2px;width:78%;background:#0E8F63"></div></div></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><button type="button" class="bp" onClick="{{usar}}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF;{{btn}}">{{btnTxt}}</button><span style="font-size:13px;color:#556372;font-variant-numeric:tabular-nums">Usaste {{usado}} de 100 hoy</span></div>
+</section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;padding:24px;display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:6px;flex:none;width:56px;height:56px;border-radius:6px;background:#EDF0F4;color:#556372"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M9.5 4h5v5.5H20v5h-5.5V20h-5v-5.5H4v-5h5.5V4z"/></svg></span>
+<div style="flex:1 1 260px;min-width:0"><b style="font-weight:700;font-size:18px">Hospital de Valle Central</b><div style="font-size:14px;color:#556372">Lo instaló Chile, país aliado, en el frente de Valle Central.</div>
+<div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;margin-top:10px;height:6px"><div style="height:100%;border-radius:2px;width:22%;background:#B86E00"></div></div></div>
+<span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:#FFF2D4;color:#7A4800">Quedan pocos kits</span>
+</section>
+</div>
+<aside style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 320px;min-width:0;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Instalar un hospital</h2>
+<p style="font-size:14px;color:#556372;margin:0">Como ministra de Defensa, puedes instalar uno nuevo. El dinero sale del tesoro y no se recupera.</p>
+<div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:600;font-size:14px" for="fr">Frente</label><select style="height:48px;padding:0 14px;border-radius:6px;border:1px solid #7F8B99;background:#FFFFFF;box-sizing:border-box;width:100%;font-size:16px;color:#13202E" id="fr" class="in"><option>Cuyo</option><option>Valle Central (aliado)</option></select></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-weight:600;font-size:14px">Presupuesto</span><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;height:34px;padding:0 14px">10.000</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;height:34px;padding:0 14px;background:#13202E;color:#fff">20.000</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;height:34px;padding:0 14px">40.000</span></div></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-variant-numeric:tabular-nums;border-bottom:1px solid #D6DEE4;font-size:14px;border:0"><span style="color:#556372">Alcanza para</span><b>Unos 400 kits</b></div>
+<button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF" type="button" class="bp">Instalar por 20.000</button>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { u: 50 }; }
+  renderVals() { var s = this, u = this.state.u; return { usado: u, btnTxt: u >= 100 ? 'Tope de hoy alcanzado' : 'Usar kit, +50 de energía', btn: u >= 100 ? 'background:#E4E8EE;color:#556372;cursor:default' : '', usar: function () { if (u < 100) s.setState({ u: u + 50 }); } }; }
+}
+</script>
+</body>
+</html>

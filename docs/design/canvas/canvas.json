@@ -1,0 +1,773 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "AbrirBatalla.dc.html": {
+      "expand": "fill",
+      "h": 1150,
+      "is_interactive": true,
+      "page": "guerra",
+      "title": "Abrir una batalla",
+      "w": 1440,
+      "x": 0,
+      "y": 1920
+    },
+    "Admin.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "admin",
+      "title": "Panel · países y temporada",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "AdminJugadores.dc.html": {
+      "expand": "fill",
+      "h": 1050,
+      "is_interactive": true,
+      "page": "admin",
+      "title": "Panel · jugadores y moderación",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Ajustes.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Ajustes de la cuenta",
+      "w": 1440,
+      "x": 1520,
+      "y": 2020
+    },
+    "Articulo.dc.html": {
+      "expand": "fill",
+      "h": 1200,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Artículo",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Banco.dc.html": {
+      "expand": "fill",
+      "h": 1450,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Bancos",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "Barra.dc.html": {
+      "h": 68,
+      "page": "sistema",
+      "title": "Barra de navegación",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Batalla.dc.html": {
+      "expand": "fill",
+      "h": 1300,
+      "is_interactive": true,
+      "page": "guerra",
+      "title": "Batalla en vivo",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "BatallaFin.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "guerra",
+      "title": "Batalla terminada",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Bienvenida.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Bienvenida al país",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "CambiarCiudadania.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Cambiar de país",
+      "w": 1440,
+      "x": 3040,
+      "y": 2020
+    },
+    "Ciudadanias.dc.html": {
+      "expand": "fill",
+      "h": 1050,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Solicitudes de ciudadanía",
+      "w": 1440,
+      "x": 1520,
+      "y": 2260
+    },
+    "Congreso.dc.html": {
+      "expand": "fill",
+      "h": 1950,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Congreso y leyes",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Elecciones.dc.html": {
+      "expand": "fill",
+      "h": 1150,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Elecciones",
+      "w": 1440,
+      "x": 0,
+      "y": 2260
+    },
+    "Empresa.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Mi empresa",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Entrenar.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "inicio",
+      "title": "Entrenamiento",
+      "w": 1440,
+      "x": 0,
+      "y": 2020
+    },
+    "Error404.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "sistema",
+      "title": "Página no encontrada",
+      "w": 1440,
+      "x": 0,
+      "y": 2020
+    },
+    "Escribir.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Escribir un artículo",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "FundarEmpresa.dc.html": {
+      "expand": "fill",
+      "h": 1250,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Fundar una empresa",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Gabinete.dc.html": {
+      "expand": "fill",
+      "h": 1150,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Gabinete",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Guerras.dc.html": {
+      "expand": "fill",
+      "h": 1400,
+      "is_interactive": true,
+      "page": "guerra",
+      "title": "Guerras y batallas",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Hospital.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "guerra",
+      "title": "Hospitales de campaña",
+      "w": 1440,
+      "x": 1520,
+      "y": 1920
+    },
+    "Ilustraciones.dc.html": {
+      "h": 1500,
+      "page": "sistema",
+      "title": "Ilustraciones de sección",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Inventario.dc.html": {
+      "expand": "fill",
+      "h": 1300,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Inventario y cuenta",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Landing.dc.html": {
+      "expand": "fill",
+      "h": 2297,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Landing",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Licitacion.dc.html": {
+      "expand": "fill",
+      "h": 1150,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Licitación de bancos",
+      "w": 1440,
+      "x": 7600,
+      "y": 0
+    },
+    "Login.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Iniciar sesión",
+      "w": 1440,
+      "x": 0,
+      "y": 4320
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 1500,
+      "is_interactive": true,
+      "page": "inicio",
+      "title": "Inicio",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Mantenimiento.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "sistema",
+      "title": "Mantenimiento",
+      "w": 1440,
+      "x": 1520,
+      "y": 2020
+    },
+    "Mapa.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "inicio",
+      "title": "Mapa",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Marca.dc.html": {
+      "h": 1250,
+      "page": "sistema",
+      "title": "Marca",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Mensajes.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Mensajes y avisos",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Mercado.dc.html": {
+      "expand": "fill",
+      "h": 1400,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Mercado",
+      "w": 1440,
+      "x": 0,
+      "y": 1970
+    },
+    "Misiones.dc.html": {
+      "expand": "fill",
+      "h": 950,
+      "is_interactive": true,
+      "page": "inicio",
+      "title": "Misiones",
+      "w": 1440,
+      "x": 1520,
+      "y": 2020
+    },
+    "Noticias.dc.html": {
+      "expand": "fill",
+      "h": 1500,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Prensa",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "NuevaClave.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Crear contraseña nueva",
+      "w": 1440,
+      "x": 4560,
+      "y": 4320
+    },
+    "Pais.dc.html": {
+      "expand": "fill",
+      "h": 1350,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "País",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "PaisNoJugable.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Registro · país no jugable",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Perfil.dc.html": {
+      "expand": "fill",
+      "h": 1200,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Perfil",
+      "w": 1440,
+      "x": 0,
+      "y": 2020
+    },
+    "PerfilPublico.dc.html": {
+      "expand": "fill",
+      "h": 1150,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Perfil de otro jugador",
+      "w": 1440,
+      "x": 4560,
+      "y": 2020
+    },
+    "ProponerLey.dc.html": {
+      "expand": "fill",
+      "h": 1100,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Proponer una ley",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "Rankings.dc.html": {
+      "expand": "fill",
+      "h": 1150,
+      "is_interactive": true,
+      "page": "sociedad",
+      "title": "Rankings",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "Recuperar.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Olvidé mi contraseña",
+      "w": 1440,
+      "x": 1520,
+      "y": 4320
+    },
+    "RecuperarEnviado.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Correo de recuperación enviado",
+      "w": 1440,
+      "x": 3040,
+      "y": 4320
+    },
+    "Recursos.dc.html": {
+      "expand": "fill",
+      "h": 1450,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Recursos y yacimientos",
+      "w": 1440,
+      "x": 3040,
+      "y": 2260
+    },
+    "Registro.dc.html": {
+      "expand": "fill",
+      "h": 1300,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Registro · paso 1",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "SesionVencida.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "sistema",
+      "title": "Sesión vencida",
+      "w": 1440,
+      "x": 3040,
+      "y": 2020
+    },
+    "Sistema.dc.html": {
+      "h": 1400,
+      "page": "sistema",
+      "title": "Sistema y estados",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Tesoro.dc.html": {
+      "expand": "fill",
+      "h": 1200,
+      "is_interactive": true,
+      "page": "politica",
+      "title": "Tesoro",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Trabajo.dc.html": {
+      "expand": "fill",
+      "h": 1400,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Empleo",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Vender.dc.html": {
+      "expand": "fill",
+      "h": 1000,
+      "is_interactive": true,
+      "page": "economia",
+      "title": "Vender un producto",
+      "w": 1440,
+      "x": 1520,
+      "y": 1970
+    },
+    "Verificacion.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "entrada",
+      "title": "Verificación de correo",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-07T12:00:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/artifact/XPws22DAhLW4kjGiDxDvg1",
+      "copiedAt": "2026-10-09T01:32:00Z",
+      "namespace": "atlas",
+      "title": "Atlas de Concordia",
+      "version": "1791508143-a28b"
+    }
+  ],
+  "launch": {
+    "page": "entrada",
+    "view": "canvas"
+  },
+  "notes": {
+    "note-9iw3qn": {
+      "text": "Esto tiene que ser un contenedor.",
+      "w": 240,
+      "x": 2244,
+      "y": 534
+    },
+    "note-rez8p1": {
+      "text": "Usar banderas de países.",
+      "w": 240,
+      "x": 3806,
+      "y": 456
+    },
+    "t-admin-0": {
+      "kind": "title1",
+      "maxW": 2960,
+      "page": "admin",
+      "text": "Administración del juego",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-economia-0": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "economia",
+      "text": "Economía · trabajar, producir y administrar tu dinero",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-economia-1": {
+      "kind": "title1",
+      "maxW": 2960,
+      "page": "economia",
+      "text": "Economía · comprar y vender",
+      "w": 240,
+      "x": 0,
+      "y": 1710
+    },
+    "t-entrada-0": {
+      "kind": "title1",
+      "maxW": 7520,
+      "page": "entrada",
+      "text": "Entrada · conocer el juego y crear tu ciudadano",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-entrada-1": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "entrada",
+      "text": "Entrada · iniciar sesión y recuperar la contraseña",
+      "w": 240,
+      "x": 0,
+      "y": 4060
+    },
+    "t-guerra-0": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "guerra",
+      "text": "Guerra · del frente a la batalla",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-guerra-1": {
+      "kind": "title1",
+      "maxW": 2960,
+      "page": "guerra",
+      "text": "Guerra · decisiones del gobierno",
+      "w": 240,
+      "x": 0,
+      "y": 1660
+    },
+    "t-inicio-0": {
+      "kind": "title1",
+      "maxW": 2960,
+      "page": "inicio",
+      "text": "Inicio y mapa",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-inicio-1": {
+      "kind": "title1",
+      "maxW": 2960,
+      "page": "inicio",
+      "text": "Inicio · entrenamiento y misiones",
+      "w": 240,
+      "x": 0,
+      "y": 1760
+    },
+    "t-politica-0": {
+      "kind": "title1",
+      "maxW": 7520,
+      "page": "politica",
+      "text": "Política · tu país y su Congreso",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-politica-1": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "politica",
+      "text": "Política · elecciones, ciudadanía y recursos",
+      "w": 240,
+      "x": 0,
+      "y": 2000
+    },
+    "t-sistema-0": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "sistema",
+      "text": "Marca, ilustraciones y sistema visual",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-sistema-1": {
+      "kind": "title1",
+      "maxW": 4480,
+      "page": "sistema",
+      "text": "Estados del sistema",
+      "w": 240,
+      "x": 0,
+      "y": 1760
+    },
+    "t-sociedad-0": {
+      "kind": "title1",
+      "maxW": 7520,
+      "page": "sociedad",
+      "text": "Sociedad · prensa y mensajes",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "t-sociedad-1": {
+      "kind": "title1",
+      "maxW": 6000,
+      "page": "sociedad",
+      "text": "Sociedad · tu perfil y tu cuenta",
+      "w": 240,
+      "x": 0,
+      "y": 1760
+    }
+  },
+  "order": [
+    "Entrenar.dc.html",
+    "Misiones.dc.html",
+    "Trabajo.dc.html",
+    "Empresa.dc.html",
+    "FundarEmpresa.dc.html",
+    "Inventario.dc.html",
+    "Banco.dc.html",
+    "Licitacion.dc.html",
+    "Mercado.dc.html",
+    "Vender.dc.html",
+    "Guerras.dc.html",
+    "Batalla.dc.html",
+    "BatallaFin.dc.html",
+    "AbrirBatalla.dc.html",
+    "Hospital.dc.html",
+    "Pais.dc.html",
+    "Gabinete.dc.html",
+    "Tesoro.dc.html",
+    "Congreso.dc.html",
+    "ProponerLey.dc.html",
+    "Elecciones.dc.html",
+    "Ciudadanias.dc.html",
+    "Recursos.dc.html",
+    "Noticias.dc.html",
+    "Articulo.dc.html",
+    "Escribir.dc.html",
+    "Mensajes.dc.html",
+    "Rankings.dc.html",
+    "Perfil.dc.html",
+    "Ajustes.dc.html",
+    "CambiarCiudadania.dc.html",
+    "PerfilPublico.dc.html",
+    "Admin.dc.html",
+    "AdminJugadores.dc.html",
+    "Marca.dc.html",
+    "Ilustraciones.dc.html",
+    "Sistema.dc.html",
+    "Barra.dc.html",
+    "Error404.dc.html",
+    "Mantenimiento.dc.html",
+    "SesionVencida.dc.html",
+    "Main.dc.html",
+    "Mapa.dc.html",
+    "Landing.dc.html",
+    "Registro.dc.html",
+    "PaisNoJugable.dc.html",
+    "Verificacion.dc.html",
+    "Bienvenida.dc.html",
+    "Login.dc.html",
+    "Recuperar.dc.html",
+    "RecuperarEnviado.dc.html",
+    "NuevaClave.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "entrada",
+      "name": "Entrada"
+    },
+    {
+      "id": "inicio",
+      "name": "Inicio y mapa"
+    },
+    {
+      "id": "economia",
+      "name": "Economía"
+    },
+    {
+      "id": "guerra",
+      "name": "Guerra"
+    },
+    {
+      "id": "politica",
+      "name": "Política y gobierno"
+    },
+    {
+      "id": "sociedad",
+      "name": "Sociedad y perfil"
+    },
+    {
+      "id": "admin",
+      "name": "Administración"
+    },
+    {
+      "id": "sistema",
+      "name": "Sistema"
+    }
+  ],
+  "title": "Concordia – Diseño de la app"
+}

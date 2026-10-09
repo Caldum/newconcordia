@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cuyo no se entrega</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="prensa" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<a href="Noticias.dc.html" class="bg" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:transparent;color:#13202E;margin:0 0 12px -14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>Prensa</a>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<article style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:2 1 640px;min-width:0;padding:44px 52px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;align-items:center;gap:12px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:44px;height:44px;border-radius:6px;background:#E3EFF9;color:#1C5B8C">OP</span><div><b style="font-weight:700;display:block">El Observador Pampeano</b><span style="font-size:14px;color:#556372">Por Ramiro Ledesma, hoy 15:04</span></div><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:13px;font-weight:600;background:#EDF1F4;color:#13202E;white-space:nowrap;box-sizing:border-box;background:#FCE8E6;color:#A3241B;margin-left:auto">Editorial</span></div>
+<h1 style="font-stretch:122%;font-weight:800;font-size:64px;line-height:.98;letter-spacing:-.025em;margin:0;font-size:52px">Cuyo no se entrega</h1>
+<div style="font-size:19px;line-height:1.65;max-width:38em;display:flex;flex-direction:column;gap:18px">
+<p style="margin:0">Tres días de ocupación son suficientes. España entró a Cuyo con una ventaja de combustible que nunca vamos a tener, así que esta resistencia hay que ganarla a golpes.</p>
+<p style="margin:0">La ronda 3 se define esta tarde. Si la ganamos, quedamos 2 a 1 y la cuarta se juega de noche, cuando España duerme. Les pedimos llevar armas Q3 como mínimo, comer antes de entrar y usar el hospital de Mendoza Norte, que todavía tiene 31.200 de presupuesto.</p>
+<p style="margin:0">Al Congreso: aprueben el segundo hospital. Al Banco Central: no toquen la tasa hasta que termine la batalla.</p>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1px solid #D6DEE4;flex-wrap:wrap">
+<button type="button" onClick="{{respaldar}}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;{{rTono}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M3.5 17 9 11.5l4 4L20.5 8M15 8h5.5v5.5"/></svg>{{rTxt}}</button>
+<span style="font-size:14px;color:#556372;font-variant-numeric:tabular-nums">{{resp}} personas respaldan este artículo</span>
+<button type="button" class="bg" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:transparent;color:#13202E;margin-left:auto"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20.5 3.5 10 14M20.5 3.5 14 20.5l-4-6.5-6.5-4 17-6.5z"/></svg>Compartir</button>
+</div>
+</article>
+<aside style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Comentarios</h2><span style="font-size:14px;color:#556372;font-variant-numeric:tabular-nums">{{ncom}}</span></div>
+<div style="padding:20px 22px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:32px;height:32px;border-radius:4px;background:#E3EFF9;color:#1C5B8C;font-size:12px">MA</span><div><b style="font-size:14px">Martín Acosta</b><span style="font-size:13px;color:#556372"> hace 40 min</span><p style="font-size:14px;margin:2px 0 0">Entro a las 20:00 con 40 golpes. Si alguien necesita armas Q3 a precio de costo, escríbanme.</p></div></div>
+<div style="display:flex;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:32px;height:32px;border-radius:4px;background:#FCE8E6;color:#A3241B;font-size:12px">PG</span><div><b style="font-size:14px">Pablo Garrido</b><span style="font-size:13px;color:#556372"> España, hace 22 min</span><p style="font-size:14px;margin:2px 0 0">Los esperamos.</p></div></div>
+<sc-if value="{{comento}}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-weight:700;font-size:13px;flex:none;box-sizing:border-box;width:32px;height:32px;border-radius:4px;background:#13202E;color:#fff;font-size:12px">CR</span><div><b style="font-size:14px">Camila Ríos</b><span style="font-size:13px;color:#556372"> ahora</span><p style="font-size:14px;margin:2px 0 0">Mañana se vota el segundo hospital en el Congreso. Pídanles el voto a sus congresistas.</p></div></div></sc-if>
+<div style="display:flex;gap:8px"><input class="in" aria-label="Escribe un comentario" value="Mañana se vota el segundo hospital en el Congreso. Pídanles el voto a sus congresistas." style="height:48px;padding:0 14px;border-radius:6px;border:1px solid #7F8B99;background:#FFFFFF;box-sizing:border-box;width:100%;font-size:16px;color:#13202E;height:44px;font-size:14px"><button style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:6px;font-weight:650;font-size:15px;border:0;text-decoration:none;white-space:nowrap;box-sizing:border-box;cursor:pointer;background:#13202E;color:#FFFFFF;width:44px;padding:0" type="button" class="bp" aria-label="Publicar comentario" onClick="{{comentar}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20.5 3.5 10 14M20.5 3.5 14 20.5l-4-6.5-6.5-4 17-6.5z"/></svg></button></div>
+</div></section>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1200}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { r: false, c: false }; }
+  renderVals() { var s = this, st = this.state;
+    return { resp: 318 + (st.r ? 1 : 0), rTxt: st.r ? 'Respaldado' : 'Respaldar', rTono: st.r ? 'background:#13202E;color:#FFFFFF' : 'background:#FFFFFF;color:#13202E;box-shadow:inset 0 0 0 1px #7F8B99',
+      respaldar: function () { s.setState({ r: !st.r }); }, comento: st.c, ncom: 2 + (st.c ? 1 : 0), comentar: function () { s.setState({ c: true }); } }; }
+}
+</script>
+</body>
+</html>

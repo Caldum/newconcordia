@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Tesoro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=EB+Garamond:ital,wght@1,500;1,600&amp;display=swap">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}a{color:#2457D6;text-decoration:none}a:hover{text-decoration:underline}:focus-visible{outline:3px solid #1F5FB8;outline-offset:2px;box-shadow:0 0 0 7px #FFFFFF}button,input,select,textarea{font-family:inherit}.bp:hover{background:#2A3650!important;text-decoration:none}.bw:hover{background:#B92E25!important;text-decoration:none}.bs:hover,.bg:hover{background:#F1F4F8!important;text-decoration:none}a.li:hover,.li:hover{background:#F4F6F9;text-decoration:none}.in:focus{outline:0;border-color:#2457D6!important;box-shadow:0 0 0 4px rgba(36,87,214,.14)}.segb:hover{color:#172033!important}.dot{animation:pl 1.8s ease-out infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,58,47,.45)}100%{box-shadow:0 0 0 9px rgba(217,58,47,0)}}.rise{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}@keyframes rise{from{transform:translateY(18px) rotate(-1deg)}to{transform:translateY(0) rotate(-2.5deg)}}@media (prefers-reduced-motion:reduce){.dot,.rise{animation:none}}</style>
+</helmet>
+<div style="background:#E4EBF0;color:#13202E;font-family:'Archivo',system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased">
+<dc-import name="Barra" activo="politica" hint-size="100%,68px"></dc-import>
+<main style="max-width:1320px;margin:0 auto;padding:28px 32px 72px;box-sizing:border-box">
+<nav aria-label="Sección" style="display:flex;gap:28px;flex-wrap:wrap;margin:0 0 28px;box-shadow:inset 0 -1px 0 #C3CDD5"><a href="Pais.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Argentina</a><a href="Gabinete.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Gabinete</a><a href="Tesoro.dc.html" aria-current="page" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid #13202E;color:#13202E">Tesoro</a><a href="Congreso.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Congreso</a><a href="Elecciones.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Elecciones</a><a href="Ciudadanias.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Ciudadanía</a><a href="Recursos.dc.html" style="padding:10px 2px 9px;font-weight:600;font-size:15px;text-decoration:none;border-bottom:3px solid transparent;color:#556372">Recursos</a></nav>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px"><div><h1 style="font-stretch:112%;font-weight:800;font-size:44px;line-height:1.04;letter-spacing:-.018em;margin:0">Tesoro de Argentina</h1><p style="color:#556372;margin:6px 0 0;font-size:17px">Cualquier ciudadano puede ver en qué se gasta. Solo pueden moverlo el presidente y el ministro de Economía, Diego Paz.</p></div><div style="display:inline-flex;padding:3px;border-radius:8px;background:#E1E7EC;gap:2px" role="tablist" aria-label="Período"><sc-for list="{{periodos}}" as="t" hint-placeholder-count="2"><button type="button" role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" class="segb" style="border:0;min-height:36px;padding:0 14px;border-radius:6px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;{{t.estilo}}">{{t.nombre}}</button></sc-for></div></div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;margin-bottom:20px">
+<section style="flex:1.2 1 420px;background:#13202E;color:#FFFFFF;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;color:#AEB9C6">En caja</span><span style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:56px;line-height:1">412.880</span><span style="font-size:14px;color:#AEB9C6">Crédito, más 8.940 Oro en reservas y 2.340 de combustible</span></section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 260px;padding:22px"><div style="font-size:14px;color:#556372">Entró {{periodoTxt}}</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:34px;color:#1F7A52">+{{entro}}</div><div style="font-size:13px;color:#556372">Impuestos y ventas de recursos</div></section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 260px;padding:22px"><div style="font-size:14px;color:#556372">Salió {{periodoTxt}}</div><div style="font-stretch:124%;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.015em;font-size:34px;color:#A82A21">−{{salio}}</div><div style="font-size:13px;color:#556372">Guerra, hospitales y yacimientos</div></section>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 420px;min-width:0"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">De dónde viene</h2></div><div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{ingresos}}" as="r" hint-placeholder-count="4"><div><div style="font-size:14px;font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;margin-bottom:6px"><span>{{r.nombre}}</span><b>{{r.valor}}</b></div><div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;height:8px"><div style="height:100%;border-radius:2px;width:{{r.ancho}}%;background:#1F7A52"></div></div></div></sc-for>
+</div></section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 420px;min-width:0"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">En qué se gasta</h2></div><div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{gastos}}" as="r" hint-placeholder-count="4"><div><div style="font-size:14px;font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;margin-bottom:6px"><span>{{r.nombre}}</span><b>{{r.valor}}</b></div><div style="height:8px;border-radius:2px;background:#E1E7EC;overflow:hidden;display:flex;height:8px"><div style="height:100%;border-radius:2px;width:{{r.ancho}}%;background:#A82A21"></div></div></div></sc-for>
+</div></section>
+<section style="background:#FFFFFF;border-radius:8px;box-shadow:inset 0 0 0 1px #D2DAE1;flex:1 1 360px;min-width:0"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #D2DAE1"><h2 style="font-stretch:112%;font-weight:750;font-size:23px;line-height:1.15;letter-spacing:-.01em;margin:0">Últimos movimientos</h2></div>
+<div style="padding:6px 12px 12px">
+<div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:10px"><span style="flex:1"><b style="font-weight:600;display:block;font-size:15px">Hospital de Mendoza Norte</b><span style="font-size:13px;color:#556372">Ley aprobada, hace 2 días</span></span><b style="font-variant-numeric:tabular-nums;color:#A82A21">−40.000</b></div>
+<div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:10px"><span style="flex:1"><b style="font-weight:600;display:block;font-size:15px">Venta de petróleo a Chile</b><span style="font-size:13px;color:#556372">Contrato de 7 días</span></span><b style="font-variant-numeric:tabular-nums;color:#1F7A52">+5.100</b></div>
+<div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:10px"><span style="flex:1"><b style="font-weight:600;display:block;font-size:15px">Compra de 800 de combustible</b><span style="font-size:13px;color:#556372">Para la resistencia en Cuyo</span></span><b style="font-variant-numeric:tabular-nums;color:#A82A21">−10.080</b></div>
+<div class="li" style="display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:6px;color:#13202E;text-decoration:none;padding:10px"><span style="flex:1"><b style="font-weight:600;display:block;font-size:15px">Exploración de litio, nivel 1</b><span style="font-size:13px;color:#556372">Norte Andino</span></span><b style="font-variant-numeric:tabular-nums;color:#A82A21">−2.000</b></div>
+</div></section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview": {"width": 1440, "height": 1200}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { per: 'sem' }; }
+  renderVals() {
+    var s = this, k = this.state.per === 'sem' ? 1 : 4.2;
+    function n(x) { return Math.round(x * k).toLocaleString('es-AR'); }
+    var I = [['Impuesto al trabajo', 21400], ['IVA del mercado', 15800], ['Aranceles', 6200], ['Venta de recursos', 5100]];
+    var G = [['Hospitales de campaña', 40000], ['Combustible para batallas', 10080], ['Mantenimiento de yacimientos', 2450], ['Exploración', 2000]];
+    var mi = I[0][1], mg = G[0][1];
+    return { periodos: [['sem', 'Esta semana'], ['mes', 'Este mes']].map(function (t) { var on = s.state.per === t[0]; return { nombre: t[1], on: on ? 'true' : 'false', estilo: on ? 'background:#FFFFFF;color:#13202E;box-shadow:0 1px 2px rgba(19,32,46,.14)' : 'background:transparent;color:#556372', pick: function () { s.setState({ per: t[0] }); } }; }),
+      periodoTxt: this.state.per === 'sem' ? 'esta semana' : 'este mes',
+      entro: n(I.reduce(function (a, b) { return a + b[1]; }, 0)), salio: n(G.reduce(function (a, b) { return a + b[1]; }, 0)),
+      ingresos: I.map(function (r) { return { nombre: r[0], valor: n(r[1]), ancho: Math.round(r[1] / mi * 100) }; }),
+      gastos: G.map(function (r) { return { nombre: r[0], valor: n(r[1]), ancho: Math.round(r[1] / mg * 100) }; }) };
+  }
+}
+</script>
+</body>
+</html>

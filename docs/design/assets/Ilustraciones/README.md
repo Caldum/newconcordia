@@ -1,0 +1,1 @@
+Láminas de 16:9 (640 × 360) para la cabecera de cada sección: economía, mercado, bancos, guerra, política, prensa y recursos. Planas, con la paleta de Atlas, suelo en `tinta` y fondo en el tinte de su sección. Se recortan desde el centro (`slice`) para llenar el lado derecho del componente Cabecera. No llevan texto.
