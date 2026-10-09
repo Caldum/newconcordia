@@ -10,11 +10,12 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Lista de espera | Waitlist | `waitlist` |
 | País | Country | `country` |
 | Región | Region | `region` |
-| Dueño de la región | Region owner | `owner` (`region_owner`) |
-| País de origen de la región | Home country | `home_country` |
+| Dueño de la región | Region owner | `owner_country_code` |
+| País de origen de la región | Home country | `home_country_code` |
+| Código de región (ARG-05) | Region code | `regions.code` |
 | Ocupada | Occupied | `occupied` |
 | En juego / fuera de juego | In play / not in play | `active` / `inactive` |
-| Territorio en disputa | Disputed territory | `disputed` |
+| Territorio en disputa | Disputed territory | `is_enabled = false` until the admin panel enables it |
 | Día de juego | Game day | `game_day` (`game.game_day()`) |
 | Reloj del juego | Game clock | `game.now()` |
 | Tarea programada | Scheduled job | `scheduled job` |

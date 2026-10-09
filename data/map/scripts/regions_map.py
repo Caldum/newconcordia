@@ -16,6 +16,47 @@ COLORS = {
     "GBR": "#A8558F",
 }
 
+# Region order per country, as listed in the game design document (module 2). The position gives each
+# region its fixed code (ARG-01 ... ARG-06), shared by the map, the database and the game. Codes never
+# change: a new region gets the next number at the end, and a removed one keeps its number unused.
+REGION_ORDER = {
+    "ARG": ["Buenos Aires", "Córdoba y el Litoral", "Norte Andino", "Gran Chaco y Misiones", "Cuyo",
+            "Patagonia"],
+    "BRA": ["Alto Amazonas", "Grão-Pará", "Acre y Rondônia", "Meio-Norte", "Ceará y Borborema",
+            "Pernambuco y São Francisco", "Bahía", "Planalto Central y Pantanal", "Minas Gerais",
+            "São Paulo", "Rio de Janeiro y Espírito Santo", "Pampa Gaúcha y Paraná"],
+    "CHL": ["Norte Grande", "Norte Chico", "Valle Central", "Biobío y Los Lagos", "Patagonia Chilena"],
+    "PRY": ["Chaco Paraguayo", "Alto Paraná y Amambay", "Asunción e Itapúa"],
+    "MEX": ["Sonora y las Californias", "Chihuahua y Durango", "Sierra Madre Oriental",
+            "Jalisco y Michoacán", "Valle de México y el Bajío", "Oaxaca y Chiapas", "Yucatán y el Golfo"],
+    "USA": ["Nueva Inglaterra", "Atlántico Medio", "Grandes Lagos", "Grandes Llanuras",
+            "Carolinas y Florida", "Tennessee y Misisipi", "Texas y Luisiana", "Montañas Rocosas",
+            "Pacífico y Alaska"],
+    "CAN": ["Provincias Atlánticas", "Quebec", "Ontario", "Praderas", "Columbia Británica",
+            "Yukón y el Ártico"],
+    "ESP": ["Galicia y el Cantábrico", "País Vasco y el Ebro", "Madrid", "Castillas y Extremadura",
+            "Cataluña y Levante", "Andalucía y Murcia", "Canarias"],
+    "ITA": ["Lombardía y Piamonte", "Véneto y Emilia", "Toscana y Lacio", "Mezzogiorno",
+            "Sicilia y Cerdeña"],
+    "PRT": ["Portugal Continental", "Azores", "Madeira"],
+    "DEU": ["Mar del Norte y Báltico", "Renania del Norte-Westfalia", "Valle del Rin", "Berlín y Sajonia",
+            "Baviera"],
+    "FRA": ["París y el Canal", "Bretaña y Loira", "Alsacia y Borgoña", "Aquitania y Occitania",
+            "Ródano y Provenza", "Francia de Ultramar"],
+    "GBR": ["Inglaterra", "Escocia", "Gales", "Irlanda del Norte"],
+}
+
+
+def region_code(country, name):
+    """Fixed code of a region: country code and its position in REGION_ORDER (ARG-05 is Cuyo)."""
+    return f"{country}-{REGION_ORDER[country].index(name) + 1:02d}" if name in REGION_ORDER[country] \
+        else _unknown(country, name)
+
+
+def _unknown(country, name):
+    raise KeyError(f"Unknown region: {country} {name!r}")
+
+
 BY_NAME = {
     "ARG": {
         "Buenos Aires": ["Buenos Aires", "Ciudad de Buenos Aires"],

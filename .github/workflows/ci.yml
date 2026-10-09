@@ -44,6 +44,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
+      - name: Map and world data tests
+        run: python3 -I -m unittest discover -s data/map/scripts
       - name: Lint migrations (squawk)
         run: pnpm db:lint
       - name: Start Postgres with every migration applied

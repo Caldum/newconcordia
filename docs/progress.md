@@ -12,7 +12,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D01 | Repository and automated delivery | 0 · Base | Merged | [Caldum/newconcordia#1](https://github.com/Caldum/newconcordia/pull/1) |
 | D02 | Clock and game day | 0 · Base | In PR | `feat/d02-clock` |
 | — | Atlas in code (`packages/atlas`) | 0 · Base | Pending | — |
-| D03 | World: countries, regions and owners | 1 · World and accounts | Pending | — |
+| D03 | World: countries, regions and owners | 1 · World and accounts | In PR | `feat/d03-world` |
 | D04 | Game map | 1 · World and accounts | Pending | — |
 | D05 | Accounts | 1 · World and accounts | Pending | — |
 | D06 | Citizenship | 1 · World and accounts | Pending | — |
@@ -48,6 +48,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · [Caldum/newconcordia#2](https://github.com/Caldum/newconcordia/pull/2) merged. The owner asked for the whole repository in English and for i18n (Spanish and English): `chore/english-repository` renames and translates the handoff kit (ADR 0004, ADR 0005).
 
 - 2026-10-09 · D01 merged. D02: game clock, game day, idempotent jobs and the clock Worker, verified end to end against local Supabase.
+
+- 2026-10-09 · D03: fixed region codes, world.json (250 countries, 78 regions), countries and regions tables with public reads.
 
 ## Next step
 
