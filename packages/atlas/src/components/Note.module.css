@@ -1,0 +1,55 @@
+.note,
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-m);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.note svg,
+.toast svg {
+  flex: none;
+}
+
+.info {
+  background: var(--info-tint);
+  color: var(--info-text);
+}
+
+.warning {
+  background: var(--warning-tint);
+  color: var(--warning-text);
+}
+
+.error {
+  background: var(--war-tint);
+  color: var(--war-text);
+}
+
+.ok {
+  background: var(--positive-tint);
+  color: var(--positive-text);
+}
+
+.toast {
+  align-items: center;
+  background: var(--ink);
+  color: var(--on-ink);
+  animation: enter 150ms ease-out;
+}
+
+.region {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}

@@ -1,0 +1,171 @@
+/* Atlas base: the page is the sea, text is ink, focus is always visible. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--sea);
+  color: var(--ink);
+  font-family: var(--font-archivo);
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--info);
+}
+
+/* Focus ring: 3 px info with a white halo, visible on land, ink and nation. */
+:focus-visible {
+  outline: 3px solid var(--info);
+  outline-offset: 2px;
+  box-shadow: var(--focus);
+}
+
+.at-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Type styles from tokens.json. */
+.at-display,
+.at-title-1,
+.at-title-2,
+.at-title-3 {
+  margin: 0;
+}
+
+.at-display {
+  font: var(--display-font-weight) var(--display-font-size) / var(--display-line-height)
+    var(--display-font-family);
+  font-stretch: var(--display-font-stretch);
+  letter-spacing: var(--display-letter-spacing);
+}
+
+.at-title-1 {
+  font: var(--title-1-font-weight) var(--title-1-font-size) / var(--title-1-line-height)
+    var(--title-1-font-family);
+  font-stretch: var(--title-1-font-stretch);
+  letter-spacing: var(--title-1-letter-spacing);
+}
+
+.at-title-2 {
+  font: var(--title-2-font-weight) var(--title-2-font-size) / var(--title-2-line-height)
+    var(--title-2-font-family);
+  font-stretch: var(--title-2-font-stretch);
+  letter-spacing: var(--title-2-letter-spacing);
+}
+
+.at-title-3 {
+  font: var(--title-3-font-weight) var(--title-3-font-size) / var(--title-3-line-height)
+    var(--title-3-font-family);
+  font-stretch: var(--title-3-font-stretch);
+}
+
+.at-figure,
+.at-score,
+.at-score-xl {
+  font-family: var(--font-archivo);
+  font-weight: 800;
+  font-stretch: 124%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+
+.at-figure {
+  font-size: var(--figure-font-size);
+  line-height: var(--figure-line-height);
+}
+
+.at-score {
+  font-size: var(--score-font-size);
+  line-height: var(--score-line-height);
+}
+
+.at-score-xl {
+  font-size: var(--score-xl-font-size);
+  line-height: var(--score-xl-line-height);
+}
+
+.at-body-l {
+  font-size: var(--body-l-font-size);
+  line-height: var(--body-l-line-height);
+}
+
+.at-support {
+  font-size: var(--support-font-size);
+  line-height: var(--support-line-height);
+  color: var(--text-muted);
+}
+
+.at-label {
+  font-size: var(--label-font-size);
+  line-height: var(--label-line-height);
+  font-weight: var(--label-font-weight);
+}
+
+/* Place names: EB Garamond italic, never for emphasis. */
+.at-place,
+.at-place-s,
+.at-place-xl {
+  font-family: var(--font-garamond);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.at-place {
+  font-size: var(--place-font-size);
+  line-height: var(--place-line-height);
+}
+
+.at-place-s {
+  font-size: var(--place-s-font-size);
+  line-height: var(--place-s-line-height);
+}
+
+.at-place-xl {
+  font-size: var(--place-xl-font-size);
+  line-height: var(--place-xl-line-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

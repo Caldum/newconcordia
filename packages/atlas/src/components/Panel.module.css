@@ -1,0 +1,44 @@
+.panel {
+  border-radius: var(--radius-l);
+}
+
+/* Everyday content: land with a 1 px inner border and no shadow. */
+.land {
+  background: var(--land);
+  box-shadow: var(--panel-border);
+}
+
+/* Decisions and scoreboards. */
+.ink {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+/* What belongs to the player's country. */
+.nation {
+  background: var(--nation);
+  color: var(--on-nation);
+}
+
+/* The map stage; panels floating above it use the floating shadow. */
+.map {
+  background: var(--sea-deep);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ink .header {
+  border-bottom-color: rgb(255 255 255 / 14%);
+}
+
+.body {
+  padding: 20px 22px;
+}

@@ -1,0 +1,81 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-m);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: var(--button-line-height);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.primary {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--ink-hover);
+}
+
+.war {
+  background: var(--war);
+  color: var(--on-ink);
+}
+
+.war:hover:not(:disabled) {
+  background: var(--war-hover);
+}
+
+.secondary {
+  background: var(--land);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-control);
+}
+
+.secondary:hover:not(:disabled),
+.ghost:hover:not(:disabled) {
+  background: var(--land-soft);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.light {
+  background: var(--on-ink);
+  color: var(--ink);
+}
+
+.outline-light {
+  background: transparent;
+  color: var(--on-ink);
+  box-shadow: inset 0 0 0 1px var(--on-ink-muted);
+}
+
+.large {
+  min-height: var(--touch-primary);
+  padding: 0 24px;
+  font-size: 17px;
+}
+
+/* Disabled buttons say why in their text ("Ya trabajaste hoy"); the look only supports it. */
+.button:disabled {
+  background: var(--land-soft);
+  color: var(--text-muted);
+  box-shadow: none;
+  cursor: default;
+}

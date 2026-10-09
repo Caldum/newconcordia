@@ -1,0 +1,31 @@
+.stage {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-9);
+  border-radius: var(--radius-xl);
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.withStripe {
+  padding-bottom: calc(var(--space-9) + 6px);
+}
+
+.stripe {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  height: 6px;
+}
+
+.stripe span {
+  flex: 1;
+}
+
+@media (width < 720px) {
+  .stage {
+    padding: var(--space-7) var(--space-5);
+  }
+}

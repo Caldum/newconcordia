@@ -1,0 +1,4 @@
+/* Entry point: import once at the app root (`import '@concordia/atlas/styles.css'`). */
+@import './fonts.css';
+@import './tokens.css';
+@import './base.css';
