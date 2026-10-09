@@ -12,6 +12,7 @@ describe('signup draft', () => {
       email: 'camila@ejemplo.com',
       citizenName: 'Camila Ríos',
       countryCode: 'ARG',
+      waitlistCountryCode: 'URY',
       signupKey: newSignupKey(),
     };
     saveSignupDraft(draft);

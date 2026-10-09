@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { citizenRow } from '../../test/fixtures/citizen';
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
 import { answerRpc, fakeSession, resetSupabaseMock, setSession } from '../../test/supabaseMock';
@@ -25,7 +26,14 @@ describe('CreateCitizenPage', () => {
       check_citizen_name: { data: 'available', error: null },
       create_my_citizen: (args) => {
         const { p_name: name } = args as { p_name: string };
-        citizen = [{ name, country_code: 'ESP', locale: 'es' }];
+        citizen = [
+          citizenRow({
+            name,
+            country_code: 'ESP',
+            region_code: 'ESP-03',
+            citizen_code: 'ESP-000001',
+          }),
+        ];
         return { data: citizen, error: null };
       },
     });
@@ -35,8 +43,13 @@ describe('CreateCitizenPage', () => {
     await user.click(screen.getByRole('radio', { name: 'España' }));
     await screen.findByText('Disponible. No podrás cambiarlo después.');
     await user.click(screen.getByRole('button', { name: 'Crear mi ciudadano' }));
-    expect(await screen.findByRole('heading', { level: 1, name: 'Tomás Vera' })).toBeVisible();
-    expect(screen.getByText('Ciudadanía: España')).toBeVisible();
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Te damos la bienvenida a España, Tomás Vera.',
+      }),
+    ).toBeVisible();
+    expect(screen.getByText('ESP-000001')).toBeVisible();
   });
 
   it('marks the name when the database says it is taken', async () => {

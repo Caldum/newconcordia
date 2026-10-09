@@ -79,7 +79,11 @@ export function AuthConfirmPage() {
         return;
       }
       clearSignupDraft();
-      await navigate({ to: '/', replace: true });
+      await navigate(
+        type === 'email'
+          ? { to: '/citizenship', search: { welcome: true }, replace: true }
+          : { to: '/', replace: true },
+      );
     });
     return () => {
       cancelled = true;

@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-10-09",
   // 03:00 UTC is 00:00 in GMT−3: the game day changes.
-  "triggers": { "crons": ["0 3 * * *"] },
+  "triggers": { "crons": ["0 3 * * *", "0 * * * *"] },
   "observability": {
     "enabled": true,
     "logs": { "enabled": true, "head_sampling_rate": 1 },

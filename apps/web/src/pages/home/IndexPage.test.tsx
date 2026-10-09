@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { citizenRow } from '../../test/fixtures/citizen';
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
 import {
@@ -58,7 +59,7 @@ describe('home', () => {
     const user = userEvent.setup();
     answerRpc({
       get_my_citizen: {
-        data: [{ name: 'Camila Ríos', country_code: 'ARG', locale: 'es' }],
+        data: [citizenRow()],
         error: null,
       },
       list_countries: { data: countryRows, error: null },

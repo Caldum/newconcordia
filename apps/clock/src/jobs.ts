@@ -1,6 +1,7 @@
 /** Cron expressions in wrangler.jsonc and the database job each one triggers. */
 const jobsByCron = {
   '0 3 * * *': 'day_change',
+  '0 * * * *': 'citizenship_timeouts',
 } as const satisfies Record<string, string>;
 
 export type JobName = (typeof jobsByCron)[keyof typeof jobsByCron];

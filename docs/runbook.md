@@ -30,6 +30,11 @@ deployment).
 
 ## Scheduled jobs
 
+| Cron (UTC) | Job | What it does |
+| --- | --- | --- |
+| `0 3 * * *` | `day_change` | Opens the new game day (00:00 GMT−3). |
+| `0 * * * *` | `citizenship_timeouts` | Approves citizenship requests left unanswered for 72 hours (so up to one hour late). |
+
 - Every run is in `game.job_runs` (job, slot, status, attempts, duration, error). Recent failures:
   `select job, slot, attempts, error from game.job_runs where status = 'failed' order by slot desc;`
 - Re-run a failed slot from the SQL editor (the same call the Worker makes):

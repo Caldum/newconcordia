@@ -9,6 +9,18 @@ const citizenSchema = z.object({
   name: z.string(),
   country_code: z.string(),
   locale: z.enum(['es', 'en']),
+  /** As printed on the document: ARG-003413. */
+  citizen_code: z.string(),
+  region_code: z.string(),
+  joined_at: z.string(),
+  citizen_since: z.string(),
+  /** War damage counts at half until then. */
+  adaptation_ends_at: z.string(),
+  votes_in_elections_from: z.string(),
+  /** Null until the first change of country; the next one waits until then. */
+  next_change_from: z.string().nullable(),
+  /** President or Interior minister of their country: reviews citizenship requests. */
+  reviews_citizenship: z.boolean(),
 });
 
 export type Citizen = z.infer<typeof citizenSchema>;

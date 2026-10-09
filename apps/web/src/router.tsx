@@ -108,6 +108,36 @@ const citizenRoute = createRoute({
   ),
 });
 
+const citizenshipRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/citizenship',
+  // `welcome` shows the greeting the first time, right after the email is confirmed.
+  validateSearch: (search: Record<string, unknown>): { welcome?: true } =>
+    search.welcome === true || search.welcome === 'true' ? { welcome: true } : {},
+  component: lazyRouteComponent(
+    () => import('./pages/citizenship/CitizenshipPage'),
+    'CitizenshipPage',
+  ),
+});
+
+const changeCitizenshipRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/citizenship/change',
+  component: lazyRouteComponent(
+    () => import('./pages/citizenship/ChangeCitizenshipPage'),
+    'ChangeCitizenshipPage',
+  ),
+});
+
+const citizenshipRequestsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/citizenship/requests',
+  component: lazyRouteComponent(
+    () => import('./pages/citizenship/CitizenshipRequestsPage'),
+    'CitizenshipRequestsPage',
+  ),
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   mapRoute,
@@ -120,6 +150,9 @@ const routeTree = rootRoute.addChildren([
   authConfirmRoute,
   authCallbackRoute,
   citizenRoute,
+  citizenshipRoute,
+  changeCitizenshipRoute,
+  citizenshipRequestsRoute,
 ]);
 
 export function buildRouter(queryClient: QueryClient, history?: RouterHistory) {

@@ -1,9 +1,10 @@
 import { AuthApiError } from '@supabase/supabase-js';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { readSignupDraft, saveSignupDraft } from '../../features/auth/signupDraft';
+import { citizenRow } from '../../test/fixtures/citizen';
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
 import {
@@ -24,6 +25,7 @@ function answerDatabase() {
   answerRpc({
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
+    count_waitlist: { data: 214, error: null },
     check_citizen_name: (args) => {
       const name = (args as { p_name: string }).p_name;
       return { data: takenNames.has(name.toLowerCase()) ? 'taken' : 'available', error: null };
@@ -80,6 +82,39 @@ describe('SignUpPage', () => {
       },
     });
     expect(readSignupDraft()).toMatchObject({ email: 'tomas@ejemplo.com', countryCode: 'ARG' });
+  });
+
+  it('puts the player on a waitlist and starts them in a country in play', async () => {
+    const user = userEvent.setup();
+    await renderRoute('/sign-up');
+    await user.type(await screen.findByLabelText('Correo'), 'tomas@ejemplo.com');
+    await user.type(screen.getByLabelText('Contraseña'), 'una-clave-larga');
+    await user.type(screen.getByLabelText('Nombre de tu ciudadano'), 'Tomás Vera');
+    await user.click(await screen.findByRole('radio', { name: 'Otro país' }));
+    await user.click(screen.getByRole('button', { name: 'Crear mi ciudadano' }));
+    expect(screen.getByText('Elige el país que quieres esperar.')).toBeVisible();
+    await user.selectOptions(screen.getByLabelText('País que quieres esperar'), 'URY');
+    expect(await screen.findByText(/Hay 214 personas esperando/)).toBeVisible();
+    expect(screen.getByText('Uruguay no está disponible actualmente.')).toBeVisible();
+    const start = screen.getByRole('group', { name: '¿Dónde quieres comenzar?' });
+    await user.click(within(start).getByRole('radio', { name: 'España' }));
+    await screen.findByText('Disponible. No podrás cambiarlo después.');
+    await user.click(screen.getByRole('button', { name: 'Crear mi ciudadano' }));
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Confirma tu correo' }),
+    ).toBeVisible();
+    expect(supabaseMock.auth.signUp).toHaveBeenCalledWith(
+      expect.objectContaining({
+        options: expect.objectContaining({
+          data: expect.objectContaining({
+            country_code: 'ESP',
+            waitlist_country_code: 'URY',
+          }) as unknown,
+        }) as unknown,
+      }),
+    );
+    expect(readSignupDraft()).toMatchObject({ countryCode: 'ESP', waitlistCountryCode: 'URY' });
   });
 
   it('says what is missing before sending anything', async () => {
@@ -149,6 +184,7 @@ describe('SignUpPage', () => {
       email: 'tomas@ejemplo.con',
       citizenName: 'Tomás Vera',
       countryCode: 'ARG',
+      waitlistCountryCode: null,
       signupKey: 'a'.repeat(64),
     });
     await renderRoute('/sign-up');
@@ -166,7 +202,7 @@ describe('SignUpPage', () => {
     setSession(fakeSession());
     answerRpc({
       get_my_citizen: {
-        data: [{ name: 'Camila Ríos', country_code: 'ARG', locale: 'es' }],
+        data: [citizenRow()],
         error: null,
       },
       list_countries: { data: countryRows, error: null },

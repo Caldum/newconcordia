@@ -9,13 +9,28 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
+      count_waitlist: { Args: { p_country_code: string }; Returns: number };
       create_my_citizen: {
         Args: { p_country_code: string; p_locale: string; p_name: string };
         Returns: {
           country_code: string;
           locale: string;
           name: string;
+        }[];
+      };
+      decide_citizenship_request: {
+        Args: { p_approve: boolean; p_request_id: number };
+        Returns: undefined;
+      };
+      get_citizenship_rules: {
+        Args: { p_country_code: string };
+        Returns: {
+          answer_hours: number;
+          country_code: string;
+          election_wait_days: number;
+          mode: string;
         }[];
       };
       get_game_clock: {
@@ -29,9 +44,49 @@ export type Database = {
       get_my_citizen: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          adaptation_ends_at: string;
+          citizen_code: string;
+          citizen_since: string;
           country_code: string;
+          joined_at: string;
           locale: string;
           name: string;
+          next_change_from: string;
+          region_code: string;
+          reviews_citizenship: boolean;
+          votes_in_elections_from: string;
+        }[];
+      };
+      get_my_citizenship_request: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          answer_by: string;
+          created_at: string;
+          decided_at: string;
+          request_id: number;
+          status: string;
+          to_country_code: string;
+        }[];
+      };
+      get_my_waitlist: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          joined_at: string;
+          place: number;
+        }[];
+      };
+      join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
+      leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
+      list_citizenship_requests: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          account_age_days: number;
+          answer_by: string;
+          citizen_name: string;
+          created_at: string;
+          from_country_code: string;
+          request_id: number;
         }[];
       };
       list_countries: {
@@ -55,6 +110,13 @@ export type Database = {
           is_enabled: boolean;
           name: string;
           owner_country_code: string;
+        }[];
+      };
+      request_citizenship: {
+        Args: { p_country_code: string };
+        Returns: {
+          request_id: number;
+          status: string;
         }[];
       };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };

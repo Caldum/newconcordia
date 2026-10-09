@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { readSignupDraft, saveSignupDraft } from '../../features/auth/signupDraft';
+import { citizenRow } from '../../test/fixtures/citizen';
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
 import {
@@ -21,11 +22,13 @@ describe('email links', () => {
   beforeEach(() => {
     answerRpc({
       get_my_citizen: {
-        data: [{ name: 'Camila Ríos', country_code: 'ARG', locale: 'es' }],
+        data: [citizenRow()],
         error: null,
       },
       list_countries: { data: countryRows, error: null },
       list_regions: { data: regionRows, error: null },
+      get_my_waitlist: { data: [], error: null },
+      get_my_citizenship_request: { data: [], error: null },
     });
   });
 
@@ -39,6 +42,7 @@ describe('email links', () => {
       email: 'camila@ejemplo.com',
       citizenName: 'Camila Ríos',
       countryCode: 'ARG',
+      waitlistCountryCode: null,
       signupKey: 'b'.repeat(64),
     });
     supabaseMock.auth.verifyOtp.mockImplementationOnce(() => {
@@ -46,7 +50,12 @@ describe('email links', () => {
       return Promise.resolve({ data: {}, error: null });
     });
     await renderRoute('/auth/confirm?token_hash=hash-1&type=email');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Camila Ríos' })).toBeVisible();
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Te damos la bienvenida a Argentina, Camila Ríos.',
+      }),
+    ).toBeVisible();
     expect(supabaseMock.auth.verifyOtp).toHaveBeenCalledTimes(1);
     expect(supabaseMock.auth.verifyOtp).toHaveBeenCalledWith({
       token_hash: 'hash-1',
@@ -109,6 +118,8 @@ describe('Google callback', () => {
       get_my_citizen: { data: [], error: null },
       list_countries: { data: countryRows, error: null },
       list_regions: { data: regionRows, error: null },
+      get_my_waitlist: { data: [], error: null },
+      get_my_citizenship_request: { data: [], error: null },
     });
     setSession(fakeSession('tomas@gmail.com'));
     await renderRoute('/auth/callback?code=abc');
