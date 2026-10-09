@@ -65,7 +65,7 @@ export type Database = {
       };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       buy: {
-        Args: { p_company_id: number; p_key: string; p_offer_id: number; p_quantity: number };
+        Args: { p_company_id?: number; p_key: string; p_offer_id: number; p_quantity: number };
         Returns: number;
       };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
@@ -350,6 +350,7 @@ export type Database = {
         Returns: {
           average_24h: number;
           best_price: number;
+          fee: number;
           good_code: string;
           offers: number;
           tariff: number;
@@ -358,7 +359,7 @@ export type Database = {
       };
       post_offer: {
         Args: {
-          p_company_id: number;
+          p_company_id?: number;
           p_good_code: string;
           p_key: string;
           p_market_country_code: string;

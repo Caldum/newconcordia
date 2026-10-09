@@ -25,6 +25,7 @@ const messages = defineMessages({
     home: 'Inicio',
     map: 'Mapa',
     economy: 'Economía',
+    market: 'Mercado',
     citizenship: 'Ciudadanía',
     admin: 'Administración',
     signOut: 'Cerrar sesión',
@@ -41,6 +42,7 @@ const messages = defineMessages({
     home: 'Home',
     map: 'Map',
     economy: 'Economy',
+    market: 'Market',
     citizenship: 'Citizenship',
     admin: 'Administration',
     signOut: 'Sign out',
@@ -74,6 +76,9 @@ export function GameShell({ children }: { children: ReactNode }) {
           </Link>
           <Link to="/work" {...linkProps}>
             {copy.economy}
+          </Link>
+          <Link to="/market" {...linkProps}>
+            {copy.market}
           </Link>
           <Link to="/citizenship" {...linkProps}>
             {copy.citizenship}

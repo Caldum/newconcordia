@@ -36,6 +36,9 @@ export default defineConfig(({ mode }) => ({
     },
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
+    // Form journeys type whole forms with user-event; under a full parallel run on a slow machine they
+    // pass 5 s while taking under 3 s alone.
+    testTimeout: 15_000,
     css: { modules: { classNameStrategy: 'non-scoped' } },
     coverage: {
       provider: 'v8',

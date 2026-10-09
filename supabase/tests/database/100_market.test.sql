@@ -51,19 +51,19 @@ select game.system_account('sink', 'ARG') as sink_arg \gset
 
 -- Posting moves the units into the offer.
 select pg_temp.act_as(:'camila');
-select public.post_offer('ration', 10, 1260, :'kitchen', 'ARG', 'd0000000-0000-4000-8000-000000000001') as offer \gset
+select public.post_offer('ration', 10, 1260, 'ARG', 'd0000000-0000-4000-8000-000000000001', :'kitchen') as offer \gset
 select is(
-  public.post_offer('ration', 10, 1260, :'kitchen', 'ARG', 'd0000000-0000-4000-8000-000000000001'),
+  public.post_offer('ration', 10, 1260, 'ARG', 'd0000000-0000-4000-8000-000000000001', :'kitchen'),
   :'offer'::bigint,
   'posting again with the same key returns the same offer'
 );
 select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'ration'), 10::numeric, 'the units left the depot');
 select throws_ok(
-  format($$ select public.post_offer('wheat', 6, 420, %s, 'ARG', gen_random_uuid()) $$, :'kitchen'),
+  format($$ select public.post_offer('wheat', 6, 420, 'ARG', gen_random_uuid(), %s) $$, :'kitchen'),
   '22023', 'quantity_unavailable', 'only whole units the company holds (5.5 wheat)'
 );
 select throws_ok(
-  $$ select public.post_offer('ration', 1, 0, null, 'ARG', gen_random_uuid()) $$,
+  $$ select public.post_offer('ration', 1, 0, 'ARG', gen_random_uuid()) $$,
   '22023', 'amount_invalid', 'prices are positive'
 );
 reset role;
@@ -75,7 +75,7 @@ select results_eq(
   'buyers see the offer with its seller and origin'
 );
 select throws_ok(
-  format($$ select public.post_offer('ration', 1, 100, %s, 'ARG', gen_random_uuid()) $$, :'kitchen'),
+  format($$ select public.post_offer('ration', 1, 100, 'ARG', gen_random_uuid(), %s) $$, :'kitchen'),
   '42501', 'not_your_company', 'nobody sells another player''s stock'
 );
 reset role;
@@ -84,12 +84,12 @@ reset role;
 select pg_temp.balance(:'marcos_arg') as marcos_before \gset
 select pg_temp.act_as(:'marcos');
 select is(
-  public.buy(:'offer', 4, null, 'e0000000-0000-4000-8000-000000000001'),
+  public.buy(:'offer', 4, 'e0000000-0000-4000-8000-000000000001'),
   5040::bigint,
   'the buyer pays 4 × 12.60, VAT included'
 );
 select is(
-  public.buy(:'offer', 4, null, 'e0000000-0000-4000-8000-000000000001'),
+  public.buy(:'offer', 4, 'e0000000-0000-4000-8000-000000000001'),
   5040::bigint,
   'the same request again does not buy twice'
 );
@@ -106,25 +106,25 @@ select is(
 select pg_temp.act_as(:'marcos');
 select is((select quantity from public.get_my_inventory() where good_code = 'ration'), 4::numeric, 'the rations are in the buyer''s inventory');
 select throws_ok(
-  format($$ select public.buy(%s, 7, null, gen_random_uuid()) $$, :'offer'),
+  format($$ select public.buy(%s, 7, gen_random_uuid()) $$, :'offer'),
   '22023', 'quantity_unavailable', 'nobody buys more than the offer has'
 );
 reset role;
 select pg_temp.act_as(:'camila');
 select throws_ok(
-  format($$ select public.buy(%s, 1, null, gen_random_uuid()) $$, :'offer'),
+  format($$ select public.buy(%s, 1, gen_random_uuid()) $$, :'offer'),
   '22023', 'own_offer', 'nobody buys their own offer'
 );
 reset role;
 
 -- Imports pay the tariff on top.
 select pg_temp.act_as(:'ana');
-select public.post_offer('ration', 5, 1200, null, 'ARG', gen_random_uuid()) as import_offer \gset
+select public.post_offer('ration', 5, 1200, 'ARG', gen_random_uuid()) as import_offer \gset
 reset role;
 select pg_temp.balance(:'marcos_arg') as marcos_before \gset
 select pg_temp.act_as(:'marcos');
 select is((select imported from public.list_market('ARG', 'ration') where offer_id = :'import_offer'), true, 'an offer from another country is an import');
-select is(public.buy(:'import_offer', 1, null, gen_random_uuid()), 1320::bigint, 'imports pay 10 % tariff on top');
+select is(public.buy(:'import_offer', 1, gen_random_uuid()), 1320::bigint, 'imports pay 10 % tariff on top');
 reset role;
 select is(
   (select balance from game.accounts where kind = 'citizen' and user_id = :'ana' and currency_code = 'ARG'),
@@ -136,12 +136,12 @@ select is(pg_temp.balance(:'treasury_arg'), 240::bigint + 57 + 120, 'VAT and tar
 -- Buying into a company's depot, only one's own.
 select pg_temp.act_as(:'marcos');
 select throws_ok(
-  format($$ select public.buy(%s, 1, %s, gen_random_uuid()) $$, :'import_offer', :'kitchen'),
+  format($$ select public.buy(%s, 1, gen_random_uuid(), %s) $$, :'import_offer', :'kitchen'),
   '42501', 'not_your_company', 'goods go only to the buyer''s own companies'
 );
 reset role;
 select pg_temp.act_as(:'camila');
-select public.buy(:'import_offer', 2, :'kitchen', gen_random_uuid());
+select public.buy(:'import_offer', 2, gen_random_uuid(), :'kitchen');
 select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'ration'), 12::numeric, 'bought into the company''s depot');
 reset role;
 
@@ -157,7 +157,7 @@ reset role;
 select game.transfer(:'marcos_arg', :'sink_arg', pg_temp.balance(:'marcos_arg') - 100, 'test', null);
 select pg_temp.act_as(:'marcos');
 select throws_ok(
-  format($$ select public.buy(%s, 1, null, gen_random_uuid()) $$, :'import_offer'),
+  format($$ select public.buy(%s, 1, gen_random_uuid()) $$, :'import_offer'),
   '22023', 'insufficient_funds', 'nobody buys without the money'
 );
 reset role;
@@ -174,15 +174,15 @@ reset role;
 -- At most 20 open offers per player.
 insert into game.inventories (user_id, good_code, quantity) values (:'marcos', 'iron', 30);
 select pg_temp.act_as(:'marcos');
-select public.post_offer('iron', 1, 840, null, 'ARG', gen_random_uuid()) from generate_series(1, 20);
+select public.post_offer('iron', 1, 840, 'ARG', gen_random_uuid()) from generate_series(1, 20);
 select throws_ok(
-  $$ select public.post_offer('iron', 1, 840, null, 'ARG', gen_random_uuid()) $$,
+  $$ select public.post_offer('iron', 1, 840, 'ARG', gen_random_uuid()) $$,
   '22023', 'too_many_offers', 'at most 20 open offers'
 );
 reset role;
 
 -- Access and totals.
-select ok(not has_function_privilege('anon', 'public.buy(bigint, integer, bigint, uuid)', 'EXECUTE'), 'visitors cannot buy');
+select ok(not has_function_privilege('anon', 'public.buy(bigint, integer, uuid, bigint)', 'EXECUTE'), 'visitors cannot buy');
 select ok(has_function_privilege('anon', 'public.list_market(text, text)', 'EXECUTE'), 'anyone can look at the market');
 select is_empty(
   $$ select currency_code from game.accounts group by currency_code having sum(balance) <> 0 $$,

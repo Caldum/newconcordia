@@ -112,9 +112,9 @@ create function public.post_offer(
   p_good_code text,
   p_quantity integer,
   p_price bigint,
-  p_company_id bigint,
   p_market_country_code text,
-  p_key uuid
+  p_key uuid,
+  p_company_id bigint default null
 )
 returns bigint
 language plpgsql
@@ -160,9 +160,9 @@ begin
   return v_id;
 end;
 $$;
-comment on function public.post_offer(text, integer, bigint, bigint, text, uuid) is
+comment on function public.post_offer(text, integer, bigint, text, uuid, bigint) is
   'Posts whole units from the player''s inventory or company depot to a country''s market.';
-grant execute on function public.post_offer(text, integer, bigint, bigint, text, uuid) to authenticated;
+grant execute on function public.post_offer(text, integer, bigint, text, uuid, bigint) to authenticated;
 
 create function public.withdraw_offer(p_offer_id bigint)
 returns void
@@ -188,7 +188,7 @@ grant execute on function public.withdraw_offer(bigint) to authenticated;
 
 -- Buys units of an offer. The buyer pays price × quantity, plus the tariff on imports; from the gross the
 -- VAT goes to the market's treasury and the fee leaves the game; the seller gets the rest.
-create function public.buy(p_offer_id bigint, p_quantity integer, p_company_id bigint, p_key uuid)
+create function public.buy(p_offer_id bigint, p_quantity integer, p_key uuid, p_company_id bigint default null)
 returns bigint
 language plpgsql
 security definer
@@ -264,9 +264,9 @@ begin
   return v_gross + v_tariff;
 end;
 $$;
-comment on function public.buy(bigint, integer, bigint, uuid) is
+comment on function public.buy(bigint, integer, uuid, bigint) is
   'Buys units of an offer into the inventory or an own company''s depot. Returns what the buyer paid.';
-grant execute on function public.buy(bigint, integer, bigint, uuid) to authenticated;
+grant execute on function public.buy(bigint, integer, uuid, bigint) to authenticated;
 
 create function public.list_market(p_country_code text, p_good_code text)
 returns table (
@@ -293,7 +293,9 @@ comment on function public.list_market(text, text) is 'Open offers of a good in 
 grant execute on function public.list_market(text, text) to anon, authenticated;
 
 create function public.market_summary(p_country_code text)
-returns table (good_code text, best_price bigint, average_24h bigint, offers integer, vat numeric, tariff numeric)
+returns table (
+  good_code text, best_price bigint, average_24h bigint, offers integer, vat numeric, tariff numeric, fee numeric
+)
 language sql
 stable
 security definer
@@ -308,7 +310,7 @@ as $$
             and t.created_at > game.now() - interval '24 hours'),
          (select count(*)::integer from game.market_offers as o
           where o.market_country_code = p_country_code and o.good_code = g.code and o.closed_at is null and o.quantity > 0),
-         p.vat, p.tariff
+         p.vat, p.tariff, game.param('market_fee')
   from game.goods as g
   cross join game.country_policies as p
   where p.country_code = p_country_code
