@@ -15,3 +15,4 @@ marked «Superseded by NNNN».
 | 0007 | Citizenship: numbers, adaptation, waitlist and changes | Accepted |
 | 0008 | Admin panel: admins, scheduled world changes and the action log | Accepted |
 | 0009 | Profile and energy: balance parameters, starting values and the level curve | Accepted |
+| 0010 | Ledger: currencies, accounts, postings and the welcome grant | Accepted |
