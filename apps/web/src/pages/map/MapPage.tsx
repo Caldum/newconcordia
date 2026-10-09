@@ -47,7 +47,10 @@ export function MapPage() {
   const ownerOf = useCallback(
     (shapeId: string) => {
       const region = worldData?.regions.get(shapeId);
-      return region?.is_enabled ? region.owner_country_code : undefined;
+      // Disabled regions and regions of countries out of play are gray and inert.
+      if (!region?.is_enabled) return undefined;
+      if (!worldData?.countries.get(region.home_country_code)?.is_active) return undefined;
+      return region.owner_country_code;
     },
     [worldData],
   );

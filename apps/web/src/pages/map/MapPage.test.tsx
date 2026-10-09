@@ -53,6 +53,29 @@ describe('MapPage', () => {
     expect(document.title).toBe('Mapa · Concordia');
   });
 
+  it('grays out the regions of a country taken out of play', async () => {
+    rpc.mockImplementation((name: string) =>
+      Promise.resolve(
+        name === 'list_countries'
+          ? {
+              data: countryRows.map((country) =>
+                country.code === 'ARG' ? { ...country, is_active: false } : country,
+              ),
+              error: null,
+            }
+          : { data: regionRows, error: null },
+      ),
+    );
+    const { container } = await renderRoute('/map');
+    await screen.findByRole('img', { name: /Planisferio/ });
+    // Spain is still in play and colored; Argentina's regions, even the one Spain occupies, are gray.
+    await waitFor(() => {
+      expect(container.querySelector('[data-shape="ESP-03"]')).toHaveAttribute('fill', '#D0453A');
+    });
+    expect(container.querySelector('[data-shape="ARG-01"]')).not.toHaveAttribute('fill');
+    expect(container.querySelector('[data-shape="ARG-05"]')).not.toHaveAttribute('fill');
+  });
+
   it('selects a region from the map and announces it', async () => {
     const { container } = await renderRoute('/map');
     await screen.findByRole('img', { name: /Planisferio/ });

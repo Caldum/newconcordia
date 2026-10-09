@@ -20,6 +20,7 @@ Golden rule: **no secret goes in the repository or in the browser**. Secrets go 
 | 6 | Accounts: Auth settings, Turnstile, Resend, email templates | Sign-up and sign-in in the cloud |
 | 7 | Google sign-in (optional) | «Continuar con Google» |
 | 8 | Terms of use and privacy policy texts | Linking them from sign-up |
+| 9 | Make yourself admin | The admin panel (`/admin`) |
 
 The Sentry and backup steps are added when the module that uses them arrives.
 
@@ -134,3 +135,18 @@ Supabase project (staging and production), with each environment's own web addre
 The sign-up screen in the canvas asks to accept the terms of use and the privacy policy. Those texts are a
 legal decision, so the form does not show the checkbox yet (ADR 0006). When you have both texts, add them to
 `docs/legal/` (or send them) and they will be published as pages and linked from the sign-up form.
+
+## 9. Make yourself admin (D07)
+
+Nobody can become an admin through the web or the API. In each Supabase project:
+
+1. Sign up on that environment's web with your email and confirm it.
+2. Supabase → **SQL Editor** → run (with your email):
+
+   ```sql
+   insert into game.admins (user_id)
+   select id from auth.users where email = 'you@example.com';
+   ```
+
+3. Reload the web: the bar shows **Administración**. Every action there is recorded in the action log.
+   To add someone else later, run the same statement with their email.

@@ -15,8 +15,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D03 | World: countries, regions and owners | 1 · World and accounts | Merged | [Caldum/newconcordia#5](https://github.com/Caldum/newconcordia/pull/5) |
 | D04 | Game map | 1 · World and accounts | Merged | [Caldum/newconcordia#6](https://github.com/Caldum/newconcordia/pull/6) |
 | D05 | Accounts | 1 · World and accounts | Merged | [Caldum/newconcordia#7](https://github.com/Caldum/newconcordia/pull/7) |
-| D06 | Citizenship | 1 · World and accounts | In PR | `feat/d06-citizenship` |
-| D07 | Admin panel | 1 · World and accounts | Pending | — |
+| D06 | Citizenship | 1 · World and accounts | Merged | [Caldum/newconcordia#8](https://github.com/Caldum/newconcordia/pull/8) |
+| D07 | Admin panel | 1 · World and accounts | In PR | `feat/d07-admin` |
 | D08 | Profile and energy | 2 · Basic economy | Pending | — |
 | D09 | Ledger and currencies | 2 · Basic economy | Pending | — |
 | D10 | Companies and work | 2 · Basic economy | Pending | — |
@@ -56,7 +56,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · D04: map route with owners and colors from the database, keyboard search, zoom buttons, CSP with the exact Supabase origin, e2e acceptance against local Supabase.
 - 2026-10-09 · D04 merged. D05: Supabase Auth with email and Google, Turnstile through Auth, citizen created with the sign-up (unique, immutable name; reservations), bilingual email templates, landing, sign-up, sign-in, recovery and verification screens, e2e journeys reading the local mailbox.
 - 2026-10-09 · D05 merged. D06: citizen numbers and capital residence, 7-day adaptation rules, waitlist at sign-up, citizenship changes with review by the Interior minister or president and the hourly 72-hour job, welcome document.
+- 2026-10-09 · D06 merged. D07: admins table, country and region switches applied at the day change, append-only action log, admin panel, inactive countries gray on the map.
 
 ## Next step
 
-D06 in review on `feat/d06-citizenship`. Next: D07 (admin panel) on `feat/d07-admin`.
+D07 in review on `feat/d07-admin`. Phase 1 is complete once it merges. Next: D08 (profile and energy).
