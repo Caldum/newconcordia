@@ -1,3 +1,7 @@
 # Migration linter. Supabase applies each migration file inside a transaction.
 pg_version = "17.0"
 assume_in_transaction = true
+
+# Identifiers already use bigint identity; small bounded counters (attempts, durations in ms) are
+# deliberately integer.
+excluded_rules = ["prefer-bigint-over-int"]

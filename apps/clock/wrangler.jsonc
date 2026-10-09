@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "concordia-clock",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-09",
+  // 03:00 UTC is 00:00 in GMT−3: the game day changes.
+  "triggers": { "crons": ["0 3 * * *"] },
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 1 },
+  },
+  // Local default. Deployments pass the project URL with `--var SUPABASE_URL:...`.
+  "vars": { "SUPABASE_URL": "http://127.0.0.1:54321" },
+  "secrets": { "required": ["SUPABASE_SECRET_KEY"] },
+  "env": {
+    "staging": {
+      "name": "concordia-clock-staging",
+      "vars": { "SUPABASE_URL": "http://127.0.0.1:54321" },
+      "secrets": { "required": ["SUPABASE_SECRET_KEY"] },
+    },
+  },
+}
