@@ -1,6 +1,6 @@
 import { buttonClassName } from '@concordia/atlas/Button';
 import { Note } from '@concordia/atlas/Note';
-import type { EmailOtpType } from '@supabase/supabase-js';
+import type { EmailOtpType } from '@supabase/auth-js';
 import { Link, useNavigate, useSearch } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';

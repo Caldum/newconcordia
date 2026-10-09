@@ -1,4 +1,4 @@
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import type { AuthChangeEvent, Session } from '@supabase/auth-js';
 import { vi } from 'vitest';
 
 type Listener = (event: AuthChangeEvent, session: Session | null) => void;

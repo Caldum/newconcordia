@@ -1,4 +1,4 @@
-import type { SupportedStorage } from '@supabase/supabase-js';
+import type { SupportedStorage } from '@supabase/auth-js';
 
 const rememberKey = 'concordia.session.remember';
 

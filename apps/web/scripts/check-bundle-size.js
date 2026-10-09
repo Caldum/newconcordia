@@ -2,10 +2,11 @@
 // Initial JS = the entry chunk plus the chunks index.html preloads. Lazy route chunks are excluded.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { brotliCompressSync } from 'node:zlib';
 
 const BUDGET_KB = 170;
-const distDir = new URL('../dist/', import.meta.url).pathname;
+const distDir = fileURLToPath(new URL('../dist/', import.meta.url));
 const html = readFileSync(join(distDir, 'index.html'), 'utf8');
 
 const scripts = [...html.matchAll(/(?:src|href)="\/(assets\/[^"]+\.js)"/g)].map(

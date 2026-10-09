@@ -1,4 +1,4 @@
-import { AuthApiError } from '@supabase/supabase-js';
+import { AuthApiError } from '@supabase/auth-js';
 import { screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
