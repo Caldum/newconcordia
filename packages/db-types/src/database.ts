@@ -64,6 +64,10 @@ export type Database = {
         Returns: number;
       };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      buy: {
+        Args: { p_company_id: number; p_key: string; p_offer_id: number; p_quantity: number };
+        Returns: number;
+      };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
@@ -153,6 +157,13 @@ export type Database = {
           request_id: number;
           status: string;
           to_country_code: string;
+        }[];
+      };
+      get_my_inventory: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          good_code: string;
+          quantity: number;
         }[];
       };
       get_my_job: {
@@ -265,6 +276,18 @@ export type Database = {
           wage: number;
         }[];
       };
+      list_market: {
+        Args: { p_country_code: string; p_good_code: string };
+        Returns: {
+          imported: boolean;
+          offer_id: number;
+          origin_country_code: string;
+          price: number;
+          quantity: number;
+          seller_name: string;
+          tariff: number;
+        }[];
+      };
       list_my_companies: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -299,6 +322,19 @@ export type Database = {
           posting_id: number;
         }[];
       };
+      list_my_offers: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          company_name: string;
+          created_at: string;
+          good_code: string;
+          market_country_code: string;
+          offer_id: number;
+          price: number;
+          quantity: number;
+          sold: number;
+        }[];
+      };
       list_regions: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -308,6 +344,28 @@ export type Database = {
           name: string;
           owner_country_code: string;
         }[];
+      };
+      market_summary: {
+        Args: { p_country_code: string };
+        Returns: {
+          average_24h: number;
+          best_price: number;
+          good_code: string;
+          offers: number;
+          tariff: number;
+          vat: number;
+        }[];
+      };
+      post_offer: {
+        Args: {
+          p_company_id: number;
+          p_good_code: string;
+          p_key: string;
+          p_market_country_code: string;
+          p_price: number;
+          p_quantity: number;
+        };
+        Returns: number;
       };
       request_citizenship: {
         Args: { p_country_code: string };
@@ -338,6 +396,7 @@ export type Database = {
         Args: { p_amount: number; p_company_id: number; p_key: string };
         Returns: number;
       };
+      withdraw_offer: { Args: { p_offer_id: number }; Returns: undefined };
       work: {
         Args: { p_company_id?: number; p_key: string };
         Returns: {
