@@ -1,0 +1,3 @@
+-- Local development fixtures only. `supabase db reset` runs this file; production never does.
+-- Reference data the game needs everywhere (countries, regions, balance parameters) ships in
+-- migrations instead, so every environment gets it.
