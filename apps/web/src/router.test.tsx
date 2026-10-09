@@ -1,14 +1,25 @@
 import { QueryClient } from '@tanstack/react-query';
 import { screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { buildRouter } from './router';
 import { renderRoute } from './test/renderRoute';
+import { resetSupabaseMock } from './test/supabaseMock';
+
+vi.mock('./lib/supabase', async () => ({
+  supabase: (await import('./test/supabaseMock')).supabaseMock,
+}));
 
 describe('router', () => {
-  it('renders the home page at /', async () => {
+  afterEach(() => {
+    resetSupabaseMock();
+  });
+
+  it('shows the landing at / to visitors', async () => {
     await renderRoute('/');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Concordia' })).toBeVisible();
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'El mundo está cambiando' }),
+    ).toBeVisible();
   });
 
   it('renders the not-found page for unknown paths', async () => {

@@ -1,4 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
+import { loadEnv } from 'vite';
+
+// The journeys call Auth directly with the same public values the build uses (.env.local or CI env).
+for (const [key, value] of Object.entries(loadEnv('production', process.cwd(), 'VITE_'))) {
+  process.env[key] ??= value;
+}
 
 const port = 8788;
 // Cloud sandboxes ship a preinstalled Chromium; CI installs the matching one with `playwright install`.

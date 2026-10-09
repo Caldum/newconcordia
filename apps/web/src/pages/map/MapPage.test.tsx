@@ -7,9 +7,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
+import { resetSupabaseMock, supabaseMock } from '../../test/supabaseMock';
 
-const rpc = vi.hoisted(() => vi.fn());
-vi.mock('../../lib/supabase', () => ({ supabase: { rpc } }));
+vi.mock('../../lib/supabase', async () => ({
+  supabase: (await import('../../test/supabaseMock')).supabaseMock,
+}));
+
+const rpc = supabaseMock.rpc;
 
 // Vitest runs from apps/web; jsdom gives import.meta.url an http scheme, so the path is built from cwd.
 const topology = readFileSync(join(process.cwd(), '../../data/map/world-regions.json'), 'utf8');
@@ -34,7 +38,7 @@ describe('MapPage', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    rpc.mockReset();
+    resetSupabaseMock();
   });
 
   it('colors each region with the color of its current owner', async () => {

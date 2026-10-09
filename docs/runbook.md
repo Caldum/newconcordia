@@ -70,5 +70,22 @@ pnpm exec supabase status -o env | grep -E '^(API_URL|PUBLISHABLE_KEY)='   # cop
 pnpm --filter @concordia/web dev
 ```
 
-`apps/web/.env.example` shows the two public variables. The build writes the Supabase origin into the CSP
+`apps/web/.env.example` shows the public variables (Supabase, Turnstile test site key, Google switch). The build writes the Supabase origin into the CSP
 (`connect-src`), so a build without `VITE_SUPABASE_URL` fails on purpose.
+
+## Local accounts (D05)
+
+- Auth emails do not leave the machine: open the test mailbox at http://127.0.0.1:54324 to read the
+  confirmation and recovery links.
+- Local Auth checks Turnstile tokens with Cloudflare's public test secret, which needs Internet access from
+  the Auth container. Where the container cannot reach `challenges.cloudflare.com` (some sandboxes), start
+  Supabase with CAPTCHA off and tell the journeys to skip the CAPTCHA check:
+
+  ```bash
+  SUPABASE_AUTH_CAPTCHA_ENABLED=false pnpm exec supabase start
+  E2E_CAPTCHA_DISABLED=true pnpm --filter @concordia/web e2e
+  ```
+
+  CI always runs with CAPTCHA on.
+- A citizen name is reserved, not owned, until the email is confirmed. An unconfirmed reservation is released
+  after 24 hours, or right away when the same browser signs up again (for example to fix a mistyped email).

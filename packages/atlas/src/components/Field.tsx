@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { InputHTMLAttributes, ReactNode, Ref } from 'react';
 
 import { cx } from '../cx';
 
@@ -16,6 +16,8 @@ interface FieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 
   /** Positive confirmation: «Nombre disponible». */
   success?: ReactNode;
   id?: string;
+  /** The input element, for example to move focus to the first field with an error. */
+  ref?: Ref<HTMLInputElement> | undefined;
 }
 
 /** 52 px text field with its label above and its messages tied to it for screen readers. */

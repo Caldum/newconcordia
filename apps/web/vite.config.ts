@@ -31,6 +31,8 @@ export default defineConfig(({ mode }) => ({
     env: {
       VITE_SUPABASE_URL: 'http://127.0.0.1:54321',
       VITE_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_test_key_for_unit_tests',
+      VITE_TURNSTILE_SITE_KEY: '1x00000000000000000000AA',
+      VITE_GOOGLE_SIGN_IN: 'true',
     },
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],

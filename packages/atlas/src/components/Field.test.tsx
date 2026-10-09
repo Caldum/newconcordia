@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
 
 import { expectNoAxeViolations } from '../test/axe';
@@ -43,5 +44,11 @@ describe('Field', () => {
   it('has no description when there is nothing to say', () => {
     render(<Field label="Contraseña" type="password" />);
     expect(screen.getByLabelText('Contraseña')).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('passes its ref to the input so forms can move focus to it', () => {
+    const ref = createRef<HTMLInputElement>();
+    render(<Field label="Correo" ref={ref} />);
+    expect(ref.current).toBe(screen.getByLabelText('Correo'));
   });
 });

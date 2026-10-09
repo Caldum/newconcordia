@@ -2,9 +2,12 @@ import { expect, test } from '@playwright/test';
 
 import { expectNoA11yViolations } from './a11y';
 
-test('home page renders and is accessible', async ({ page }) => {
+test('landing renders and is accessible', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1, name: 'Concordia' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'El mundo está cambiando' }),
+  ).toBeVisible();
+  await expect(page.getByText('13 países en juego')).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expectNoA11yViolations(page);
 });

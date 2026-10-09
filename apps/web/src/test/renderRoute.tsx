@@ -3,6 +3,7 @@ import { createMemoryHistory, RouterProvider } from '@tanstack/react-router';
 import { render } from '@testing-library/react';
 import type { RenderResult } from '@testing-library/react';
 
+import { AuthProvider } from '../features/auth/AuthProvider';
 import { LocaleProvider } from '../i18n';
 import type { Locale } from '../i18n';
 import { buildRouter } from '../router';
@@ -15,7 +16,9 @@ export async function renderRoute(path: string, locale: Locale = 'es'): Promise<
   return render(
     <LocaleProvider initialLocale={locale}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </QueryClientProvider>
     </LocaleProvider>,
   );

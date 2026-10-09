@@ -62,6 +62,7 @@ jobs:
           VITE_SUPABASE_URL: https://${{ vars.SUPABASE_PROJECT_REF }}.supabase.co
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
           VITE_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+          VITE_GOOGLE_SIGN_IN: ${{ vars.GOOGLE_SIGN_IN || 'false' }}
           VITE_SENTRY_DSN: ${{ vars.SENTRY_DSN_WEB }}
           VITE_APP_ENV: ${{ env.WRANGLER_ENV }}
         run: pnpm --filter @concordia/web build
