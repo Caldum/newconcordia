@@ -63,3 +63,10 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Impuesto al trabajo | Work tax | `country_policies.work_tax` |
 | Salario mínimo | Minimum wage | `country_policies.minimum_wage` |
 | Rendimiento (de la región) | Yield | `raw_yield` |
+| Mercado | Market | `market_offers`, `market_trades` |
+| Oferta (del mercado) | Offer | `market_offers` |
+| Inventario | Inventory | `inventories` |
+| IVA | VAT | `country_policies.vat` |
+| Arancel | Tariff | `country_policies.tariff` |
+| Comisión del mercado | Market fee | `market_fee` |
+| Importación | Import | `imported` |

@@ -20,7 +20,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D08 | Profile and energy | 2 · Basic economy | In review | `feat/d08-profile` |
 | D09 | Ledger and currencies | 2 · Basic economy | In review | `feat/d09-ledger` (on D08) |
 | D10 | Companies and work | 2 · Basic economy | In review | `feat/d10-companies` (on D09) |
-| D11 | Market | 2 · Basic economy | Pending | — |
+| D11 | Market | 2 · Basic economy | In review | `feat/d11-market` (on D10) |
 | D12 | Products and consumption | 2 · Basic economy | Pending | — |
 | D13 | Daily missions | 2 · Basic economy | Pending | — |
 | D14 | Training | 3 · War | Pending | — |
@@ -69,12 +69,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · D10: goods and recipes, country policies, companies with cash, stock, level and quality, jobs
   and the daily workday with wage and work tax in one transaction (ADR 0012). Database types now generate
   from native PostgreSQL (`pnpm db:types:native`).
+- 2026-10-09 · D11: player inventories, one market per country with VAT included, tariff on imports and the
+  1 % fee leaving the game, offers that hold their units, purchases into the inventory or a company's depot
+  (ADR 0013).
 
 ## Next step
 
-D08, D09 and D10 are in review, each stacked on the previous one. Next:
+D08 to D11 are in review, each stacked on the previous one.
 
-1. D11 (market) on `feat/d11-market`, stacked on D10.
+1. D12 (products and consumption) on `feat/d12-products`, stacked on D11.
 2. Owner: setup step 10 (development project) to run the web locally again.
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts, first admin) to see the game in staging.

@@ -18,3 +18,4 @@ marked «Superseded by NNNN».
 | 0010 | Ledger: currencies, accounts, postings and the welcome grant | Accepted |
 | 0011 | Local development without Docker | Accepted |
 | 0012 | Companies and work: production, cash, jobs and policies | Accepted |
+| 0013 | Market: country markets, escrow and who pays each tax | Accepted |
