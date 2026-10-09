@@ -18,7 +18,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D06 | Citizenship | 1 · World and accounts | Merged | [Caldum/newconcordia#8](https://github.com/Caldum/newconcordia/pull/8) |
 | D07 | Admin panel | 1 · World and accounts | Merged | [Caldum/newconcordia#9](https://github.com/Caldum/newconcordia/pull/9) |
 | D08 | Profile and energy | 2 · Basic economy | In review | `feat/d08-profile` |
-| D09 | Ledger and currencies | 2 · Basic economy | Pending | — |
+| D09 | Ledger and currencies | 2 · Basic economy | In review | `feat/d09-ledger` (on D08) |
 | D10 | Companies and work | 2 · Basic economy | Pending | — |
 | D11 | Market | 2 · Basic economy | Pending | — |
 | D12 | Products and consumption | 2 · Basic economy | Pending | — |
@@ -62,14 +62,16 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   100) and spent under a lock, level and rank derived (ADR 0009), energy in the game bar, profile screen.
   The web now uses auth-js and postgrest-js instead of supabase-js (initial JS 167.7 → 147.2 kB), auth
   errors no longer call every server failure «no connection», and `.gitattributes` keeps LF on Windows.
+- 2026-10-09 · D09: double-entry ledger (currencies, accounts, append-only postings, idempotent posting),
+  welcome grant of 5 Gold and 50 Credit after confirmation, transfers between citizens, balances in the bar
+  and the account screen (ADR 0010). Local development without Docker: pgTAP on native PostgreSQL
+  (`pnpm db:test:native`) and the web against a hosted development project (ADR 0011).
 
 ## Next step
 
-D08 is in review on `feat/d08-profile`. Next:
+D08 and D09 are in review (D09 is stacked on D08). Next:
 
-1. Merge D08 once CI is green, then D09 (ledger and currencies) on `feat/d09-ledger`.
-2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+1. D10 (companies and work) on `feat/d10-companies`, stacked on D09.
+2. Owner: setup step 10 (development project) to run the web locally again.
+3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts, first admin) to see the game in staging.
-3. Developing on Windows: ESLint, squawk and the clock Worker's tests need the Microsoft Visual C++
-   Redistributable (x64). Antivirus HTTPS scanning (Avast, for example) breaks local sign-ups because the
-   Auth container cannot verify Cloudflare's certificate: exclude `challenges.cloudflare.com`.

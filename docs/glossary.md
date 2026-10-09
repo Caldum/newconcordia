@@ -47,3 +47,11 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Influencia | Influence | `influence` |
 | Daño total (acumulado) | Total damage | `player_stats.damage` |
 | Estadísticas del jugador | Player stats | `player_stats` |
+| Moneda | Currency | `currency` (`GOLD`, or the country code for its Credit) |
+| Cuenta, saldo | Account, balance | `accounts`, `balance` (hundredths) |
+| Movimiento (asiento) | Posting | `ledger_postings` |
+| Contrapartida | Counterparty | `counterparty` |
+| Emisión (cuenta emisora) | Issuer | `issuer` account |
+| Salida del juego | Sink | `sink` account |
+| Regalo de bienvenida | Welcome grant | `welcome_grant` |
+| Transferencia | Transfer | `transfer` |
