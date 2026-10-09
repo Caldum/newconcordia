@@ -1,7 +1,7 @@
-# Origen
+# Source
 
-- Repositorio: https://github.com/cloudflare/skills
-- Ruta: `skills/durable-objects`
+- Repository: https://github.com/cloudflare/skills
+- Path: `skills/durable-objects`
 - Commit: `a18ffe2a99448ebff262fc87915b0fd14bab9b70`
-- Licencia: Apache 2.0
-- Copiado sin cambios el 2026-10-09.
+- License: Apache 2.0
+- Copied unchanged on 2026-10-09.

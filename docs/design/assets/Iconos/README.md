@@ -1,1 +1,0 @@
-Íconos de trazo propios: 1,8 px sobre una cuadrícula de 24, puntas y uniones redondeadas. Los archivos vienen en `tinta` (#13202E); en código se dibujan en línea con `currentColor`. Siempre junto a una palabra o con `aria-label`.

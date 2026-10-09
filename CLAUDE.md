@@ -1,120 +1,124 @@
-# Concordia · memoria del proyecto
+# Concordia · project memory
 
-Juego de estrategia multijugador y persistente en el navegador. Cada jugador es ciudadano de un país real:
-trabaja, entrena, combate por regiones reales, vota y gobierna. Este archivo resume lo esencial; el detalle
-vive en `docs/`.
+A persistent multiplayer strategy game in the browser. Every player is a citizen of a real country: they
+work, train, fight for real regions, vote and govern. This file is the summary; the detail lives in `docs/`.
 
-## Al empezar una sesión
+## At the start of a session
 
-1. Lee `docs/progreso.md` y los PR abiertos. Continúa desde el último punto empujado.
-2. Si la tarea toca reglas o pantallas, lee la fuente de verdad correspondiente (abajo).
-3. Lee el `SKILL.md` que corresponda en `.claude/skills/` antes de cada tipo de tarea (ver «Skills»).
+1. Read `docs/progress.md` and the open PRs. Continue from the last pushed point.
+2. If the task touches rules or screens, read the matching source of truth (below).
+3. Read the matching `SKILL.md` in `.claude/skills/` before each kind of task (see «Skills»).
 
-## Fuentes de verdad (gana la de arriba)
+## Sources of truth (the higher one wins)
 
-1. `docs/brief.md`, sobre todo la sección 3 (decisiones posteriores al GDD).
-2. Canvas de pantallas: `docs/design/canvas/*.dc.html` (referencia visual y de comportamiento, no código).
-3. Design system Atlas: `docs/design/atlas/` (`tokens.json`, `README.md`, `components/*`).
-4. Documento de diseño: `docs/gdd.md` (reglas, balance, plan D01–D30).
-5. Mapa: `datos/mapa/` (`regions_map.py`, `world-regions.json`).
+1. `docs/brief.md`, especially section 3 (decisions made after the GDD).
+2. Screen canvas: `docs/design/canvas/*.dc.html` (visual and behavioral reference, not code). Index:
+   `docs/design/README.md`.
+3. Atlas design system: `docs/design/atlas/` (`tokens.json`, `README.md`, `components/*`).
+4. Game design document: `docs/gdd.md` (rules, balance, D01–D30 plan).
+5. Map: `data/map/` (`scripts/regions_map.py`, `world-regions.json`).
 
-Textos de interfaz: `docs/voz.md`. Términos juego ↔ código: `docs/glosario.md`. Decisiones: `docs/adr/`.
+Interface copy: `docs/voice.md`. Game terms ↔ code names: `docs/glossary.md`. Decisions: `docs/adr/`.
 
-## Decisiones vigentes que mandan sobre el GDD
+## Decisions in force that override the GDD
 
-- Solo web de escritorio adaptable (hasta 1320 px, usable desde 360 px). Sin app móvil.
-- Español neutro con tuteo; nunca voseo. Sin atajos de teclado. Sin modo oscuro. WCAG 2.2 AA.
-- Ciudadanía inmediata al registrarse. 7 días de adaptación: daño al 50 % y sin voto en elecciones.
-- Registro: correo, contraseña, nombre de ciudadano (único, inmutable) y país. Turnstile y Google.
-- País fuera de juego: lista de espera por país + elegir otro para empezar; al abrir puede mudarse
-  conservando nivel, fuerza, Oro, objetos y empresas.
-- Cambio de ciudadanía: lo pide al otro país; automático o revisión del ministro del Interior según su ley;
-  sin respuesta en 72 h se aprueba solo. Pierde cargos y banca. Máximo uno cada 30 días.
-- Leyes: votan solo los 20 congresistas durante 24 h; gana más a favor que en contra. Empate: la
-  vicepresidenta tiene 12 h y su voto define en el momento; si no vota, la ley se cae. El presidente no vota.
-- Elecciones ciudadanas cada 15 días alternando Congreso y presidencia; mandatos de 30 días.
-- Economía: fundar empresa 20 Oro. Ración = 1 trigo + 2 puntos; arma Q = Q hierro + Q puntos;
-  combustible = 1 petróleo + 0,5 puntos. Región sin yacimiento 50 %, +15 % por nivel.
-- Bancos por licitación (2 licencias por ronda). Puntaje = garantía/10 + 20 × tasa depósito − 10 × tasa préstamo.
-- Daño = 50 × (1 + √fuerza/10) × (1 + 0,03 × rango) × arma × bonificaciones. Caso de prueba: 633 por golpe.
-- Batalla de hasta 5 rondas de 4 h; gana quien gane 3.
-- Misiones diarias: trabajar, entrenar, 5 golpes, leer un artículo. 1 Oro; 7 días seguidos, 3 Oro extra.
+- Adaptive desktop web only (up to 1320 px, usable from 360 px). No mobile app.
+- Interface in neutral Spanish with *tú* (never *voseo*) and English (ADR 0005). No keyboard shortcuts.
+  No dark mode. WCAG 2.2 AA.
+- Citizenship is immediate at sign-up. 7-day adaptation period: damage at 50 % and no vote in elections.
+- Sign-up: email, password, citizen name (unique, immutable) and country. Turnstile and Google.
+- Country not in play: per-country waitlist + choose another country to start; when it opens, the player
+  can move keeping level, strength, Gold, items and companies.
+- Citizenship change: requested from the other country; automatic or reviewed by its Interior minister by
+  law; approved automatically after 72 h without an answer. Loses offices and seat. At most once every 30 days.
+- Laws: only the 20 members of Congress vote, for 24 h; passes with more for than against. Tie: the vice
+  president has 12 h and their vote decides on the spot; if they do not vote, the law falls. The president
+  never votes.
+- Citizens vote in elections every 15 days, alternating Congress and presidency; 30-day terms.
+- Economy: founding a company costs 20 Gold. Ration = 1 wheat + 2 points; weapon Q = Q iron + Q points;
+  fuel = 1 oil + 0.5 points. Region without a deposit 50 %, +15 % per level.
+- Banks by tender (2 licenses per round). Score = collateral/10 + 20 × deposit rate − 10 × loan rate.
+- Damage = 50 × (1 + √strength/10) × (1 + 0.03 × rank) × weapon × bonuses. Test case: 633 per hit.
+- Battles of up to 5 rounds of 4 h; whoever wins 3 wins.
+- Daily missions: work, train, 5 hits, read an article. 1 Gold; 7 days in a row, 3 extra Gold.
 
-## Reglas de ingeniería que no se negocian
+## Non-negotiable engineering rules
 
-- **La base es la autoridad.** Reglas en funciones PL/pgSQL (`security definer`, `set search_path = ''`,
-  nombres calificados). RLS activo en todas las tablas, negar por defecto. El cliente no tiene
-  `insert/update/delete` sobre tablas: solo `execute` sobre funciones públicas. El navegador nunca decide
-  saldos, daño, votos ni permisos.
-- Una acción = una transacción, con validación de permisos, frecuencia y estado, y clave de idempotencia.
-- Dinero en libro de doble entrada, `bigint` de centésimos, sin saldos negativos.
-- Tiempo en `timestamptz` UTC. El día de juego (GMT−3 fijo) sale solo de `game.game_day()`.
-  El reloj es inyectable para pruebas (`game.now()`).
-- Ningún número mágico: parámetros de balance en la tabla `game.balance_params`.
-- Toda acción de administración queda auditada (quién, qué, cuándo, antes y después).
-- Secretos solo en GitHub Secrets o Wrangler. La `service_role` nunca llega al cliente.
-- Migraciones hacia adelante, revisadas con squawk, con plan de vuelta escrito en la cabecera.
+- **The database is the authority.** Rules live in PL/pgSQL functions (`security definer`,
+  `set search_path = ''`, qualified names). RLS on every table, deny by default. The client has no
+  `insert/update/delete` on tables: only `execute` on public functions. The browser never decides balances,
+  damage, votes or permissions.
+- One action = one transaction, validating permissions, rate limits and state, with an idempotency key.
+- Money in a double-entry ledger, `bigint` hundredths, no negative balances.
+- Time in `timestamptz` UTC. The game day (fixed GMT−3) comes only from `game.game_day()`. The clock is
+  injectable for tests (`game.now()`).
+- No magic numbers: balance parameters live in `game.balance_params`.
+- Every admin action is audited (who, what, when, before and after).
+- Secrets only in GitHub Secrets or Wrangler. The secret / `service_role` key never reaches the client.
+- Forward-only migrations, reviewed with squawk, with the way back written in the header.
 
 ## Stack
 
-pnpm workspaces · Node 24 LTS (`.nvmrc`) · TypeScript 6 estricto (`noUncheckedIndexedAccess`,
-`exactOptionalPropertyTypes`) · React 19 + Vite (SPA) · TanStack Router y Query · CSS Modules con tokens
-de Atlas · zod en los bordes · d3-geo + topojson-client · Supabase (Postgres, Auth, Realtime, Edge
-Functions) · Cloudflare Workers (web con assets y `apps/reloj` con Cron) · Resend · Sentry.
+pnpm workspaces · Node 24 LTS (`.nvmrc`) · strict TypeScript 6 (`noUncheckedIndexedAccess`,
+`exactOptionalPropertyTypes`) · React 19 + Vite (SPA) · TanStack Router and Query · CSS Modules with Atlas
+tokens · typed i18n catalogs (es, en) · zod at the edges · d3-geo + topojson-client · Supabase (Postgres,
+Auth, Realtime, Edge Functions) · Cloudflare Workers (web with assets and `apps/clock` with Cron) · Resend ·
+Sentry.
 
 ```text
-apps/web/              React: landing, juego y panel de administración
-apps/reloj/            Worker de Cloudflare con las tareas programadas
-supabase/migrations/   tablas, funciones y permisos, en SQL
-supabase/tests/        pruebas pgTAP
-supabase/functions/    Edge Functions (correos)
-supabase/seed.sql      datos de desarrollo local
-packages/tipos/        tipos generados desde la base
-packages/atlas/        tokens, estilos base y componentes de Atlas
-datos/mapa/            scripts del mapa y TopoJSON
-docs/                  brief, GDD, voz, diseño, ADR, progreso, setup, runbook
+apps/web/              React: landing, game and admin panel
+apps/clock/            Cloudflare Worker with the scheduled jobs
+supabase/migrations/   tables, functions and permissions, in SQL
+supabase/tests/        pgTAP tests
+supabase/functions/    Edge Functions (email)
+supabase/seed.sql      local development fixtures
+packages/db-types/     types generated from the database
+packages/atlas/        Atlas tokens, base styles and components
+data/map/              map scripts and TopoJSON
+docs/                  brief, GDD, voice, design, ADRs, plans, progress, setup, runbook
 ```
 
-## Idioma
+## Language
 
-Código, tablas, columnas, commits (Conventional Commits) y comentarios en inglés. Textos de interfaz en
-español neutro, agrupados por pantalla en archivos `messages.ts`, nunca dispersos en los componentes.
+Everything in the repository is in English: files, folders, identifiers, tables, columns, commits
+(Conventional Commits), comments and documentation (ADR 0004). Interface copy is the exception: it lives in
+per-screen message catalogs with Spanish (source) and English, never scattered in components (ADR 0005).
 
-## Comandos
+## Commands
 
 ```bash
-pnpm install                 # dependencias (Node 24, pnpm 10)
-pnpm lint                    # ESLint + Prettier, cero advertencias
-pnpm typecheck               # tsc en todos los paquetes
-pnpm test                    # Vitest en todos los paquetes
-pnpm build                   # build de producción
-pnpm db:start                # Supabase local (Docker)
+pnpm install                 # dependencies (Node 24, pnpm 10)
+pnpm lint                    # ESLint + Prettier, zero warnings
+pnpm typecheck               # tsc in every package
+pnpm test                    # Vitest in every package
+pnpm build                   # production build
+pnpm db:start                # local Supabase (Docker)
 pnpm db:test                 # pgTAP: supabase test db
-pnpm db:lint                 # squawk sobre las migraciones
-pnpm db:types                # regenera packages/tipos desde la base local
+pnpm db:lint                 # squawk on the migrations
+pnpm db:types                # regenerates packages/db-types from the local database
 pnpm --filter @concordia/web e2e   # Playwright + axe
 ```
 
-## Forma de trabajo
+## Way of working
 
-- Ramas: `main` es producción (no se toca). `develop` es la rama de integración. Cada módulo D en su
-  rama `feat/dNN-nombre` desde `develop`, con PR hacia `develop` y squash al fusionar.
-- Empuja temprano y seguido; PR en borrador desde el primer empuje; `docs/progreso.md` al día en cada empuje.
-- Cada regla del juego tiene su prueba antes que su pantalla (TDD). Cada PR: plan breve, migraciones,
-  funciones, pruebas, pantallas, docs y la prueba de aceptación del GDD.
-- Se fusiona solo con CI verde y revisión sin hallazgos. No se fusionan cambios destructivos de datos,
-  permisos que abran acceso, secretos o infraestructura de producción: quedan en PR para el usuario.
-- Decisión ambigua: la opción más razonable, registrada en un ADR (`docs/adr/NNNN-titulo.md`).
-- Lo que dependa de cuentas del usuario va como paso concreto en `docs/setup.md`.
+- Branches (ADR 0001): `main` is production (do not touch). `develop` is integration. Each D module on its
+  own `feat/dNN-name` branch from `develop`, PR into `develop`, squash merge.
+- Push early and often; draft PR from the first push; `docs/progress.md` updated on every push.
+- Every game rule gets its test before its screen (TDD). Every PR: short plan (`docs/plans/`), migrations,
+  functions, tests, screens, docs and the GDD acceptance test.
+- Merge only with green CI and a review without open findings. Never merge destructive data changes,
+  permission changes that open access, secrets or production infrastructure: leave those PRs to the owner.
+- Ambiguous decision: take the most reasonable option and record it in an ADR (`docs/adr/NNNN-title.md`).
+- Anything that depends on the owner's accounts goes into `docs/setup.md` as a concrete step.
 
-## Skills (`.claude/skills/`, origen en cada `SOURCE.md`, índice en `docs/skills.md`)
+## Skills (`.claude/skills/`, origin in each `SOURCE.md`, index in `docs/skills.md`)
 
-- Al empezar cada módulo: `writing-plans`; en cada regla: `test-driven-development`.
-- Antes de SQL: `supabase-postgres-best-practices` y `supabase`.
-- Antes del Worker o Wrangler: `workers-best-practices`, `wrangler`, `cloudflare`.
-- Antes de cada pantalla: `game-ui-design`, `react-best-practices`, `composition-patterns`, `accessibility`.
-  Al cerrarla: `web-quality-audit`. Landing: `seo`, `core-web-vitals`.
-- Antes de cada PR: `verification-before-completion`, `requesting-code-review`, `differential-review`.
-  Al agregar dependencias: `supply-chain-risk-auditor`.
-- Ante cualquier fallo: `systematic-debugging` antes de cambiar código.
-- Textos: `humanizer` junto con `docs/voz.md`.
+- Starting each module: `writing-plans`; for each rule: `test-driven-development`.
+- Before SQL: `supabase-postgres-best-practices` and `supabase`.
+- Before the Worker or Wrangler: `workers-best-practices`, `wrangler`, `cloudflare`.
+- Before each screen: `game-ui-design`, `react-best-practices`, `composition-patterns`, `accessibility`.
+  When closing it: `web-quality-audit`. Landing: `seo`, `core-web-vitals`.
+- Before each PR: `verification-before-completion`, `requesting-code-review`, `differential-review`.
+  When adding dependencies: `supply-chain-risk-auditor`.
+- On any failure: `systematic-debugging` before changing code.
+- Copy: `humanizer` together with `docs/voice.md`.

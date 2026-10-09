@@ -1,35 +1,35 @@
 <!-- @dsCard height=288 -->
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><title>Portada</title>
+<head><meta charset="utf-8"><title>Cover</title>
 <style>
-body{margin:0;background:var(--mar)}
-.c{position:relative;width:960px;height:288px;overflow:hidden;background:var(--mar);font-family:var(--font-archivo)}
+body{margin:0;background:var(--sea)}
+.c{position:relative;width:960px;height:288px;overflow:hidden;background:var(--sea);font-family:var(--font-archivo)}
 svg{position:absolute;left:0;top:0}
-.b-nacion{fill:var(--nacion)}.b-tinta{fill:var(--tinta)}.b-guerra{fill:var(--guerra)}.b-energia{fill:var(--energia)}.b-tierra{fill:var(--tierra)}
-.r-xl{rx:var(--radio-xl)}.r-l{rx:var(--radio-l)}.r-xs{rx:var(--radio-xs)}
-.n{font-family:var(--font-archivo);font-weight:800;font-stretch:124%;font-size:260px;fill:var(--nacion-sobre-tinta)}
-.nombre{position:absolute;left:40px;bottom:40px;width:440px}
-.nombre h1{margin:0;font-weight:800;font-stretch:112%;font-size:80px;line-height:.95;letter-spacing:-.02em;color:var(--tinta)}
-.nombre p{margin:12px 0 0;font-size:14px;color:var(--texto-suave)}
+.b-nation{fill:var(--nation)}.b-ink{fill:var(--ink)}.b-war{fill:var(--war)}.b-energy{fill:var(--energy)}.b-land{fill:var(--land)}
+.r-xl{rx:var(--radius-xl)}.r-l{rx:var(--radius-l)}.r-xs{rx:var(--radius-xs)}
+.n{font-family:var(--font-archivo);font-weight:800;font-stretch:124%;font-size:260px;fill:var(--nation-on-ink)}
+.name-block{position:absolute;left:40px;bottom:40px;width:440px}
+.name-block h1{margin:0;font-weight:800;font-stretch:112%;font-size:80px;line-height:.95;letter-spacing:-.02em;color:var(--ink)}
+.name-block p{margin:12px 0 0;font-size:14px;color:var(--text-muted)}
 </style></head>
 <body>
 <div class="c">
 <svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
 <!--
-bloques: nacion 200x208 (espacio-6 de aire), tinta 256x288 a sangre arriba y a la derecha, guerra 88x48, energia 88x8 (radio-xs)
-disposición: una losa alta de tinta con satélites, como el escenario y su panel en Entrada
-patrón: cifras de marcador (un numeral grande en Archivo ancho) recortado por la losa de tinta: Atlas se reconoce por sus marcadores
-escalas: separaciones de espacio-4 (16) y espacio-6 (24); radios radio-xl en losa y bloque, radio-l en guerra, radio-xs en energia
+blocks: nation 200x208 (space-6 of air), ink 256x288 bleeding off the top and right, war 88x48, energy 88x8 (radius-xs)
+layout: a tall ink slab with satellites, like the stage and its panel on the Entry screens
+pattern: scoreboard figures (one large numeral in wide Archivo) clipped by the ink slab: Atlas is recognized by its scoreboards
+scales: gaps of space-4 (16) and space-6 (24); radius-xl on the slab and block, radius-l on war, radius-xs on energy
 -->
-<defs><clipPath id="losa"><rect x="704" y="-10" width="266" height="308" rx="10"></rect></clipPath></defs>
-<rect class="b-nacion r-xl" x="480" y="40" width="200" height="208"></rect>
-<rect class="b-tinta r-xl" x="704" y="-10" width="266" height="308"></rect>
-<g clip-path="url(#losa)"><text class="n" x="690" y="270">58</text></g>
-<rect class="b-guerra r-l" x="592" y="264" width="88" height="48"></rect>
-<rect class="b-energia r-xs" x="480" y="264" width="88" height="8"></rect>
+<defs><clipPath id="slab"><rect x="704" y="-10" width="266" height="308" rx="10"></rect></clipPath></defs>
+<rect class="b-nation r-xl" x="480" y="40" width="200" height="208"></rect>
+<rect class="b-ink r-xl" x="704" y="-10" width="266" height="308"></rect>
+<g clip-path="url(#slab)"><text class="n" x="690" y="270">58</text></g>
+<rect class="b-war r-l" x="592" y="264" width="88" height="48"></rect>
+<rect class="b-energy r-xs" x="480" y="264" width="88" height="8"></rect>
 </svg>
-<div class="nombre"><h1>Atlas de<br>Concordia</h1><p>Un atlas que se juega: el mar es el fondo, la tierra son los paneles y cada país tiñe lo suyo.</p></div>
+<div class="name-block"><h1>Atlas de<br>Concordia</h1><p>Un atlas que se juega: el mar es el fondo, la tierra son los paneles y cada país tiñe lo suyo.</p></div>
 </div>
 </body>
 </html>

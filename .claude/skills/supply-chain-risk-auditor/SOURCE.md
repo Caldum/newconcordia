@@ -1,7 +1,7 @@
-# Origen
+# Source
 
-- Repositorio: https://github.com/trailofbits/skills
-- Ruta: `plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor`
+- Repository: https://github.com/trailofbits/skills
+- Path: `plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor`
 - Commit: `82fe8226252622fa807643bdca1710901198553a`
-- Licencia: CC BY-SA 4.0 (Trail of Bits). Atribución: skill creado por Trail of Bits, distribuido bajo CC BY-SA 4.0 sin modificaciones.
-- Copiado sin cambios el 2026-10-09.
+- License: CC BY-SA 4.0 (Trail of Bits). Attribution: skill created by Trail of Bits, redistributed under CC BY-SA 4.0 without modifications.
+- Copied unchanged on 2026-10-09.
