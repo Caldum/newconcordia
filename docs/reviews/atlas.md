@@ -17,7 +17,11 @@ keyboard widgets.
 - Fixed during review: `text-faint` on `sea` failed contrast in the gallery (Atlas allows it only on
   `land`; the gallery now shows Steps on a panel, as the screens do). `title-1` and the Document fields
   overflowed at 360 px; large type now steps down below 720 px and the Document grid wraps.
-- Critical: none. Important: none.
+- Fixed after CodeQL (1 high, 1 medium): the SVG parser stripped comments with a regular expression
+  (incomplete multi-character sanitization) and matched tags with nested quantifiers (possible
+  polynomial backtracking). It is now a linear scanner; the gallery reads its sample silhouettes with
+  DOMParser. Generated output did not change.
+- Critical: none open. Important: none.
 - Minor (accepted): `jsx-a11y/interactive-supports-focus` is disabled on the three composite widgets with a
   justification: focus belongs to their options (roving tabindex), as WAI-ARIA prescribes.
 
