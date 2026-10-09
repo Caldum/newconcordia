@@ -70,3 +70,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Arancel | Tariff | `country_policies.tariff` |
 | Comisión del mercado | Market fee | `market_fee` |
 | Importación | Import | `imported` |
+| Ración, comer | Ration, eat | `ration`, `eat_rations` |
+| Energía por comida (máximo diario) | Food energy (daily maximum) | `food_days`, `food_energy_daily_max` |
+| Multiplicador de daño (arma) | Damage multiplier | `goods.damage_multiplier` |
+| Objetos | Items | `inventories` |
