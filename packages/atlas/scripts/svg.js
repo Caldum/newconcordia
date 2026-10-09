@@ -10,30 +10,57 @@ const forbiddenTags = new Set(['script', 'foreignObject', 'style', 'text']);
  */
 
 /**
+ * Linear scanner: no backtracking regular expressions, no sanitizing by substitution.
  * @param {string} markup
  * @returns {ParsedSvg}
  */
 export function parseSvg(markup) {
-  const source = markup
-    .replace(/<\?[\s\S]*?\?>/g, '')
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .trim();
-  const tagPattern = /<(\/?)([A-Za-z][\w:-]*)((?:\s+[\w:-]+="[^"]*")*)\s*(\/?)>/g;
   /** @type {{ tag: string, attrs: Record<string, string>, children: SvgNode[] }[]} */
   const stack = [];
   /** @type {ParsedSvg | undefined} */
   let root;
-  let cursor = 0;
+  let index = 0;
 
-  for (const match of source.matchAll(tagPattern)) {
-    const between = source.slice(cursor, match.index);
-    if (between.trim() !== '') throw new Error(`Unexpected text content: "${between.trim()}"`);
-    cursor = match.index + match[0].length;
+  const isSpace = (/** @type {string | undefined} */ char) =>
+    char === ' ' || char === '\n' || char === '\t' || char === '\r';
+  const isNameChar = (/** @type {string | undefined} */ char) =>
+    char !== undefined && /^[\w:-]$/.test(char);
+  const skipSpaces = () => {
+    while (isSpace(markup[index])) index += 1;
+  };
+  const readName = () => {
+    const start = index;
+    while (isNameChar(markup[index])) index += 1;
+    if (index === start) throw new Error(`Expected a name at position ${index}`);
+    return markup.slice(start, index);
+  };
+  const skipPast = (/** @type {string} */ terminator) => {
+    const end = markup.indexOf(terminator, index);
+    if (end === -1) throw new Error(`Unterminated markup at position ${index}`);
+    index = end + terminator.length;
+  };
 
-    const [, closing, tag = '', rawAttrs = '', selfClosing] = match;
-    if (forbiddenTags.has(tag)) throw new Error(`Forbidden element <${tag}>`);
+  while (index < markup.length) {
+    skipSpaces();
+    if (index >= markup.length) break;
+    if (markup[index] !== '<') {
+      throw new Error(`Unexpected text content at position ${index}`);
+    }
+    if (markup.startsWith('<!--', index)) {
+      skipPast('-->');
+      continue;
+    }
+    if (markup.startsWith('<?', index)) {
+      skipPast('?>');
+      continue;
+    }
 
-    if (closing) {
+    if (markup.startsWith('</', index)) {
+      index += 2;
+      const tag = readName();
+      skipSpaces();
+      if (markup[index] !== '>') throw new Error(`Malformed closing tag </${tag}>`);
+      index += 1;
       const open = stack.pop();
       if (open?.tag !== tag) throw new Error(`Unexpected closing tag </${tag}>`);
       if (stack.length === 0) root = { attrs: open.attrs, children: open.children };
@@ -41,7 +68,34 @@ export function parseSvg(markup) {
       continue;
     }
 
-    const attrs = parseAttributes(rawAttrs);
+    index += 1;
+    const tag = readName();
+    if (forbiddenTags.has(tag)) throw new Error(`Forbidden element <${tag}>`);
+    /** @type {Record<string, string>} */
+    const attrs = {};
+    let selfClosing = false;
+    for (;;) {
+      skipSpaces();
+      if (markup.startsWith('/>', index)) {
+        selfClosing = true;
+        index += 2;
+        break;
+      }
+      if (markup[index] === '>') {
+        index += 1;
+        break;
+      }
+      const name = readName();
+      if (/^on/i.test(name)) throw new Error(`Forbidden attribute ${name}`);
+      if (!markup.startsWith('="', index))
+        throw new Error(`Attribute ${name} needs a quoted value`);
+      index += 2;
+      const end = markup.indexOf('"', index);
+      if (end === -1) throw new Error(`Unterminated value of ${name}`);
+      attrs[name] = markup.slice(index, end);
+      index = end + 1;
+    }
+
     if (selfClosing) {
       if (stack.length === 0) throw new Error(`Root <${tag}> cannot be self-closing`);
       attach(stack, [tag, attrs]);
@@ -50,21 +104,8 @@ export function parseSvg(markup) {
     }
   }
 
-  const rest = source.slice(cursor);
-  if (rest.trim() !== '') throw new Error(`Unexpected text content: "${rest.trim()}"`);
   if (stack.length > 0 || !root) throw new Error('Missing closing tag');
   return root;
-}
-
-/** @param {string} raw */
-function parseAttributes(raw) {
-  /** @type {Record<string, string>} */
-  const attrs = {};
-  for (const [, name = '', value = ''] of raw.matchAll(/([\w:-]+)="([^"]*)"/g)) {
-    if (/^on/i.test(name)) throw new Error(`Forbidden attribute ${name}`);
-    attrs[name] = value;
-  }
-  return attrs;
 }
 
 /** @param {{ tag: string, attrs: Record<string, string>, children: SvgNode[] }} element @returns {SvgNode} */
