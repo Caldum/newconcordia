@@ -123,6 +123,30 @@ export type Database = {
           to_country_code: string;
         }[];
       };
+      get_my_profile: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          checked_at: string;
+          citizen_code: string;
+          country_code: string;
+          damage: number;
+          energy: number;
+          energy_max: number;
+          energy_per_hour: number;
+          experience: number;
+          influence: number;
+          joined_at: string;
+          level: number;
+          level_experience: number;
+          name: string;
+          next_energy_at: string;
+          next_level_experience: number;
+          next_rank_damage: number;
+          rank: number;
+          region_code: string;
+          strength: number;
+        }[];
+      };
       get_my_waitlist: {
         Args: Record<PropertyKey, never>;
         Returns: {

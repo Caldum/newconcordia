@@ -1,5 +1,6 @@
 import { Brand } from '@concordia/atlas/Brand';
 import { Button } from '@concordia/atlas/Button';
+import { EnergyMeter } from '@concordia/atlas/Track';
 import { Link, Navigate } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
@@ -9,6 +10,9 @@ import { useIsAdmin } from '../admin/queries';
 import { useAuth } from '../auth/AuthProvider';
 import { useCitizen } from '../auth/useCitizen';
 import type { Citizen } from '../auth/useCitizen';
+import { initials } from '../profile/initials';
+import { useEnergy, useProfile } from '../profile/useProfile';
+import type { Profile } from '../profile/useProfile';
 
 import styles from './GameShell.module.css';
 
@@ -21,6 +25,10 @@ const messages = defineMessages({
     citizenship: 'Ciudadanía',
     admin: 'Administración',
     signOut: 'Cerrar sesión',
+    energy: 'Energía',
+    energyValue: (energy: number, max: number) => `${String(energy)} de ${String(max)}`,
+    recharge: (perHour: number) => `Se recarga ${String(perHour)} por hora`,
+    profile: (name: string) => `Tu perfil: ${name}`,
     loadFailed: 'No se pudo cargar tu ciudadano. Recarga la página para intentar de nuevo.',
   },
   en: {
@@ -31,14 +39,19 @@ const messages = defineMessages({
     citizenship: 'Citizenship',
     admin: 'Administration',
     signOut: 'Sign out',
+    energy: 'Energy',
+    energyValue: (energy: number, max: number) => `${String(energy)} of ${String(max)}`,
+    recharge: (perHour: number) => `Recharges ${String(perHour)} per hour`,
+    profile: (name: string) => `Your profile: ${name}`,
     loadFailed: 'Your citizen did not load. Reload the page to try again.',
   },
 });
 
-/** The frame of the signed-in screens until the game bar arrives (D08). */
+/** The frame of the signed-in screens: the game bar (NavBar canvas) and the page. */
 export function GameShell({ children }: { children: ReactNode }) {
   const copy = useMessages(messages);
   const isAdmin = useIsAdmin();
+  const profile = useProfile();
   const linkProps = { activeProps: { 'aria-current': 'page' as const } };
   return (
     <div className={styles.page}>
@@ -63,6 +76,7 @@ export function GameShell({ children }: { children: ReactNode }) {
           ) : null}
         </nav>
         <div className={styles.tools}>
+          {profile.data ? <PlayerStatus profile={profile.data} /> : null}
           <LanguageSwitch />
           <Button
             variant="ghost"
@@ -77,6 +91,27 @@ export function GameShell({ children }: { children: ReactNode }) {
       </header>
       {children}
     </div>
+  );
+}
+
+/** Energy and the way to the profile. Hidden while the profile loads or if it fails. */
+function PlayerStatus({ profile }: { profile: Profile }) {
+  const copy = useMessages(messages);
+  const energy = useEnergy(profile.energyReading) ?? profile.energy;
+  return (
+    <>
+      <span className={styles.chip} title={copy.recharge(profile.energy_per_hour)}>
+        <EnergyMeter
+          value={energy}
+          max={profile.energy_max}
+          label={copy.energy}
+          valueText={copy.energyValue(energy, profile.energy_max)}
+        />
+      </span>
+      <Link to="/profile" aria-label={copy.profile(profile.name)} className={styles.avatar}>
+        <span aria-hidden="true">{initials(profile.name)}</span>
+      </Link>
+    </>
   );
 }
 

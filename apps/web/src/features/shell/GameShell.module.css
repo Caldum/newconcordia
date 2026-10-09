@@ -63,3 +63,29 @@
     padding: var(--space-2) var(--space-4);
   }
 }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-s);
+  background: var(--land-soft);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  border-radius: var(--radius-s);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.avatar:hover {
+  background: var(--ink-hover);
+}
