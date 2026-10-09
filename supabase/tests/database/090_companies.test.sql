@@ -138,17 +138,17 @@ reset role;
 -- Acceptance: work once a day, paid the gross minus 12 %.
 select pg_temp.act_as(:'marcos');
 select results_eq(
-  $$ select gross, tax, net, energy, produced, good_code from public.work(null, 'c0000000-0000-4000-8000-000000000001') $$,
+  $$ select gross, tax, net, energy, produced, good_code from public.work('c0000000-0000-4000-8000-000000000001') $$,
   $$ values (4200::bigint, 504::bigint, 3696::bigint, 90, 5::numeric, 'wheat') $$,
   'acceptance: the wage collected is the gross minus 12 %'
 );
 select results_eq(
-  $$ select gross, tax, net from public.work(null, 'c0000000-0000-4000-8000-000000000001') $$,
+  $$ select gross, tax, net from public.work('c0000000-0000-4000-8000-000000000001') $$,
   $$ values (4200::bigint, 504::bigint, 3696::bigint) $$,
   'the same request again returns the same payslip'
 );
 select throws_ok(
-  $$ select * from public.work(null, gen_random_uuid()) $$,
+  $$ select * from public.work(gen_random_uuid()) $$,
   '22023', 'already_worked', 'acceptance: working twice on the same day is rejected'
 );
 reset role;
@@ -169,7 +169,7 @@ select public.withdraw_from_company(:'mill', (select cash from public.list_my_co
 reset role;
 select pg_temp.act_as(:'marcos');
 select throws_ok(
-  $$ select * from public.work(null, gen_random_uuid()) $$,
+  $$ select * from public.work(gen_random_uuid()) $$,
   '22023', 'company_cannot_pay', 'without cash the company cannot pay'
 );
 select is((select energy from public.get_my_profile()), 100, 'a refused workday spends no energy');
@@ -194,7 +194,7 @@ reset role;
 set local game.fixed_now = '2026-10-11 15:00:00+00';
 select pg_temp.act_as(:'camila');
 select results_eq(
-  format($$ select gross, tax, net, produced, good_code from public.work(%s, gen_random_uuid()) $$, :'kitchen'),
+  format($$ select gross, tax, net, produced, good_code from public.work(gen_random_uuid(), %s) $$, :'kitchen'),
   $$ values (0::bigint, 0::bigint, 0::bigint, 0::numeric, 'ration') $$,
   'an owner works without a wage; without wheat no ration is made'
 );
@@ -204,7 +204,7 @@ insert into game.company_stock (company_id, good_code, quantity) values (:'kitch
 set local game.fixed_now = '2026-10-12 15:00:00+00';
 select pg_temp.act_as(:'camila');
 select is(
-  (select produced from public.work(:'kitchen', gen_random_uuid())),
+  (select produced from public.work(gen_random_uuid(), :'kitchen')),
   3::numeric,
   '20 points and 3 wheat make 3 rations (each needs 2 points and 1 wheat)'
 );
@@ -214,7 +214,7 @@ select is(pg_temp.stock(:'kitchen', 'wheat'), 0::numeric, 'the wheat was used');
 select is((select points from game.companies where id = :'kitchen'), 14::numeric, 'the remaining points are kept');
 select pg_temp.act_as(:'camila');
 select throws_ok(
-  format($$ select * from public.work(%s, gen_random_uuid()) $$, :'workshop'),
+  format($$ select * from public.work(gen_random_uuid(), %s) $$, :'workshop'),
   '22023', 'already_worked', 'one workday per day, in any company'
 );
 reset role;
@@ -246,8 +246,8 @@ select throws_ok(
 reset role;
 
 -- Access.
-select ok(not has_function_privilege('anon', 'public.work(bigint, uuid)', 'EXECUTE'), 'visitors cannot work');
-select ok(has_function_privilege('authenticated', 'public.work(bigint, uuid)', 'EXECUTE'), 'players can work');
+select ok(not has_function_privilege('anon', 'public.work(uuid, bigint)', 'EXECUTE'), 'visitors cannot work');
+select ok(has_function_privilege('authenticated', 'public.work(uuid, bigint)', 'EXECUTE'), 'players can work');
 select is_empty(
   $$ select currency_code from game.accounts group by currency_code having sum(balance) <> 0 $$,
   'money still adds up to zero in every currency'

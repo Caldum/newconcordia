@@ -276,6 +276,8 @@ export type Database = {
           id: number;
           level: number;
           name: string;
+          next_level_gold: number;
+          next_quality_gold: number;
           points: number;
           region_code: string;
           vacancies: number;
@@ -337,7 +339,7 @@ export type Database = {
         Returns: number;
       };
       work: {
-        Args: { p_company_id: number; p_key: string };
+        Args: { p_company_id?: number; p_key: string };
         Returns: {
           energy: number;
           good_code: string;

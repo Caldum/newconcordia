@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseAmount } from './amount';
+import { amountInput, parseAmount } from './amount';
 
 describe('parseAmount', () => {
   it('reads units with a comma or a point and up to two decimals, into hundredths', () => {
@@ -18,5 +18,13 @@ describe('parseAmount', () => {
     expect(parseAmount('1.240,50')).toBeNull();
     expect(parseAmount('doce')).toBeNull();
     expect(parseAmount('99999999999999')).toBeNull();
+  });
+});
+
+describe('amountInput', () => {
+  it('writes hundredths back as something parseAmount reads', () => {
+    expect(amountInput(4200, 'es')).toBe('42,00');
+    expect(amountInput(424250, 'en')).toBe('4242.50');
+    expect(parseAmount(amountInput(424250, 'es'))).toBe(424250);
   });
 });

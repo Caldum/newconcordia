@@ -14,3 +14,9 @@ export function parseAmount(text: string): number | null {
   const hundredths = units * 100 + cents;
   return hundredths > 0 ? hundredths : null;
 }
+
+/** Hundredths as an editable amount: «42,00» in Spanish, «42.00» in English, no thousands separator. */
+export function amountInput(hundredths: number, locale: 'es' | 'en'): string {
+  const text = (hundredths / 100).toFixed(2);
+  return locale === 'es' ? text.replace('.', ',') : text;
+}

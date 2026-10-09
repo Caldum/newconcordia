@@ -471,7 +471,8 @@ grant execute on function public.upgrade_company_quality(bigint, uuid) to authen
 create function public.list_my_companies()
 returns table (
   id bigint, name text, good_code text, region_code text, level integer, capacity integer, wage bigint,
-  vacancies integer, cash bigint, employees integer, points numeric, created_at timestamptz
+  vacancies integer, cash bigint, employees integer, points numeric, created_at timestamptz,
+  next_level_gold integer, next_quality_gold integer
 )
 language sql
 stable
@@ -482,7 +483,10 @@ as $$
          coalesce((select a.balance from game.accounts as a
                    where a.kind = 'company' and a.company_id = c.id and a.currency_code = c.country_code), 0),
          (select count(*)::integer from game.employments as e where e.company_id = c.id),
-         c.points, c.created_at
+         c.points, c.created_at,
+         case when c.level < 3 then game.param('company_level' || (c.level + 1)::text || '_gold')::integer end,
+         (select (game.param('company_quality_gold_per_q') * g.quality)::integer
+          from game.goods as g where g.code = c.good_code and g.quality < 5)
   from game.companies as c
   where c.owner_user_id = auth.uid()
   order by c.created_at;
@@ -671,7 +675,7 @@ grant execute on function public.get_my_workday() to authenticated;
 
 -- One workday: 10 energy, 10 points for the company and, for employees, the wage minus the work tax.
 -- p_company_id: null works at the player's job; an own company works there without a wage.
-create function public.work(p_company_id bigint, p_key uuid)
+create function public.work(p_key uuid, p_company_id bigint default null)
 returns table (gross bigint, tax bigint, net bigint, energy integer, produced numeric, good_code text)
 language plpgsql
 security definer
@@ -748,5 +752,5 @@ begin
   return query select v_gross, v_tax, v_gross - v_tax, v_energy, v_produced, v_company.good_code;
 end;
 $$;
-comment on function public.work(bigint, uuid) is 'Works once per game day: energy, points, wage minus work tax. Idempotent per key.';
-grant execute on function public.work(bigint, uuid) to authenticated;
+comment on function public.work(uuid, bigint) is 'Works once per game day: energy, points, wage minus work tax. Idempotent per key.';
+grant execute on function public.work(uuid, bigint) to authenticated;

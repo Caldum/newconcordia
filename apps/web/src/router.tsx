@@ -150,6 +150,27 @@ const accountRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/account/AccountPage'), 'AccountPage'),
 });
 
+const workRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/work',
+  component: lazyRouteComponent(() => import('./pages/work/WorkPage'), 'WorkPage'),
+});
+
+const companiesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/companies',
+  component: lazyRouteComponent(() => import('./pages/companies/CompaniesPage'), 'CompaniesPage'),
+});
+
+const foundCompanyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/companies/new',
+  component: lazyRouteComponent(
+    () => import('./pages/companies/FoundCompanyPage'),
+    'FoundCompanyPage',
+  ),
+});
+
 const adminRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/admin',
@@ -173,6 +194,9 @@ const routeTree = rootRoute.addChildren([
   citizenshipRequestsRoute,
   profileRoute,
   accountRoute,
+  workRoute,
+  companiesRoute,
+  foundCompanyRoute,
   adminRoute,
 ]);
 

@@ -9,6 +9,7 @@ import { useId, useState } from 'react';
 import type { SubmitEvent } from 'react';
 
 import type { Citizen } from '../../features/auth/useCitizen';
+import { EconomyTabs } from '../../features/economy/EconomyTabs';
 import { parseAmount } from '../../features/ledger/amount';
 import { transferMoney, useBalances, useMovements } from '../../features/ledger/queries';
 import type { Balance, Movement } from '../../features/ledger/queries';
@@ -56,6 +57,7 @@ function Account({ citizen }: { citizen: Citizen }) {
 
   return (
     <main className={styles.page}>
+      <EconomyTabs />
       <div className={styles.intro}>
         <h1 className="at-title-1">{copy.title}</h1>
         <p className="at-body-l">{copy.intro}</p>
