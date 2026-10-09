@@ -21,6 +21,7 @@ Golden rule: **no secret goes in the repository or in the browser**. Secrets go 
 | 7 | Google sign-in (optional) | «Continuar con Google» |
 | 8 | Terms of use and privacy policy texts | Linking them from sign-up |
 | 9 | Make yourself admin | The admin panel (`/admin`) |
+| 10 | Local development without Docker | Running the web and the database tests on your computer |
 
 The Sentry and backup steps are added when the module that uses them arrives.
 
@@ -150,3 +151,30 @@ Nobody can become an admin through the web or the API. In each Supabase project:
 
 3. Reload the web: the bar shows **Administración**. Every action there is recorded in the action log.
    To add someone else later, run the same statement with their email.
+
+## 10. Local development without Docker (ADR 0011)
+
+The database tests run on PostgreSQL installed on your computer, and the web runs against a hosted
+**development** project (never staging or production: you will reset it often).
+
+1. **PostgreSQL 17.** In PowerShell: `winget install --id PostgreSQL.PostgreSQL.17 --source winget` (password
+   `postgres` for the `postgres` user, port 5432). Check it with `pnpm db:test:native`: it creates a fresh
+   `concordia_test` database on every run and must end with «All … files passed». To use another password
+   or port, set `PGPASSWORD` or `PGPORT` before running it.
+2. **Development project.** At https://supabase.com/dashboard create a third project, `concordia-dev`, in
+   the same region. Under **Project Settings → Data API** leave only `public` exposed, as in step 2.
+3. **Its Auth settings** (as in step 6, with these values):
+   - *Site URL* `http://localhost:5173`; *Redirect URLs* `http://localhost:5173` and
+     `http://localhost:5173/**`.
+   - CAPTCHA with *Turnstile* and Cloudflare's test secret `1x0000000000000000000000000000000AA` (always
+     passes; the web uses the matching test site key).
+   - The built-in email sender is enough for development (it sends a few emails per hour to real
+     addresses); Resend is optional here.
+4. **Migrations.** In the repository: `npx supabase login`, then
+   `npx supabase link --project-ref <the dev project ID>` and `npx supabase db push` (it asks for the
+   database password). Repeat `db push` whenever a branch adds migrations.
+5. **The web.** In `apps/web/.env.local` set `VITE_SUPABASE_URL` to `https://<project ID>.supabase.co` and
+   `VITE_SUPABASE_PUBLISHABLE_KEY` to the project's publishable key (`sb_publishable_...`; never a secret
+   key). Then `pnpm --filter @concordia/web dev` and open http://localhost:5173.
+6. Docker is no longer needed locally: `pnpm db:stop` and quit Docker Desktop. End-to-end journeys keep
+   running in CI.

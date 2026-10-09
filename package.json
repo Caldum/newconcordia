@@ -19,6 +19,7 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
+    "db:test:native": "node supabase/scripts/run-native-tests.js",
     "db:lint": "squawk supabase/migrations/*.sql",
     "db:types": "supabase gen types typescript --local --schema public > packages/db-types/src/database.ts && prettier --write packages/db-types/src/database.ts"
   },
