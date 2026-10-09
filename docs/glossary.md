@@ -55,3 +55,11 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Salida del juego | Sink | `sink` account |
 | Regalo de bienvenida | Welcome grant | `welcome_grant` |
 | Transferencia | Transfer | `transfer` |
+| Empresa, caja de la empresa | Company, company cash | `companies`, `company` account |
+| Depósito (de la empresa) | Depot, stock | `company_stock` |
+| Materia prima, producto | Raw material, product | `goods.kind` `raw` / `product` |
+| Jornada (de trabajo) | Workday | `workdays` |
+| Oferta de empleo, vacantes | Job offer, vacancies | `vacancies` |
+| Impuesto al trabajo | Work tax | `country_policies.work_tax` |
+| Salario mínimo | Minimum wage | `country_policies.minimum_wage` |
+| Rendimiento (de la región) | Yield | `raw_yield` |

@@ -17,3 +17,4 @@ marked «Superseded by NNNN».
 | 0009 | Profile and energy: balance parameters, starting values and the level curve | Accepted |
 | 0010 | Ledger: currencies, accounts, postings and the welcome grant | Accepted |
 | 0011 | Local development without Docker | Accepted |
+| 0012 | Companies and work: production, cash, jobs and policies | Accepted |

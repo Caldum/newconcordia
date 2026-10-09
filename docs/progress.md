@@ -19,7 +19,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D07 | Admin panel | 1 · World and accounts | Merged | [Caldum/newconcordia#9](https://github.com/Caldum/newconcordia/pull/9) |
 | D08 | Profile and energy | 2 · Basic economy | In review | `feat/d08-profile` |
 | D09 | Ledger and currencies | 2 · Basic economy | In review | `feat/d09-ledger` (on D08) |
-| D10 | Companies and work | 2 · Basic economy | Pending | — |
+| D10 | Companies and work | 2 · Basic economy | In review | `feat/d10-companies` (on D09) |
 | D11 | Market | 2 · Basic economy | Pending | — |
 | D12 | Products and consumption | 2 · Basic economy | Pending | — |
 | D13 | Daily missions | 2 · Basic economy | Pending | — |
@@ -66,12 +66,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   welcome grant of 5 Gold and 50 Credit after confirmation, transfers between citizens, balances in the bar
   and the account screen (ADR 0010). Local development without Docker: pgTAP on native PostgreSQL
   (`pnpm db:test:native`) and the web against a hosted development project (ADR 0011).
+- 2026-10-09 · D10: goods and recipes, country policies, companies with cash, stock, level and quality, jobs
+  and the daily workday with wage and work tax in one transaction (ADR 0012). Database types now generate
+  from native PostgreSQL (`pnpm db:types:native`).
 
 ## Next step
 
-D08 and D09 are in review (D09 is stacked on D08). Next:
+D08, D09 and D10 are in review, each stacked on the previous one. Next:
 
-1. D10 (companies and work) on `feat/d10-companies`, stacked on D09.
+1. D11 (market) on `feat/d11-market`, stacked on D10.
 2. Owner: setup step 10 (development project) to run the web locally again.
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts, first admin) to see the game in staging.
