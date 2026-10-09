@@ -3,6 +3,7 @@ import {
   createRootRouteWithContext,
   createRoute,
   createRouter,
+  lazyRouteComponent,
   Outlet,
 } from '@tanstack/react-router';
 import type { RouterHistory } from '@tanstack/react-router';
@@ -25,7 +26,14 @@ const homeRoute = createRoute({
   component: HomePage,
 });
 
-const routeTree = rootRoute.addChildren([homeRoute]);
+// The map and its 0.9 MB geometry load only when the map is opened.
+const mapRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/map',
+  component: lazyRouteComponent(() => import('./pages/map/MapPage'), 'MapPage'),
+});
+
+const routeTree = rootRoute.addChildren([homeRoute, mapRoute]);
 
 export function buildRouter(queryClient: QueryClient, history?: RouterHistory) {
   return createRouter({

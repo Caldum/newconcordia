@@ -61,3 +61,14 @@ pnpm db:types      # regenerates packages/db-types
 
 If Docker cannot pull images from `public.ecr.aws`, pull the same ones from Docker Hub
 (`docker pull supabase/postgres:<version>`) and tag them with the name the CLI asks for.
+
+## Local web against local Supabase
+
+```bash
+pnpm db:start
+pnpm exec supabase status -o env | grep -E '^(API_URL|PUBLISHABLE_KEY)='   # copy into apps/web/.env.local
+pnpm --filter @concordia/web dev
+```
+
+`apps/web/.env.example` shows the two public variables. The build writes the Supabase origin into the CSP
+(`connect-src`), so a build without `VITE_SUPABASE_URL` fails on purpose.

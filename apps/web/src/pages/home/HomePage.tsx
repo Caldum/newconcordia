@@ -1,3 +1,6 @@
+import { buttonClassName } from '@concordia/atlas/Button';
+import { Link } from '@tanstack/react-router';
+
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
@@ -11,6 +14,9 @@ export function HomePage() {
     <main>
       <h1>{copy.title}</h1>
       <p>{copy.body}</p>
+      <Link to="/map" className={buttonClassName()}>
+        {copy.openMap}
+      </Link>
     </main>
   );
 }

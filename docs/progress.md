@@ -13,7 +13,7 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 | D02 | Clock and game day | 0 · Base | Merged | [Caldum/newconcordia#3](https://github.com/Caldum/newconcordia/pull/3) |
 | — | Atlas in code (`packages/atlas`) | 0 · Base | Merged | [Caldum/newconcordia#4](https://github.com/Caldum/newconcordia/pull/4) |
 | D03 | World: countries, regions and owners | 1 · World and accounts | In PR | [Caldum/newconcordia#5](https://github.com/Caldum/newconcordia/pull/5) |
-| D04 | Game map | 1 · World and accounts | Pending | — |
+| D04 | Game map | 1 · World and accounts | In PR | `feat/d04-map` |
 | D05 | Accounts | 1 · World and accounts | Pending | — |
 | D06 | Citizenship | 1 · World and accounts | Pending | — |
 | D07 | Admin panel | 1 · World and accounts | Pending | — |
@@ -53,6 +53,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-09 · Atlas merged.
 - 2026-10-09 · D03: fixed region codes, world.json (250 countries, 78 regions), countries and regions tables with public reads.
 
+- 2026-10-09 · D04: map route with owners and colors from the database, keyboard search, zoom buttons, CSP with the exact Supabase origin, e2e acceptance against local Supabase.
+
 ## Next step
 
-D03 in review. Next: D04 (map) on `feat/d04-map`.
+D03 and D04 in review. Next: D05 (accounts) on `feat/d05-accounts`.

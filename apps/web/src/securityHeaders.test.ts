@@ -4,10 +4,13 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-const headersFile = readFileSync(
+import { renderHeaders } from '../scripts/securityHeaders';
+
+const template = readFileSync(
   fileURLToPath(new URL('../public/_headers', import.meta.url)),
   'utf8',
 );
+const headersFile = renderHeaders(template, 'https://abcdefghijklmnop.supabase.co');
 
 /** Returns the header lines that apply to the `/*` rule of a Cloudflare `_headers` file. */
 function headersForAllPaths(source: string): Map<string, string> {
@@ -53,5 +56,24 @@ describe('security headers', () => {
     expect(headersFile).toMatch(
       /\/assets\/\*\n\s+Cache-Control: public, max-age=31536000, immutable/,
     );
+  });
+
+  it('allows connections only to the configured Supabase project', () => {
+    expect(csp).toContain(
+      "connect-src 'self' https://abcdefghijklmnop.supabase.co wss://abcdefghijklmnop.supabase.co",
+    );
+    expect(csp).not.toContain('*.supabase.co');
+    expect(csp).not.toContain('{{');
+  });
+
+  it('uses plain WebSockets only for local development', () => {
+    expect(renderHeaders(template, 'http://127.0.0.1:54321')).toContain(
+      'http://127.0.0.1:54321 ws://127.0.0.1:54321',
+    );
+  });
+
+  it('refuses a missing or insecure Supabase URL', () => {
+    expect(() => renderHeaders(template, undefined)).toThrow(/VITE_SUPABASE_URL is required/);
+    expect(() => renderHeaders(template, 'http://example.com')).toThrow(/https/);
   });
 });
