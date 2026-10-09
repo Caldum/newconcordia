@@ -42,5 +42,7 @@ test('the game bar and the profile fit a 360 px screen', async ({ page, request 
   await signIn(page, player);
   await page.goto('/profile');
   await expect(page.getByRole('heading', { level: 2, name: 'Trayectoria' })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+  // The e2e tsconfig has no DOM types, so the page evaluates an expression.
+  const width = await page.evaluate<number>('document.documentElement.scrollWidth');
+  expect(width).toBeLessThanOrEqual(360);
 });
