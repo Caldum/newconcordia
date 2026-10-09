@@ -18,6 +18,10 @@ jobs:
     name: Lint, types, tests and build
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    env:
+      # Build-time public configuration; this build is checked, never deployed.
+      VITE_SUPABASE_URL: http://127.0.0.1:54321
+      VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ci_build_only
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -66,6 +70,16 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
+      - name: Start local Supabase (database, API and auth)
+        run: >-
+          pnpm exec supabase start
+          -x studio,imgproxy,vector,logflare,storage-api,edge-runtime,postgres-meta,supavisor,mailpit,realtime
+      - name: Public configuration for the web build
+        run: |
+          pnpm exec supabase status -o env \
+            | grep -E '^(API_URL|PUBLISHABLE_KEY)=' \
+            | sed -e 's/^API_URL=/VITE_SUPABASE_URL=/' -e 's/^PUBLISHABLE_KEY=/VITE_SUPABASE_PUBLISHABLE_KEY=/' -e 's/"//g' \
+            >> "$GITHUB_ENV"
       - name: Install Chromium
         run: pnpm --filter @concordia/web exec playwright install --with-deps chromium
       - name: Web journeys

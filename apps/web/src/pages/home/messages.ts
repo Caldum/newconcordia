@@ -5,10 +5,12 @@ export const messages = defineMessages({
     documentTitle: 'Concordia',
     title: 'Concordia',
     body: 'Juego de estrategia en el navegador: trabaja, combate por regiones reales, vota y gobierna tu país.',
+    openMap: 'Ver el mapa',
   },
   en: {
     documentTitle: 'Concordia',
     title: 'Concordia',
     body: 'A strategy game in the browser: work, fight for real regions, vote and govern your country.',
+    openMap: 'See the map',
   },
 });
