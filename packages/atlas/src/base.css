@@ -159,6 +159,30 @@ a {
   line-height: var(--place-xl-line-height);
 }
 
+/* Narrow windows (desktop-adaptive down to 360 px): large type steps down so words never overflow. */
+@media (width < 720px) {
+  .at-display {
+    font-size: 44px;
+    line-height: 46px;
+  }
+
+  .at-title-1 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .at-score-xl {
+    font-size: 64px;
+    line-height: 60px;
+  }
+}
+
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

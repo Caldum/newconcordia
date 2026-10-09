@@ -1,0 +1,107 @@
+.document {
+  width: min(440px, 100%);
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--land);
+  box-shadow: var(--document);
+  transform: rotate(-2.5deg);
+}
+
+/* Enters once, when the email is confirmed. */
+.enter {
+  animation: rise 450ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(18px) rotate(-1deg);
+  }
+
+  to {
+    transform: translateY(0) rotate(-2.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter {
+    animation: none;
+  }
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 14px 20px;
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.heading {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  font-stretch: 120%;
+}
+
+.country {
+  font-size: 20px;
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 22px 20px;
+}
+
+.silhouette {
+  flex: none;
+  width: 90px;
+}
+
+.fields {
+  display: grid;
+  flex: 1 1 200px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 16px;
+  min-width: 0;
+  margin: 0;
+}
+
+.fields dd {
+  overflow-wrap: anywhere;
+}
+
+.fields div {
+  min-width: 0;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.fields dt {
+  color: var(--text-muted);
+  font-size: var(--support-font-size);
+}
+
+.fields dd {
+  margin: 0;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: 800;
+  font-stretch: 112%;
+}
+
+.number {
+  font-size: 18px;
+}
+
+.place {
+  font-size: 20px;
+}

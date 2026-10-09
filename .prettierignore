@@ -1,5 +1,6 @@
 pnpm-lock.yaml
 dist/
+dist-gallery/
 coverage/
 .wrangler/
 playwright-report/

@@ -6,8 +6,8 @@
     "*.css"
   ],
   "exports": {
-    ".": "./src/index.ts",
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./*": "./src/components/*.tsx"
   },
   "scripts": {
     "tokens": "node scripts/build-tokens.js",

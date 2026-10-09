@@ -1,21 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = 8788;
-// Cloud sandboxes ship a preinstalled Chromium; CI installs the matching one with `playwright install`.
+const port = 4174;
 const chromiumPath = process.env.PLAYWRIGHT_CHROMIUM_PATH;
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
-  use: {
-    baseURL: `http://localhost:${port}`,
-    locale: 'es-AR',
-    timezoneId: 'America/Argentina/Buenos_Aires',
-    trace: 'retain-on-failure',
-  },
+  use: { baseURL: `http://localhost:${port}`, trace: 'retain-on-failure' },
   projects: [
     {
       name: 'chromium',
@@ -25,9 +18,8 @@ export default defineConfig({
       },
     },
   ],
-  // Serve the production build through Wrangler so SPA fallback and _headers behave as deployed.
   webServer: {
-    command: `pnpm build && pnpm exec wrangler dev --port ${port} --log-level warn`,
+    command: `pnpm gallery:build && pnpm exec vite preview --config gallery/vite.config.ts --port ${port} --strictPort`,
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
