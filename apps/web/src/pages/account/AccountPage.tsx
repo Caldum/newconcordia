@@ -10,6 +10,7 @@ import type { SubmitEvent } from 'react';
 
 import type { Citizen } from '../../features/auth/useCitizen';
 import { EconomyTabs } from '../../features/economy/EconomyTabs';
+import { InventoryPanel } from '../../features/inventory/InventoryPanel';
 import { parseAmount } from '../../features/ledger/amount';
 import { transferMoney, useBalances, useMovements } from '../../features/ledger/queries';
 import type { Balance, Movement } from '../../features/ledger/queries';
@@ -66,6 +67,7 @@ function Account({ citizen }: { citizen: Citizen }) {
       {balances.data ? (
         <>
           <Balances balances={balances.data} citizen={citizen} />
+          <InventoryPanel />
           <div className={styles.layout}>
             <Movements balances={balances.data} citizen={citizen} />
             <TransferForm balances={balances.data} citizen={citizen} />

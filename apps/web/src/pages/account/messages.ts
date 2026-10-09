@@ -2,8 +2,8 @@ import { defineMessages } from '../../i18n';
 
 export const messages = defineMessages({
   es: {
-    documentTitle: 'Tu cuenta · Concordia',
-    title: 'Tu cuenta',
+    documentTitle: 'Inventario y cuenta · Concordia',
+    title: 'Inventario y cuenta',
     intro: 'Cada movimiento muestra su contrapartida: de dónde viene o a dónde va.',
     loadFailed: 'No se pudo cargar tu cuenta. Recarga la página para intentar de nuevo.',
     balances: 'Saldos',
@@ -55,8 +55,8 @@ export const messages = defineMessages({
     more: 'Ver movimientos anteriores',
   },
   en: {
-    documentTitle: 'Your account · Concordia',
-    title: 'Your account',
+    documentTitle: 'Inventory and account · Concordia',
+    title: 'Inventory and account',
     intro: 'Every movement shows its counterparty: where it comes from or where it goes.',
     loadFailed: 'Your account did not load. Reload the page to try again.',
     balances: 'Balances',

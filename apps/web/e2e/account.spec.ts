@@ -13,7 +13,7 @@ test('a citizen sends Credit to another and both statements show it', async ({ p
 
   // The welcome grant: 5 Gold and 50 Credit.
   await page.getByRole('link', { name: 'Tu cuenta: Oro 5 y Crédito 50' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: 'Tu cuenta' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Inventario y cuenta' })).toBeVisible();
   await expect(page.getByRole('group', { name: 'Crédito de Argentina' })).toContainText('50,00');
 
   await page.getByLabel('Ciudadano que recibe').fill(recipient.name);

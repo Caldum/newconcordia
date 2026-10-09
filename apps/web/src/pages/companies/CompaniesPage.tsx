@@ -115,7 +115,7 @@ function CompanyPanel({ company }: { company: Company }) {
       <div className={styles.layout}>
         <div className={styles.column}>
           <Employees companyId={company.id} />
-          <Stock company={company} />
+          <Stock company={company} run={run} />
         </div>
         <div className={styles.column}>
           <Cash company={company} run={run} />
@@ -331,7 +331,7 @@ function Employees({ companyId }: { companyId: number }) {
   );
 }
 
-function Stock({ company }: { company: Company }) {
+function Stock({ company, run }: { company: Company; run: Run }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const goodName = useGoodName();
@@ -352,6 +352,24 @@ function Stock({ company }: { company: Company }) {
             <li key={line.good_code}>
               <span>{goodName(line.good_code)}</span>
               <strong>{formatNumber(line.quantity, locale)}</strong>
+              {Math.floor(line.quantity) > 0 ? (
+                <Button
+                  variant="ghost"
+                  aria-label={copy.toInventoryLabel(goodName(line.good_code))}
+                  onClick={() =>
+                    void run(
+                      supabase.rpc('move_goods', {
+                        p_company_id: company.id,
+                        p_good_code: line.good_code,
+                        p_quantity: Math.floor(line.quantity),
+                        p_to_inventory: true,
+                      }),
+                    )
+                  }
+                >
+                  {copy.toInventory}
+                </Button>
+              ) : null}
             </li>
           ))}
         </ul>

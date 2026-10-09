@@ -10,14 +10,14 @@ const messages = defineMessages({
     work: 'Empleo',
     companies: 'Mis empresas',
     found: 'Fundar empresa',
-    account: 'Tu cuenta',
+    account: 'Inventario y cuenta',
   },
   en: {
     label: 'Economy',
     work: 'Job',
     companies: 'My companies',
     found: 'Found a company',
-    account: 'Your account',
+    account: 'Inventory and account',
   },
 });
 

@@ -31,6 +31,8 @@ export const messages = defineMessages({
     streak: 'Días seguidos',
     stock: 'Depósito',
     emptyStock: 'El depósito está vacío.',
+    toInventory: 'Pasar a mi inventario',
+    toInventoryLabel: (good: string) => `Pasar ${good} a mi inventario`,
     pending: (points: string) => `${points} puntos esperan insumos.`,
     upgrade: (level: number, gold: number) =>
       `Mejorar a nivel ${String(level)} por ${String(gold)} Oro`,
@@ -77,6 +79,8 @@ export const messages = defineMessages({
     streak: 'Days in a row',
     stock: 'Depot',
     emptyStock: 'The depot is empty.',
+    toInventory: 'Move to my inventory',
+    toInventoryLabel: (good: string) => `Move ${good} to my inventory`,
     pending: (points: string) => `${points} points are waiting for inputs.`,
     upgrade: (level: number, gold: number) =>
       `Upgrade to level ${String(level)} for ${String(gold)} Gold`,

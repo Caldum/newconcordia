@@ -58,8 +58,10 @@ describe('account', () => {
   it('shows the balances of each currency', async () => {
     signIn();
     await renderRoute('/account');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Tu cuenta' })).toBeVisible();
-    expect(document.title).toBe('Tu cuenta · Concordia');
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Inventario y cuenta' }),
+    ).toBeVisible();
+    expect(document.title).toBe('Inventario y cuenta · Concordia');
     const gold = await screen.findByRole('group', { name: 'Oro' });
     expect(within(gold).getByText('1.240,00')).toBeVisible();
     expect(
@@ -170,7 +172,9 @@ describe('account', () => {
   it('speaks English', async () => {
     signIn();
     await renderRoute('/account', 'en');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Your account' })).toBeVisible();
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Inventory and account' }),
+    ).toBeVisible();
     expect(
       within(await screen.findByRole('group', { name: 'Gold' })).getByText('1,240.00'),
     ).toBeVisible();
