@@ -21,8 +21,15 @@ import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 import { foundMessages as messages } from './messages';
 
-/** What a company can make when founded; weapons start at Q1. */
-const goods = ['wheat', 'iron', 'oil', 'ration', 'weapon_q1', 'fuel'] as const;
+/** What a company can make when founded (spec section 5); every quality line starts at Q1. */
+const goods = [
+  'food_raw',
+  'military_raw',
+  'medical_raw',
+  'food_q1',
+  'weapon_q1',
+  'kit_q1',
+] as const;
 type Good = (typeof goods)[number];
 
 /** `/companies/new` (FoundCompany canvas). */
@@ -50,7 +57,7 @@ function FoundCompany({ citizen }: { citizen: Citizen }) {
   const regions = [...(world.data?.regions.values() ?? [])].filter(
     (region) => region.owner_country_code === citizen.country_code && region.is_enabled,
   );
-  const [good, setGood] = useState<Good>('wheat');
+  const [good, setGood] = useState<Good>('food_raw');
   const [regionCode, setRegionCode] = useState(citizen.region_code);
   const [name, setName] = useState('');
   const [checked, setChecked] = useState(false);
@@ -62,10 +69,10 @@ function FoundCompany({ citizen }: { citizen: Citizen }) {
   const regionName = world.data?.regions.get(regionCode)?.name ?? regionCode;
   const yields = isRaw(good)
     ? copy.rawYield(formatNumber(10 * 0.5, locale), goodName(good).toLowerCase())
-    : good === 'ration'
-      ? copy.rations
-      : good === 'fuel'
-        ? copy.fuel
+    : good === 'food_q1'
+      ? copy.food
+      : good === 'kit_q1'
+        ? copy.kits
         : copy.weapons;
 
   const submit = async (event: SubmitEvent<HTMLFormElement>) => {

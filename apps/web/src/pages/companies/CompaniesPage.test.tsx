@@ -53,7 +53,7 @@ function signIn(extra: Answers = {}) {
     },
     get_company_stock: {
       data: [
-        { good_code: 'iron', quantity: 36 },
+        { good_code: 'military_raw', quantity: 36 },
         { good_code: 'weapon_q3', quantity: 42 },
       ],
       error: null,
@@ -144,13 +144,13 @@ describe('found a company', () => {
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Fundar una empresa' }),
     ).toBeVisible();
-    await user.click(screen.getByRole('radio', { name: /Raciones/ }));
-    expect(await screen.findByText('5 raciones')).toBeVisible();
+    await user.click(screen.getByRole('radio', { name: /Comida Q1/ }));
+    expect(await screen.findByText('5 de comida Q1')).toBeVisible();
     await user.type(screen.getByLabelText('Nombre de la empresa'), 'Cocina de Campaña');
     await user.click(screen.getByRole('button', { name: 'Fundar empresa' }));
     expect(supabaseMock.rpc).toHaveBeenCalledWith('found_company', {
       p_name: 'Cocina de Campaña',
-      p_good_code: 'ration',
+      p_good_code: 'food_q1',
       p_region_code: 'ARG-01',
       p_key: expect.stringMatching(/^[0-9a-f-]{36}$/) as unknown,
     });

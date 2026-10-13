@@ -5,14 +5,14 @@ import { sql } from './db';
 import { createConfirmedPlayer, signIn } from './players';
 import { stubTurnstile } from './turnstile';
 
-test('a seller posts rations and a buyer buys them; the money adds up', async ({
+test('a seller posts Q1 food and a buyer buys them; the money adds up', async ({
   page,
   request,
 }) => {
   await stubTurnstile(page);
   const seller = await createConfirmedPlayer(request, 'ARG');
   const buyer = await createConfirmedPlayer(request, 'ARG');
-  // The seller sells rations from the sign-up grant (10).
+  // The seller sells Q1 food from the sign-up grant (10).
 
   await signIn(page, seller);
   await page.goto('/market/sell');
@@ -25,10 +25,10 @@ test('a seller posts rations and a buyer buys them; the money adds up', async ({
   await page.getByRole('button', { name: 'Cerrar sesión' }).click();
   await signIn(page, buyer);
   await page.goto('/market');
-  const purchase = page.getByRole('region', { name: 'Comprar Raciones' });
+  const purchase = page.getByRole('region', { name: 'Comprar Comida Q1' });
   await purchase.getByLabel('Cantidad').fill('3');
   await purchase.getByRole('button', { name: 'Comprar 3' }).click();
-  await expect(page.getByText('Compraste 3 de Raciones por 6,00 Crédito.')).toBeVisible();
+  await expect(page.getByText('Compraste 3 de Comida Q1 por 6,00 Crédito.')).toBeVisible();
   await expectNoA11yViolations(page);
 
   // 6.00 paid: 0.29 VAT to the treasury, 0.06 fee out of the game, 5.65 to the seller.

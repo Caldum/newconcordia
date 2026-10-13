@@ -21,37 +21,39 @@ const messages = defineMessages({
   es: {
     title: 'Objetos',
     empty: 'Todavía no tienes objetos. Compra en el mercado o pásalos desde tu empresa.',
-    ration: (energy: number, max: number) =>
+    food: (energy: number, max: number) =>
       `Recupera ${String(energy)} de energía, hasta ${String(max)} por día.`,
+    kit: (health: number) => `Cura ${String(health)} de salud.`,
     weapon: (multiplier: string) => `Multiplica tu daño ×${multiplier}. Se gasta una por golpe.`,
     fuel: 'Lo usa tu país para abrir batallas.',
     raw: 'Materia prima. Pásala al depósito de tu empresa o véndela en el mercado.',
     today: (energy: number, max: number) => `Hoy recuperaste ${String(energy)} de ${String(max)}.`,
-    rations: 'Raciones a comer',
+    rations: 'Comida Q1 a comer',
     eat: 'Comer',
     eaten: (energy: number) => `Recuperaste ${String(energy)} de energía.`,
     quantityInvalid: 'Escribe una cantidad entera, mayor que cero.',
     error_food_limit: 'Con eso pasarías el máximo de energía por comida de hoy.',
-    error_quantity_unavailable: 'No tienes tantas raciones.',
+    error_quantity_unavailable: 'No tienes tanta comida Q1.',
     error_amount_invalid: 'Escribe una cantidad entera, mayor que cero.',
     error_other: 'No se pudo completar. Revisa tu conexión y vuelve a intentar.',
   },
   en: {
     title: 'Items',
     empty: 'You have no items yet. Buy on the market or move them from your company.',
-    ration: (energy: number, max: number) =>
+    food: (energy: number, max: number) =>
       `Restores ${String(energy)} energy, up to ${String(max)} per day.`,
+    kit: (health: number) => `Heals ${String(health)} health.`,
     weapon: (multiplier: string) => `Multiplies your damage ×${multiplier}. One is spent per hit.`,
     fuel: 'Your country uses it to open battles.',
     raw: 'Raw material. Move it to your company’s depot or sell it on the market.',
     today: (energy: number, max: number) =>
       `Today you recovered ${String(energy)} of ${String(max)}.`,
-    rations: 'Rations to eat',
+    rations: 'Q1 food to eat',
     eat: 'Eat',
     eaten: (energy: number) => `You recovered ${String(energy)} energy.`,
     quantityInvalid: 'Write a whole quantity above zero.',
     error_food_limit: 'That would pass today’s maximum energy from food.',
-    error_quantity_unavailable: 'You do not have that many rations.',
+    error_quantity_unavailable: 'You do not have that much Q1 food.',
     error_amount_invalid: 'Write a whole quantity above zero.',
     error_other: 'It did not go through. Check your connection and try again.',
   },
@@ -61,7 +63,8 @@ const effectsSchema = z.array(
   z.object({
     code: z.string(),
     damage_multiplier: z.number().nullable(),
-    ration_energy: z.number().int(),
+    energy: z.number().int().nullable(),
+    heal: z.number().int().nullable(),
     food_energy_daily_max: z.number().int(),
   }),
 );
@@ -92,7 +95,7 @@ function useFoodToday() {
   });
 }
 
-/** The player's goods and what each is for; rations can be eaten here (Inventory canvas). */
+/** The player's goods and what each is for; Q1 food can be eaten here (Inventory canvas). */
 export function InventoryPanel() {
   const copy = useMessages(messages);
   const { locale } = useLocale();
@@ -101,7 +104,6 @@ export function InventoryPanel() {
   const effects = useEffects();
   const rows = inventory.data ?? [];
   const effectOf = (code: string) => effects.data?.find((effect) => effect.code === code);
-  const rationEnergy = effects.data?.[0]?.ration_energy ?? 0;
   const foodMax = effects.data?.[0]?.food_energy_daily_max ?? 0;
 
   return (
@@ -114,12 +116,13 @@ export function InventoryPanel() {
       ) : null}
       <ul className={panel.items}>
         {rows.map((line) => {
-          const multiplier = effectOf(line.good_code)?.damage_multiplier;
-          const description =
-            line.good_code === 'ration'
-              ? copy.ration(rationEnergy, foodMax)
-              : multiplier
-                ? copy.weapon(formatNumber(multiplier, locale))
+          const effect = effectOf(line.good_code);
+          const description = effect?.energy
+            ? copy.food(effect.energy, foodMax)
+            : effect?.heal
+              ? copy.kit(effect.heal)
+              : effect?.damage_multiplier
+                ? copy.weapon(formatNumber(effect.damage_multiplier, locale))
                 : line.good_code === 'fuel'
                   ? copy.fuel
                   : isRaw(line.good_code)
@@ -132,7 +135,7 @@ export function InventoryPanel() {
                 <span className="at-figure">{formatNumber(line.quantity, locale)}</span>
               </div>
               <p className={styles.muted}>{description}</p>
-              {line.good_code === 'ration' ? <Eat foodMax={foodMax} /> : null}
+              {line.good_code === 'food_q1' ? <Eat foodMax={foodMax} /> : null}
             </li>
           );
         })}

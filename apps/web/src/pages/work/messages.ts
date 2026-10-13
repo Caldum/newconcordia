@@ -43,10 +43,12 @@ export const messages = defineMessages({
     howTitle: 'Cómo se produce',
     howBody:
       'Cada jornada da 10 puntos. En materias primas, cada punto produce 1 unidad por el rendimiento de la región: 50 % sin yacimiento.',
-    recipeRation: '1 trigo + 2 puntos',
-    recipeWeapon: 'Q hierro + Q puntos',
-    recipeFuel: '1 petróleo + 0,5 puntos',
+    recipeFood: 'Q de materia prima alimentaria + 2 puntos',
+    recipeWeapon: '10 × Q de materia prima militar + Q puntos',
+    recipeKit: '5 × Q de materia prima médica + 2 puntos',
+    foodQ: 'Comida Q1 a Q5',
     weaponsQ: 'Armas Q1 a Q5',
+    kitsQ: 'Botiquines Q1 a Q5',
     error_already_worked: 'Ya trabajaste hoy. Vuelve mañana desde las 00:00, hora del juego.',
     error_not_enough_energy: 'Te falta energía: trabajar cuesta 10. Se recarga 10 por hora.',
     error_company_cannot_pay:
@@ -101,10 +103,12 @@ export const messages = defineMessages({
     howTitle: 'How production works',
     howBody:
       'Each workday gives 10 points. In raw materials each point makes 1 unit times the region’s yield: 50 % without a deposit.',
-    recipeRation: '1 wheat + 2 points',
-    recipeWeapon: 'Q iron + Q points',
-    recipeFuel: '1 oil + 0.5 points',
+    recipeFood: 'Q food raw material + 2 points',
+    recipeWeapon: '10 × Q military raw material + Q points',
+    recipeKit: '5 × Q medical raw material + 2 points',
+    foodQ: 'Food Q1 to Q5',
     weaponsQ: 'Weapons Q1 to Q5',
+    kitsQ: 'Medical kits Q1 to Q5',
     error_already_worked: 'You already worked today. Come back tomorrow from 00:00, game time.',
     error_not_enough_energy: 'You lack energy: working costs 10. It recharges 10 per hour.',
     error_company_cannot_pay:

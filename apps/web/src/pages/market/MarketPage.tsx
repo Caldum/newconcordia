@@ -70,7 +70,7 @@ function Market({ citizen }: { citizen: Citizen }) {
   const goodName = useGoodName();
   const countryName = useCountryName();
   const summary = useMarketSummary(citizen.country_code);
-  const [good, setGood] = useState('ration');
+  const [good, setGood] = useState('food_q1');
   const rows = summary.data ?? [];
   const current = rows.find((row) => row.good_code === good);
 

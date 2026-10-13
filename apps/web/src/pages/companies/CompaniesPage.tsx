@@ -8,7 +8,7 @@ import { useId, useState } from 'react';
 
 import styles from '../../features/economy/economy.module.css';
 import { EconomyTabs } from '../../features/economy/EconomyTabs';
-import { useGoodName } from '../../features/economy/goods';
+import { qualityOf, useGoodName } from '../../features/economy/goods';
 import {
   act,
   errorCode,
@@ -135,7 +135,7 @@ function Upgrades({ company, run }: { company: Company; run: Run }) {
   const copy = useMessages(messages);
   const [levelKey, renewLevelKey] = useActionKey();
   const [qualityKey, renewQualityKey] = useActionKey();
-  const quality = /^weapon_q([1-5])$/.exec(company.good_code);
+  const quality = qualityOf(company.good_code);
   return (
     <div className={styles.actions}>
       {company.next_level_gold !== null ? (
@@ -152,7 +152,7 @@ function Upgrades({ company, run }: { company: Company; run: Run }) {
           {copy.upgrade(company.level + 1, company.next_level_gold)}
         </Button>
       ) : null}
-      {quality && company.next_quality_gold !== null ? (
+      {quality !== null && company.next_quality_gold !== null ? (
         <Button
           variant="secondary"
           onClick={() =>
@@ -166,7 +166,7 @@ function Upgrades({ company, run }: { company: Company; run: Run }) {
             })
           }
         >
-          {copy.quality(Number(quality[1]) + 1, company.next_quality_gold)}
+          {copy.quality(quality + 1, company.next_quality_gold)}
         </Button>
       ) : null}
     </div>

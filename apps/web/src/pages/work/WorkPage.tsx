@@ -348,7 +348,6 @@ function Offers({
 
 function HowItWorks() {
   const copy = useMessages(messages);
-  const goodName = useGoodName();
   return (
     <Panel className={styles.panel} aria-labelledby="how-title">
       <h2 id="how-title" className="at-title-3">
@@ -357,16 +356,16 @@ function HowItWorks() {
       <p>{copy.howBody}</p>
       <ul className={styles.recipes}>
         <li>
-          <span>{goodName('ration')}</span>
-          <span>{copy.recipeRation}</span>
+          <span>{copy.foodQ}</span>
+          <span>{copy.recipeFood}</span>
         </li>
         <li>
           <span>{copy.weaponsQ}</span>
           <span>{copy.recipeWeapon}</span>
         </li>
         <li>
-          <span>{goodName('fuel')}</span>
-          <span>{copy.recipeFuel}</span>
+          <span>{copy.kitsQ}</span>
+          <span>{copy.recipeKit}</span>
         </li>
       </ul>
     </Panel>

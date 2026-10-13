@@ -19,10 +19,11 @@ vi.mock('../../lib/supabase', async () => ({
   supabase: (await import('../../test/supabaseMock')).supabaseMock,
 }));
 
-const effects = ['ration', 'weapon_q3', 'fuel', 'wheat'].map((code) => ({
+const effects = ['food_q1', 'weapon_q3', 'kit_q2', 'military_raw'].map((code) => ({
   code,
   damage_multiplier: code === 'weapon_q3' ? 1.6 : null,
-  ration_energy: 10,
+  energy: code === 'food_q1' ? 10 : null,
+  heal: code === 'kit_q2' ? 10 : null,
   food_energy_daily_max: 200,
 }));
 
@@ -36,9 +37,10 @@ function signIn(extra: Answers = {}) {
     list_my_movements: { data: [], error: null },
     get_my_inventory: {
       data: [
-        { good_code: 'ration', quantity: 18 },
+        { good_code: 'food_q1', quantity: 18 },
+        { good_code: 'kit_q2', quantity: 3 },
+        { good_code: 'military_raw', quantity: 2.5 },
         { good_code: 'weapon_q3', quantity: 24 },
-        { good_code: 'wheat', quantity: 2.5 },
       ],
       error: null,
     },
@@ -67,11 +69,15 @@ describe('inventory', () => {
     expect(
       within(items).getByText('Multiplica tu daño ×1,6. Se gasta una por golpe.'),
     ).toBeVisible();
+    expect(within(items).getByText('Comida Q1')).toBeVisible();
+    expect(within(items).getByText('Botiquines Q2')).toBeVisible();
+    expect(within(items).getByText('Cura 10 de salud.')).toBeVisible();
+    expect(within(items).getByText('Materia prima militar')).toBeVisible();
     expect(within(items).getByText('2,5')).toBeVisible();
     expect(await within(items).findByText('Hoy recuperaste 40 de 200.')).toBeVisible();
   });
 
-  it('eats rations with an idempotency key', async () => {
+  it('eats Q1 food with an idempotency key', async () => {
     const user = userEvent.setup();
     signIn({
       eat_rations: {
@@ -80,7 +86,7 @@ describe('inventory', () => {
       },
     });
     await renderRoute('/account');
-    const field = await screen.findByLabelText('Raciones a comer');
+    const field = await screen.findByLabelText('Comida Q1 a comer');
     await user.clear(field);
     await user.type(field, '3');
     await user.click(screen.getByRole('button', { name: 'Comer' }));

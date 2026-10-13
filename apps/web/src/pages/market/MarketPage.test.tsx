@@ -22,8 +22,8 @@ vi.mock('../../lib/supabase', async () => ({
 
 const policy = { vat: 0.05, tariff: 0.1, fee: 0.01 };
 const summary: MarketSummary[] = [
-  { good_code: 'ration', best_price: 1260, average_24h: 1300, offers: 2, ...policy },
-  { good_code: 'wheat', best_price: null, average_24h: null, offers: 0, ...policy },
+  { good_code: 'food_q1', best_price: 1260, average_24h: 1300, offers: 2, ...policy },
+  { good_code: 'food_raw', best_price: null, average_24h: null, offers: 0, ...policy },
 ];
 const offers: MarketOffer[] = [
   {
@@ -56,7 +56,7 @@ function signIn(extra: Answers = {}) {
     market_summary: { data: summary, error: null },
     list_market: { data: offers, error: null },
     list_my_companies: { data: [], error: null },
-    get_my_inventory: { data: [{ good_code: 'ration', quantity: 18 }], error: null },
+    get_my_inventory: { data: [{ good_code: 'food_q1', quantity: 18 }], error: null },
     list_my_offers: { data: [], error: null },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
@@ -82,12 +82,14 @@ describe('market', () => {
         'Precios en Crédito con IVA 5 % incluido. Los productos importados pagan además 10 % de arancel.',
       ),
     ).toBeVisible();
-    expect(screen.getByRole('button', { name: /Raciones desde 12,60/ })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: /Comida Q1 desde 12,60/ })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
-    expect(screen.getByRole('button', { name: /Trigo sin ofertas/ })).toBeVisible();
-    const table = await screen.findByRole('table', { name: 'Ofertas de Raciones' });
+    expect(
+      screen.getByRole('button', { name: /Materia prima alimentaria sin ofertas/ }),
+    ).toBeVisible();
+    const table = await screen.findByRole('table', { name: 'Ofertas de Comida Q1' });
     expect(within(table).getAllByRole('row')).toHaveLength(3);
     expect(
       screen.getByText('Promedio de las últimas 24 h: 13,00. El vendedor paga 1 % de comisión.'),
@@ -101,7 +103,7 @@ describe('market', () => {
     await user.click(
       await screen.findByRole('button', { name: 'Elegir la oferta de Gastronomía Ibérica' }),
     );
-    const purchase = screen.getByRole('region', { name: 'Comprar Raciones' });
+    const purchase = screen.getByRole('region', { name: 'Comprar Comida Q1' });
     const quantity = within(purchase).getByLabelText('Cantidad');
     await user.clear(quantity);
     await user.type(quantity, '2');
@@ -113,7 +115,7 @@ describe('market', () => {
       p_quantity: 2,
       p_key: expect.stringMatching(/^[0-9a-f-]{36}$/) as unknown,
     });
-    expect(await screen.findByText('Compraste 2 de Raciones por 28,60 Crédito.')).toBeVisible();
+    expect(await screen.findByText('Compraste 2 de Comida Q1 por 28,60 Crédito.')).toBeVisible();
   });
 
   it('explains a purchase the buyer cannot pay', async () => {
@@ -141,7 +143,7 @@ describe('sell', () => {
       await screen.findByRole('heading', { level: 1, name: 'Vender en el mercado' }),
     ).toBeVisible();
     expect(
-      await screen.findByRole('option', { name: 'Raciones · 18 en tu inventario' }),
+      await screen.findByRole('option', { name: 'Comida Q1 · 18 en tu inventario' }),
     ).toBeVisible();
     const quantity = screen.getByLabelText('Cantidad');
     await user.clear(quantity);
@@ -153,7 +155,7 @@ describe('sell', () => {
     expect(screen.getByText('118,74')).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Publicar oferta' }));
     expect(supabaseMock.rpc).toHaveBeenCalledWith('post_offer', {
-      p_good_code: 'ration',
+      p_good_code: 'food_q1',
       p_quantity: 10,
       p_price: 1260,
       p_market_country_code: 'ARG',
