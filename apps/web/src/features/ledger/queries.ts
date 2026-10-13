@@ -8,8 +8,10 @@ const balanceSchema = z.object({
   /** `GOLD`, or the country code of a Credit. */
   currency_code: z.string(),
   country_code: z.string().nullable(),
-  /** Hundredths. */
+  /** Free hundredths, ready to spend. */
   balance: z.number().int(),
+  /** Hundredths locked in open holds (buy orders, bills), not part of `balance`. */
+  held: z.number().int(),
 });
 
 const movementSchema = z.object({
@@ -21,7 +23,8 @@ const movementSchema = z.object({
   /** Hundredths, negative when money left the account. */
   amount: z.number().int(),
   balance_after: z.number().int(),
-  counterparty_kind: z.enum(['citizen', 'treasury', 'issuer', 'sink']),
+  counterparty_kind: z.enum(['citizen', 'company', 'treasury', 'escrow', 'issuer', 'sink']),
+  /** The citizen or company; null for the rest. */
   counterparty_name: z.string().nullable(),
   counterparty_country_code: z.string().nullable(),
 });

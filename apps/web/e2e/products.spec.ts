@@ -8,10 +8,7 @@ import { stubTurnstile } from './turnstile';
 test('a player eats rations and the energy rises in the bar', async ({ page, request }) => {
   await stubTurnstile(page);
   const player = await createConfirmedPlayer(request, 'ARG');
-  await sql(
-    `insert into game.inventories (user_id, good_code, quantity) values ($1, 'ration', 5)`,
-    [player.id],
-  );
+  // The sign-up grant brings 10 rations.
   await sql('select game.spend_energy($1, 50)', [player.id]);
 
   await signIn(page, player);

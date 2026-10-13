@@ -47,6 +47,11 @@
   font-size: 13px;
 }
 
+.held {
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 400px);

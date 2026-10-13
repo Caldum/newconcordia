@@ -12,10 +12,7 @@ test('a seller posts rations and a buyer buys them; the money adds up', async ({
   await stubTurnstile(page);
   const seller = await createConfirmedPlayer(request, 'ARG');
   const buyer = await createConfirmedPlayer(request, 'ARG');
-  await sql(
-    `insert into game.inventories (user_id, good_code, quantity) values ($1, 'ration', 10)`,
-    [seller.id],
-  );
+  // The seller sells rations from the sign-up grant (10).
 
   await signIn(page, seller);
   await page.goto('/market/sell');
@@ -40,6 +37,6 @@ test('a seller posts rations and a buyer buys them; the money adds up', async ({
             (select balance from game.accounts where kind = 'citizen' and user_id = $2 and currency_code = 'ARG') as seller`,
     [buyer.id, seller.id],
   );
-  expect(balances?.buyer).toBe(String(5000 - 600));
-  expect(balances?.seller).toBe(String(5000 + 565));
+  expect(balances?.buyer).toBe(String(10000 - 600));
+  expect(balances?.seller).toBe(String(10000 + 565));
 });

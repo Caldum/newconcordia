@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoA11yViolations } from './a11y';
-import { sql } from './db';
+import { mintForTest, sql } from './db';
 import { createConfirmedPlayer, signIn } from './players';
 import { stubTurnstile } from './turnstile';
 
@@ -13,10 +13,7 @@ test('an owner founds and funds a company, and an employee works and is paid net
   const owner = await createConfirmedPlayer(request, 'ARG');
   const worker = await createConfirmedPlayer(request, 'ARG');
   // Founding costs 20 Gold; a new citizen has 5.
-  await sql(
-    `select game.transfer(game.system_account('issuer', 'GOLD'), game.citizen_account($1, 'GOLD'), 2000, 'test', null)`,
-    [owner.id],
-  );
+  await mintForTest(owner.id, 'GOLD', 2000);
   const name = `Molinos ${owner.name.slice(-6)}`;
 
   await signIn(page, owner);
@@ -49,5 +46,5 @@ test('an owner founds and funds a company, and an employee works and is paid net
     `select balance from game.accounts where kind = 'citizen' and user_id = $1 and currency_code = 'ARG'`,
     [worker.id],
   );
-  expect(row?.balance).toBe(String(5000 + 3696));
+  expect(row?.balance).toBe(String(10000 + 3696));
 });

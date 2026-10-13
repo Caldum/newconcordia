@@ -1,10 +1,13 @@
 import type { Balance, Movement } from '../../features/ledger/queries';
 
-/** Camila's balances as get_my_balances returns them: Gold first, then her Credit, then others held. */
+/**
+ * Camila's balances as get_my_balances returns them: Gold first, then her Credit, then others held. 300 of
+ * her Credit is held for a buy order.
+ */
 export const balanceRows: Balance[] = [
-  { currency_code: 'GOLD', country_code: null, balance: 124000 },
-  { currency_code: 'ARG', country_code: 'ARG', balance: 3845004 },
-  { currency_code: 'ESP', country_code: 'ESP', balance: 1200 },
+  { currency_code: 'GOLD', country_code: null, balance: 124000, held: 0 },
+  { currency_code: 'ARG', country_code: 'ARG', balance: 3845004, held: 30000 },
+  { currency_code: 'ESP', country_code: 'ESP', balance: 1200, held: 0 },
 ];
 
 /** Her latest movements, newest first. */

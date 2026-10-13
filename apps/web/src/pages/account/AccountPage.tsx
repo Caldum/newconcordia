@@ -17,6 +17,7 @@ import type { Balance, Movement } from '../../features/ledger/queries';
 import { CitizenOnly, GameShell } from '../../features/shell/GameShell';
 import { useWorld } from '../../features/world/useWorld';
 import { formatDateTime, formatMoney, useLocale, useMessages } from '../../i18n';
+import type { Locale } from '../../i18n/locales';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 import styles from './AccountPage.module.css';
@@ -90,6 +91,7 @@ function Balances({ balances, citizen }: { balances: Balance[]; citizen: Citizen
           gold={balance.currency_code === 'GOLD'}
           label={names.currency(balance.currency_code)}
           value={formatMoney(balance.balance, locale)}
+          held={balance.held > 0 ? copy.held(formatMoney(balance.held, locale)) : null}
           note={
             balance.currency_code === 'GOLD'
               ? copy.goldNote
@@ -107,11 +109,14 @@ function BalanceCard({
   gold,
   label,
   value,
+  held,
   note,
 }: {
   gold: boolean;
   label: string;
   value: string;
+  /** Money locked in holds, outside the free balance. */
+  held: string | null;
   note: string;
 }) {
   const labelId = useId();
@@ -122,6 +127,7 @@ function BalanceCard({
         {label}
       </span>
       <span className="at-figure">{value}</span>
+      {held === null ? null : <span className={styles.held}>{held}</span>}
       <span className={styles.note}>{note}</span>
     </div>
   );
@@ -344,26 +350,37 @@ function Movements({ balances, citizen }: { balances: Balance[]; citizen: Citize
   );
 }
 
+type Copy = (typeof messages)[Locale];
+
+function kindLabels(copy: Copy): Partial<Record<string, string>> {
+  return {
+    welcome_grant: copy.kind_welcome_grant,
+    transfer: copy.kind_transfer,
+    hold: copy.kind_hold,
+    hold_release: copy.kind_hold_release,
+    level_reward: copy.kind_level_reward,
+  };
+}
+
 function MovementRow({ movement, citizen }: { movement: Movement; citizen: Citizen }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const names = useCurrencyNames();
-  const kind =
-    movement.kind === 'welcome_grant'
-      ? copy.kind_welcome_grant
-      : movement.kind === 'transfer'
-        ? copy.kind_transfer
-        : copy.kind_other;
+  const kind = kindLabels(copy)[movement.kind] ?? copy.kind_other;
   const counterparty =
-    movement.counterparty_kind === 'citizen'
+    movement.counterparty_kind === 'citizen' || movement.counterparty_kind === 'company'
       ? (movement.counterparty_name ?? '')
-      : movement.counterparty_kind === 'treasury'
-        ? copy.treasury(names.country(movement.counterparty_country_code ?? movement.currency_code))
-        : movement.counterparty_kind === 'sink'
-          ? copy.sink
-          : movement.currency_code === 'GOLD'
-            ? copy.gameIssuer
-            : copy.countryIssuer(names.country(movement.currency_code));
+      : movement.counterparty_kind === 'escrow'
+        ? copy.escrow
+        : movement.counterparty_kind === 'treasury'
+          ? copy.treasury(
+              names.country(movement.counterparty_country_code ?? movement.currency_code),
+            )
+          : movement.counterparty_kind === 'sink'
+            ? copy.sink
+            : movement.currency_code === 'GOLD'
+              ? copy.gameIssuer
+              : copy.countryIssuer(names.country(movement.currency_code));
   // The player's own Credit goes bare, as on the canvas; Gold and other Credits name their unit.
   const unit =
     movement.currency_code === citizen.country_code

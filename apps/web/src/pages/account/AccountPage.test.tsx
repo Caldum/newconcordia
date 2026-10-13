@@ -69,6 +69,8 @@ describe('account', () => {
     ).toBeVisible();
     const credit = await screen.findByRole('group', { name: 'Crédito de Argentina' });
     expect(within(credit).getByText('38.450,04')).toBeVisible();
+    expect(within(credit).getByText('Además, 300,00 reservado')).toBeVisible();
+    expect(within(gold).queryByText(/reservado/)).not.toBeInTheDocument();
     expect(
       within(screen.getByRole('group', { name: 'Crédito de España' })).getByText('12,00'),
     ).toBeVisible();
@@ -100,6 +102,69 @@ describe('account', () => {
       p_currency: 'GOLD',
       p_limit: 50,
     });
+  });
+
+  it('names holds, releases, level rewards and companies in the statement', async () => {
+    const row = movementRows[0];
+    if (!row) throw new Error('fixture');
+    signIn({
+      list_my_movements: {
+        data: [
+          {
+            ...row,
+            posting_id: 13,
+            kind: 'hold',
+            memo: null,
+            amount: -30000,
+            counterparty_kind: 'escrow',
+            counterparty_name: null,
+          },
+          {
+            ...row,
+            posting_id: 12,
+            kind: 'hold_release',
+            memo: null,
+            amount: 500,
+            counterparty_kind: 'escrow',
+            counterparty_name: null,
+          },
+          {
+            ...row,
+            posting_id: 11,
+            kind: 'wage',
+            memo: null,
+            amount: 3696,
+            counterparty_kind: 'company',
+            counterparty_name: 'Molinos del Sur',
+          },
+          {
+            ...row,
+            posting_id: 10,
+            kind: 'level_reward',
+            memo: null,
+            currency_code: 'GOLD',
+            amount: 100,
+            counterparty_kind: 'issuer',
+            counterparty_name: null,
+          },
+        ],
+        error: null,
+      },
+    });
+    await renderRoute('/account');
+    const table = await screen.findByRole('table', { name: 'Movimientos' });
+    const [, hold, release, wage, reward] = within(table).getAllByRole('row') as [
+      HTMLElement,
+      HTMLElement,
+      HTMLElement,
+      HTMLElement,
+      HTMLElement,
+    ];
+    expect(within(hold).getByText('Reserva de fondos')).toBeVisible();
+    expect(within(hold).getByText('Fondos reservados')).toBeVisible();
+    expect(within(release).getByText('Fondos liberados')).toBeVisible();
+    expect(within(wage).getByText('Molinos del Sur')).toBeVisible();
+    expect(within(reward).getByText('Premio de nivel')).toBeVisible();
   });
 
   it('transfers to another player with an idempotency key and confirms it', async () => {
