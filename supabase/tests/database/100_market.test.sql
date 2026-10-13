@@ -39,13 +39,12 @@ select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
 select pg_temp.new_player('ana@example.com', 'Ana Souza', 'BRA') as ana \gset
 
--- Camila's kitchen has 20 rations; Ana holds 5; Marcos gets 100 Credit to shop.
+-- Camila's kitchen has 20 Q1 food; Ana holds the 10 of her grant; Marcos gets 100 Credit to shop.
 insert into game.companies (name, owner_user_id, country_code, region_code, good_code, created_at)
-values ('Cocina de Campaña', :'camila', 'ARG', 'ARG-01', 'ration', game.now())
+values ('Cocina de Campaña', :'camila', 'ARG', 'ARG-01', 'food_q1', game.now())
 returning id as kitchen \gset
-insert into game.company_stock (company_id, good_code, quantity) values (:'kitchen', 'ration', 20), (:'kitchen', 'wheat', 5.5);
-insert into game.inventories (user_id, good_code, quantity) values (:'ana', 'ration', 5)
-  on conflict (user_id, good_code) do update set quantity = excluded.quantity;
+select game.put_goods(game.holder_for_company(:'kitchen'), 'food_q1', 'ARG', 20, 'test', 'test');
+select game.put_goods(game.holder_for_company(:'kitchen'), 'food_raw', 'ARG', 5.5, 'test', 'test');
 select game.transfer(game.system_account('issuer', 'ARG'), game.citizen_account(:'marcos', 'ARG'), 10000, 'test', null);
 
 select game.citizen_account(:'marcos', 'ARG') as marcos_arg \gset
@@ -55,31 +54,31 @@ select game.system_account('sink', 'ARG') as sink_arg \gset
 
 -- Posting moves the units into the offer.
 select pg_temp.act_as(:'camila');
-select public.post_offer('ration', 10, 1260, 'ARG', 'd0000000-0000-4000-8000-000000000001', :'kitchen') as offer \gset
+select public.post_offer('food_q1', 10, 1260, 'ARG', 'd0000000-0000-4000-8000-000000000001', :'kitchen') as offer \gset
 select is(
-  public.post_offer('ration', 10, 1260, 'ARG', 'd0000000-0000-4000-8000-000000000001', :'kitchen'),
+  public.post_offer('food_q1', 10, 1260, 'ARG', 'd0000000-0000-4000-8000-000000000001', :'kitchen'),
   :'offer'::bigint,
   'posting again with the same key returns the same offer'
 );
-select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'ration'), 10::numeric, 'the units left the depot');
+select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'food_q1'), 10::numeric, 'the units left the depot');
 select throws_ok(
-  format($$ select public.post_offer('wheat', 6, 420, 'ARG', gen_random_uuid(), %s) $$, :'kitchen'),
+  format($$ select public.post_offer('food_raw', 6, 420, 'ARG', gen_random_uuid(), %s) $$, :'kitchen'),
   '22023', 'quantity_unavailable', 'only whole units the company holds (5.5 wheat)'
 );
 select throws_ok(
-  $$ select public.post_offer('ration', 1, 0, 'ARG', gen_random_uuid()) $$,
+  $$ select public.post_offer('food_q1', 1, 0, 'ARG', gen_random_uuid()) $$,
   '22023', 'amount_invalid', 'prices are positive'
 );
 reset role;
 
 select pg_temp.act_as(:'marcos');
 select results_eq(
-  $$ select seller_name, origin_country_code, quantity, price, imported from public.list_market('ARG', 'ration') $$,
+  $$ select seller_name, origin_country_code, quantity, price, imported from public.list_market('ARG', 'food_q1') $$,
   $$ values ('Cocina de Campaña', 'ARG', 10, 1260::bigint, false) $$,
   'buyers see the offer with its seller and origin'
 );
 select throws_ok(
-  format($$ select public.post_offer('ration', 1, 100, 'ARG', gen_random_uuid(), %s) $$, :'kitchen'),
+  format($$ select public.post_offer('food_q1', 1, 100, 'ARG', gen_random_uuid(), %s) $$, :'kitchen'),
   '42501', 'not_your_company', 'nobody sells another player''s stock'
 );
 reset role;
@@ -108,7 +107,7 @@ select is(
   'acceptance: what left the buyer is what the seller and the treasury received plus the fee'
 );
 select pg_temp.act_as(:'marcos');
-select is((select quantity from public.get_my_inventory() where good_code = 'ration'), 14::numeric, 'the rations are in the buyer''s inventory, besides the 10 of the grant');
+select is((select quantity from public.get_my_inventory() where good_code = 'food_q1'), 14::numeric, 'the rations are in the buyer''s inventory, besides the 10 of the grant');
 select throws_ok(
   format($$ select public.buy(%s, 7, gen_random_uuid()) $$, :'offer'),
   '22023', 'quantity_unavailable', 'nobody buys more than the offer has'
@@ -123,11 +122,11 @@ reset role;
 
 -- Imports pay the tariff on top.
 select pg_temp.act_as(:'ana');
-select public.post_offer('ration', 5, 1200, 'ARG', gen_random_uuid()) as import_offer \gset
+select public.post_offer('food_q1', 5, 1200, 'ARG', gen_random_uuid()) as import_offer \gset
 reset role;
 select pg_temp.balance(:'marcos_arg') as marcos_before \gset
 select pg_temp.act_as(:'marcos');
-select is((select imported from public.list_market('ARG', 'ration') where offer_id = :'import_offer'), true, 'an offer from another country is an import');
+select is((select imported from public.list_market('ARG', 'food_q1') where offer_id = :'import_offer'), true, 'an offer from another country is an import');
 select is(public.buy(:'import_offer', 1, gen_random_uuid()), 1320::bigint, 'imports pay 10 % tariff on top');
 reset role;
 select is(
@@ -146,14 +145,14 @@ select throws_ok(
 reset role;
 select pg_temp.act_as(:'camila');
 select public.buy(:'import_offer', 2, gen_random_uuid(), :'kitchen');
-select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'ration'), 12::numeric, 'bought into the company''s depot');
+select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'food_q1'), 12::numeric, 'bought into the company''s depot');
 reset role;
 
 -- Withdrawing returns what is left.
 select pg_temp.act_as(:'camila');
 select public.withdraw_offer(:'offer');
-select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'ration'), 18::numeric, 'the 6 unsold rations are back');
-select is_empty(format($$ select * from public.list_market('ARG', 'ration') where offer_id = %s $$, :'offer'), 'a withdrawn offer leaves the market');
+select is((select quantity from public.get_company_stock(:'kitchen') where good_code = 'food_q1'), 18::numeric, 'the 6 unsold rations are back');
+select is_empty(format($$ select * from public.list_market('ARG', 'food_q1') where offer_id = %s $$, :'offer'), 'a withdrawn offer leaves the market');
 select is((select count(*) from public.list_my_offers())::int, 0, 'and the seller''s active offers');
 reset role;
 
@@ -169,19 +168,18 @@ reset role;
 -- Prices: best offer and the 24-hour average, weighted by units.
 select pg_temp.act_as(:'marcos');
 select results_eq(
-  $$ select good_code, best_price, average_24h, offers from public.market_summary('ARG') where good_code = 'ration' $$,
-  $$ values ('ration', 1200::bigint, 1234::bigint, 1) $$,
+  $$ select good_code, best_price, average_24h, offers from public.market_summary('ARG') where good_code = 'food_q1' $$,
+  $$ values ('food_q1', 1200::bigint, 1234::bigint, 1) $$,
   'the summary shows the best price and the 24-hour average'
 );
 reset role;
 
 -- At most 20 open offers per player.
-insert into game.inventories (user_id, good_code, quantity) values (:'marcos', 'iron', 30)
-  on conflict (user_id, good_code) do update set quantity = excluded.quantity;
+select game.put_goods(game.holder_for_citizen(:'marcos'), 'military_raw', 'ARG', 30, 'test', 'test');
 select pg_temp.act_as(:'marcos');
-select public.post_offer('iron', 1, 840, 'ARG', gen_random_uuid()) from generate_series(1, 20);
+select public.post_offer('military_raw', 1, 840, 'ARG', gen_random_uuid()) from generate_series(1, 20);
 select throws_ok(
-  $$ select public.post_offer('iron', 1, 840, 'ARG', gen_random_uuid()) $$,
+  $$ select public.post_offer('military_raw', 1, 840, 'ARG', gen_random_uuid()) $$,
   '22023', 'too_many_offers', 'at most 20 open offers'
 );
 reset role;

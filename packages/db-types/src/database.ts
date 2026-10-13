@@ -269,7 +269,10 @@ export type Database = {
       list_goods: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          category: string;
           code: string;
+          energy: number;
+          heal: number;
           input_good_code: string;
           input_per_unit: number;
           kind: string;
@@ -283,8 +286,9 @@ export type Database = {
         Returns: {
           code: string;
           damage_multiplier: number;
+          energy: number;
           food_energy_daily_max: number;
-          ration_energy: number;
+          heal: number;
         }[];
       };
       list_job_offers: {
@@ -395,6 +399,7 @@ export type Database = {
           p_good_code: string;
           p_key: string;
           p_market_country_code: string;
+          p_origin_country_code?: string;
           p_price: number;
           p_quantity: number;
         };

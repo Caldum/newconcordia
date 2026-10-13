@@ -42,7 +42,7 @@ select game.citizen_account(:'marcos', 'ARG') as marcos_arg \gset
 select is(pg_temp.balance(:'camila_gold'), 500::bigint, 'the grant pays 5 GOLD');
 select is(pg_temp.balance(:'camila_arg'), 10000::bigint, 'and 100 of the country''s currency');
 select is(
-  (select quantity from game.inventories where user_id = :'camila' and good_code = 'ration'),
+  game.holder_quantity(game.holder_for_citizen(:'camila'), 'food_q1'),
   10::numeric,
   'and 10 Q1 food'
 );
@@ -50,7 +50,7 @@ select game.grant_welcome(:'camila');
 select results_eq(
   format($$ select (select balance from game.accounts where id = %s),
                    (select balance from game.accounts where id = %s),
-                   (select quantity from game.inventories where user_id = %L and good_code = 'ration') $$,
+                   game.holder_quantity(game.holder_for_citizen(%L), 'food_q1') $$,
          :'camila_gold', :'camila_arg', :'camila'),
   $$ values (500::bigint, 10000::bigint, 10::numeric) $$,
   'acceptance: the grant is paid once, food included'
@@ -183,7 +183,7 @@ select throws_ok(
 -- What the player sees.
 select game.hold(:'camila_arg', 300, 'buy_order', 'test:5', 'hold:t5') as hold3 \gset
 insert into game.companies (name, owner_user_id, country_code, region_code, good_code, created_at)
-select 'Molinos del Sur', :'marcos', 'ARG', region_code, 'ration', game.now()
+select 'Molinos del Sur', :'marcos', 'ARG', region_code, 'food_q1', game.now()
 from game.citizens where user_id = :'marcos'
 returning id as company \gset
 select game.transfer(:'marcos_arg', game.company_account(:'company', 'ARG'), 1, 'company_funding', null);

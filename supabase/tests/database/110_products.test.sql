@@ -27,8 +27,8 @@ set local game.fixed_now = '2026-10-09 15:00:00+00';
 
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
-insert into game.inventories (user_id, good_code, quantity) values (:'camila', 'ration', 30)
-  on conflict (user_id, good_code) do update set quantity = excluded.quantity;
+-- 10 Q1 food from the grant and 20 more.
+select game.put_goods(game.holder_for_citizen(:'camila'), 'food_q1', 'ARG', 20, 'test', 'test');
 select game.spend_energy(:'camila', 100);
 
 -- Weapons carry their multiplier.
@@ -50,7 +50,7 @@ select results_eq(
   $$ values (50, 50, 50) $$,
   'the same request again eats nothing more'
 );
-select is((select quantity from public.get_my_inventory() where good_code = 'ration'), 25::numeric, '5 rations were used');
+select is((select quantity from public.get_my_inventory() where good_code = 'food_q1'), 25::numeric, '5 rations were used');
 reset role;
 
 -- Recharge is settled first: 2 hours later the bar has 20 more, and food adds on top.
@@ -70,10 +70,10 @@ select throws_ok(
   $$ select * from public.eat_rations(1, gen_random_uuid()) $$,
   '22023', 'food_limit', 'acceptance: nothing more today'
 );
-select is((select quantity from public.get_my_inventory() where good_code = 'ration'), 10::numeric, 'refused meals keep the rations');
+select is((select quantity from public.get_my_inventory() where good_code = 'food_q1'), 10::numeric, 'refused meals keep the rations');
 reset role;
 
--- A new game day starts the count again (the day changes at 03:00 UTC).
+-- A new game day starts the count again (at 00:00 UTC; 03:00 is already the next day).
 set local game.fixed_now = '2026-10-10 03:00:00+00';
 select pg_temp.act_as(:'camila');
 select is((select energy_gained from public.eat_rations(1, gen_random_uuid())), 10, 'a new day, a new 200');
@@ -91,7 +91,7 @@ reset role;
 insert into game.companies (name, owner_user_id, country_code, region_code, good_code, created_at)
 values ('Taller Ríos', :'camila', 'ARG', 'ARG-01', 'weapon_q3', game.now())
 returning id as workshop \gset
-insert into game.company_stock (company_id, good_code, quantity) values (:'workshop', 'weapon_q3', 42);
+select game.put_goods(game.holder_for_company(:'workshop'), 'weapon_q3', 'ARG', 42, 'test', 'test');
 select pg_temp.act_as(:'camila');
 select public.move_goods(:'workshop', 'weapon_q3', 24, true);
 select is((select quantity from public.get_my_inventory() where good_code = 'weapon_q3'), 24::numeric, 'from the depot to the inventory');
