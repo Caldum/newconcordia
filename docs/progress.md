@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-09.
+Last update: 2026-10-13.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -77,12 +77,16 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-13 · The owner's specification v3.1 becomes the source of truth (`docs/spec.md`, ADR 0014). It
   redefines rules D02 and D08–D12 implemented and replaces D13–D30 with the stages of `docs/roadmap.md`. The
   development project `concordia-dev` runs D01–D12.
+- 2026-10-13 · R1: the game day is UTC (day change at 00:00 UTC, dates on the web in UTC); health 0–100;
+  civil level at 100 × L² from level 0 with 1 GOLD per new level, paid once; military XP and the rank ladder
+  Novice → General V; starting strength 0; the profile shows health and the rank with its XP bar (ADR 0015).
+  The clock Worker tests run in one workerd process.
 
 ## Next step
 
-D08 to D12 are in review, each stacked on the previous one. Next, Stage 1 of `docs/roadmap.md`:
+D08 to D12 and R1 (`feat/r1-player-core`) are in review, each stacked on the previous one. Next, Stage 1 of
+`docs/roadmap.md`:
 
-1. R1 (UTC game day, health, civil levels, military XP and ranks) on `feat/r1-player-core`, stacked on D12.
-2. R2 to R7: escrow and sign-up grant, goods and lots, automatic food, companies N1–N5, market orders, demo.
-3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+1. R2 to R7: escrow and sign-up grant, goods and lots, automatic food, companies N1–N5, market orders, demo.
+2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

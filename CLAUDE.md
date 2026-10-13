@@ -56,7 +56,7 @@ Interface copy: `docs/voice.md`. Game terms ↔ code names: `docs/glossary.md`. 
   damage, votes or permissions.
 - One action = one transaction, validating permissions, rate limits and state, with an idempotency key.
 - Money in a double-entry ledger, `bigint` hundredths, no negative balances.
-- Time in `timestamptz` UTC. The game day (fixed GMT−3) comes only from `game.game_day()`. The clock is
+- Time in `timestamptz` UTC. The game day (UTC, ADR 0014) comes only from `game.game_day()`. The clock is
   injectable for tests (`game.now()`).
 - No magic numbers: balance parameters live in `game.balance_params`.
 - Every admin action is audited (who, what, when, before and after).

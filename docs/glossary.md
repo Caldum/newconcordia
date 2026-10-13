@@ -16,7 +16,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Ocupada | Occupied | `occupied` |
 | En juego / fuera de juego | In play / not in play | `active` / `inactive` |
 | Territorio en disputa | Disputed territory | `is_enabled = false` until the admin panel enables it |
-| Día de juego | Game day | `game_day` (`game.game_day()`) |
+| Día de juego (UTC) | Game day | `game_day` (`game.game_day()`) |
 | Reloj del juego | Game clock | `game.now()` |
 | Tarea programada | Scheduled job | `scheduled job` |
 | Ejecución de una tarea | Job run | `job_run` |
@@ -33,7 +33,10 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Batalla, ronda | Battle, round | `battle`, `round` |
 | Energía | Energy | `energy` |
 | Fuerza | Strength | `strength` |
-| Rango | Rank | `rank` |
+| Rango militar (Novato, Milicia I … General V) | Military rank | `rank_step` 0–75 (`game.rank_step()`) |
+| Experiencia militar | Military experience | `military_xp` |
+| Salud | Health | `player_stats.health` |
+| Premio de nivel | Level reward | `level_reward` (`game.add_civil_xp()`) |
 | Empresa, empleo, salario | Company, job, wage | `company`, `job`, `wage` |
 | Tesoro | Treasury | `treasury` |
 | Congreso, congresista | Congress, member of Congress | `congress`, `congress_member` |
@@ -43,7 +46,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Ministro del Interior | Interior minister | `interior_minister` |
 | Adaptación (primeros 7 días) | Adaptation period | `adaptation_period` |
 | Perfil | Profile | `profile` (`get_my_profile`) |
-| Nivel, experiencia | Level, experience | `level`, `experience` |
+| Nivel (civil), experiencia | Civil level, experience | `level`, `experience` |
 | Influencia | Influence | `influence` |
 | Daño total (acumulado) | Total damage | `player_stats.damage` |
 | Estadísticas del jugador | Player stats | `player_stats` |
