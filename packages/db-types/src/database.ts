@@ -72,6 +72,7 @@ export type Database = {
         Args: { p_company_id?: number; p_key: string; p_offer_id: number; p_quantity: number };
         Returns: number;
       };
+      cancel_buy_order: { Args: { p_order_id: number }; Returns: undefined };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
@@ -241,6 +242,15 @@ export type Database = {
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
+      list_buy_orders: {
+        Args: { p_country_code: string; p_good_code: string };
+        Returns: {
+          buyer_name: string;
+          limit_price: number;
+          order_id: number;
+          remaining: number;
+        }[];
+      };
       list_citizenship_requests: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -313,6 +323,21 @@ export type Database = {
           tariff: number;
         }[];
       };
+      list_my_buy_orders: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          company_name: string;
+          created_at: string;
+          good_code: string;
+          held: number;
+          limit_price: number;
+          market_country_code: string;
+          order_id: number;
+          quantity: number;
+          remaining: number;
+          status: string;
+        }[];
+      };
       list_my_companies: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -363,6 +388,7 @@ export type Database = {
           price: number;
           quantity: number;
           sold: number;
+          status: string;
         }[];
       };
       list_region_resources: {
@@ -394,7 +420,10 @@ export type Database = {
         Args: { p_country_code: string };
         Returns: {
           average_24h: number;
+          best_bid: number;
           best_price: number;
+          bids: number;
+          export_tax: number;
           fee: number;
           good_code: string;
           offers: number;
@@ -410,6 +439,17 @@ export type Database = {
           p_to_inventory: boolean;
         };
         Returns: undefined;
+      };
+      post_buy_order: {
+        Args: {
+          p_company_id?: number;
+          p_good_code: string;
+          p_key: string;
+          p_limit_price: number;
+          p_market_country_code: string;
+          p_quantity: number;
+        };
+        Returns: number;
       };
       post_offer: {
         Args: {
