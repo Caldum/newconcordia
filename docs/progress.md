@@ -89,12 +89,14 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   with one origin, and the old goods mapped and retired (ADR 0017).
 - 2026-10-13 · R4: automatic food every 5 minutes on a UTC grid, lowest sufficient quality, up to +10 per
   interval, caught up on arrival without jobs; manual eating and the daily cap removed (ADR 0018).
+- 2026-10-13 · D08 to R4 merged into `develop` at the owner's request. Web architecture (ADR 0019): every
+  component in its own file and free of database calls (ESLint enforces it), actions through
+  `useGameAction`, a `game` layout route with `useCurrentCitizen()`, shared name lookups, pure rules in
+  tested modules. The development project runs R1 to R4.
 
 ## Next step
 
-D08 to D12 and R1 to R4 (`feat/r1-player-core`, `feat/r2-holds-and-grant`, `feat/r3-goods-and-lots`,
-`feat/r4-automatic-food`) are in review, each stacked on the previous one. Next, Stage 1 of
-`docs/roadmap.md`:
+Everything through R4 and the web architecture refactor is on `develop`. Next, Stage 1 of `docs/roadmap.md`:
 
 1. R5 to R7: companies N1–N5 and production, market orders, demo.
 2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,

@@ -62,6 +62,10 @@ Interface copy: `docs/voice.md`. Game terms ↔ code names: `docs/glossary.md`. 
 - Every admin action is audited (who, what, when, before and after).
 - Secrets only in GitHub Secrets or Wrangler. The secret / `service_role` key never reaches the client.
 - Forward-only migrations, reviewed with squawk, with the way back written in the header.
+- Web (ADR 0019): components only render and handle input, one component per file; database calls live in
+  a feature `api.ts` (actions) or `queries.ts` (reads), never in a `.tsx` (ESLint enforces it); actions go
+  through `useGameAction` and `ActionFeedback`; pure rules in tested `.ts` modules; game screens are
+  children of the `game` layout route and read the citizen with `useCurrentCitizen()`.
 
 ## Stack
 

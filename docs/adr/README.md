@@ -24,3 +24,4 @@ marked «Superseded by NNNN».
 | 0016 | Holds, mint and burn records, and the sign-up grant | Accepted |
 | 0017 | Goods catalog, inventory lots and origin | Accepted |
 | 0018 | Automatic food, settled on arrival | Accepted |
+| 0019 | Web architecture: one responsibility per module | Accepted |
