@@ -1,18 +1,11 @@
-import { Button } from '@concordia/atlas/Button';
-import { Field } from '@concordia/atlas/Field';
-import { Note } from '@concordia/atlas/Note';
 import { Panel } from '@concordia/atlas/Panel';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
 import { defineMessages, formatNumber, useLocale, useMessages } from '../../i18n';
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../auth/AuthProvider';
 import styles from '../economy/economy.module.css';
 import { isRaw, useGoodName } from '../economy/goods';
-import { act, errorCode, problemText } from '../economy/queries';
-import { useActionKey } from '../economy/useActionKey';
 import { useMyInventory } from '../market/queries';
 
 import panel from './InventoryPanel.module.css';
@@ -21,41 +14,24 @@ const messages = defineMessages({
   es: {
     title: 'Objetos',
     empty: 'Todavía no tienes objetos. Compra en el mercado o pásalos desde tu empresa.',
-    food: (energy: number, max: number) =>
-      `Recupera ${String(energy)} de energía, hasta ${String(max)} por día.`,
+    food: (energy: number) => `Da ${String(energy)} de energía.`,
+    autoFood: (perMeal: number) =>
+      `Comes automáticamente: cada 5 minutos, si te falta energía, comes la comida de menor calidad que alcance y recuperas hasta ${String(perMeal)}.`,
     kit: (health: number) => `Cura ${String(health)} de salud.`,
     weapon: (multiplier: string) => `Multiplica tu daño ×${multiplier}. Se gasta una por golpe.`,
-    fuel: 'Lo usa tu país para abrir batallas.',
+    fuel: 'Ya no se produce: quedó del juego anterior.',
     raw: 'Materia prima. Pásala al depósito de tu empresa o véndela en el mercado.',
-    today: (energy: number, max: number) => `Hoy recuperaste ${String(energy)} de ${String(max)}.`,
-    rations: 'Comida Q1 a comer',
-    eat: 'Comer',
-    eaten: (energy: number) => `Recuperaste ${String(energy)} de energía.`,
-    quantityInvalid: 'Escribe una cantidad entera, mayor que cero.',
-    error_food_limit: 'Con eso pasarías el máximo de energía por comida de hoy.',
-    error_quantity_unavailable: 'No tienes tanta comida Q1.',
-    error_amount_invalid: 'Escribe una cantidad entera, mayor que cero.',
-    error_other: 'No se pudo completar. Revisa tu conexión y vuelve a intentar.',
   },
   en: {
     title: 'Items',
     empty: 'You have no items yet. Buy on the market or move them from your company.',
-    food: (energy: number, max: number) =>
-      `Restores ${String(energy)} energy, up to ${String(max)} per day.`,
+    food: (energy: number) => `Gives ${String(energy)} energy.`,
+    autoFood: (perMeal: number) =>
+      `You eat on your own: every 5 minutes, if you are missing energy, you eat the lowest quality that covers it and recover up to ${String(perMeal)}.`,
     kit: (health: number) => `Heals ${String(health)} health.`,
     weapon: (multiplier: string) => `Multiplies your damage ×${multiplier}. One is spent per hit.`,
-    fuel: 'Your country uses it to open battles.',
+    fuel: 'No longer produced: left over from the earlier game.',
     raw: 'Raw material. Move it to your company’s depot or sell it on the market.',
-    today: (energy: number, max: number) =>
-      `Today you recovered ${String(energy)} of ${String(max)}.`,
-    rations: 'Q1 food to eat',
-    eat: 'Eat',
-    eaten: (energy: number) => `You recovered ${String(energy)} energy.`,
-    quantityInvalid: 'Write a whole quantity above zero.',
-    error_food_limit: 'That would pass today’s maximum energy from food.',
-    error_quantity_unavailable: 'You do not have that much Q1 food.',
-    error_amount_invalid: 'Write a whole quantity above zero.',
-    error_other: 'It did not go through. Check your connection and try again.',
   },
 });
 
@@ -65,7 +41,7 @@ const effectsSchema = z.array(
     damage_multiplier: z.number().nullable(),
     energy: z.number().int().nullable(),
     heal: z.number().int().nullable(),
-    food_energy_daily_max: z.number().int(),
+    food_energy_per_interval: z.number().int(),
   }),
 );
 
@@ -81,21 +57,7 @@ function useEffects() {
   });
 }
 
-function useFoodToday() {
-  const auth = useAuth();
-  const userId = auth.status === 'signedIn' ? auth.session.user.id : '';
-  return useQuery({
-    queryKey: ['me', userId, 'food-today'],
-    enabled: auth.status === 'signedIn',
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_my_food_today');
-      if (error) throw error as Error;
-      return z.number().int().parse(data);
-    },
-  });
-}
-
-/** The player's goods and what each is for; Q1 food can be eaten here (Inventory canvas). */
+/** The player's goods and what each is for; food is eaten automatically (Inventory canvas). */
 export function InventoryPanel() {
   const copy = useMessages(messages);
   const { locale } = useLocale();
@@ -104,7 +66,8 @@ export function InventoryPanel() {
   const effects = useEffects();
   const rows = inventory.data ?? [];
   const effectOf = (code: string) => effects.data?.find((effect) => effect.code === code);
-  const foodMax = effects.data?.[0]?.food_energy_daily_max ?? 0;
+  const perMeal = effects.data?.[0]?.food_energy_per_interval ?? 0;
+  const hasFood = rows.some((line) => effectOf(line.good_code)?.energy);
 
   return (
     <Panel className={styles.panel} aria-labelledby="inventory-title">
@@ -114,11 +77,12 @@ export function InventoryPanel() {
       {inventory.isSuccess && rows.length === 0 ? (
         <p className={styles.muted}>{copy.empty}</p>
       ) : null}
+      {hasFood ? <p className={styles.muted}>{copy.autoFood(perMeal)}</p> : null}
       <ul className={panel.items}>
         {rows.map((line) => {
           const effect = effectOf(line.good_code);
           const description = effect?.energy
-            ? copy.food(effect.energy, foodMax)
+            ? copy.food(effect.energy)
             : effect?.heal
               ? copy.kit(effect.heal)
               : effect?.damage_multiplier
@@ -135,61 +99,10 @@ export function InventoryPanel() {
                 <span className="at-figure">{formatNumber(line.quantity, locale)}</span>
               </div>
               <p className={styles.muted}>{description}</p>
-              {line.good_code === 'food_q1' ? <Eat foodMax={foodMax} /> : null}
             </li>
           );
         })}
       </ul>
     </Panel>
-  );
-}
-
-function Eat({ foodMax }: { foodMax: number }) {
-  const copy = useMessages(messages);
-  const food = useFoodToday();
-  const queryClient = useQueryClient();
-  const [key, renewKey] = useActionKey();
-  const [quantityText, setQuantityText] = useState('1');
-  const [problem, setProblem] = useState<string | null>(null);
-  const [eaten, setEaten] = useState<number | null>(null);
-  const quantity = /^\d{1,4}$/.test(quantityText.trim()) ? Number(quantityText.trim()) : 0;
-
-  const eat = async () => {
-    if (quantity <= 0) return;
-    setProblem(null);
-    setEaten(null);
-    try {
-      const rows = await act(supabase.rpc('eat_rations', { p_quantity: quantity, p_key: key }));
-      setEaten(rows?.[0]?.energy_gained ?? null);
-      renewKey();
-    } catch (error) {
-      setProblem(errorCode(error));
-    } finally {
-      await queryClient.invalidateQueries({ queryKey: ['me'] });
-    }
-  };
-
-  return (
-    <div className={styles.form}>
-      <p className={styles.muted}>{copy.today(food.data ?? 0, foodMax)}</p>
-      <div className={styles.inline}>
-        <Field
-          label={copy.rations}
-          value={quantityText}
-          inputMode="numeric"
-          autoComplete="off"
-          error={quantity > 0 ? undefined : copy.quantityInvalid}
-          onChange={(event) => {
-            setQuantityText(event.target.value);
-            renewKey();
-          }}
-        />
-        <Button disabled={quantity <= 0} onClick={() => void eat()}>
-          {copy.eat}
-        </Button>
-      </div>
-      {problem ? <Note tone="error">{problemText(copy, problem)}</Note> : null}
-      <div role="status">{eaten === null ? null : <Note tone="ok">{copy.eaten(eaten)}</Note>}</div>
-    </div>
   );
 }

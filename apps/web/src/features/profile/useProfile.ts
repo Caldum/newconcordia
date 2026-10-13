@@ -70,6 +70,8 @@ export function useProfile() {
   return useQuery({
     queryKey: ['me', userId, 'profile'],
     queryFn: fetchMyProfile,
+    // Food is eaten every 5 minutes on the server, settled when the profile is read (R4).
+    refetchInterval: 5 * 60_000,
     enabled: auth.status === 'signedIn',
   });
 }
