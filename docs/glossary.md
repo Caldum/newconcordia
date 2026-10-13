@@ -45,6 +45,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Titular (de un inventario) | Holder | `holders` (citizen, company, ministry, hospital) |
 | Lote, origen | Lot, origin | `inventory_lots`, `origin_country_code` |
 | Movimiento de inventario | Inventory movement | `inventory_movements` |
+| Comida automática (cada 5 minutos) | Automatic food | `automatic_food`, `game.settle_food()`, `player_stats.food_at` |
 | Empresa, empleo, salario | Company, job, wage | `company`, `job`, `wage` |
 | Tesoro | Treasury | `treasury` |
 | Congreso, congresista | Congress, member of Congress | `congress`, `congress_member` |

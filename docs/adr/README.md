@@ -23,3 +23,4 @@ marked «Superseded by NNNN».
 | 0015 | Player core: UTC day, health, civil levels and military ranks | Accepted |
 | 0016 | Holds, mint and burn records, and the sign-up grant | Accepted |
 | 0017 | Goods catalog, inventory lots and origin | Accepted |
+| 0018 | Automatic food, settled on arrival | Accepted |
