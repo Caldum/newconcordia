@@ -190,6 +190,12 @@ const sellRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/market/SellPage'), 'SellPage'),
 });
 
+const ordersRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/market/orders',
+  component: lazyRouteComponent(() => import('./pages/market/OrdersPage'), 'OrdersPage'),
+});
+
 const adminRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/admin',
@@ -219,6 +225,7 @@ const routeTree = rootRoute.addChildren([
     foundCompanyRoute,
     marketRoute,
     sellRoute,
+    ordersRoute,
     adminRoute,
   ]),
 ]);

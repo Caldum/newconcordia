@@ -38,12 +38,36 @@ const myOfferSchema = z.object({
   created_at: z.string(),
 });
 
+const buyOrderSchema = z.object({
+  order_id: z.number().int(),
+  buyer_name: z.string(),
+  remaining: z.number().int(),
+  /** The most the buyer pays per unit, tariff included, in hundredths. */
+  limit_price: z.number().int(),
+});
+
+const myBuyOrderSchema = z.object({
+  order_id: z.number().int(),
+  market_country_code: z.string(),
+  good_code: z.string(),
+  company_name: z.string().nullable(),
+  quantity: z.number().int(),
+  remaining: z.number().int(),
+  limit_price: z.number().int(),
+  /** Hundredths still locked: remaining × limit_price. */
+  held: z.number().int(),
+  status: z.enum(['open', 'partial']),
+  created_at: z.string(),
+});
+
 const inventorySchema = z.object({ good_code: z.string(), quantity: z.number() });
 
 export type MarketSummary = z.infer<typeof summarySchema>;
 export type MarketOffer = z.infer<typeof offerSchema>;
 export type MyOffer = z.infer<typeof myOfferSchema>;
 export type InventoryLine = z.infer<typeof inventorySchema>;
+export type BuyOrder = z.infer<typeof buyOrderSchema>;
+export type MyBuyOrder = z.infer<typeof myBuyOrderSchema>;
 
 export function useMarketSummary(country: string) {
   return useQuery({
@@ -78,5 +102,25 @@ export function useMyInventory() {
     queryKey: ['me', userId, 'inventory'],
     enabled,
     queryFn: () => rows(supabase.rpc('get_my_inventory'), inventorySchema),
+  });
+}
+
+export function useBuyOrders(country: string, good: string) {
+  return useQuery({
+    queryKey: ['market', country, 'buy-orders', good],
+    queryFn: () =>
+      rows(
+        supabase.rpc('list_buy_orders', { p_country_code: country, p_good_code: good }),
+        buyOrderSchema,
+      ),
+  });
+}
+
+export function useMyBuyOrders() {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'buy-orders'],
+    enabled,
+    queryFn: () => rows(supabase.rpc('list_my_buy_orders'), myBuyOrderSchema),
   });
 }
