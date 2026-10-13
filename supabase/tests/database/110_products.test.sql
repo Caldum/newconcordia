@@ -1,8 +1,8 @@
--- D12: products and consumption. Acceptance (GDD): recovering more than 200 energy from food on the same
--- day is rejected.
+-- D12: products. Weapon multipliers and moving goods between a depot and the inventory. Food is eaten
+-- automatically since R4 (150_automatic_food).
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(19);
+select plan(5);
 
 create function pg_temp.new_player(p_email text, p_name text, p_country text)
 returns uuid
@@ -27,9 +27,6 @@ set local game.fixed_now = '2026-10-09 15:00:00+00';
 
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
--- 10 Q1 food from the grant and 20 more.
-select game.put_goods(game.holder_for_citizen(:'camila'), 'food_q1', 'ARG', 20, 'test', 'test');
-select game.spend_energy(:'camila', 100);
 
 -- Weapons carry their multiplier.
 select results_eq(
@@ -37,55 +34,6 @@ select results_eq(
   $$ values ('weapon_q1', 1.2), ('weapon_q2', 1.4), ('weapon_q3', 1.6), ('weapon_q4', 1.8), ('weapon_q5', 2.0) $$,
   'a Q weapon multiplies damage by 1 + 0.2 × Q'
 );
-
--- Eating.
-select pg_temp.act_as(:'camila');
-select results_eq(
-  $$ select energy_gained, energy, food_energy_today from public.eat_rations(5, 'f0000000-0000-4000-8000-000000000001') $$,
-  $$ values (50, 50, 50) $$,
-  '5 rations give 50 energy'
-);
-select results_eq(
-  $$ select energy_gained, energy, food_energy_today from public.eat_rations(5, 'f0000000-0000-4000-8000-000000000001') $$,
-  $$ values (50, 50, 50) $$,
-  'the same request again eats nothing more'
-);
-select is((select quantity from public.get_my_inventory() where good_code = 'food_q1'), 25::numeric, '5 rations were used');
-reset role;
-
--- Recharge is settled first: 2 hours later the bar has 20 more, and food adds on top.
-set local game.fixed_now = '2026-10-09 17:00:00+00';
-select pg_temp.act_as(:'camila');
-select is((select energy from public.eat_rations(10, gen_random_uuid())), 170, '50 + 20 recharged + 100 from food');
-select is((select energy from public.get_my_profile()), 170, 'food takes energy above 100');
-select is((select next_energy_at from public.get_my_profile()), null, 'above 100 there is no recharge');
-
--- Acceptance: at most 200 from food per game day.
-select throws_ok(
-  $$ select * from public.eat_rations(6, gen_random_uuid()) $$,
-  '22023', 'food_limit', 'acceptance: 150 eaten, 60 more would pass 200'
-);
-select is((select food_energy_today from public.eat_rations(5, gen_random_uuid())), 200, 'exactly 200 is allowed');
-select throws_ok(
-  $$ select * from public.eat_rations(1, gen_random_uuid()) $$,
-  '22023', 'food_limit', 'acceptance: nothing more today'
-);
-select is((select quantity from public.get_my_inventory() where good_code = 'food_q1'), 10::numeric, 'refused meals keep the rations');
-reset role;
-
--- A new game day starts the count again (at 00:00 UTC; 03:00 is already the next day).
-set local game.fixed_now = '2026-10-10 03:00:00+00';
-select pg_temp.act_as(:'camila');
-select is((select energy_gained from public.eat_rations(1, gen_random_uuid())), 10, 'a new day, a new 200');
-select throws_ok(
-  $$ select * from public.eat_rations(99, gen_random_uuid()) $$,
-  '22023', 'quantity_unavailable', 'only the rations the player has'
-);
-select throws_ok(
-  $$ select * from public.eat_rations(0, gen_random_uuid()) $$,
-  '22023', 'amount_invalid', 'at least one ration'
-);
-reset role;
 
 -- Moving goods between a depot and the inventory.
 insert into game.companies (name, owner_user_id, country_code, region_code, good_code, created_at)
@@ -108,8 +56,6 @@ select throws_ok(
   '42501', 'not_your_company', 'only the owner moves goods'
 );
 reset role;
-
-select ok(not has_function_privilege('anon', 'public.eat_rations(integer, uuid)', 'EXECUTE'), 'visitors cannot eat');
 
 select * from finish();
 rollback;

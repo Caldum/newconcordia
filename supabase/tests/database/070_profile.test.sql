@@ -27,6 +27,9 @@ set local game.fixed_now = '2026-10-08 12:00:00+00';
 
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
+-- Without food, so only the hourly recharge moves energy (automatic food is tested in 150).
+select game.take_goods(game.holder_for_citizen(:'camila'), 'food_q1', 10, 'test', 'test');
+select game.take_goods(game.holder_for_citizen(:'marcos'), 'food_q1', 10, 'test', 'test');
 
 -- Balance parameters.
 select is(game.param('energy_max'), 100::numeric, 'energy tops out at 100');

@@ -83,14 +83,6 @@ export type Database = {
         Args: { p_approve: boolean; p_request_id: number };
         Returns: undefined;
       };
-      eat_rations: {
-        Args: { p_key: string; p_quantity: number };
-        Returns: {
-          energy: number;
-          energy_gained: number;
-          food_energy_today: number;
-        }[];
-      };
       found_company: {
         Args: { p_good_code: string; p_key: string; p_name: string; p_region_code: string };
         Returns: number;
@@ -168,7 +160,6 @@ export type Database = {
           to_country_code: string;
         }[];
       };
-      get_my_food_today: { Args: Record<PropertyKey, never>; Returns: number };
       get_my_inventory: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -287,7 +278,7 @@ export type Database = {
           code: string;
           damage_multiplier: number;
           energy: number;
-          food_energy_daily_max: number;
+          food_energy_per_interval: number;
           heal: number;
         }[];
       };

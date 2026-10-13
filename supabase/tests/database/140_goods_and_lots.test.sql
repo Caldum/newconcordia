@@ -2,7 +2,7 @@
 -- never negative; origin survives every movement.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(35);
+select plan(33);
 
 insert into game.mint_reasons (kind, authority, description) values ('test', 'system_reward', 'Test funding.');
 
@@ -204,13 +204,6 @@ select is(
   20::numeric,
   'the inputs used are logged'
 );
-
--- Eating Q1 food uses the catalog's energy.
-select game.spend_energy(:'camila', 50);
-select pg_temp.act_as(:'camila');
-select is((select energy_gained from public.eat_rations(2, gen_random_uuid())), 20, 'two Q1 food give 20 energy');
-reset role;
-select is(pg_temp.lot(:'camila_h', 'food_q1', 'ARG'), 8::numeric, 'and leave the lot');
 
 -- Founding and quality.
 select pg_temp.act_as(:'camila');
