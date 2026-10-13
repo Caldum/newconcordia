@@ -82,7 +82,10 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Salario mínimo | Minimum wage | `country_policies.minimum_wage` |
 | Rendimiento (de la región) | Yield | `raw_yield` |
 | Mercado | Market | `market_offers`, `market_trades` |
-| Oferta (del mercado) | Offer | `market_offers` |
+| Oferta (del mercado) | Offer, sell order | `market_offers` (`status`) |
+| Orden de compra | Buy order | `market_buy_orders` (`limit_price`, `remaining`, `hold_id`) |
+| Impuesto a la exportación | Export tax | `country_policies.export_tax` |
+| Licencia de mercado extranjero | Foreign market license | `market_access_licenses` |
 | Inventario | Inventory | `inventories` |
 | IVA | VAT | `country_policies.vat` |
 | Arancel | Tariff | `country_policies.tariff` |

@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-13.
+Last update: 2026-10-14.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -96,11 +96,14 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-14 · R5: 15 resources across the 78 regions, national bonus, companies N1–N5 (extractors on their
   resource, quality = level), regular, second and management shifts, the output formulas with health and
   bonus, no production without inputs, foreign owners with the host surcharge (ADR 0020).
+- 2026-10-14 · R6: buy orders that lock limit × quantity in an escrow, price-time matching at the offer's
+  price with the difference refunded, partial fills, cancellation, the export tax to the production country,
+  foreign market licenses configured off; a «Buy orders» market tab (ADR 0021).
 
 ## Next step
 
-Everything through R4 and the web architecture refactor is on `develop`. Next, Stage 1 of `docs/roadmap.md`:
+Everything through R6 is on `develop` and in the development project. Next, Stage 1 of `docs/roadmap.md`:
 
-1. R6 and R7: market orders with locked funds and partial fills, export tax; the Stage 1 demo.
+1. R7: the Stage 1 demo journey (work → produce a kit → sell → another buys → consume).
 2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.
