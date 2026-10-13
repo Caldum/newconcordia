@@ -84,12 +84,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-13 · R2: holds in escrow accounts with capture and release, minting only for listed reasons,
   every mint and burn recorded, sign-up grant of 5 GOLD, 100 national currency and 10 rations (Q1 food),
   held money on the account, and the statement fixed for company counterparties (ADR 0016).
+- 2026-10-13 · R3: the spec's goods (food, military and medical raw; food, weapons and kits Q1–Q5),
+  holders, inventory lots with an immutable origin taken oldest first, an append-only movement log, offers
+  with one origin, and the old goods mapped and retired (ADR 0017).
 
 ## Next step
 
-D08 to D12, R1 (`feat/r1-player-core`) and R2 (`feat/r2-holds-and-grant`) are in review, each stacked on the
-previous one. Next, Stage 1 of `docs/roadmap.md`:
+D08 to D12 and R1 to R3 (`feat/r1-player-core`, `feat/r2-holds-and-grant`, `feat/r3-goods-and-lots`) are in
+review, each stacked on the previous one. Next, Stage 1 of `docs/roadmap.md`:
 
-1. R3 to R7: goods and lots, automatic food, companies N1–N5, market orders, demo.
+1. R4 to R7: automatic food, companies N1–N5, market orders, demo.
 2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

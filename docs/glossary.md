@@ -40,6 +40,11 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Fondos reservados, reserva | Hold, escrow | `ledger_holds`, account kind `escrow` (`game.hold()`) |
 | Emisión, quema | Mint, burn | `supply_changes` (`mint`, `burn`), `mint_reasons` |
 | Regalo de bienvenida | Sign-up grant | `welcome_grant` (`game.grant_welcome()`) |
+| Materia prima alimentaria, militar, médica | Food, military, medical raw material | `food_raw`, `military_raw`, `medical_raw` |
+| Comida, armas, botiquines Q1–Q5 | Food, weapons, medical kits Q1–Q5 | `food_q1`…, `weapon_q1`…, `kit_q1`… |
+| Titular (de un inventario) | Holder | `holders` (citizen, company, ministry, hospital) |
+| Lote, origen | Lot, origin | `inventory_lots`, `origin_country_code` |
+| Movimiento de inventario | Inventory movement | `inventory_movements` |
 | Empresa, empleo, salario | Company, job, wage | `company`, `job`, `wage` |
 | Tesoro | Treasury | `treasury` |
 | Congreso, congresista | Congress, member of Congress | `congress`, `congress_member` |
