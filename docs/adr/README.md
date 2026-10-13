@@ -19,3 +19,4 @@ marked «Superseded by NNNN».
 | 0011 | Local development without Docker | Accepted |
 | 0012 | Companies and work: production, cash, jobs and policies | Accepted |
 | 0013 | Market: country markets, escrow and who pays each tax | Accepted |
+| 0014 | Specification v3.1 becomes the source of truth | Accepted |

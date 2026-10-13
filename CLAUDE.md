@@ -5,42 +5,48 @@ work, train, fight for real regions, vote and govern. This file is the summary; 
 
 ## At the start of a session
 
-1. Read `docs/progress.md` and the open PRs. Continue from the last pushed point.
+1. Read `docs/progress.md`, `docs/roadmap.md` and the open PRs. Continue from the last pushed point.
 2. If the task touches rules or screens, read the matching source of truth (below).
 3. Read the matching `SKILL.md` in `.claude/skills/` before each kind of task (see «Skills»).
 
 ## Sources of truth (the higher one wins)
 
-1. `docs/brief.md`, especially section 3 (decisions made after the GDD).
-2. Screen canvas: `docs/design/canvas/*.dc.html` (visual and behavioral reference, not code). Index:
+1. `docs/spec.md`: the owner's consolidated specification v3.1 (ADR 0014). Where it is silent, the sources
+   below still apply. Work plan: `docs/roadmap.md`.
+2. `docs/brief.md`, especially section 3 (decisions made after the GDD).
+3. Screen canvas: `docs/design/canvas/*.dc.html` (visual and behavioral reference, not code). Index:
    `docs/design/README.md`.
-3. Atlas design system: `docs/design/atlas/` (`tokens.json`, `README.md`, `components/*`).
-4. Game design document: `docs/gdd.md` (rules, balance, D01–D30 plan).
-5. Map: `data/map/` (`scripts/regions_map.py`, `world-regions.json`).
+4. Atlas design system: `docs/design/atlas/` (`tokens.json`, `README.md`, `components/*`).
+5. Game design document: `docs/gdd.md` (rules and balance where the specification is silent).
+6. Map: `data/map/` (`scripts/regions_map.py`, `world-regions.json`).
 
 Interface copy: `docs/voice.md`. Game terms ↔ code names: `docs/glossary.md`. Decisions: `docs/adr/`.
 
-## Decisions in force that override the GDD
+## Decisions in force (specification v3.1 first)
 
-- Adaptive desktop web only (up to 1320 px, usable from 360 px). No mobile app.
-- Interface in neutral Spanish with *tú* (never *voseo*) and English (ADR 0005). No keyboard shortcuts.
-  No dark mode. WCAG 2.2 AA.
-- Citizenship is immediate at sign-up. 7-day adaptation period: damage at 50 % and no vote in elections.
-- Sign-up: email, password, citizen name (unique, immutable) and country. Turnstile and Google.
-- Country not in play: per-country waitlist + choose another country to start; when it opens, the player
-  can move keeping level, strength, Gold, items and companies.
-- Citizenship change: requested from the other country; automatic or reviewed by its Interior minister by
-  law; approved automatically after 72 h without an answer. Loses offices and seat. At most once every 30 days.
-- Laws: only the 20 members of Congress vote, for 24 h; passes with more for than against. Tie: the vice
-  president has 12 h and their vote decides on the spot; if they do not vote, the law falls. The president
-  never votes.
-- Citizens vote in elections every 15 days, alternating Congress and presidency; 30-day terms.
-- Economy: founding a company costs 20 Gold. Ration = 1 wheat + 2 points; weapon Q = Q iron + Q points;
-  fuel = 1 oil + 0.5 points. Region without a deposit 50 %, +15 % per level.
-- Banks by tender (2 licenses per round). Score = collateral/10 + 20 × deposit rate − 10 × loan rate.
-- Damage = 50 × (1 + √strength/10) × (1 + 0.03 × rank) × weapon × bonuses. Test case: 633 per hit.
-- Battles of up to 5 rounds of 4 h; whoever wins 3 wins.
-- Daily missions: work, train, 5 hits, read an article. 1 Gold; 7 days in a row, 3 extra Gold.
+- Business time is UTC: the game day changes at 00:00 UTC; elections follow the monthly UTC calendar
+  (president day 5, party leaders day 15, Congress day 25).
+- Player: civil level L at 100 × L² XP (level 0 at start, 1 GOLD per new level, once); health 0–100 with no
+  passive regeneration; energy up to 100 (recharge 10 per hour kept from the GDD) plus automatic Q1–Q5 food
+  every 5 minutes; military strength, XP and ranks (Novice + 15 ranks × I–V, threshold 100 × n²).
+- Sign-up grant: 5 GOLD, 100 national currency, 10 Q1 food. Money in hundredths; issuance only by law or an
+  explicit system reward; escrow for buy orders, bills and war authorizations.
+- Companies N1–N5 (10/25/50/100/200 GOLD; civil level 5/10/20/30/40); 15 resources by region; extractors only
+  where the resource exists; production formulas of spec section 5.
+- Market: sell and buy orders with locked funds, partial fills, price-time priority, export tax; FX through
+  GOLD pairs.
+- Government: president and vice president on a monthly joint ticket; five ministries and a Central Bank
+  governor; Congress of `max(8, floor(A/50))` seats by D'Hondt; bills with budget escrow; succession is atomic.
+- War: authorization law with 50 GOLD escrow, only the president launches; battles of 9 rounds of 1 hour, first
+  to 5; damage `floor((10 + F) × HP/100 × (1 + 0.2 Q) × (1 + 0.05 min(n, 75)))`; resistance with 10 organizers.
+- Health: kits Q1–Q5; one public hospital per region (N1–N5) holding kits only; stock private to Health and
+  the presidency.
+- Kept from the brief: adaptive desktop web (up to 1320 px, usable from 360 px), Spanish with *tú* and
+  English (ADR 0005), WCAG 2.2 AA, no keyboard shortcuts, no dark mode; immediate citizenship with a 7-day
+  adaptation period; sign-up with email, password, unique immutable citizen name and country, Turnstile and
+  Google; waitlists and citizenship changes (72 h, every 30 days).
+- `PENDING` items of the specification (exploration, Liberating Hero, travel and license prices) ship as
+  configuration with the feature off; never invent their values.
 
 ## Non-negotiable engineering rules
 
@@ -96,6 +102,8 @@ pnpm db:start                # local Supabase (Docker)
 pnpm db:test                 # pgTAP: supabase test db
 pnpm db:lint                 # squawk on the migrations
 pnpm db:types                # regenerates packages/db-types from the local database
+pnpm db:test:native          # pgTAP on native PostgreSQL 17, fresh database each run (no Docker, ADR 0011)
+pnpm db:types:native         # regenerates packages/db-types from that native database
 pnpm --filter @concordia/web e2e   # Playwright + axe
 ```
 

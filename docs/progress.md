@@ -74,12 +74,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   (ADR 0013).
 - 2026-10-09 · D12: rations to eat (10 energy each, up to 200 from food per game day), weapon multipliers,
   goods between depots and inventories, the account becomes «Inventario y cuenta».
+- 2026-10-13 · The owner's specification v3.1 becomes the source of truth (`docs/spec.md`, ADR 0014). It
+  redefines rules D02 and D08–D12 implemented and replaces D13–D30 with the stages of `docs/roadmap.md`. The
+  development project `concordia-dev` runs D01–D12.
 
 ## Next step
 
-D08 to D12 are in review, each stacked on the previous one.
+D08 to D12 are in review, each stacked on the previous one. Next, Stage 1 of `docs/roadmap.md`:
 
-1. D13 (daily missions) on `feat/d13-missions`, stacked on D12.
-2. Owner: setup step 10 (development project) to run the web locally again.
+1. R1 (UTC game day, health, civil levels, military XP and ranks) on `feat/r1-player-core`, stacked on D12.
+2. R2 to R7: escrow and sign-up grant, goods and lots, automatic food, companies N1–N5, market orders, demo.
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
-   Google, legal texts, first admin) to see the game in staging.
+   Google, legal texts) to see the game in staging.
