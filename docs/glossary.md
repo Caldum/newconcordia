@@ -46,6 +46,12 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Lote, origen | Lot, origin | `inventory_lots`, `origin_country_code` |
 | Movimiento de inventario | Inventory movement | `inventory_movements` |
 | Comida automática (cada 5 minutos) | Automatic food | `automatic_food`, `game.settle_food()`, `player_stats.food_at` |
+| Recurso (15), recursos de la región | Resource, region resources | `resources`, `region_resources` |
+| Bono nacional | National bonus | `game.national_bonus()` |
+| Extractora, manufacturera | Extractor, manufacturer | `companies.kind` |
+| Nivel de empresa N1–N5 | Company level | `companies.level` |
+| Turno (pagado, segundo, de dirección) | Shift (regular, second, management) | `work_shifts.kind` |
+| Recargo de construcción extranjera | Foreign construction surcharge | `country_policies.foreign_construction_surcharge` |
 | Empresa, empleo, salario | Company, job, wage | `company`, `job`, `wage` |
 | Tesoro | Treasury | `treasury` |
 | Congreso, congresista | Congress, member of Congress | `congress`, `congress_member` |

@@ -93,11 +93,14 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   component in its own file and free of database calls (ESLint enforces it), actions through
   `useGameAction`, a `game` layout route with `useCurrentCitizen()`, shared name lookups, pure rules in
   tested modules. The development project runs R1 to R4.
+- 2026-10-14 · R5: 15 resources across the 78 regions, national bonus, companies N1–N5 (extractors on their
+  resource, quality = level), regular, second and management shifts, the output formulas with health and
+  bonus, no production without inputs, foreign owners with the host surcharge (ADR 0020).
 
 ## Next step
 
 Everything through R4 and the web architecture refactor is on `develop`. Next, Stage 1 of `docs/roadmap.md`:
 
-1. R5 to R7: companies N1–N5 and production, market orders, demo.
+1. R6 and R7: market orders with locked funds and partial fills, export tax; the Stage 1 demo.
 2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.
