@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { runJob } from './runJob';
 
 const env = { SUPABASE_URL: 'https://example.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_test' };
-const scheduledAt = new Date('2026-10-09T03:00:00.000Z');
+const scheduledAt = new Date('2026-10-09T00:00:00.000Z');
 
 function respondWith(body: unknown, status = 200) {
   return vi
@@ -20,7 +20,7 @@ describe('runJob', () => {
     const fetchSpy = respondWith({
       status: 'succeeded',
       job: 'day_change',
-      slot: '2026-10-09T03:00:00+00:00',
+      slot: '2026-10-09T00:00:00+00:00',
     });
 
     await runJob('day_change', scheduledAt, env);
@@ -34,7 +34,7 @@ describe('runJob', () => {
     expect(headers.get('authorization')).toBeNull();
     expect(JSON.parse(init?.body as string)).toEqual({
       p_job: 'day_change',
-      p_at: '2026-10-09T03:00:00.000Z',
+      p_at: '2026-10-09T00:00:00.000Z',
     });
   });
 
@@ -42,7 +42,7 @@ describe('runJob', () => {
     const fetchSpy = respondWith({
       status: 'skipped',
       job: 'day_change',
-      slot: '2026-10-09T03:00:00+00:00',
+      slot: '2026-10-09T00:00:00+00:00',
     });
 
     await runJob('day_change', scheduledAt, {
@@ -55,11 +55,11 @@ describe('runJob', () => {
   });
 
   it('returns the run reported by the database', async () => {
-    respondWith({ status: 'skipped', job: 'day_change', slot: '2026-10-09T03:00:00+00:00' });
+    respondWith({ status: 'skipped', job: 'day_change', slot: '2026-10-09T00:00:00+00:00' });
 
     await expect(runJob('day_change', scheduledAt, env)).resolves.toEqual({
       ok: true,
-      run: { status: 'skipped', job: 'day_change', slot: '2026-10-09T03:00:00+00:00' },
+      run: { status: 'skipped', job: 'day_change', slot: '2026-10-09T00:00:00+00:00' },
     });
   });
 

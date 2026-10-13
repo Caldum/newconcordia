@@ -20,12 +20,18 @@ const profileSchema = z.object({
   /** Experience where the current level started. */
   level_experience: z.number().int(),
   next_level_experience: z.number().int(),
+  health: z.number().int(),
+  health_max: z.number().int(),
   strength: z.number().int(),
-  /** War damage accumulated over the whole game. */
+  military_xp: z.number().int(),
+  /** 0 (Novice) to 75 (General V); see rankOf. */
+  rank_step: z.number().int(),
+  /** Military XP where the current rank step started. */
+  rank_xp: z.number().int(),
+  /** Null at General V. */
+  next_rank_xp: z.number().int().nullable(),
+  /** War damage accumulated over the whole game (a statistic). */
   damage: z.number().int(),
-  rank: z.number().int(),
-  /** Null at the highest rank. */
-  next_rank_damage: z.number().int().nullable(),
   influence: z.number().int(),
   energy: z.number().int(),
   energy_max: z.number().int(),

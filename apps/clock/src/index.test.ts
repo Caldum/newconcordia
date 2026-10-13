@@ -10,7 +10,7 @@ function mockDatabase(body: unknown, status = 200) {
     .mockResolvedValue(new Response(JSON.stringify(body), { status }));
 }
 
-async function trigger(cron: string, scheduledTime = Date.parse('2026-10-09T03:00:00Z')) {
+async function trigger(cron: string, scheduledTime = Date.parse('2026-10-09T00:00:00Z')) {
   await worker.scheduled(createScheduledController({ cron, scheduledTime }), env);
 }
 
@@ -19,15 +19,15 @@ describe('scheduled', () => {
     vi.restoreAllMocks();
   });
 
-  it('runs the day change at 03:00 UTC and logs the outcome', async () => {
+  it('runs the day change at 00:00 UTC and logs the outcome', async () => {
     const fetchSpy = mockDatabase({
       status: 'succeeded',
       job: 'day_change',
-      slot: '2026-10-09T03:00:00+00:00',
+      slot: '2026-10-09T00:00:00+00:00',
     });
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
 
-    await trigger('0 3 * * *');
+    await trigger('0 0 * * *');
 
     expect(fetchSpy).toHaveBeenCalledOnce();
     const entry = JSON.parse(String(log.mock.calls[0]?.[0])) as Record<string, unknown>;
@@ -40,22 +40,22 @@ describe('scheduled', () => {
   });
 
   it('treats a repeated slot as success', async () => {
-    mockDatabase({ status: 'skipped', job: 'day_change', slot: '2026-10-09T03:00:00+00:00' });
+    mockDatabase({ status: 'skipped', job: 'day_change', slot: '2026-10-09T00:00:00+00:00' });
     vi.spyOn(console, 'log').mockImplementation(() => undefined);
 
-    await expect(trigger('0 3 * * *')).resolves.toBeUndefined();
+    await expect(trigger('0 0 * * *')).resolves.toBeUndefined();
   });
 
   it('fails the invocation when the job fails, so Cloudflare reports it', async () => {
     mockDatabase({
       status: 'failed',
       job: 'day_change',
-      slot: '2026-10-09T03:00:00+00:00',
+      slot: '2026-10-09T00:00:00+00:00',
       error: 'simulated outage',
     });
     const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-    await expect(trigger('0 3 * * *')).rejects.toThrow('day_change failed');
+    await expect(trigger('0 0 * * *')).rejects.toThrow('day_change failed');
     expect(String(error.mock.calls[0]?.[0])).toContain('simulated outage');
   });
 
@@ -63,19 +63,19 @@ describe('scheduled', () => {
     mockDatabase({
       status: 'failed',
       job: 'day_change',
-      slot: '2026-10-09T03:00:00+00:00',
+      slot: '2026-10-09T00:00:00+00:00',
       error: null,
     });
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-    await expect(trigger('0 3 * * *')).rejects.toThrow('day_change failed: unknown error');
+    await expect(trigger('0 0 * * *')).rejects.toThrow('day_change failed: unknown error');
   });
 
   it('fails the invocation when the database cannot be reached', async () => {
     mockDatabase({ message: 'unavailable' }, 503);
     vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-    await expect(trigger('0 3 * * *')).rejects.toThrow('day_change failed');
+    await expect(trigger('0 0 * * *')).rejects.toThrow('day_change failed');
   });
 
   it('fails loudly on a cron the Worker does not know', async () => {

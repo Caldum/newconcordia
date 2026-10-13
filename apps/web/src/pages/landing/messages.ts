@@ -20,14 +20,14 @@ export const messages = defineMessages({
       'Puedes entrenar una vez al día. Cada entrenamiento sube tu fuerza, que multiplica tu daño.',
     fightTitle: 'Combates',
     fightBody:
-      'Cada batalla tiene hasta 5 rondas de 4 horas. Gana el bando que hace más daño en 3 rondas.',
+      'Cada batalla tiene hasta 9 rondas de 1 hora. Gana el primer bando que se lleva 5 rondas.',
     voteTitle: 'Votas',
     voteBody:
-      'Cada 15 días eliges presidente o Congreso. Los congresistas votan las leyes, los impuestos y las guerras.',
+      'Cada mes eliges presidente y Congreso. Los congresistas votan las leyes, los impuestos y las guerras.',
     waitingTitle: 'Tu país te está esperando',
     create: 'Crear mi ciudadano',
     footer: 'Pie de página',
-    gameTime: 'Hora del juego: GMT−3',
+    gameTime: 'Hora del juego: UTC',
   },
   en: {
     documentTitle: 'Concordia · Strategy game in the browser',
@@ -47,14 +47,13 @@ export const messages = defineMessages({
     trainBody:
       'You can train once a day. Each session raises your strength, which multiplies your damage.',
     fightTitle: 'You fight',
-    fightBody:
-      'Each battle has up to 5 rounds of 4 hours. The side that does more damage in 3 rounds wins.',
+    fightBody: 'Each battle has up to 9 rounds of 1 hour. The first side to win 5 rounds takes it.',
     voteTitle: 'You vote',
     voteBody:
-      'Every 15 days you elect the president or Congress. Members of Congress vote on laws, taxes and wars.',
+      'Every month you elect the president and Congress. Members of Congress vote on laws, taxes and wars.',
     waitingTitle: 'Your country is waiting for you',
     create: 'Create my citizen',
     footer: 'Footer',
-    gameTime: 'Game time: GMT−3',
+    gameTime: 'Game time: UTC',
   },
 });

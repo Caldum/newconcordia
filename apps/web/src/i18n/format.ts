@@ -46,8 +46,8 @@ export function pluralCategory(count: number, locale: Locale): Intl.LDMLPluralRu
   return new Intl.PluralRules(intlLocale[locale]).select(count);
 }
 
-/** Dates are shown on game time (GMT−3), the clock every player shares. */
-const gameTimeZone = 'America/Argentina/Buenos_Aires';
+/** Dates are shown on game time (UTC, ADR 0014), the clock every player shares. */
+const gameTimeZone = 'UTC';
 
 /** «8 de octubre de 2026» / «October 8, 2026». */
 export function formatDate(value: Date | string, locale: Locale): string {
@@ -57,7 +57,7 @@ export function formatDate(value: Date | string, locale: Locale): string {
   }).format(new Date(value));
 }
 
-/** «8 de octubre, 15:00» / «October 8, 3:00 PM». */
+/** «8 de octubre, 18:00» / «October 8, 6:00 PM». */
 export function formatDateTime(value: Date | string, locale: Locale): string {
   return new Intl.DateTimeFormat(intlLocale[locale], {
     month: 'long',

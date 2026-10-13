@@ -10,6 +10,8 @@ export default defineConfig({
   ],
   test: {
     include: ['src/**/*.test.ts'],
+    // Several workerd runners starting at once time out on slower Windows machines; three files run fast in one.
+    maxWorkers: 1,
     coverage: {
       provider: 'istanbul',
       include: ['src/**/*.ts'],

@@ -5,7 +5,7 @@ import { sql } from './db';
 import { createConfirmedPlayer, signIn } from './players';
 import { stubTurnstile } from './turnstile';
 
-test('a new citizen has full energy and starts at level 1 with 100 strength', async ({
+test('a new citizen has full health and energy and starts at level 0 as a Novice', async ({
   page,
   request,
 }) => {
@@ -19,10 +19,13 @@ test('a new citizen has full energy and starts at level 1 with 100 strength', as
   await page.getByRole('link', { name: `Tu perfil: ${player.name}` }).click();
   await expect(page).toHaveURL('/profile');
   await expect(page.getByRole('heading', { level: 1, name: player.name })).toBeVisible();
-  await expect(page.getByRole('group', { name: 'Nivel' })).toContainText('1');
-  await expect(page.getByRole('group', { name: 'Nivel' })).toContainText('0 de 10 de experiencia');
-  await expect(page.getByRole('group', { name: 'Fuerza' })).toContainText('100');
-  await expect(page.getByRole('group', { name: 'Daño total' })).toContainText('Rango 0');
+  await expect(page.getByRole('group', { name: 'Nivel' })).toContainText('0 de 100 de experiencia');
+  await expect(page.getByRole('meter', { name: 'Salud' })).toHaveAttribute(
+    'aria-valuetext',
+    '100 de 100',
+  );
+  await expect(page.getByRole('group', { name: 'Fuerza' })).toContainText('0');
+  await expect(page.getByRole('group', { name: 'Rango militar' })).toContainText('Novato');
   await expect(page.getByRole('group', { name: 'Energía' })).toContainText('Llena');
   await expectNoA11yViolations(page);
 
