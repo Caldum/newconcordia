@@ -36,8 +36,13 @@ export function upgradeCompany(companyId: number, key: string) {
   return supabase.rpc('upgrade_company', { p_company_id: companyId, p_key: key });
 }
 
-export function upgradeCompanyQuality(companyId: number, key: string) {
-  return supabase.rpc('upgrade_company_quality', { p_company_id: companyId, p_key: key });
+/** Authorizes an employee's second paid shift a day at this wage; a null wage revokes it. */
+export function authorizeSecondShift(companyId: number, employeeName: string, wage: number | null) {
+  return supabase.rpc('authorize_second_shift', {
+    p_company_id: companyId,
+    p_employee_name: employeeName,
+    ...(wage === null ? {} : { p_wage: wage }),
+  });
 }
 
 /** Moves money between the owner and the company: `deposit` into its cash, `withdraw` out of it. */

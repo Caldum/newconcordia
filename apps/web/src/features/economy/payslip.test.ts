@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { payslip } from './payslip';
-import type { Job, Workday } from './queries';
+import type { Job, Shift } from './queries';
 
 const job = { wage: 4200, work_tax: 0.12 } as Job;
 
@@ -11,8 +11,8 @@ describe('payslip', () => {
   });
 
   it('shows what was paid once worked', () => {
-    const workday = { gross: 4000, tax: 480 } as Workday;
-    expect(payslip(job, workday)).toEqual({ gross: 4000, tax: 480, net: 3520, taxRate: 0.12 });
+    const shift = { gross: 4000, tax: 480 } as Shift;
+    expect(payslip(job, shift)).toEqual({ gross: 4000, tax: 480, net: 3520, taxRate: 0.12 });
   });
 
   it('is empty without a job', () => {

@@ -2,13 +2,15 @@ import { useId } from 'react';
 
 import styles from '../../features/economy/economy.module.css';
 import { useCompanyEmployees } from '../../features/economy/queries';
-import { useMessages } from '../../i18n';
+import { formatMoney, useLocale, useMessages } from '../../i18n';
 
 import { messages } from './messages';
+import { SecondShiftAuthorization } from './SecondShiftAuthorization';
 
-/** Who works in the company, whether they worked today and their streak. */
+/** Who works in the company: today, their streak and their second shift, and authorizing it. */
 export function CompanyEmployees({ companyId }: { companyId: number }) {
   const copy = useMessages(messages);
+  const { locale } = useLocale();
   const employees = useCompanyEmployees(companyId);
   const titleId = useId();
   const rows = employees.data ?? [];
@@ -30,6 +32,9 @@ export function CompanyEmployees({ companyId }: { companyId: number }) {
                 <th scope="col" className={styles.number}>
                   {copy.streak}
                 </th>
+                <th scope="col" className={styles.number}>
+                  {copy.secondShift}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -38,12 +43,18 @@ export function CompanyEmployees({ companyId }: { companyId: number }) {
                   <td>{employee.name}</td>
                   <td>{employee.worked_today ? copy.worked : copy.notYet}</td>
                   <td className={styles.number}>{employee.streak}</td>
+                  <td className={styles.number}>
+                    {employee.second_shift_wage === null
+                      ? copy.noSecondShift
+                      : formatMoney(employee.second_shift_wage, locale)}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       ) : null}
+      {rows.length > 0 ? <SecondShiftAuthorization companyId={companyId} employees={rows} /> : null}
     </section>
   );
 }

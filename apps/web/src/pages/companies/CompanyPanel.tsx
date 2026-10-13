@@ -9,12 +9,13 @@ import { useMessages } from '../../i18n';
 
 import { CompanyCash } from './CompanyCash';
 import { CompanyEmployees } from './CompanyEmployees';
+import { CompanyFacts } from './CompanyFacts';
 import { CompanyJobOffer } from './CompanyJobOffer';
 import { CompanyStock } from './CompanyStock';
 import { CompanyUpgrades } from './CompanyUpgrades';
 import { messages } from './messages';
 
-/** One company: what it makes and where, and a section for each thing the owner manages. */
+/** One company: what it makes and where, its figures, and a section for each thing the owner manages. */
 export function CompanyPanel({ company }: { company: Company }) {
   const copy = useMessages(messages);
   const goodName = useGoodName();
@@ -29,11 +30,12 @@ export function CompanyPanel({ company }: { company: Company }) {
             {company.name}
           </h2>
           <p className={styles.muted}>
-            {`${goodName(company.good_code)} · ${regionName(company.region_code)} · ${copy.level(company.level, company.capacity)}`}
+            {`${company.kind === 'extractor' ? copy.extractor : copy.manufacturer} · ${goodName(company.good_code)} · ${regionName(company.region_code)}`}
           </p>
         </div>
         <CompanyUpgrades company={company} />
       </div>
+      <CompanyFacts company={company} />
       <div className={styles.layout}>
         <div className={styles.column}>
           <CompanyEmployees companyId={company.id} />

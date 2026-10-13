@@ -12,7 +12,7 @@ import { formatNumber, useLocale, useMessages } from '../../i18n';
 
 import { messages } from './messages';
 
-/** The depot: what the company holds, sending whole units to the owner, and points waiting for inputs. */
+/** The depot: what the company holds, and sending whole units to the owner. */
 export function CompanyStock({ company }: { company: Company }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
@@ -61,9 +61,6 @@ export function CompanyStock({ company }: { company: Company }) {
             );
           })}
         </ul>
-      ) : null}
-      {company.points > 0 ? (
-        <p className={styles.muted}>{copy.pending(formatNumber(company.points, locale))}</p>
       ) : null}
     </section>
   );

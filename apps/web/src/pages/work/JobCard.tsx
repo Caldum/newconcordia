@@ -12,7 +12,7 @@ import { formatMoney, useLocale, useMessages } from '../../i18n';
 
 import { messages } from './messages';
 
-/** The player's job: where, for whom, the wage and the streak; and leaving it. */
+/** The player's job: where, for whom, the wage, the streak and the second shift; and leaving it. */
 export function JobCard({ job }: { job: Job }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
@@ -53,8 +53,12 @@ export function JobCard({ job }: { job: Job }) {
           <dd>{job.streak}</dd>
         </div>
         <div>
-          <dt>{copy.produces}</dt>
-          <dd>{copy.points(10)}</dd>
+          <dt>{copy.secondShift}</dt>
+          <dd>
+            {job.second_shift_wage === null
+              ? copy.notAuthorized
+              : formatMoney(job.second_shift_wage, locale)}
+          </dd>
         </div>
       </dl>
     </Panel>

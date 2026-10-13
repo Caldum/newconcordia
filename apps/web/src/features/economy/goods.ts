@@ -68,3 +68,10 @@ export function useGoodName(): (code: string) => string {
 export function isRaw(code: string): boolean {
   return code.endsWith('_raw') || code === 'wheat' || code === 'iron' || code === 'oil';
 }
+
+/** Food, military or medical: the raw material a good is, or the one its line is made from. */
+export function categoryOf(code: string): 'food' | 'military' | 'medical' {
+  if (code.startsWith('food_')) return 'food';
+  if (code.startsWith('kit_') || code === 'medical_raw') return 'medical';
+  return 'military';
+}

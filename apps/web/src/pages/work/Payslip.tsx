@@ -8,29 +8,30 @@ import { work } from '../../features/economy/api';
 import styles from '../../features/economy/economy.module.css';
 import { useGoodName } from '../../features/economy/goods';
 import { payslip } from '../../features/economy/payslip';
-import type { Job, Workday } from '../../features/economy/queries';
+import type { Job, Shift } from '../../features/economy/queries';
 import { formatMoney, formatNumber, formatPercent, useLocale, useMessages } from '../../i18n';
 
 import { messages } from './messages';
 
 interface PayslipProps {
   job: Job | null;
-  workday: Workday | null;
+  /** Today's regular shift, once worked. */
+  shift: Shift | null;
 }
 
-/** Today's payslip and the button to work; once worked, what was paid and produced. */
-export function Payslip({ job, workday }: PayslipProps) {
+/** Today's regular shift: the payslip and the button to work; once worked, what was paid and made. */
+export function Payslip({ job, shift: worked }: PayslipProps) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const goodName = useGoodName();
   const shift = useGameAction((key) => work(key));
-  const lines = payslip(job, workday);
+  const lines = payslip(job, worked);
   const energyLeft = shift.result?.[0]?.energy ?? null;
 
   return (
     <Panel className={styles.panel} aria-labelledby="payslip-title">
       <h2 id="payslip-title" className="at-title-3">
-        {workday ? copy.doneToday : copy.today}
+        {worked ? copy.doneToday : copy.today}
       </h2>
       <dl className={styles.lines}>
         <div>
@@ -51,11 +52,11 @@ export function Payslip({ job, workday }: PayslipProps) {
         </div>
       </dl>
       <ActionFeedback problem={shift.problem} copy={copy} />
-      {workday ? (
+      {worked ? (
         <div role="status">
-          <Note tone="ok">{copy.paid(formatMoney(workday.net, locale))}</Note>
+          <Note tone="ok">{copy.paid(formatMoney(worked.net, locale))}</Note>
           <p className={styles.muted}>
-            {copy.produced(formatNumber(workday.produced, locale), goodName(workday.good_code))}
+            {copy.produced(formatNumber(worked.produced, locale), goodName(worked.good_code))}
           </p>
           <p className={styles.muted}>
             {energyLeft === null

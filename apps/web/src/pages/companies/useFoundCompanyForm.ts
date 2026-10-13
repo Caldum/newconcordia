@@ -3,10 +3,15 @@ import { useState } from 'react';
 import { useGameAction } from '../../features/actions/useGameAction';
 import { foundCompany } from '../../features/economy/api';
 import type { FoundCompany } from '../../features/economy/api';
+import { categoryOf, isRaw } from '../../features/economy/goods';
 import { useCurrentCitizen } from '../../features/shell/CurrentCitizen';
+import { useRegionResources } from '../../features/world/resources';
 import { useRegionName } from '../../features/world/useNames';
+import { useWorld } from '../../features/world/useWorld';
 
-/** What a company can make when founded (spec section 5); every quality line starts at Q1. */
+import { foundableRegions } from './foundableRegions';
+
+/** What a company can make when founded (spec section 5); a manufacturer starts at Q1 (N1). */
 export const foundableGoods = [
   'food_raw',
   'military_raw',
@@ -22,12 +27,14 @@ export function isValidCompanyName(name: string): boolean {
   return length >= 3 && length <= 40;
 }
 
-/** The founding form: its fields, their validity, and the founding action. */
+/** The founding form: its fields, the regions that fit the chosen good, and the founding action. */
 export function useFoundCompanyForm() {
   const citizen = useCurrentCitizen();
   const regionName = useRegionName();
+  const world = useWorld().data;
+  const resources = useRegionResources().data;
   const [good, setGood] = useState<FoundableGood>('food_raw');
-  const [regionCode, setRegionCode] = useState(citizen.region_code);
+  const [chosenRegion, setChosenRegion] = useState(citizen.region_code);
   const [name, setName] = useState('');
   const [checked, setChecked] = useState(false);
   const [founded, setFounded] = useState<{ name: string; region: string } | null>(null);
@@ -39,6 +46,21 @@ export function useFoundCompanyForm() {
     },
   });
 
+  const regions =
+    world && resources
+      ? foundableRegions(
+          world,
+          resources,
+          { extractor: isRaw(good), category: categoryOf(good) },
+          citizen.country_code,
+        )
+      : [];
+  // The chosen region while it fits the good; otherwise the first one that does.
+  const regionCode = regions.some((region) => region.code === chosenRegion)
+    ? chosenRegion
+    : (regions[0]?.code ?? null);
+  const hostCountry = regionCode ? world?.regions.get(regionCode)?.owner_country_code : undefined;
+
   /** Any change is a new request: a new idempotency key. */
   const edit =
     <T>(set: (value: T) => void) =>
@@ -49,17 +71,20 @@ export function useFoundCompanyForm() {
 
   return {
     good,
+    regions,
     regionCode,
+    /** The host country when it is not the player's: foreigners pay its construction surcharge. */
+    foreignHost: hostCountry && hostCountry !== citizen.country_code ? hostCountry : null,
     name,
     nameError: checked && !isValidCompanyName(name),
     founded,
     action,
     setGood: edit(setGood),
-    setRegionCode: edit(setRegionCode),
+    setRegionCode: edit(setChosenRegion),
     setName: edit(setName),
     submit: () => {
       setChecked(true);
-      if (isValidCompanyName(name)) {
+      if (isValidCompanyName(name) && regionCode) {
         action.run({ name: name.trim(), goodCode: good, regionCode });
       }
     },

@@ -37,12 +37,18 @@ export function FoundCompanyPage() {
           <CompanyGoodChoice good={form.good} onChange={form.setGood} />
           <CompanyRegionChoice
             good={form.good}
+            regions={form.regions}
             regionCode={form.regionCode}
             onChange={form.setRegionCode}
           />
           <CompanyNameStep name={form.name} invalid={form.nameError} onChange={form.setName} />
         </div>
-        <FoundCompanySummary good={form.good} regionCode={form.regionCode} action={form.action} />
+        <FoundCompanySummary
+          good={form.good}
+          regionCode={form.regionCode}
+          foreignHost={form.foreignHost}
+          action={form.action}
+        />
       </form>
     </main>
   );

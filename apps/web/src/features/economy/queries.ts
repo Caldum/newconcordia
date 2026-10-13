@@ -16,12 +16,17 @@ const jobSchema = z.object({
   work_tax: z.number(),
   streak: z.number().int(),
   worked_today: z.boolean(),
+  /** Wage of the authorized second shift a day; null without authorization. */
+  second_shift_wage: z.number().int().nullable(),
   hired_at: z.string(),
   next_change_at: z.string(),
 });
 
-const workdaySchema = z.object({
+const shiftSchema = z.object({
+  /** Paid in the job (regular, then an authorized second), or the owner's unpaid management shift. */
+  kind: z.enum(['regular', 'second', 'management']),
   company_id: z.number().int(),
+  company_name: z.string(),
   gross: z.number().int(),
   tax: z.number().int(),
   net: z.number().int(),
@@ -42,20 +47,28 @@ const offerSchema = z.object({
 const companySchema = z.object({
   id: z.number().int(),
   name: z.string(),
+  kind: z.enum(['extractor', 'manufacturer']),
+  category: z.enum(['food', 'military', 'medical']),
   good_code: z.string(),
   region_code: z.string(),
+  /** The host country: wages, cash and taxes are in its Credit. */
+  country_code: z.string(),
+  /** N1–N5; a manufacturer's quality is its level. */
   level: z.number().int(),
-  capacity: z.number().int(),
+  shifts_per_day: z.number().int(),
+  shifts_today: z.number().int(),
+  /** Extractors only: 1, 1.25 … 2. */
+  efficiency: z.number().nullable(),
+  /** National production bonus of the host country, 0 to 0.25. */
+  national_bonus: z.number(),
   wage: z.number().int(),
   vacancies: z.number().int(),
   cash: z.number().int(),
   employees: z.number().int(),
-  points: z.number(),
   created_at: z.string(),
-  /** Gold for the next level; null at level 3. */
+  /** Hundredths of GOLD for the next level, surcharge included; null at N5. */
   next_level_gold: z.number().int().nullable(),
-  /** Gold for the next weapon quality; null for other goods or at Q5. */
-  next_quality_gold: z.number().int().nullable(),
+  next_level_civil_level: z.number().int().nullable(),
 });
 
 const employeeSchema = z.object({
@@ -63,12 +76,13 @@ const employeeSchema = z.object({
   hired_at: z.string(),
   worked_today: z.boolean(),
   streak: z.number().int(),
+  second_shift_wage: z.number().int().nullable(),
 });
 
 const stockSchema = z.object({ good_code: z.string(), quantity: z.number() });
 
 export type Job = z.infer<typeof jobSchema>;
-export type Workday = z.infer<typeof workdaySchema>;
+export type Shift = z.infer<typeof shiftSchema>;
 export type JobOffer = z.infer<typeof offerSchema>;
 export type Company = z.infer<typeof companySchema>;
 export type Employee = z.infer<typeof employeeSchema>;
@@ -84,13 +98,13 @@ export function useMyJob() {
   });
 }
 
-/** Today's payslip, or null before working. */
-export function useMyWorkday() {
+/** The shifts worked today, oldest first. */
+export function useMyShiftsToday() {
   const { userId, enabled } = useSignedInUser();
   return useQuery({
-    queryKey: ['me', userId, 'workday'],
+    queryKey: ['me', userId, 'shifts-today'],
     enabled,
-    queryFn: async () => (await rows(supabase.rpc('get_my_workday'), workdaySchema))[0] ?? null,
+    queryFn: () => rows(supabase.rpc('get_my_shifts_today'), shiftSchema),
   });
 }
 

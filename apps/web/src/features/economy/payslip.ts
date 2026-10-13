@@ -1,4 +1,4 @@
-import type { Job, Workday } from './queries';
+import type { Job, Shift } from './queries';
 
 export interface Payslip {
   /** Hundredths. */
@@ -9,10 +9,10 @@ export interface Payslip {
   taxRate: number;
 }
 
-/** Today's payslip: what was paid once worked, or what the job would pay before working. */
-export function payslip(job: Job | null, workday: Workday | null): Payslip {
+/** Today's payslip: what the regular shift paid once worked, or what the job would pay before. */
+export function payslip(job: Job | null, shift: Shift | null): Payslip {
   const taxRate = job?.work_tax ?? 0;
-  const gross = workday?.gross ?? job?.wage ?? 0;
-  const tax = workday?.tax ?? Math.round(gross * taxRate);
+  const gross = shift?.gross ?? job?.wage ?? 0;
+  const tax = shift?.tax ?? Math.round(gross * taxRate);
   return { gross, tax, net: gross - tax, taxRate };
 }

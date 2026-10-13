@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import { expectNoA11yViolations } from './a11y';
-import { mintForTest, sql } from './db';
+import { sql } from './db';
 import { createConfirmedPlayer, signIn } from './players';
 import { stubTurnstile } from './turnstile';
 
@@ -12,8 +12,8 @@ test('an owner founds and funds a company, and an employee works and is paid net
   await stubTurnstile(page);
   const owner = await createConfirmedPlayer(request, 'ARG');
   const worker = await createConfirmedPlayer(request, 'ARG');
-  // Founding costs 20 Gold; a new citizen has 5.
-  await mintForTest(owner.id, 'GOLD', 2000);
+  // Founding an N1 needs civil level 5 and 10 GOLD: reaching level 5 pays 5, the grant gave 5.
+  await sql('select game.add_civil_xp($1, 2500)', [owner.id]);
   const name = `Molinos ${owner.name.slice(-6)}`;
 
   await signIn(page, owner);

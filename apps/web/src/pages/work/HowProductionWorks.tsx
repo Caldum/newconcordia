@@ -5,7 +5,7 @@ import { useMessages } from '../../i18n';
 
 import { messages } from './messages';
 
-/** How a workday turns into goods, with the recipe of each line. */
+/** How a shift turns into goods: extractors and the recipe of each product line. */
 export function HowProductionWorks() {
   const copy = useMessages(messages);
   return (
@@ -15,6 +15,10 @@ export function HowProductionWorks() {
       </h2>
       <p>{copy.howBody}</p>
       <ul className={styles.recipes}>
+        <li>
+          <span>{copy.extractors}</span>
+          <span>{copy.recipeRaw}</span>
+        </li>
         <li>
           <span>{copy.foodQ}</span>
           <span>{copy.recipeFood}</span>

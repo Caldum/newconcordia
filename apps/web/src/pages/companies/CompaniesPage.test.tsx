@@ -20,21 +20,27 @@ vi.mock('../../lib/supabase', async () => ({
   supabase: (await import('../../test/supabaseMock')).supabaseMock,
 }));
 
+// An N3 weapons manufacturer, so Q3; one of its 15 paid shifts used today.
 const workshop: Company = {
   id: 3,
   name: 'Taller Ríos',
+  kind: 'manufacturer',
+  category: 'military',
   good_code: 'weapon_q3',
   region_code: 'ARG-01',
-  level: 1,
-  capacity: 10,
+  country_code: 'ARG',
+  level: 3,
+  shifts_per_day: 15,
+  shifts_today: 1,
+  efficiency: null,
+  national_bonus: 0.25,
   wage: 4600,
   vacancies: 1,
   cash: 218000,
   employees: 1,
-  points: 4,
   created_at: '2026-08-29T12:00:00Z',
-  next_level_gold: 30,
-  next_quality_gold: 60,
+  next_level_gold: 10000,
+  next_level_civil_level: 30,
 };
 
 type Answers = Parameters<typeof answerRpc>[0];
@@ -47,7 +53,13 @@ function signIn(extra: Answers = {}) {
     list_my_companies: { data: [workshop], error: null },
     get_company_employees: {
       data: [
-        { name: 'Martín Acosta', hired_at: '2026-09-01T12:00:00Z', worked_today: true, streak: 23 },
+        {
+          name: 'Martín Acosta',
+          hired_at: '2026-09-01T12:00:00Z',
+          worked_today: true,
+          streak: 23,
+          second_shift_wage: 3000,
+        },
       ],
       error: null,
     },
@@ -60,6 +72,13 @@ function signIn(extra: Answers = {}) {
     },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
+    list_region_resources: {
+      data: [
+        { region_code: 'ARG-01', resource_code: 'wheat', category: 'food' },
+        { region_code: 'ARG-05', resource_code: 'oil', category: 'military' },
+      ],
+      error: null,
+    },
     ...extra,
   });
   setSession(fakeSession());
@@ -76,15 +95,16 @@ describe('companies', () => {
     await renderRoute('/companies');
     const company = await screen.findByRole('region', { name: 'Taller Ríos' });
     expect(within(company).getByText('2.180,00')).toBeVisible();
-    expect(within(company).getByText('Alcanza para 47 jornadas.')).toBeVisible();
-    expect(await within(company).findByText('Martín Acosta')).toBeVisible();
+    expect(within(company).getByText('Alcanza para 47 turnos pagados.')).toBeVisible();
+    expect(within(company).getByText('Q3')).toBeVisible();
+    expect(within(company).getByText('1 de 15')).toBeVisible();
+    expect(within(company).getByText('+25 %')).toBeVisible();
+    expect(await within(company).findByRole('cell', { name: 'Martín Acosta' })).toBeVisible();
     expect(within(company).getByText('Trabajó')).toBeVisible();
     expect(await within(company).findByText('42')).toBeVisible();
-    expect(within(company).getByText('4 puntos esperan insumos.')).toBeVisible();
-    expect(
-      within(company).getByRole('button', { name: 'Mejorar a nivel 2 por 30 Oro' }),
-    ).toBeVisible();
-    expect(within(company).getByRole('button', { name: 'Mejorar a Q4 por 60 Oro' })).toBeVisible();
+    expect(within(company).getByText('30,00')).toBeVisible();
+    expect(within(company).getByRole('button', { name: 'Subir a N4 por 100 Oro' })).toBeVisible();
+    expect(within(company).getByText('Requiere nivel civil 30.')).toBeVisible();
   });
 
   it('moves Credit into the cash with an idempotency key', async () => {
@@ -145,7 +165,7 @@ describe('found a company', () => {
       await screen.findByRole('heading', { level: 1, name: 'Fundar una empresa' }),
     ).toBeVisible();
     await user.click(screen.getByRole('radio', { name: /Comida Q1/ }));
-    expect(await screen.findByText('5 de comida Q1')).toBeVisible();
+    expect(await screen.findByText('100 de comida Q1, antes de bonos y salud')).toBeVisible();
     await user.type(screen.getByLabelText('Nombre de la empresa'), 'Cocina de Campaña');
     await user.click(screen.getByRole('button', { name: 'Fundar empresa' }));
     expect(supabaseMock.rpc).toHaveBeenCalledWith('found_company', {
@@ -166,7 +186,21 @@ describe('found a company', () => {
     await user.type(screen.getByLabelText('Nombre de la empresa'), 'Molinos');
     await user.click(screen.getByRole('button', { name: 'Fundar empresa' }));
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'Fundar cuesta 20 Oro y no te alcanza.',
+      'Fundar cuesta 10 Oro (más el recargo si no es tu país) y no te alcanza.',
     );
+  });
+  it('offers an extractor only where its resource exists, and warns of the surcharge abroad', async () => {
+    const user = userEvent.setup();
+    signIn();
+    await renderRoute('/companies/new');
+    await user.click(await screen.findByRole('radio', { name: /Materia prima militar/ }));
+    const region = screen.getByLabelText('Región');
+    expect(
+      within(region)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Cuyo · España']);
+    expect(screen.getByText('Recursos de la región: petróleo.')).toBeVisible();
+    expect(screen.getByText('10 Oro más el recargo de construcción de España')).toBeVisible();
   });
 });
