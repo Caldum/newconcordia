@@ -64,6 +64,10 @@ export type Database = {
         Returns: number;
       };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      authorize_second_shift: {
+        Args: { p_company_id: number; p_employee_name: string; p_wage?: number };
+        Returns: undefined;
+      };
       buy: {
         Args: { p_company_id?: number; p_key: string; p_offer_id: number; p_quantity: number };
         Returns: number;
@@ -105,6 +109,7 @@ export type Database = {
         Returns: {
           hired_at: string;
           name: string;
+          second_shift_wage: number;
           streak: number;
           worked_today: boolean;
         }[];
@@ -177,6 +182,7 @@ export type Database = {
           next_change_at: string;
           owner_name: string;
           region_code: string;
+          second_shift_wage: number;
           streak: number;
           wage: number;
           work_tax: number;
@@ -211,23 +217,25 @@ export type Database = {
           strength: number;
         }[];
       };
+      get_my_shifts_today: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          company_id: number;
+          company_name: string;
+          good_code: string;
+          gross: number;
+          kind: string;
+          net: number;
+          produced: number;
+          tax: number;
+        }[];
+      };
       get_my_waitlist: {
         Args: Record<PropertyKey, never>;
         Returns: {
           country_code: string;
           joined_at: string;
           place: number;
-        }[];
-      };
-      get_my_workday: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          company_id: number;
-          good_code: string;
-          gross: number;
-          net: number;
-          produced: number;
-          tax: number;
         }[];
       };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
@@ -260,6 +268,7 @@ export type Database = {
       list_goods: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          base_output: number;
           category: string;
           code: string;
           energy: number;
@@ -267,9 +276,7 @@ export type Database = {
           input_good_code: string;
           input_per_unit: number;
           kind: string;
-          points_per_unit: number;
           quality: number;
-          raw_yield: number;
         }[];
       };
       list_goods_effects: {
@@ -309,18 +316,23 @@ export type Database = {
       list_my_companies: {
         Args: Record<PropertyKey, never>;
         Returns: {
-          capacity: number;
           cash: number;
+          category: string;
+          country_code: string;
           created_at: string;
+          efficiency: number;
           employees: number;
           good_code: string;
           id: number;
+          kind: string;
           level: number;
           name: string;
+          national_bonus: number;
+          next_level_civil_level: number;
           next_level_gold: number;
-          next_quality_gold: number;
-          points: number;
           region_code: string;
+          shifts_per_day: number;
+          shifts_today: number;
           vacancies: number;
           wage: number;
         }[];
@@ -353,6 +365,14 @@ export type Database = {
           sold: number;
         }[];
       };
+      list_region_resources: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          category: string;
+          region_code: string;
+          resource_code: string;
+        }[];
+      };
       list_regions: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -361,6 +381,13 @@ export type Database = {
           is_enabled: boolean;
           name: string;
           owner_country_code: string;
+        }[];
+      };
+      list_resources: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          category: string;
+          code: string;
         }[];
       };
       market_summary: {
@@ -420,7 +447,6 @@ export type Database = {
         Returns: number;
       };
       upgrade_company: { Args: { p_company_id: number; p_key: string }; Returns: number };
-      upgrade_company_quality: { Args: { p_company_id: number; p_key: string }; Returns: number };
       withdraw_from_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };
         Returns: number;
@@ -432,6 +458,7 @@ export type Database = {
           energy: number;
           good_code: string;
           gross: number;
+          kind: string;
           net: number;
           produced: number;
           tax: number;

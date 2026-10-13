@@ -178,8 +178,8 @@ select results_eq(
 
 -- Moving between the owner and an own company keeps the origin.
 reset role;
-insert into game.companies (name, owner_user_id, country_code, region_code, good_code, points, created_at)
-select 'Arsenal Ríos', :'camila', 'ARG', region_code, 'weapon_q1', 4, game.now()
+insert into game.companies (name, owner_user_id, country_code, region_code, good_code, created_at)
+select 'Arsenal Ríos', :'camila', 'ARG', region_code, 'weapon_q1', game.now()
 from game.citizens where user_id = :'camila'
 returning id as arsenal \gset
 select game.holder_for_company(:'arsenal') as arsenal_h \gset
@@ -192,16 +192,24 @@ select results_eq(
   'moving to the depot keeps each origin'
 );
 
--- Production: inputs debited exactly, output of the company's country.
-select is(game.produce(:'arsenal'), 2::numeric, 'four points and 25 raw make two Q1 weapons');
+-- Production (R5 shift): floor(10 × 1.25) = 12 Q1 weapons from 120 military raw, oldest lots first;
+-- the output is of the company's country.
+select game.put_goods(:'arsenal_h', 'military_raw', 'ARG', 100, 'test', 'r3');
+select pg_temp.act_as(:'camila');
+select is(
+  (select produced from public.work(gen_random_uuid(), :'arsenal')),
+  12::numeric,
+  'a management shift makes twelve Q1 weapons'
+);
+reset role;
 select results_eq(
   format($$ select game.holder_quantity(%s, 'military_raw'), pg_temp.lot(%s, 'weapon_q1', 'ARG') $$, :'arsenal_h', :'arsenal_h'),
-  $$ values (5::numeric, 2::numeric) $$,
-  'twenty raw were used and the weapons are Argentine'
+  $$ values (5::numeric, 12::numeric) $$,
+  '120 raw were used and the weapons are Argentine'
 );
 select is(
   (select sum(quantity) from game.inventory_movements where kind = 'production_input' and from_holder_id = :'arsenal_h'),
-  20::numeric,
+  120::numeric,
   'the inputs used are logged'
 );
 

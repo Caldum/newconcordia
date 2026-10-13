@@ -2,7 +2,7 @@
 -- collected is the gross minus 12 %.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(46);
+select plan(43);
 
 -- Tests fund players with a mint reason of their own, rolled back with the test (R2, ADR 0016).
 insert into game.mint_reasons (kind, authority, description) values ('test', 'system_reward', 'Test funding.');
@@ -56,8 +56,10 @@ select results_eq(
 );
 select is((select work_tax from game.country_policies where country_code = 'ARG'), 0.12::numeric, 'work tax starts at 12 %');
 
--- Founding costs 20 Gold, which leaves the game. A new citizen has 5: give Camila 30 more.
-select game.transfer(game.system_account('issuer', 'GOLD'), game.citizen_account(:'camila', 'GOLD'), 3000, 'test', null);
+-- Founding an N1 costs 10 GOLD and civil level 5 (R5); the GOLD leaves the game. Camila reaches level 5
+-- (5 GOLD of rewards), has 5 from the grant and gets 5 more.
+select game.add_civil_xp(:'camila', 2500);
+select game.transfer(game.system_account('issuer', 'GOLD'), game.citizen_account(:'camila', 'GOLD'), 500, 'test', null);
 select pg_temp.act_as(:'camila');
 select public.found_company('Molinos del Litoral', 'food_raw', 'ARG-01', 'b0000000-0000-4000-8000-000000000001') as mill \gset
 select is(
@@ -65,15 +67,15 @@ select is(
   :'mill'::bigint,
   'founding again with the same key returns the same company'
 );
-select is((select balance from public.get_my_balances() where currency_code = 'GOLD'), 1500::bigint, 'founding cost 20 Gold, once');
+select is((select balance from public.get_my_balances() where currency_code = 'GOLD'), 500::bigint, 'founding cost 10 GOLD, once');
 select throws_ok(
   $$ select public.found_company('Otra', 'food_raw', 'ARG-01', gen_random_uuid()) $$,
-  '22023', 'insufficient_funds', 'without 20 Gold nobody founds a company'
+  '22023', 'insufficient_funds', 'without 10 GOLD nobody founds a company'
 );
 reset role;
 select is(
   (select balance from game.accounts where kind = 'sink' and currency_code = 'GOLD'),
-  2000::bigint,
+  1000::bigint,
   'the Gold paid leaves the game'
 );
 select game.transfer(game.system_account('issuer', 'GOLD'), game.citizen_account(:'camila', 'GOLD'), 20000, 'test', null);
@@ -83,8 +85,8 @@ select throws_ok(
   '23505', 'company_name_taken', 'company names are unique'
 );
 select throws_ok(
-  $$ select public.found_company('Acería Paulista', 'military_raw', 'BRA-08', gen_random_uuid()) $$,
-  '22023', 'region_unavailable', 'companies are founded in the player''s own country'
+  $$ select public.found_company('Acería Paulista', 'military_raw', 'ZZZ-01', gen_random_uuid()) $$,
+  '22023', 'region_unavailable', 'companies are founded in regions in play'
 );
 select throws_ok(
   $$ select public.found_company('Algo', 'gold', 'ARG-01', gen_random_uuid()) $$,
@@ -140,7 +142,7 @@ reset role;
 select pg_temp.act_as(:'marcos');
 select results_eq(
   $$ select gross, tax, net, energy, produced, good_code from public.work('c0000000-0000-4000-8000-000000000001') $$,
-  $$ values (4200::bigint, 504::bigint, 3696::bigint, 90, 5::numeric, 'food_raw') $$,
+  $$ values (4200::bigint, 504::bigint, 3696::bigint, 90, 187::numeric, 'food_raw') $$,
   'acceptance: the wage collected is the gross minus 12 %'
 );
 select results_eq(
@@ -161,7 +163,7 @@ select is(
   'the tax went to the treasury'
 );
 select is((select balance from game.accounts where kind = 'company' and company_id = :'mill'), 300::bigint, 'the wage came out of the company''s cash');
-select is(pg_temp.stock(:'mill', 'food_raw'), 5::numeric, 'a workday in raw materials: 10 points × 50 % yield');
+select is(pg_temp.stock(:'mill', 'food_raw'), 187::numeric, 'an N1 extractor shift: floor(150 × 1.25 national bonus)');
 
 -- A company without cash cannot pay: nobody works and nothing is charged. (21 hours after hiring.)
 set local game.fixed_now = '2026-10-10 12:00:00+00';
@@ -194,47 +196,39 @@ reset role;
 -- Owners work in their own company without a wage; products need their inputs.
 set local game.fixed_now = '2026-10-11 15:00:00+00';
 select pg_temp.act_as(:'camila');
-select results_eq(
-  format($$ select gross, tax, net, produced, good_code from public.work(gen_random_uuid(), %s) $$, :'kitchen'),
-  $$ values (0::bigint, 0::bigint, 0::bigint, 0::numeric, 'food_q1') $$,
-  'an owner works without a wage; without wheat no ration is made'
+select throws_ok(
+  format($$ select * from public.work(gen_random_uuid(), %s) $$, :'kitchen'),
+  '22023', 'inputs_missing', 'without raw food no Q1 food is made'
 );
 reset role;
-select is((select points from game.companies where id = :'kitchen'), 10::numeric, 'the points wait for inputs');
-select game.put_goods(game.holder_for_company(:'kitchen'), 'food_raw', 'ARG', 3, 'test', 'test');
-set local game.fixed_now = '2026-10-12 15:00:00+00';
+select game.put_goods(game.holder_for_company(:'kitchen'), 'food_raw', 'ARG', 125, 'test', 'test');
 select pg_temp.act_as(:'camila');
-select is(
-  (select produced from public.work(gen_random_uuid(), :'kitchen')),
-  3::numeric,
-  '20 points and 3 wheat make 3 rations (each needs 2 points and 1 wheat)'
+select results_eq(
+  format($$ select gross, net, produced, good_code from public.work(gen_random_uuid(), %s) $$, :'kitchen'),
+  $$ values (0::bigint, 0::bigint, 125::numeric, 'food_q1') $$,
+  'an owner works without a wage: floor(100 × 1.25) Q1 food'
 );
 reset role;
-select is(pg_temp.stock(:'kitchen', 'food_q1'), 3::numeric, 'the rations are in stock');
-select is(pg_temp.stock(:'kitchen', 'food_raw'), 0::numeric, 'the wheat was used');
-select is((select points from game.companies where id = :'kitchen'), 14::numeric, 'the remaining points are kept');
+select is(pg_temp.stock(:'kitchen', 'food_q1'), 125::numeric, 'the food is in stock');
+select is(pg_temp.stock(:'kitchen', 'food_raw'), 0::numeric, 'one raw food per unit was used');
 select pg_temp.act_as(:'camila');
 select throws_ok(
-  format($$ select * from public.work(gen_random_uuid(), %s) $$, :'workshop'),
-  '22023', 'already_worked', 'one workday per day, in any company'
+  format($$ select * from public.work(gen_random_uuid(), %s) $$, :'kitchen'),
+  '22023', 'already_worked', 'one management shift per company and day'
 );
 reset role;
 
--- Upgrades.
+-- Upgrades: N2 needs civil level 10 (5 more GOLD of rewards) and 25 GOLD; quality follows the level.
+select game.add_civil_xp(:'camila', 7500);
 select pg_temp.act_as(:'camila');
 select public.upgrade_company(:'workshop', gen_random_uuid());
-select is((select level from public.list_my_companies() where id = :'workshop'), 2, 'upgrading to level 2 (20 employees)');
-select public.upgrade_company_quality(:'workshop', gen_random_uuid());
-select is((select good_code from public.list_my_companies() where id = :'workshop'), 'weapon_q2', 'raising a weapon''s quality');
-select throws_ok(
-  format($$ select public.upgrade_company_quality(%s, gen_random_uuid()) $$, :'mill'),
-  '22023', 'no_quality', 'raw materials have no quality'
-);
+select is((select level from public.list_my_companies() where id = :'workshop'), 2, 'upgrading to N2 (10 paid shifts a day)');
+select is((select good_code from public.list_my_companies() where id = :'workshop'), 'weapon_q2', 'a manufacturer''s quality is its level');
 reset role;
 select is(
   pg_temp.balance(:'camila', 'GOLD'),
-  1500::bigint + 20000 - 2000 * 2 - 3000 - 2000,
-  'level 2 cost 30 Gold and quality 2 cost 20 Gold'
+  500::bigint + 20000 - 1000 * 2 + 500 - 2500,
+  'two N1 at 10 GOLD and N2 at 25 GOLD'
 );
 
 -- Minimum wage, when a law sets one.
