@@ -81,12 +81,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   civil level at 100 × L² from level 0 with 1 GOLD per new level, paid once; military XP and the rank ladder
   Novice → General V; starting strength 0; the profile shows health and the rank with its XP bar (ADR 0015).
   The clock Worker tests run in one workerd process.
+- 2026-10-13 · R2: holds in escrow accounts with capture and release, minting only for listed reasons,
+  every mint and burn recorded, sign-up grant of 5 GOLD, 100 national currency and 10 rations (Q1 food),
+  held money on the account, and the statement fixed for company counterparties (ADR 0016).
 
 ## Next step
 
-D08 to D12 and R1 (`feat/r1-player-core`) are in review, each stacked on the previous one. Next, Stage 1 of
-`docs/roadmap.md`:
+D08 to D12, R1 (`feat/r1-player-core`) and R2 (`feat/r2-holds-and-grant`) are in review, each stacked on the
+previous one. Next, Stage 1 of `docs/roadmap.md`:
 
-1. R2 to R7: escrow and sign-up grant, goods and lots, automatic food, companies N1–N5, market orders, demo.
+1. R3 to R7: goods and lots, automatic food, companies N1–N5, market orders, demo.
 2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

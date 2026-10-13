@@ -37,6 +37,9 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Experiencia militar | Military experience | `military_xp` |
 | Salud | Health | `player_stats.health` |
 | Premio de nivel | Level reward | `level_reward` (`game.add_civil_xp()`) |
+| Fondos reservados, reserva | Hold, escrow | `ledger_holds`, account kind `escrow` (`game.hold()`) |
+| Emisión, quema | Mint, burn | `supply_changes` (`mint`, `burn`), `mint_reasons` |
+| Regalo de bienvenida | Sign-up grant | `welcome_grant` (`game.grant_welcome()`) |
 | Empresa, empleo, salario | Company, job, wage | `company`, `job`, `wage` |
 | Tesoro | Treasury | `treasury` |
 | Congreso, congresista | Congress, member of Congress | `congress`, `congress_member` |

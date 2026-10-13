@@ -21,3 +21,4 @@ marked «Superseded by NNNN».
 | 0013 | Market: country markets, escrow and who pays each tax | Accepted |
 | 0014 | Specification v3.1 becomes the source of truth | Accepted |
 | 0015 | Player core: UTC day, health, civil levels and military ranks | Accepted |
+| 0016 | Holds, mint and burn records, and the sign-up grant | Accepted |
