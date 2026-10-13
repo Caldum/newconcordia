@@ -4,6 +4,9 @@ begin;
 create extension if not exists pgtap with schema extensions;
 select plan(46);
 
+-- Tests fund players with a mint reason of their own, rolled back with the test (R2, ADR 0016).
+insert into game.mint_reasons (kind, authority, description) values ('test', 'system_reward', 'Test funding.');
+
 create function pg_temp.new_player(p_email text, p_name text, p_country text)
 returns uuid
 language sql
@@ -152,8 +155,8 @@ select throws_ok(
   '22023', 'already_worked', 'acceptance: working twice on the same day is rejected'
 );
 reset role;
-select is(pg_temp.balance(:'marcos', 'ARG'), 5000::bigint + 3696, 'the worker got the net wage');
-select is(pg_temp.balance(:'camila', 'ARG'), 5000::bigint - 4500, 'the owner''s Credit funded it');
+select is(pg_temp.balance(:'marcos', 'ARG'), 10000::bigint + 3696, 'the worker got the net wage');
+select is(pg_temp.balance(:'camila', 'ARG'), 10000::bigint - 4500, 'the owner''s Credit funded it');
 select is(
   (select balance from game.accounts where kind = 'treasury' and country_code = 'ARG' and currency_code = 'ARG'),
   504::bigint,

@@ -138,6 +138,7 @@ export type Database = {
           balance: number;
           country_code: string;
           currency_code: string;
+          held: number;
         }[];
       };
       get_my_citizen: {

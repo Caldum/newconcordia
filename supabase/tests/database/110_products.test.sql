@@ -27,7 +27,8 @@ set local game.fixed_now = '2026-10-09 15:00:00+00';
 
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
-insert into game.inventories (user_id, good_code, quantity) values (:'camila', 'ration', 30);
+insert into game.inventories (user_id, good_code, quantity) values (:'camila', 'ration', 30)
+  on conflict (user_id, good_code) do update set quantity = excluded.quantity;
 select game.spend_energy(:'camila', 100);
 
 -- Weapons carry their multiplier.

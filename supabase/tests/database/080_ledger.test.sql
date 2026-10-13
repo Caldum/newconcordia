@@ -41,15 +41,15 @@ select is(
   'Gold plus one Credit per country'
 );
 
--- Welcome grant: 5 Gold and 50 Credit, once, after the email is confirmed.
+-- Welcome grant: 5 Gold and 100 Credit (R2), once, after the email is confirmed.
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
 select pg_temp.new_player('ana@example.com', 'Ana Souza', 'BRA') as ana \gset
 select pg_temp.new_player('nadia@example.com', 'Nadia Pending', 'ARG', false) as nadia \gset
 
 select is(pg_temp.balance(:'camila', 'GOLD'), 500::bigint, 'a new citizen receives 5 Gold');
-select is(pg_temp.balance(:'camila', 'ARG'), 5000::bigint, 'and 50 Credit of their country');
-select is(pg_temp.balance(:'ana', 'BRA'), 5000::bigint, 'in their own country''s Credit');
+select is(pg_temp.balance(:'camila', 'ARG'), 10000::bigint, 'and 100 Credit of their country');
+select is(pg_temp.balance(:'ana', 'BRA'), 10000::bigint, 'in their own country''s Credit');
 select is(pg_temp.balance(:'nadia', 'GOLD'), 0::bigint, 'an unconfirmed sign-up receives nothing yet');
 update auth.users set email_confirmed_at = now() where id = :'nadia';
 select is(pg_temp.balance(:'nadia', 'GOLD'), 500::bigint, 'confirming the email pays the welcome grant');
@@ -76,12 +76,12 @@ select throws_ok(
 select pg_temp.act_as(:'camila');
 select is(
   public.transfer_money('Marcos Villalba', 'ARG', 1250, 'Por las raciones', 'a0000000-0000-4000-8000-000000000001'),
-  3750::bigint,
+  8750::bigint,
   'a transfer returns the sender''s balance'
 );
 select is(
   public.transfer_money('Marcos Villalba', 'ARG', 1250, 'Por las raciones', 'a0000000-0000-4000-8000-000000000001'),
-  3750::bigint,
+  8750::bigint,
   'repeating the same request does not pay twice'
 );
 select throws_ok(
@@ -92,7 +92,7 @@ select throws_ok(
 );
 select is(public.transfer_money('marcos villalba', 'GOLD', 100, null, gen_random_uuid()), 400::bigint, 'Gold moves too, and names ignore case');
 select throws_ok(
-  $$ select public.transfer_money('Marcos Villalba', 'ARG', 3751, null, gen_random_uuid()) $$,
+  $$ select public.transfer_money('Marcos Villalba', 'ARG', 8751, null, gen_random_uuid()) $$,
   '22023', 'insufficient_funds', 'nobody sends more than they have'
 );
 select throws_ok(
@@ -116,7 +116,7 @@ select throws_ok(
   '22023', 'memo_too_long', 'the concept is short'
 );
 reset role;
-select is(pg_temp.balance(:'marcos', 'ARG'), 6250::bigint, 'the recipient got the Credit once');
+select is(pg_temp.balance(:'marcos', 'ARG'), 11250::bigint, 'the recipient got the Credit once');
 
 -- Unconfirmed reservations cannot receive money.
 select pg_temp.new_player('olga@example.com', 'Olga Reserva', 'ARG', false) as olga \gset
@@ -130,8 +130,8 @@ select throws_ok(
 select results_eq(
   $$ select kind, memo, currency_code, amount, balance_after, counterparty_kind, counterparty_name
      from public.list_my_movements('ARG') $$,
-  $$ values ('transfer', 'Por las raciones', 'ARG', -1250::bigint, 3750::bigint, 'citizen', 'Marcos Villalba'),
-            ('welcome_grant', null, 'ARG', 5000::bigint, 5000::bigint, 'issuer', null) $$,
+  $$ values ('transfer', 'Por las raciones', 'ARG', -1250::bigint, 8750::bigint, 'citizen', 'Marcos Villalba'),
+            ('welcome_grant', null, 'ARG', 10000::bigint, 10000::bigint, 'issuer', null) $$,
   'the statement shows each movement, newest first, with its counterparty'
 );
 select is(
@@ -146,7 +146,7 @@ select is(
 );
 select results_eq(
   $$ select currency_code, balance from public.get_my_balances() order by currency_code $$,
-  $$ values ('ARG', 3750::bigint), ('GOLD', 400::bigint) $$,
+  $$ values ('ARG', 8750::bigint), ('GOLD', 400::bigint) $$,
   'balances of Gold and the local Credit'
 );
 reset role;
@@ -157,7 +157,7 @@ select is_empty(
 );
 select results_eq(
   $$ select currency_code, balance from public.get_my_balances() order by currency_code $$,
-  $$ values ('BRA', 5000::bigint), ('GOLD', 500::bigint) $$,
+  $$ values ('BRA', 10000::bigint), ('GOLD', 500::bigint) $$,
   'each player reads only their own balances'
 );
 reset role;

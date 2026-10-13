@@ -4,6 +4,9 @@ begin;
 create extension if not exists pgtap with schema extensions;
 select plan(31);
 
+-- Tests fund players with a mint reason of their own, rolled back with the test (R2, ADR 0016).
+insert into game.mint_reasons (kind, authority, description) values ('test', 'system_reward', 'Test funding.');
+
 create function pg_temp.new_player(p_email text, p_name text, p_country text)
 returns uuid
 language sql
@@ -41,7 +44,8 @@ insert into game.companies (name, owner_user_id, country_code, region_code, good
 values ('Cocina de Campaña', :'camila', 'ARG', 'ARG-01', 'ration', game.now())
 returning id as kitchen \gset
 insert into game.company_stock (company_id, good_code, quantity) values (:'kitchen', 'ration', 20), (:'kitchen', 'wheat', 5.5);
-insert into game.inventories (user_id, good_code, quantity) values (:'ana', 'ration', 5);
+insert into game.inventories (user_id, good_code, quantity) values (:'ana', 'ration', 5)
+  on conflict (user_id, good_code) do update set quantity = excluded.quantity;
 select game.transfer(game.system_account('issuer', 'ARG'), game.citizen_account(:'marcos', 'ARG'), 10000, 'test', null);
 
 select game.citizen_account(:'marcos', 'ARG') as marcos_arg \gset
@@ -104,7 +108,7 @@ select is(
   'acceptance: what left the buyer is what the seller and the treasury received plus the fee'
 );
 select pg_temp.act_as(:'marcos');
-select is((select quantity from public.get_my_inventory() where good_code = 'ration'), 4::numeric, 'the rations are in the buyer''s inventory');
+select is((select quantity from public.get_my_inventory() where good_code = 'ration'), 14::numeric, 'the rations are in the buyer''s inventory, besides the 10 of the grant');
 select throws_ok(
   format($$ select public.buy(%s, 7, gen_random_uuid()) $$, :'offer'),
   '22023', 'quantity_unavailable', 'nobody buys more than the offer has'
@@ -172,7 +176,8 @@ select results_eq(
 reset role;
 
 -- At most 20 open offers per player.
-insert into game.inventories (user_id, good_code, quantity) values (:'marcos', 'iron', 30);
+insert into game.inventories (user_id, good_code, quantity) values (:'marcos', 'iron', 30)
+  on conflict (user_id, good_code) do update set quantity = excluded.quantity;
 select pg_temp.act_as(:'marcos');
 select public.post_offer('iron', 1, 840, 'ARG', gen_random_uuid()) from generate_series(1, 20);
 select throws_ok(
