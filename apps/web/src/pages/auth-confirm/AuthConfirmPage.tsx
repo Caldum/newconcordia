@@ -5,6 +5,7 @@ import { Link, useNavigate, useSearch } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
+import { verifyEmailToken } from '../../features/auth/api';
 import { authProblem } from '../../features/auth/authErrors';
 import type { AuthProblem } from '../../features/auth/authErrors';
 import styles from '../../features/auth/AuthForm.module.css';
@@ -13,7 +14,6 @@ import { authMessages } from '../../features/auth/messages';
 import { clearSignupDraft } from '../../features/auth/signupDraft';
 import { Story } from '../../features/auth/Story';
 import { defineMessages, useMessages } from '../../i18n';
-import { supabase } from '../../lib/supabase';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 /** What an email link carries: a single-use token hash and what it confirms. */
@@ -47,7 +47,7 @@ const verifiedTokens = new Map<string, Promise<{ error: unknown }>>();
 function verifyOnce(tokenHash: string, type: EmailOtpType) {
   let pending = verifiedTokens.get(tokenHash);
   if (!pending) {
-    pending = supabase.auth.verifyOtp({ token_hash: tokenHash, type });
+    pending = verifyEmailToken(tokenHash, type);
     verifiedTokens.set(tokenHash, pending);
   }
   return pending;

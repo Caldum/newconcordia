@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
+import { rows } from '../../lib/rows';
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../auth/AuthProvider';
+import { useSignedInUser } from '../auth/useSignedInUser';
 
 const jobSchema = z.object({
   company_id: z.number().int(),
@@ -73,23 +74,9 @@ export type Company = z.infer<typeof companySchema>;
 export type Employee = z.infer<typeof employeeSchema>;
 export type StockLine = z.infer<typeof stockSchema>;
 
-function useMe() {
-  const auth = useAuth();
-  return {
-    userId: auth.status === 'signedIn' ? auth.session.user.id : '',
-    enabled: auth.status === 'signedIn',
-  };
-}
-
-async function rows<T>(call: PromiseLike<{ data: unknown; error: unknown }>, schema: z.ZodType<T>) {
-  const { data, error } = await call;
-  if (error) throw error as Error;
-  return z.array(schema).parse(data);
-}
-
 /** The player's job, or null without one. */
 export function useMyJob() {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'job'],
     enabled,
@@ -99,7 +86,7 @@ export function useMyJob() {
 
 /** Today's payslip, or null before working. */
 export function useMyWorkday() {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'workday'],
     enabled,
@@ -108,7 +95,7 @@ export function useMyWorkday() {
 }
 
 export function useJobOffers() {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'job-offers'],
     enabled,
@@ -117,7 +104,7 @@ export function useJobOffers() {
 }
 
 export function useMyCompanies() {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'companies'],
     enabled,
@@ -126,7 +113,7 @@ export function useMyCompanies() {
 }
 
 export function useCompanyEmployees(companyId: number) {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'companies', companyId, 'employees'],
     enabled,
@@ -135,31 +122,22 @@ export function useCompanyEmployees(companyId: number) {
   });
 }
 
-export function useCompanyStock(companyId: number) {
-  const { userId, enabled } = useMe();
-  return useQuery({
+function companyStockQuery(userId: string, enabled: boolean, companyId: number) {
+  return {
     queryKey: ['me', userId, 'companies', companyId, 'stock'],
     enabled,
     queryFn: () =>
       rows(supabase.rpc('get_company_stock', { p_company_id: companyId }), stockSchema),
-  });
+  };
 }
 
-/** Calls a game action and throws its database error, whose message is the stable code. */
-export async function act<T = unknown>(call: PromiseLike<{ data: T; error: unknown }>): Promise<T> {
-  const { data, error } = await call;
-  if (error) throw error as Error;
-  return data;
+export function useCompanyStock(companyId: number) {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery(companyStockQuery(userId, enabled, companyId));
 }
 
-/** The stable code of a failed action, or `other`. */
-export function errorCode(error: unknown): string {
-  const message = (error as { message?: unknown } | null)?.message;
-  return typeof message === 'string' && /^[a-z_]+$/.test(message) ? message : 'other';
-}
-
-/** The copy for a failed action: the catalog's `error_<code>`, or its `error_other`. */
-export function problemText(copy: { error_other: string }, code: string): string {
-  const text = (copy as unknown as Record<string, unknown>)[`error_${code}`];
-  return typeof text === 'string' ? text : copy.error_other;
+/** The depots of several companies, in the same order. */
+export function useCompanyStocks(companyIds: readonly number[]) {
+  const { userId, enabled } = useSignedInUser();
+  return useQueries({ queries: companyIds.map((id) => companyStockQuery(userId, enabled, id)) });
 }

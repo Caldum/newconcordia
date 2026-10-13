@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../auth/AuthProvider';
+import { useSignedInUser } from '../auth/useSignedInUser';
 
 const waitlistSchema = z.object({
   country_code: z.string(),
@@ -42,9 +42,8 @@ export type RequestToReview = z.infer<typeof reviewSchema>;
 
 /** Everything about the signed-in player is under ['me', userId], dropped on sign-out. */
 function useMeKey(...parts: string[]) {
-  const auth = useAuth();
-  const userId = auth.status === 'signedIn' ? auth.session.user.id : '';
-  return { key: ['me', userId, ...parts], enabled: auth.status === 'signedIn' };
+  const { userId, enabled } = useSignedInUser();
+  return { key: ['me', userId, ...parts], enabled };
 }
 
 async function firstRow<T>(

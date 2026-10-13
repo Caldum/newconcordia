@@ -62,6 +62,25 @@ export default tseslint.config(
     },
   },
   {
+    // Components render and handle input; only a feature's api.ts and queries.ts call the database (ADR 0019).
+    files: ['apps/web/src/**/*.tsx'],
+    ignores: ['apps/web/src/**/*.test.tsx', 'apps/web/src/test/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/lib/supabase'],
+              message:
+                'Call the database from a feature api.ts or queries.ts, not from a component.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['**/*.config.{js,ts}', 'scripts/**/*.{js,ts}', '**/scripts/**/*.{js,ts}'],
     languageOptions: { globals: globals.node },
   },

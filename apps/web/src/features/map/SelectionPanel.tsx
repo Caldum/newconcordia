@@ -4,6 +4,7 @@ import { Panel } from '@concordia/atlas/Panel';
 
 import type { Country, Region } from '../world/useWorld';
 
+import { Chip } from './Chip';
 import styles from './SelectionPanel.module.css';
 
 export type Selection = { type: 'region'; code: string } | { type: 'country'; code: string } | null;
@@ -36,16 +37,6 @@ interface SelectionPanelProps {
   copy: PanelCopy;
   /** Label of the button that shows the owner country: «Ver España». */
   viewCountryLabel: (name: string) => string;
-}
-
-function Chip({ color }: { color: string | null | undefined }) {
-  return (
-    <span
-      className={styles.chip}
-      style={{ background: color ?? 'var(--country-inactive)' }}
-      aria-hidden="true"
-    />
-  );
 }
 
 /** Facts about the chosen region or country. */

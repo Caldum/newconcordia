@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../auth/AuthProvider';
+import { useSignedInUser } from '../auth/useSignedInUser';
 
 const balanceSchema = z.object({
   /** `GOLD`, or the country code of a Credit. */
@@ -34,20 +34,12 @@ export type Movement = z.infer<typeof movementSchema>;
 
 const pageSize = 50;
 
-function useUserId() {
-  const auth = useAuth();
-  return {
-    userId: auth.status === 'signedIn' ? auth.session.user.id : '',
-    signedIn: auth.status === 'signedIn',
-  };
-}
-
 /** Gold first, then the Credit of the player's country, then other Credits they hold. */
 export function useBalances() {
-  const { userId, signedIn } = useUserId();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'balances'],
-    enabled: signedIn,
+    enabled,
     queryFn: async () => {
       const { data, error } = await supabase.rpc('get_my_balances');
       if (error) throw error;
@@ -58,10 +50,10 @@ export function useBalances() {
 
 /** The statement, newest first, 50 movements per page; `currency` null lists every currency. */
 export function useMovements(currency: string | null) {
-  const { userId, signedIn } = useUserId();
+  const { userId, enabled } = useSignedInUser();
   return useInfiniteQuery({
     queryKey: ['me', userId, 'movements', currency],
-    enabled: signedIn,
+    enabled,
     initialPageParam: null as number | null,
     queryFn: async ({ pageParam }) => {
       const { data, error } = await supabase.rpc('list_my_movements', {
@@ -75,27 +67,4 @@ export function useMovements(currency: string | null) {
     getNextPageParam: (page) =>
       page.length === pageSize ? (page[page.length - 1]?.posting_id ?? null) : null,
   });
-}
-
-export interface TransferRequest {
-  toName: string;
-  currency: string;
-  /** Hundredths. */
-  amount: number;
-  memo: string;
-  /** The same key for retries of the same request, so it is never paid twice. */
-  key: string;
-}
-
-/** Sends money to another citizen. Resolves with the sender's balance; rejects with the database error. */
-export async function transferMoney(request: TransferRequest): Promise<number> {
-  const { data, error } = await supabase.rpc('transfer_money', {
-    p_to_name: request.toName,
-    p_currency: request.currency,
-    p_amount: request.amount,
-    p_memo: request.memo,
-    p_key: request.key,
-  });
-  if (error) throw error;
-  return z.number().int().parse(data);
 }

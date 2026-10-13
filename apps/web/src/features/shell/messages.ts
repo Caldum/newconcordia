@@ -1,0 +1,38 @@
+import { defineMessages } from '../../i18n';
+
+export const messages = defineMessages({
+  es: {
+    homeLabel: 'Concordia, ir al inicio',
+    nav: 'Principal',
+    home: 'Inicio',
+    map: 'Mapa',
+    economy: 'Economía',
+    market: 'Mercado',
+    citizenship: 'Ciudadanía',
+    admin: 'Administración',
+    signOut: 'Cerrar sesión',
+    energy: 'Energía',
+    energyValue: (energy: number, max: number) => `${String(energy)} de ${String(max)}`,
+    recharge: (perHour: number) => `Se recarga ${String(perHour)} por hora`,
+    profile: (name: string) => `Tu perfil: ${name}`,
+    account: (gold: string, credit: string) => `Tu cuenta: Oro ${gold} y Crédito ${credit}`,
+    loadFailed: 'No se pudo cargar tu ciudadano. Recarga la página para intentar de nuevo.',
+  },
+  en: {
+    homeLabel: 'Concordia, go to home',
+    nav: 'Main',
+    home: 'Home',
+    map: 'Map',
+    economy: 'Economy',
+    market: 'Market',
+    citizenship: 'Citizenship',
+    admin: 'Administration',
+    signOut: 'Sign out',
+    energy: 'Energy',
+    energyValue: (energy: number, max: number) => `${String(energy)} of ${String(max)}`,
+    recharge: (perHour: number) => `Recharges ${String(perHour)} per hour`,
+    profile: (name: string) => `Your profile: ${name}`,
+    account: (gold: string, credit: string) => `Your account: Gold ${gold} and Credit ${credit}`,
+    loadFailed: 'Your citizen did not load. Reload the page to try again.',
+  },
+});

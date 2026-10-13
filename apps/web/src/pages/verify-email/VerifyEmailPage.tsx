@@ -2,15 +2,14 @@ import { Steps } from '@concordia/atlas/Steps';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
+import { resendSignUpEmail } from '../../features/auth/api';
 import styles from '../../features/auth/AuthForm.module.css';
 import { AuthLayout } from '../../features/auth/AuthLayout';
-import { emailRedirectTo } from '../../features/auth/emailRedirect';
 import { SignedOutOnly } from '../../features/auth/guards';
 import { ResendEmail } from '../../features/auth/ResendEmail';
 import { readSignupDraft } from '../../features/auth/signupDraft';
 import { Story } from '../../features/auth/Story';
 import { defineMessages, useMessages } from '../../i18n';
-import { supabase } from '../../lib/supabase';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 const messages = defineMessages({
@@ -70,18 +69,7 @@ export function VerifyEmailPage() {
             )}
           </div>
           {draft ? (
-            <ResendEmail
-              send={(captchaToken) =>
-                supabase.auth.resend({
-                  type: 'signup',
-                  email: draft.email,
-                  options: {
-                    captchaToken,
-                    emailRedirectTo: emailRedirectTo(),
-                  },
-                })
-              }
-            />
+            <ResendEmail send={(captchaToken) => resendSignUpEmail(draft.email, captchaToken)} />
           ) : null}
           <p className={styles.aside}>{copy.spam}</p>
           <p className={styles.aside}>

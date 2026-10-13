@@ -46,7 +46,7 @@ export const messages = defineMessages({
       'Para sumar a alguien, el responsable del proyecto lo agrega desde Supabase (docs/setup.md).',
     on: 'encendido',
     off: 'apagado',
-    actionFailed:
+    error_other:
       'No se pudo programar el cambio. Revisa que el país tenga regiones, color y capital.',
     scheduled: 'Cambio programado para la próxima medianoche del juego.',
   },
@@ -93,7 +93,7 @@ export const messages = defineMessages({
     teamIntro: 'To add someone, the project owner adds them from Supabase (docs/setup.md).',
     on: 'on',
     off: 'off',
-    actionFailed:
+    error_other:
       'The change could not be scheduled. Check that the country has regions, a color and a capital.',
     scheduled: 'Change scheduled for the next game midnight.',
   },

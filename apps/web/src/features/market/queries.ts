@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 
+import { rows } from '../../lib/rows';
 import { supabase } from '../../lib/supabase';
-import { useAuth } from '../auth/AuthProvider';
+import { useSignedInUser } from '../auth/useSignedInUser';
 
 const summarySchema = z.object({
   good_code: z.string(),
@@ -44,20 +45,6 @@ export type MarketOffer = z.infer<typeof offerSchema>;
 export type MyOffer = z.infer<typeof myOfferSchema>;
 export type InventoryLine = z.infer<typeof inventorySchema>;
 
-async function rows<T>(call: PromiseLike<{ data: unknown; error: unknown }>, schema: z.ZodType<T>) {
-  const { data, error } = await call;
-  if (error) throw error as Error;
-  return z.array(schema).parse(data);
-}
-
-function useMe() {
-  const auth = useAuth();
-  return {
-    userId: auth.status === 'signedIn' ? auth.session.user.id : '',
-    enabled: auth.status === 'signedIn',
-  };
-}
-
 export function useMarketSummary(country: string) {
   return useQuery({
     queryKey: ['market', country, 'summary'],
@@ -77,7 +64,7 @@ export function useMarketOffers(country: string, good: string) {
 }
 
 export function useMyOffers() {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'offers'],
     enabled,
@@ -86,32 +73,10 @@ export function useMyOffers() {
 }
 
 export function useMyInventory() {
-  const { userId, enabled } = useMe();
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
     queryKey: ['me', userId, 'inventory'],
     enabled,
     queryFn: () => rows(supabase.rpc('get_my_inventory'), inventorySchema),
   });
-}
-
-/** What a purchase costs, as the database charges it: VAT is inside the price, the tariff is on top. */
-export function purchaseTotals(
-  price: number,
-  quantity: number,
-  vat: number,
-  tariff: number,
-  imported: boolean,
-) {
-  const gross = price * quantity;
-  const vatPart = Math.round(gross - gross / (1 + vat));
-  const tariffPart = imported ? Math.round(gross * tariff) : 0;
-  return { gross, vat: vatPart, tariff: tariffPart, total: gross + tariffPart };
-}
-
-/** What a seller receives if everything sells: the gross minus the VAT and the market fee. */
-export function saleTotals(price: number, quantity: number, vat: number, fee: number) {
-  const gross = price * quantity;
-  const vatPart = Math.round(gross - gross / (1 + vat));
-  const feePart = Math.round(gross * fee);
-  return { gross, vat: vatPart, fee: feePart, net: gross - vatPart - feePart };
 }

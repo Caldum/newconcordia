@@ -108,8 +108,15 @@ const citizenRoute = createRoute({
   ),
 });
 
-const citizenshipRoute = createRoute({
+// Every game screen: a signed-in citizen, inside the game bar (ADR 0019).
+const gameRoute = createRoute({
   getParentRoute: () => rootRoute,
+  id: 'game',
+  component: lazyRouteComponent(() => import('./features/shell/GameLayout'), 'GameLayout'),
+});
+
+const citizenshipRoute = createRoute({
+  getParentRoute: () => gameRoute,
   path: '/citizenship',
   // `welcome` shows the greeting the first time, right after the email is confirmed.
   validateSearch: (search: Record<string, unknown>): { welcome?: true } =>
@@ -121,7 +128,7 @@ const citizenshipRoute = createRoute({
 });
 
 const changeCitizenshipRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/citizenship/change',
   component: lazyRouteComponent(
     () => import('./pages/citizenship/ChangeCitizenshipPage'),
@@ -130,7 +137,7 @@ const changeCitizenshipRoute = createRoute({
 });
 
 const citizenshipRequestsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/citizenship/requests',
   component: lazyRouteComponent(
     () => import('./pages/citizenship/CitizenshipRequestsPage'),
@@ -139,31 +146,31 @@ const citizenshipRequestsRoute = createRoute({
 });
 
 const profileRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/profile',
   component: lazyRouteComponent(() => import('./pages/profile/ProfilePage'), 'ProfilePage'),
 });
 
 const accountRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/account',
   component: lazyRouteComponent(() => import('./pages/account/AccountPage'), 'AccountPage'),
 });
 
 const workRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/work',
   component: lazyRouteComponent(() => import('./pages/work/WorkPage'), 'WorkPage'),
 });
 
 const companiesRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/companies',
   component: lazyRouteComponent(() => import('./pages/companies/CompaniesPage'), 'CompaniesPage'),
 });
 
 const foundCompanyRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/companies/new',
   component: lazyRouteComponent(
     () => import('./pages/companies/FoundCompanyPage'),
@@ -172,19 +179,19 @@ const foundCompanyRoute = createRoute({
 });
 
 const marketRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/market',
   component: lazyRouteComponent(() => import('./pages/market/MarketPage'), 'MarketPage'),
 });
 
 const sellRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/market/sell',
   component: lazyRouteComponent(() => import('./pages/market/SellPage'), 'SellPage'),
 });
 
 const adminRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => gameRoute,
   path: '/admin',
   component: lazyRouteComponent(() => import('./pages/admin/AdminPage'), 'AdminPage'),
 });
@@ -201,17 +208,19 @@ const routeTree = rootRoute.addChildren([
   authConfirmRoute,
   authCallbackRoute,
   citizenRoute,
-  citizenshipRoute,
-  changeCitizenshipRoute,
-  citizenshipRequestsRoute,
-  profileRoute,
-  accountRoute,
-  workRoute,
-  companiesRoute,
-  foundCompanyRoute,
-  marketRoute,
-  sellRoute,
-  adminRoute,
+  gameRoute.addChildren([
+    citizenshipRoute,
+    changeCitizenshipRoute,
+    citizenshipRequestsRoute,
+    profileRoute,
+    accountRoute,
+    workRoute,
+    companiesRoute,
+    foundCompanyRoute,
+    marketRoute,
+    sellRoute,
+    adminRoute,
+  ]),
 ]);
 
 export function buildRouter(queryClient: QueryClient, history?: RouterHistory) {

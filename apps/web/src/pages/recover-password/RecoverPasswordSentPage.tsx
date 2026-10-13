@@ -2,15 +2,14 @@ import { Steps } from '@concordia/atlas/Steps';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
+import { sendPasswordRecovery } from '../../features/auth/api';
 import styles from '../../features/auth/AuthForm.module.css';
 import { AuthLayout } from '../../features/auth/AuthLayout';
-import { emailRedirectTo } from '../../features/auth/emailRedirect';
 import { SignedOutOnly } from '../../features/auth/guards';
 import { readRecoverEmail } from '../../features/auth/recoverEmail';
 import { ResendEmail } from '../../features/auth/ResendEmail';
 import { Story } from '../../features/auth/Story';
 import { useMessages } from '../../i18n';
-import { supabase } from '../../lib/supabase';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 import { messages } from './messages';
@@ -36,14 +35,7 @@ export function RecoverPasswordSentPage() {
             )}
           </div>
           {email ? (
-            <ResendEmail
-              send={(captchaToken) =>
-                supabase.auth.resetPasswordForEmail(email, {
-                  captchaToken,
-                  redirectTo: emailRedirectTo(),
-                })
-              }
-            />
+            <ResendEmail send={(captchaToken) => sendPasswordRecovery(email, captchaToken)} />
           ) : null}
           <p className={styles.aside}>
             {copy.notThere} <Link to="/recover-password">{copy.fix}</Link>.
