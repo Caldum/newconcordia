@@ -76,6 +76,7 @@ export type Database = {
       };
       break_motion_tie: { Args: { p_choice: string; p_motion_id: number }; Returns: undefined };
       break_tie: { Args: { p_bill_id: number; p_choice: string }; Returns: undefined };
+      build_hospital: { Args: { p_key: string; p_region_code: string }; Returns: undefined };
       buy: {
         Args: { p_company_id?: number; p_key: string; p_offer_id: number; p_quantity: number };
         Returns: number;
@@ -174,6 +175,14 @@ export type Database = {
           since: string;
         }[];
       };
+      get_care_policy: {
+        Args: { p_country_code: string };
+        Returns: {
+          policy: string;
+          set_at: string;
+          set_by_name: string;
+        }[];
+      };
       get_citizenship_rules: {
         Args: { p_country_code: string };
         Returns: {
@@ -215,6 +224,14 @@ export type Database = {
           office: string;
           party_name: string;
           since: string;
+        }[];
+      };
+      get_hospital_stock: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          good_code: string;
+          quantity: number;
+          region_code: string;
         }[];
       };
       get_last_national_election: {
@@ -284,6 +301,16 @@ export type Database = {
           request_id: number;
           status: string;
           to_country_code: string;
+        }[];
+      };
+      get_my_hospital: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          eligible: boolean;
+          level: number;
+          policy: string;
+          region_code: string;
         }[];
       };
       get_my_initiative: {
@@ -439,6 +466,14 @@ export type Database = {
           institution: string;
         }[];
       };
+      hospital_treatment: {
+        Args: { p_key: string };
+        Returns: {
+          good_code: string;
+          healed: number;
+          health: number;
+        }[];
+      };
       issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
       join_party: { Args: { p_party_id: number }; Returns: undefined };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
@@ -485,6 +520,14 @@ export type Database = {
           name: string;
           registered_at: string;
           votes: number;
+        }[];
+      };
+      list_care_policy_changes: {
+        Args: { p_country_code: string };
+        Returns: {
+          policy: string;
+          set_at: string;
+          set_by_name: string;
         }[];
       };
       list_cb_authorizations: {
@@ -566,6 +609,14 @@ export type Database = {
           energy: number;
           food_energy_per_interval: number;
           heal: number;
+        }[];
+      };
+      list_hospitals: {
+        Args: { p_country_code: string };
+        Returns: {
+          built_at: string;
+          level: number;
+          region_code: string;
         }[];
       };
       list_job_offers: {
@@ -823,6 +874,15 @@ export type Database = {
         };
         Returns: undefined;
       };
+      move_kits: {
+        Args: {
+          p_from_region?: string;
+          p_good_code: string;
+          p_quantity: number;
+          p_to_region?: string;
+        };
+        Returns: undefined;
+      };
       post_offer: {
         Args: {
           p_company_id?: number;
@@ -854,6 +914,7 @@ export type Database = {
       request_resignation: { Args: Record<PropertyKey, never>; Returns: number };
       resign_office: { Args: Record<PropertyKey, never>; Returns: string };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
+      set_care_policy: { Args: { p_policy: string }; Returns: undefined };
       set_company_offer: {
         Args: { p_company_id: number; p_vacancies: number; p_wage: number };
         Returns: undefined;
@@ -880,6 +941,7 @@ export type Database = {
         Returns: number;
       };
       upgrade_company: { Args: { p_company_id: number; p_key: string }; Returns: number };
+      upgrade_hospital: { Args: { p_key: string; p_region_code: string }; Returns: number };
       upgrade_training_center: { Args: { p_key: string; p_kind: string }; Returns: number };
       use_kit: {
         Args: { p_good_code: string; p_key: string };

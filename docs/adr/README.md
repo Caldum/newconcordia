@@ -36,3 +36,4 @@ marked «Superseded by NNNN».
 | 0028 | Treasury, ministries and the public audit | Accepted |
 | 0029 | Central Bank and foreign exchange | Accepted |
 | 0030 | Training centers, injuries and zero health | Accepted |
+| 0031 | Public hospitals | Accepted |

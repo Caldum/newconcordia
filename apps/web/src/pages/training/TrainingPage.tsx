@@ -1,6 +1,7 @@
 import { Note } from '@concordia/atlas/Note';
 
 import styles from '../../features/economy/economy.module.css';
+import { MilitaryTabs } from '../../features/military/MilitaryTabs';
 import { useMyTraining } from '../../features/training/queries';
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
@@ -17,6 +18,7 @@ export function TrainingPage() {
 
   return (
     <main className={styles.page}>
+      <MilitaryTabs />
       <div className={styles.intro}>
         <h1 className="at-title-1">{copy.title}</h1>
         <p className="at-body-l">{copy.intro}</p>

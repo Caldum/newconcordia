@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-22.
+Last update: 2026-10-23.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -126,13 +126,16 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-22 · H1 + H2: personal training centers Basic, Advanced and Elite N1–N5 with one session per UTC day,
   burned fees and upgrades, strength and civil XP, injuries after the gains, the game dice, zero health blocks
   training; a Military section with the training page (ADR 0030).
+- 2026-10-23 · H3: public hospitals per region built and upgraded with Health's GOLD, kits only, the lowest
+  sufficient compatible kit, care policies with their log, stock private to Health and the presidency; a
+  Hospital tab. Stage 3 complete (ADR 0031).
 
 ## Next step
 
-Stages 1 (R1–R7) and 2 (G1–G6) are on `develop` and in the development project. Next, Stage 3 of
-`docs/roadmap.md`:
+Stages 1 (R1–R7), 2 (G1–G6) and 3 (H1–H3) are on `develop` and in the development project. Next, Stage 4
+of `docs/roadmap.md`:
 
-1. H3: public hospitals.
+1. W1–W6: war authorization, battles, attacks, resistance, diplomacy, the independence war.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.
