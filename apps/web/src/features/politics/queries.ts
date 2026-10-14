@@ -299,6 +299,8 @@ const billSchema = z.object({
     'ministry_allocation',
     'currency_issuance',
     'central_bank_allocation',
+    'war_authorization',
+    'enemy_designation',
   ]),
   title: z.string(),
   body: z.string(),

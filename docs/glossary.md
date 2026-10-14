@@ -111,6 +111,8 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Hospital público | Public hospital | `hospitals`, `holders.kind = hospital` |
 | Tratamiento | Treatment | `treatments`, `hospital_treatment` |
 | Política de atención | Care policy | `care_policies`, `care_policy_changes` |
+| Autorización de guerra | War authorization | `war_authorizations`, `bills.kind = war_authorization` |
+| País enemigo | Enemy country | `enemy_designations`, `game.enemy_of` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

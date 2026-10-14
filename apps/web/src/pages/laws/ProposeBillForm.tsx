@@ -12,9 +12,11 @@ import type { NewBill } from '../../features/politics/api';
 import { billTerms, emptyBillDraft } from '../../features/politics/billTerms';
 import type { BillDraft, BillKind } from '../../features/politics/billTerms';
 import type { Initiative } from '../../features/politics/queries';
+import { useOtherCountries } from '../../features/world/useOtherCountries';
 import { useMessages } from '../../i18n';
 
 import { AllocationFields } from './AllocationFields';
+import { CountryField } from './CountryField';
 import { messages } from './messages';
 import { TaxFields } from './TaxFields';
 import { TransferFields } from './TransferFields';
@@ -26,6 +28,8 @@ const kinds: readonly BillKind[] = [
   'ministry_allocation',
   'currency_issuance',
   'central_bank_allocation',
+  'war_authorization',
+  'enemy_designation',
 ];
 
 /** Presenting a bill: its kind, title, text and terms. Once presented it cannot be withdrawn. */
@@ -35,7 +39,10 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
   const [kind, setKind] = useState<BillKind>('ordinary');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [draft, setDraft] = useState<BillDraft>(emptyBillDraft);
+  const [chosen, setDraft] = useState<BillDraft>(emptyBillDraft);
+  const others = useOtherCountries();
+  // A country select shows the first country until the player picks one.
+  const draft = { ...chosen, country: chosen.country ?? others[0] ?? null };
   const [checked, setChecked] = useState(false);
   const propose = useGameAction((key, bill: NewBill) => proposeBill(bill, key), {
     refreshes: [['laws'], ['finances']],
@@ -142,7 +149,7 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
           ) : null}
           {kind === 'gold_transfer' ? (
             <TransferFields
-              country={draft.country}
+              country={draft.country ?? ''}
               amount={draft.amount}
               invalid={invalid}
               onCountry={(country) => {
@@ -159,6 +166,25 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
               invalid={invalid}
               toCentralBank={kind === 'central_bank_allocation'}
               onChange={change}
+            />
+          ) : null}
+          {kind === 'war_authorization' ? (
+            <CountryField
+              label={copy.target}
+              value={draft.country ?? ''}
+              onChange={(country) => {
+                change({ country });
+              }}
+            />
+          ) : null}
+          {kind === 'enemy_designation' ? (
+            <CountryField
+              label={copy.enemy}
+              value={draft.country ?? ''}
+              noneLabel={copy.noEnemy}
+              onChange={(country) => {
+                change({ country });
+              }}
             />
           ) : null}
           {kind === 'currency_issuance' ? (

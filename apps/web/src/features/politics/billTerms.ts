@@ -6,7 +6,9 @@ export type BillKind =
   | 'gold_transfer'
   | 'ministry_allocation'
   | 'currency_issuance'
-  | 'central_bank_allocation';
+  | 'central_bank_allocation'
+  | 'war_authorization'
+  | 'enemy_designation';
 
 export const taxKeys = ['vat', 'tariff', 'work_tax', 'export_tax'] as const;
 export type TaxKey = (typeof taxKeys)[number];
@@ -94,7 +96,7 @@ export function issuanceTerms(amountText: string): { amount: number } | null {
 /** Everything the bill form can hold; each kind reads its own fields. */
 export interface BillDraft {
   taxes: TaxDraft;
-  /** Receiving country of a transfer; null until picked. */
+  /** The other country of a transfer, war or enemy designation; '' ends a designation, null is not picked. */
   country: string | null;
   /** Gold of a transfer or an allocation, or the national currency of an issuance. */
   amount: string;
@@ -131,5 +133,10 @@ export function billTerms(
       const terms = allocationTerms(draft.ministry, draft.amount, draft.credit);
       return terms && { gold: terms.gold, credit: terms.credit };
     }
+    case 'war_authorization':
+      return draft.country ? { country_code: draft.country } : null;
+    case 'enemy_designation':
+      if (draft.country === null) return null;
+      return draft.country === '' ? {} : { country_code: draft.country };
   }
 }

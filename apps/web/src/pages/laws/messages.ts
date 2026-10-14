@@ -15,6 +15,16 @@ export const messages = defineMessages({
     kind_ministry_allocation: 'Presupuesto para un ministerio',
     kind_currency_issuance: 'Emisión de moneda',
     kind_central_bank_allocation: 'Fondos para el Banco Central',
+    kind_war_authorization: 'Autorización de guerra',
+    kind_enemy_designation: 'País enemigo',
+    target: 'País al que se autoriza atacar',
+    enemy: 'País enemigo',
+    noEnemy: 'Ninguno (termina la designación)',
+    warLine: (country: string) =>
+      `Autoriza a la presidencia a lanzar una ofensiva contra ${country} dentro de las 24 horas. Reserva 50 Oro del Tesoro: se gastan al lanzarla o vuelven si vence.`,
+    enemyLine: (country: string) =>
+      `Declara enemigo a ${country}: la presidencia puede atacarlo sin otra ley y el combate contra ese país da +50 % de experiencia.`,
+    noEnemyLine: 'Termina la designación de país enemigo.',
     bankAllocationLine: (gold: string, credit: string) =>
       `${gold} Oro y ${credit} Crédito del Tesoro al Banco Central. Quedan reservados mientras se vota.`,
     ministry: 'Ministerio',
@@ -131,6 +141,16 @@ export const messages = defineMessages({
     kind_ministry_allocation: 'Budget for a ministry',
     kind_currency_issuance: 'Currency issuance',
     kind_central_bank_allocation: 'Funds for the Central Bank',
+    kind_war_authorization: 'War authorization',
+    kind_enemy_designation: 'Enemy country',
+    target: 'Country the attack is authorized against',
+    enemy: 'Enemy country',
+    noEnemy: 'None (ends the designation)',
+    warLine: (country: string) =>
+      `Authorizes the president to launch an offensive against ${country} within 24 hours. Reserves 50 Gold of the Treasury: spent on launch or returned if it expires.`,
+    enemyLine: (country: string) =>
+      `Declares ${country} the enemy: the president may attack it without another law, and fighting it gives +50 % experience.`,
+    noEnemyLine: 'Ends the enemy designation.',
     bankAllocationLine: (gold: string, credit: string) =>
       `${gold} Gold and ${credit} Credit from the Treasury to the Central Bank. Reserved while the vote lasts.`,
     ministry: 'Ministry',

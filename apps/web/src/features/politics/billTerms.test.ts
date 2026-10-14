@@ -81,6 +81,11 @@ describe('issuanceTerms', () => {
 describe('billTerms', () => {
   it('reads the fields of each kind', () => {
     expect(billTerms('ordinary', emptyBillDraft)).toEqual({});
+    expect(billTerms('war_authorization', { ...emptyBillDraft, country: 'BRA' })).toEqual({
+      country_code: 'BRA',
+    });
+    expect(billTerms('war_authorization', emptyBillDraft)).toBeNull();
+    expect(billTerms('enemy_designation', { ...emptyBillDraft, country: '' })).toEqual({});
     expect(billTerms('central_bank_allocation', { ...emptyBillDraft, amount: '40' })).toEqual({
       gold: 4000,
       credit: 0,

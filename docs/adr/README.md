@@ -37,3 +37,4 @@ marked «Superseded by NNNN».
 | 0029 | Central Bank and foreign exchange | Accepted |
 | 0030 | Training centers, injuries and zero health | Accepted |
 | 0031 | Public hospitals | Accepted |
+| 0032 | War authorization and enemy designation | Accepted |

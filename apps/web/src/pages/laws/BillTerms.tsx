@@ -37,6 +37,24 @@ export function BillTerms({ bill }: { bill: Bill }) {
       </>
     );
   }
+  if (bill.kind === 'war_authorization') {
+    return (
+      <>
+        <br />
+        {copy.warLine(countryName(String(bill.terms.country_code)))}
+      </>
+    );
+  }
+  if (bill.kind === 'enemy_designation') {
+    return (
+      <>
+        <br />
+        {typeof bill.terms.country_code === 'string'
+          ? copy.enemyLine(countryName(bill.terms.country_code))
+          : copy.noEnemyLine}
+      </>
+    );
+  }
   if (bill.kind === 'central_bank_allocation') {
     return (
       <>

@@ -87,6 +87,7 @@ export type Database = {
       };
       cancel_cb_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
+      cancel_war_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
       central_bank_to_treasury: {
         Args: { p_amount: number; p_currency: string; p_key: string };
         Returns: number;
@@ -207,6 +208,13 @@ export type Database = {
         Returns: {
           good_code: string;
           quantity: number;
+        }[];
+      };
+      get_enemy: {
+        Args: { p_country_code: string };
+        Returns: {
+          enemy_country_code: string;
+          since: string;
         }[];
       };
       get_game_clock: {
@@ -835,6 +843,17 @@ export type Database = {
           registered_at: string;
           vice_president_name: string;
           votes: number;
+        }[];
+      };
+      list_war_authorizations: {
+        Args: { p_country_code: string };
+        Returns: {
+          approved_at: string;
+          authorization_id: number;
+          closed_at: string;
+          expires_at: string;
+          status: string;
+          target_country_code: string;
         }[];
       };
       market_summary: {

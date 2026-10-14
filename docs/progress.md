@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-23.
+Last update: 2026-10-24.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -129,13 +129,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-23 · H3: public hospitals per region built and upgraded with Health's GOLD, kits only, the lowest
   sufficient compatible kit, care policies with their log, stock private to Health and the presidency; a
   Hospital tab. Stage 3 complete (ADR 0031).
+- 2026-10-24 · W1: war authorization laws locking 50 GOLD until the president launches (burned) or 24 hours pass
+  (refunded), cancellation by the president, enemy designation by law (ADR 0032).
 
 ## Next step
 
 Stages 1 (R1–R7), 2 (G1–G6) and 3 (H1–H3) are on `develop` and in the development project. Next, Stage 4
 of `docs/roadmap.md`:
 
-1. W1–W6: war authorization, battles, attacks, resistance, diplomacy, the independence war.
+1. W2–W6: battles, attacks, resistance, diplomacy, the independence war.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.
