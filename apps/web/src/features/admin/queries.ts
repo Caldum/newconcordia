@@ -56,6 +56,16 @@ const signalSchema = z.object({
   review_note: z.string().nullable(),
 });
 
+const snapshotSchema = z.object({
+  game_day: z.string(),
+  currency_code: z.string(),
+  minted: z.number().int(),
+  burned: z.number().int(),
+  circulating: z.number().int(),
+  held: z.number().int(),
+});
+
+export type EconomySnapshot = z.infer<typeof snapshotSchema>;
 export type AbuseSignal = z.infer<typeof signalSchema>;
 export type AdminCountry = z.infer<typeof countrySchema>;
 export type AdminRegion = z.infer<typeof regionSchema>;
@@ -79,6 +89,10 @@ function useAdminQuery<T>(name: string, schema: z.ZodType<T>, enabled = true) {
 /** Whether the signed-in account administers the game (the database decides every action anyway). */
 export function useIsAdmin() {
   return useAdminQuery('am_i_admin', z.boolean());
+}
+
+export function useEconomySnapshots(enabled: boolean) {
+  return useAdminQuery('admin_economy_snapshots', z.array(snapshotSchema), enabled);
 }
 
 export function useAbuseSignals(enabled: boolean) {

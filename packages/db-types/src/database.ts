@@ -9,6 +9,17 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      admin_economy_snapshots: {
+        Args: { p_days?: number };
+        Returns: {
+          burned: number;
+          circulating: number;
+          currency_code: string;
+          game_day: string;
+          held: number;
+          minted: number;
+        }[];
+      };
       admin_list_abuse_signals: {
         Args: { p_open_only?: boolean };
         Returns: {
@@ -136,6 +147,7 @@ export type Database = {
       };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       check_request: { Args: Record<PropertyKey, never>; Returns: undefined };
+      count_unread_notifications: { Args: Record<PropertyKey, never>; Returns: number };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
       create_my_citizen: {
         Args: { p_country_code: string; p_locale: string; p_name: string };
@@ -908,6 +920,16 @@ export type Database = {
           posting_id: number;
         }[];
       };
+      list_my_notifications: {
+        Args: { p_limit?: number };
+        Returns: {
+          created_at: string;
+          kind: string;
+          notification_id: number;
+          payload: Json;
+          unread: boolean;
+        }[];
+      };
       list_my_offers: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1038,6 +1060,7 @@ export type Database = {
           target_country_code: string;
         }[];
       };
+      mark_notifications_seen: { Args: Record<PropertyKey, never>; Returns: undefined };
       market_summary: {
         Args: { p_country_code: string };
         Returns: {

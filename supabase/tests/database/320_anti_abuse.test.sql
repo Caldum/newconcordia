@@ -71,7 +71,7 @@ select pg_temp.act_as(:'ana');
 select throws_ok($$ select * from public.admin_list_abuse_signals() $$, '42501', 'not_admin', 'only admins see signals');
 reset role;
 select pg_temp.act_as(:'admin');
-select results_eq($$ select kind, user_name, other_name from public.admin_list_abuse_signals() where kind = 'shared_ip' $$,
+select results_eq($$ select kind, least(user_name, other_name), greatest(user_name, other_name) from public.admin_list_abuse_signals() where kind = 'shared_ip' $$,
                   $$ values ('shared_ip', 'Ana Gómez', 'Anita Gómez') $$, 'admins see the accounts, never the address');
 select lives_ok(format('select public.admin_review_abuse_signal(%s, %L)', :'signal', 'Hermanas, misma casa'),
                 'an admin reviews it');

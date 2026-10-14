@@ -128,6 +128,8 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Héroe Libertador | Liberating Hero | `titles.title = liberating_hero` |
 | Límite de acciones | Rate limit | `check_request`, `request_counters` |
 | Señal de abuso | Abuse signal | `abuse_signals` |
+| Aviso | Notification | `notifications`, `notification_reads` |
+| Foto económica diaria | Economy snapshot | `economy_snapshots` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

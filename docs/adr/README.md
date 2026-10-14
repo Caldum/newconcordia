@@ -43,3 +43,4 @@ marked «Superseded by NNNN».
 | 0035 | Diplomacy, travel and presence | Accepted |
 | 0036 | Independence war sandbox | Accepted |
 | 0037 | Rate limits and abuse signals | Accepted |
+| 0038 | Notifications and balance telemetry | Accepted |
