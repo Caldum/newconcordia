@@ -23,3 +23,11 @@
   trades, cancellation (exact refund, twice, someone else's), insufficient funds, the export tax and tariff
   on an import, tariff against the limit, the escrow invariant, licenses on and off.
 - Vitest: `units.ts`; the Orders page (book, own orders, posting, refusal, validation, cancelling).
+
+## Amendment (ADR 0022)
+
+- Migration `20261014110000_market_licenses.sql`: buy orders removed; `buy_market_license`,
+  `list_my_market_licenses`, `get_market_license_terms`; licenses required at 10 GOLD (5 to the country, 5
+  burned).
+- pgTAP `170` rewritten for the final state (23); `100` gives its foreign seller a license.
+- Web: Licenses tab; market choice on Buy and Sell; the export tax line on sales abroad; `markets.ts`.

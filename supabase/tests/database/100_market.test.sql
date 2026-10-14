@@ -120,7 +120,8 @@ select throws_ok(
 );
 reset role;
 
--- Imports pay the tariff on top.
+-- Imports pay the tariff on top. Ana sells in Argentina with a license (R6, ADR 0022).
+insert into game.market_access_licenses (user_id, market_country_code, granted_at) values (:'ana', 'ARG', game.now());
 select pg_temp.act_as(:'ana');
 select public.post_offer('food_q1', 5, 1200, 'ARG', gen_random_uuid()) as import_offer \gset
 reset role;

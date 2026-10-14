@@ -21,7 +21,18 @@ describe('market totals', () => {
       gross: 12600,
       vat: 600,
       fee: 126,
+      exportTax: 0,
       net: 11874,
+    });
+  });
+
+  it('takes the export tax from what is left after VAT and fee, as the database does', () => {
+    expect(saleTotals(1000, 5, 0.05, 0.01, 0.2)).toEqual({
+      gross: 5000,
+      vat: 238,
+      fee: 50,
+      exportTax: 942,
+      net: 3770,
     });
   });
 });

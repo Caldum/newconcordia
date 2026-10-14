@@ -1,8 +1,6 @@
 import { Panel } from '@concordia/atlas/Panel';
 
 import styles from '../../features/economy/economy.module.css';
-import { useCurrentCitizen } from '../../features/shell/CurrentCitizen';
-import { useCountryName } from '../../features/world/useNames';
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
@@ -16,15 +14,13 @@ import { useSellSources } from './useSellSources';
 export function SellPage() {
   const copy = useMessages(messages);
   useDocumentTitle(copy.sellDocumentTitle);
-  const citizen = useCurrentCitizen();
-  const countryName = useCountryName();
   const sources = useSellSources();
   return (
     <main className={styles.page}>
       <MarketTabs />
       <div className={styles.intro}>
         <h1 className="at-title-1">{copy.sellTitle}</h1>
-        <p className="at-body-l">{copy.sellIntro(countryName(citizen.country_code))}</p>
+        <p className="at-body-l">{copy.sellIntro}</p>
       </div>
       <div className={styles.layout}>
         {sources.length > 0 ? (

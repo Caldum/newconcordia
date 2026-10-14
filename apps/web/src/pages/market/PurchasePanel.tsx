@@ -11,16 +11,12 @@ import { buy } from '../../features/market/api';
 import type { Purchase } from '../../features/market/api';
 import type { MarketOffer, MarketSummary } from '../../features/market/queries';
 import { purchaseTotals } from '../../features/market/totals';
+import { parseUnits } from '../../features/market/units';
 import { formatMoney, useLocale, useMessages } from '../../i18n';
 
 import { messages } from './messages';
 import { PurchaseDestination } from './PurchaseDestination';
 import { PurchaseLines } from './PurchaseLines';
-
-/** Whole units up to 999,999, or 0. */
-function parseUnits(text: string): number {
-  return /^\d{1,6}$/.test(text.trim()) ? Number(text.trim()) : 0;
-}
 
 interface PurchasePanelProps {
   offer: MarketOffer;

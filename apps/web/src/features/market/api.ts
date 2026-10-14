@@ -43,27 +43,9 @@ export function withdrawOffer(offerId: number) {
   return supabase.rpc('withdraw_offer', { p_offer_id: offerId });
 }
 
-export interface NewBuyOrder {
-  goodCode: string;
-  quantity: number;
-  /** The most paid per unit, tariff included, in hundredths. */
-  limitPrice: number;
-  marketCountryCode: string;
-  /** Into this own company's depot; the player's inventory when null. */
-  companyId: number | null;
-}
-
-export function postBuyOrder(order: NewBuyOrder, key: string) {
-  return supabase.rpc('post_buy_order', {
-    p_good_code: order.goodCode,
-    p_quantity: order.quantity,
-    p_limit_price: order.limitPrice,
-    p_market_country_code: order.marketCountryCode,
-    ...(order.companyId === null ? {} : { p_company_id: order.companyId }),
+export function buyMarketLicense(marketCountryCode: string, key: string) {
+  return supabase.rpc('buy_market_license', {
+    p_market_country_code: marketCountryCode,
     p_key: key,
   });
-}
-
-export function cancelBuyOrder(orderId: number) {
-  return supabase.rpc('cancel_buy_order', { p_order_id: orderId });
 }

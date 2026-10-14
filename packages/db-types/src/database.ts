@@ -72,7 +72,10 @@ export type Database = {
         Args: { p_company_id?: number; p_key: string; p_offer_id: number; p_quantity: number };
         Returns: number;
       };
-      cancel_buy_order: { Args: { p_order_id: number }; Returns: undefined };
+      buy_market_license: {
+        Args: { p_key: string; p_market_country_code: string };
+        Returns: number;
+      };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
@@ -128,6 +131,14 @@ export type Database = {
           game_day: string;
           next_day_starts_at: string;
           server_time: string;
+        }[];
+      };
+      get_market_license_terms: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_share: number;
+          price: number;
+          required: boolean;
         }[];
       };
       get_my_balances: {
@@ -242,15 +253,6 @@ export type Database = {
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
-      list_buy_orders: {
-        Args: { p_country_code: string; p_good_code: string };
-        Returns: {
-          buyer_name: string;
-          limit_price: number;
-          order_id: number;
-          remaining: number;
-        }[];
-      };
       list_citizenship_requests: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -323,21 +325,6 @@ export type Database = {
           tariff: number;
         }[];
       };
-      list_my_buy_orders: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          company_name: string;
-          created_at: string;
-          good_code: string;
-          held: number;
-          limit_price: number;
-          market_country_code: string;
-          order_id: number;
-          quantity: number;
-          remaining: number;
-          status: string;
-        }[];
-      };
       list_my_companies: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -360,6 +347,13 @@ export type Database = {
           shifts_today: number;
           vacancies: number;
           wage: number;
+        }[];
+      };
+      list_my_market_licenses: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          granted_at: string;
+          market_country_code: string;
         }[];
       };
       list_my_movements: {
@@ -420,9 +414,7 @@ export type Database = {
         Args: { p_country_code: string };
         Returns: {
           average_24h: number;
-          best_bid: number;
           best_price: number;
-          bids: number;
           export_tax: number;
           fee: number;
           good_code: string;
@@ -439,17 +431,6 @@ export type Database = {
           p_to_inventory: boolean;
         };
         Returns: undefined;
-      };
-      post_buy_order: {
-        Args: {
-          p_company_id?: number;
-          p_good_code: string;
-          p_key: string;
-          p_limit_price: number;
-          p_market_country_code: string;
-          p_quantity: number;
-        };
-        Returns: number;
       };
       post_offer: {
         Args: {

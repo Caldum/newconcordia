@@ -20,7 +20,7 @@ vi.mock('../../lib/supabase', async () => ({
   supabase: (await import('../../test/supabaseMock')).supabaseMock,
 }));
 
-const policy = { vat: 0.05, tariff: 0.1, fee: 0.01 };
+const policy = { vat: 0.05, tariff: 0.1, fee: 0.01, export_tax: 0 };
 const summary: MarketSummary[] = [
   { good_code: 'food_q1', best_price: 1260, average_24h: 1300, offers: 2, ...policy },
   { good_code: 'food_raw', best_price: null, average_24h: null, offers: 0, ...policy },
@@ -58,6 +58,7 @@ function signIn(extra: Answers = {}) {
     list_my_companies: { data: [], error: null },
     get_my_inventory: { data: [{ good_code: 'food_q1', quantity: 18 }], error: null },
     list_my_offers: { data: [], error: null },
+    list_my_market_licenses: { data: [], error: null },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
     ...extra,

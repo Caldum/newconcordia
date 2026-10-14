@@ -8,10 +8,12 @@ interface SaleLinesProps {
   totals: SaleTotals;
   vat: number;
   fee: number;
+  /** The export tax rate when selling in another country's market; null at home. */
+  exportTax: number | null;
 }
 
-/** What the seller receives if everything sells: the price minus VAT and the market fee. */
-export function SaleLines({ totals, vat, fee }: SaleLinesProps) {
+/** What the seller receives if everything sells: the price minus VAT, the market fee and any export tax. */
+export function SaleLines({ totals, vat, fee, exportTax }: SaleLinesProps) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   return (
@@ -30,6 +32,12 @@ export function SaleLines({ totals, vat, fee }: SaleLinesProps) {
           <dt>{copy.marketFee(formatPercent(fee, locale))}</dt>
           <dd>{formatMoney(-totals.fee, locale)}</dd>
         </div>
+        {exportTax === null ? null : (
+          <div>
+            <dt>{copy.exportTax(formatPercent(exportTax, locale))}</dt>
+            <dd>{formatMoney(-totals.exportTax, locale)}</dd>
+          </div>
+        )}
         <div>
           <dt>{copy.youReceive}</dt>
           <dd>{formatMoney(totals.net, locale)}</dd>

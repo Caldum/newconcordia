@@ -7,6 +7,8 @@ export const messages = defineMessages({
     tabs: 'Mercado',
     buyTab: 'Comprar',
     sellTab: 'Vender',
+    licensesTab: 'Licencias',
+    market: 'Mercado',
     title: (country: string) => `Mercado de ${country}`,
     intro: (vat: string, tariff: string) =>
       `Precios en Crédito con IVA ${vat} incluido. Los productos importados pagan además ${tariff} de arancel.`,
@@ -43,8 +45,8 @@ export const messages = defineMessages({
       `Compraste ${String(quantity)} de ${good} por ${total} Crédito.`,
     quantityInvalid: 'Escribe una cantidad entera, mayor que cero.',
     sellTitle: 'Vender en el mercado',
-    sellIntro: (country: string) =>
-      `Todos los ciudadanos de ${country} ven tu oferta hasta que se venda o la retires.`,
+    sellIntro:
+      'Tu oferta queda a la vista en el mercado que elijas hasta que se venda o la retires. Para vender en otros países necesitas su licencia.',
     what: 'Qué vendes',
     nothingToSell:
       'No tienes nada para vender. Lo que producen tus empresas y lo que compras aparece aquí.',
@@ -59,6 +61,7 @@ export const messages = defineMessages({
     totalPrice: 'Precio total',
     vatToTreasury: (rate: string) => `IVA para el tesoro, ${rate}`,
     marketFee: (rate: string) => `Comisión del mercado, ${rate}`,
+    exportTax: (rate: string) => `Impuesto a la exportación, ${rate}`,
     youReceive: 'Recibes',
     publish: 'Publicar oferta',
     published: 'Tu oferta ya está publicada.',
@@ -75,6 +78,8 @@ export const messages = defineMessages({
     error_too_many_offers: 'Ya tienes 20 ofertas publicadas. Retira alguna antes de publicar otra.',
     error_amount_invalid: 'Revisa la cantidad y el precio: deben ser mayores que cero.',
     error_not_your_company: 'Esa empresa no es tuya.',
+    error_license_required:
+      'Necesitas una licencia para comerciar en ese mercado. Cómprala en Licencias.',
     error_other:
       'No se pudo completar. Revisa tu conexión y vuelve a intentar: no se cobra dos veces.',
   },
@@ -84,6 +89,8 @@ export const messages = defineMessages({
     tabs: 'Market',
     buyTab: 'Buy',
     sellTab: 'Sell',
+    licensesTab: 'Licenses',
+    market: 'Market',
     title: (country: string) => `Market of ${country}`,
     intro: (vat: string, tariff: string) =>
       `Prices in Credit with ${vat} VAT included. Imported goods also pay ${tariff} tariff.`,
@@ -119,8 +126,8 @@ export const messages = defineMessages({
       `You bought ${String(quantity)} of ${good} for ${total} Credit.`,
     quantityInvalid: 'Write a whole quantity above zero.',
     sellTitle: 'Sell on the market',
-    sellIntro: (country: string) =>
-      `Every citizen of ${country} sees your offer until it sells or you withdraw it.`,
+    sellIntro:
+      'Your offer stays visible in the market you choose until it sells or you withdraw it. Selling in other countries needs their license.',
     what: 'What you sell',
     nothingToSell:
       'You have nothing to sell. What your companies produce and what you buy appears here.',
@@ -135,6 +142,7 @@ export const messages = defineMessages({
     totalPrice: 'Total price',
     vatToTreasury: (rate: string) => `VAT for the treasury, ${rate}`,
     marketFee: (rate: string) => `Market fee, ${rate}`,
+    exportTax: (rate: string) => `Export tax, ${rate}`,
     youReceive: 'You receive',
     publish: 'Publish offer',
     published: 'Your offer is published.',
@@ -152,6 +160,7 @@ export const messages = defineMessages({
       'You already have 20 offers published. Withdraw one before publishing another.',
     error_amount_invalid: 'Check the quantity and the price: they must be above zero.',
     error_not_your_company: 'That company is not yours.',
+    error_license_required: 'You need a license to trade in that market. Buy it under Licenses.',
     error_other:
       'It did not go through. Check your connection and try again: you are never charged twice.',
   },

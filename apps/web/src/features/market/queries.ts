@@ -14,6 +14,8 @@ const summarySchema = z.object({
   tariff: z.number(),
   /** Share of each sale that leaves the game, paid by the seller. */
   fee: z.number(),
+  /** This country's tax on its production sold in other markets, from the seller's net. */
+  export_tax: z.number(),
 });
 
 const offerSchema = z.object({
@@ -38,36 +40,12 @@ const myOfferSchema = z.object({
   created_at: z.string(),
 });
 
-const buyOrderSchema = z.object({
-  order_id: z.number().int(),
-  buyer_name: z.string(),
-  remaining: z.number().int(),
-  /** The most the buyer pays per unit, tariff included, in hundredths. */
-  limit_price: z.number().int(),
-});
-
-const myBuyOrderSchema = z.object({
-  order_id: z.number().int(),
-  market_country_code: z.string(),
-  good_code: z.string(),
-  company_name: z.string().nullable(),
-  quantity: z.number().int(),
-  remaining: z.number().int(),
-  limit_price: z.number().int(),
-  /** Hundredths still locked: remaining × limit_price. */
-  held: z.number().int(),
-  status: z.enum(['open', 'partial']),
-  created_at: z.string(),
-});
-
 const inventorySchema = z.object({ good_code: z.string(), quantity: z.number() });
 
 export type MarketSummary = z.infer<typeof summarySchema>;
 export type MarketOffer = z.infer<typeof offerSchema>;
 export type MyOffer = z.infer<typeof myOfferSchema>;
 export type InventoryLine = z.infer<typeof inventorySchema>;
-export type BuyOrder = z.infer<typeof buyOrderSchema>;
-export type MyBuyOrder = z.infer<typeof myBuyOrderSchema>;
 
 export function useMarketSummary(country: string) {
   return useQuery({
@@ -105,22 +83,33 @@ export function useMyInventory() {
   });
 }
 
-export function useBuyOrders(country: string, good: string) {
+const licenseSchema = z.object({ market_country_code: z.string(), granted_at: z.string() });
+
+const licenseTermsSchema = z.object({
+  /** GOLD hundredths. */
+  price: z.number().int(),
+  /** GOLD hundredths of the price that go to the market country's treasury; the rest is burned. */
+  country_share: z.number().int(),
+  required: z.boolean(),
+});
+
+export type MarketLicense = z.infer<typeof licenseSchema>;
+export type LicenseTerms = z.infer<typeof licenseTermsSchema>;
+
+export function useMyMarketLicenses() {
+  const { userId, enabled } = useSignedInUser();
   return useQuery({
-    queryKey: ['market', country, 'buy-orders', good],
-    queryFn: () =>
-      rows(
-        supabase.rpc('list_buy_orders', { p_country_code: country, p_good_code: good }),
-        buyOrderSchema,
-      ),
+    queryKey: ['me', userId, 'market-licenses'],
+    enabled,
+    queryFn: () => rows(supabase.rpc('list_my_market_licenses'), licenseSchema),
   });
 }
 
-export function useMyBuyOrders() {
-  const { userId, enabled } = useSignedInUser();
+export function useMarketLicenseTerms() {
   return useQuery({
-    queryKey: ['me', userId, 'buy-orders'],
-    enabled,
-    queryFn: () => rows(supabase.rpc('list_my_buy_orders'), myBuyOrderSchema),
+    queryKey: ['market', 'license-terms'],
+    queryFn: async () =>
+      (await rows(supabase.rpc('get_market_license_terms'), licenseTermsSchema))[0] ?? null,
+    staleTime: 60_000,
   });
 }

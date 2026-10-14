@@ -12,24 +12,26 @@ import type { NewOffer } from '../../features/market/api';
 import { useMarketSummary } from '../../features/market/queries';
 import type { SellSource } from '../../features/market/sellSources';
 import { saleTotals } from '../../features/market/totals';
+import { parseUnits } from '../../features/market/units';
 import { useCurrentCitizen } from '../../features/shell/CurrentCitizen';
 import { formatPercent, useLocale, useMessages } from '../../i18n';
 
+import { MarketChoice } from './MarketChoice';
 import { messages } from './messages';
 import { SaleLines } from './SaleLines';
 import { SellSourceSelect } from './SellSourceSelect';
+import { useTradableMarkets } from './useTradableMarkets';
 
-/** Whole units up to 999,999, or 0. */
-function parseUnits(text: string): number {
-  return /^\d{1,6}$/.test(text.trim()) ? Number(text.trim()) : 0;
-}
-
-/** Posting an offer: what, how many, the unit price against the 24-hour average, and what it yields. */
+/** Posting an offer: where, what, how many, the unit price against the 24-hour average, and what it yields. */
 export function SellForm({ sources }: { sources: readonly SellSource[] }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const citizen = useCurrentCitizen();
-  const summary = useMarketSummary(citizen.country_code);
+  const markets = useTradableMarkets();
+  const [marketCode, setMarketCode] = useState(citizen.country_code);
+  const summary = useMarketSummary(marketCode);
+  // The export tax is the production country's; the player's own goods are made at home.
+  const home = useMarketSummary(citizen.country_code);
   const [selectedId, setSelectedId] = useState(sources[0]?.id ?? '');
   const [quantityText, setQuantityText] = useState('1');
   const [priceText, setPriceText] = useState('');
@@ -47,6 +49,10 @@ export function SellForm({ sources }: { sources: readonly SellSource[] }) {
   const market = summary.data?.find((row) => row.good_code === source?.good);
   const vat = market?.vat ?? 0;
   const fee = market?.fee ?? 0;
+  const exported = marketCode !== citizen.country_code;
+  const exportTax = exported
+    ? (home.data?.find((row) => row.good_code === source?.good)?.export_tax ?? 0)
+    : 0;
   const validQuantity = source !== undefined && quantity > 0 && quantity <= source.available;
   const average = market?.average_24h ?? null;
   const comparison =
@@ -75,7 +81,7 @@ export function SellForm({ sources }: { sources: readonly SellSource[] }) {
             goodCode: source.good,
             quantity,
             price,
-            marketCountryCode: citizen.country_code,
+            marketCountryCode: marketCode,
             companyId: source.company?.id ?? null,
           });
         }}
@@ -83,6 +89,15 @@ export function SellForm({ sources }: { sources: readonly SellSource[] }) {
         <h2 id="sell-title" className="at-title-3">
           {copy.what}
         </h2>
+        <MarketChoice
+          markets={markets}
+          selected={marketCode}
+          onChange={(code) => {
+            edit(() => {
+              setMarketCode(code);
+            });
+          }}
+        />
         <SellSourceSelect
           sources={sources}
           selectedId={source?.id ?? ''}
@@ -117,7 +132,12 @@ export function SellForm({ sources }: { sources: readonly SellSource[] }) {
             });
           }}
         />
-        <SaleLines totals={saleTotals(price ?? 0, quantity, vat, fee)} vat={vat} fee={fee} />
+        <SaleLines
+          totals={saleTotals(price ?? 0, quantity, vat, fee, exportTax)}
+          vat={vat}
+          fee={fee}
+          exportTax={exported ? exportTax : null}
+        />
         <ActionFeedback
           problem={publish.problem}
           copy={copy}

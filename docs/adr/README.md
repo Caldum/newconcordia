@@ -26,4 +26,5 @@ marked «Superseded by NNNN».
 | 0018 | Automatic food, settled on arrival | Accepted |
 | 0019 | Web architecture: one responsibility per module | Accepted |
 | 0020 | Resources, companies N1–N5 and shifts | Accepted |
-| 0021 | Market orders, matching and the export tax | Accepted |
+| 0021 | Market orders, matching and the export tax | Partly superseded by 0022 |
+| 0022 | Market licenses at 10 GOLD, and no buy orders | Accepted |

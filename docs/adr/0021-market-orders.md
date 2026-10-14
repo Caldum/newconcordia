@@ -1,6 +1,6 @@
 # 0021 · Market orders, matching and the export tax
 
-Date: 2026-10-14 · Status: Accepted
+Date: 2026-10-14 · Status: Accepted; buy orders and the license setting superseded by 0022
 
 ## Context
 

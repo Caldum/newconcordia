@@ -99,6 +99,9 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-14 · R6: buy orders that lock limit × quantity in an escrow, price-time matching at the offer's
   price with the difference refunded, partial fills, cancellation, the export tax to the production country,
   foreign market licenses configured off; a «Buy orders» market tab (ADR 0021).
+- 2026-10-14 · R6 amended by the owner: buy orders removed; foreign market licenses cost 10 GOLD (5 to the
+  market country, 5 burned), are permanent and required; Buy and Sell choose among the own and licensed
+  markets, and a sale abroad shows the export tax (ADR 0022).
 
 ## Next step
 

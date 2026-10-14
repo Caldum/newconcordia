@@ -5,20 +5,24 @@ import styles from '../../features/economy/economy.module.css';
 import { useGoodName } from '../../features/economy/goods';
 import { useMarketOffers } from '../../features/market/queries';
 import type { MarketSummary } from '../../features/market/queries';
-import { useCurrentCitizen } from '../../features/shell/CurrentCitizen';
 import { formatMoney, formatPercent, useLocale, useMessages } from '../../i18n';
 
 import { MarketOffersTable } from './MarketOffersTable';
 import { messages } from './messages';
 import { PurchasePanel } from './PurchasePanel';
 
+interface GoodMarketProps {
+  /** The country whose market is shown. */
+  market: string;
+  summary: MarketSummary;
+}
+
 /** The offers of one good, cheapest first, and buying from the chosen one. */
-export function GoodMarket({ summary }: { summary: MarketSummary }) {
+export function GoodMarket({ market, summary }: GoodMarketProps) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
   const goodName = useGoodName();
-  const citizen = useCurrentCitizen();
-  const offers = useMarketOffers(citizen.country_code, summary.good_code);
+  const offers = useMarketOffers(market, summary.good_code);
   const [chosenId, setChosenId] = useState<number | null>(null);
   const rows = offers.data ?? [];
   // The cheapest offer is chosen until the player picks another.

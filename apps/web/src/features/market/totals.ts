@@ -12,12 +12,28 @@ export function purchaseTotals(
   return { gross, vat: vatPart, tariff: tariffPart, total: gross + tariffPart };
 }
 
-/** What a seller receives if everything sells: the gross minus the VAT and the market fee. */
-export function saleTotals(price: number, quantity: number, vat: number, fee: number) {
+/**
+ * What a seller receives if everything sells: the gross minus the VAT and the market fee, and in another
+ * country's market also the production country's export tax on what is left.
+ */
+export function saleTotals(
+  price: number,
+  quantity: number,
+  vat: number,
+  fee: number,
+  exportTax = 0,
+) {
   const gross = price * quantity;
   const vatPart = Math.round(gross - gross / (1 + vat));
   const feePart = Math.round(gross * fee);
-  return { gross, vat: vatPart, fee: feePart, net: gross - vatPart - feePart };
+  const exportPart = Math.round((gross - vatPart - feePart) * exportTax);
+  return {
+    gross,
+    vat: vatPart,
+    fee: feePart,
+    exportTax: exportPart,
+    net: gross - vatPart - feePart - exportPart,
+  };
 }
 
 export type PurchaseTotals = ReturnType<typeof purchaseTotals>;
