@@ -22,6 +22,16 @@ export function startIndependenceWar({ country, target }: IndependenceWarStart) 
   });
 }
 
+export interface Compensation {
+  transactionId: number;
+  reason: string;
+}
+
+/** Reverses a ledger transaction with a compensating one; the database checks the admin and logs it. */
+export function compensate({ transactionId, reason }: Compensation) {
+  return supabase.rpc('admin_compensate', { p_transaction_id: transactionId, p_reason: reason });
+}
+
 /** Marks an anti-abuse signal reviewed, with a note; audited. */
 export function reviewAbuseSignal(signalId: number, note: string) {
   return supabase.rpc('admin_review_abuse_signal', { p_signal_id: signalId, p_note: note });

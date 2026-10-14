@@ -65,6 +65,19 @@ const snapshotSchema = z.object({
   held: z.number().int(),
 });
 
+const legSchema = z.object({
+  kind: z.string(),
+  created_at: z.string(),
+  posting_kind: z.string(),
+  currency_code: z.string(),
+  amount: z.number().int(),
+  debit: z.string(),
+  credit: z.string(),
+  memo: z.string().nullable(),
+  compensated_by: z.number().int().nullable(),
+});
+
+export type TransactionLeg = z.infer<typeof legSchema>;
 export type EconomySnapshot = z.infer<typeof snapshotSchema>;
 export type AbuseSignal = z.infer<typeof signalSchema>;
 export type AdminCountry = z.infer<typeof countrySchema>;
@@ -89,6 +102,23 @@ function useAdminQuery<T>(name: string, schema: z.ZodType<T>, enabled = true) {
 /** Whether the signed-in account administers the game (the database decides every action anyway). */
 export function useIsAdmin() {
   return useAdminQuery('am_i_admin', z.boolean());
+}
+
+/** The legs of a ledger transaction, for an admin about to compensate it. */
+export function useTransactionLegs(transactionId: number) {
+  const auth = useAuth();
+  const userId = auth.status === 'signedIn' ? auth.session.user.id : '';
+  return useQuery({
+    queryKey: ['me', userId, 'admin', 'legs', transactionId],
+    enabled: auth.status === 'signedIn' && transactionId > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('admin_transaction_legs', {
+        p_transaction_id: transactionId,
+      });
+      if (error) throw error;
+      return z.array(legSchema).parse(data);
+    },
+  });
 }
 
 export function useEconomySnapshots(enabled: boolean) {

@@ -44,3 +44,4 @@ marked «Superseded by NNNN».
 | 0036 | Independence war sandbox | Accepted |
 | 0037 | Rate limits and abuse signals | Accepted |
 | 0038 | Notifications and balance telemetry | Accepted |
+| 0039 | Compensating entries and backups | Accepted |

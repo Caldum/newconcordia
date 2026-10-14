@@ -180,3 +180,9 @@ The database tests run on PostgreSQL installed on your computer, and the web run
    key). Then `pnpm --filter @concordia/web dev` and open http://localhost:5173.
 6. Docker is no longer needed locally: `pnpm db:stop` and quit Docker Desktop. End-to-end journeys keep
    running in CI.
+
+## 11. Backups with point-in-time recovery (L3)
+
+1. In each Supabase project: Dashboard → Database → Backups → *Point in Time Recovery*. It needs a paid plan
+   and the PITR add-on; choose 7 days.
+2. Once a month, do the restore drill of `docs/runbook.md` (Backups and restore drill).

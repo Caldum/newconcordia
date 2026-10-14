@@ -32,8 +32,9 @@ deployment).
 
 | Cron (UTC) | Job | What it does |
 | --- | --- | --- |
-| `0 3 * * *` | `day_change` | Opens the new game day (00:00 GMT−3). |
+| `0 0 * * *` | `day_change` | Opens the new game day (00:00 UTC, ADR 0014). |
 | `0 * * * *` | `citizenship_timeouts` | Approves citizenship requests left unanswered for 72 hours (so up to one hour late). |
+| `5 * * * *` | `elections` | Elections, motions, bills, minister rewards, and the world's hourly duties: war authorizations, battles, independence wars, the anti-abuse scan, rate-limit counters and the daily economy snapshot. |
 
 - Every run is in `game.job_runs` (job, slot, status, attempts, duration, error). Recent failures:
   `select job, slot, attempts, error from game.job_runs where status = 'failed' order by slot desc;`
@@ -42,9 +43,29 @@ deployment).
   skipped, so re-running is always safe.
 - Logs: Cloudflare dashboard → Workers → `concordia-clock` → Logs (JSON lines with `job`, `status`, `slot`).
 
-## Restore a backup
+## Backups and restore drill
 
-Completed with D29 (encrypted daily copy in R2 and a restore tested once a month).
+- **Backups:** Supabase takes daily backups; with point-in-time recovery (PITR, a paid add-on) any second of
+  the last days can be restored. Turning PITR on is an owner step (`docs/setup.md`).
+- **Restore drill, once a month:** restore the latest backup into a new project (Dashboard → Database →
+  Backups → Restore to new project), then run there:
+  `select currency_code, sum(balance) from game.accounts group by 1 having sum(balance) <> 0;` (no rows),
+  `select count(*) from game.citizens;` and the latest `game.job_runs` slot, and compare them with production.
+  Note the date and the result in this file's log. Delete the drill project afterwards.
+- **Restoring production** is the owner's decision: it loses whatever happened after the restore point.
+
+## Money incidents: compensating entries
+
+The ledger is never edited. To give money back after an incident, an admin opens Administration → Compensate a
+transaction, checks the legs of the transaction number, writes the reason and confirms. A reverse transaction is
+posted once and logged (`game.ledger_compensations`, `game.admin_log`). Only money is reversed; goods, offices or
+other state are fixed separately. Transactions that touch a hold cannot be compensated: release or capture the
+hold. Review open abuse signals in the same page (ADR 0037).
+
+## Rate limit hook
+
+PostgREST calls `public.check_request` before every request (ADR 0037). If it ever misbehaves, remove it at once
+from the SQL editor: `alter role authenticator reset pgrst.db_pre_request; notify pgrst, 'reload config';`.
 
 ## Rotate secrets
 

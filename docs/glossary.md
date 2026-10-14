@@ -130,6 +130,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Señal de abuso | Abuse signal | `abuse_signals` |
 | Aviso | Notification | `notifications`, `notification_reads` |
 | Foto económica diaria | Economy snapshot | `economy_snapshots` |
+| Asiento compensatorio | Compensating entry | `ledger_compensations`, `admin_compensate` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

@@ -11,6 +11,7 @@ import { AbuseSection } from './AbuseSection';
 import { AdminLogSection } from './AdminLogSection';
 import styles from './AdminPage.module.css';
 import { AdminTeamSection } from './AdminTeamSection';
+import { CompensationSection } from './CompensationSection';
 import { CountriesSection } from './CountriesSection';
 import { EconomySection } from './EconomySection';
 import { IndependenceSection } from './IndependenceSection';
@@ -43,6 +44,7 @@ export function AdminPanel() {
       />
       <EconomySection />
       <AbuseSection />
+      <CompensationSection />
       <IndependenceSection />
       <AdminLogSection countries={countries.data ?? []} />
       <AdminTeamSection />

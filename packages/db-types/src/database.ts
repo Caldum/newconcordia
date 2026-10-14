@@ -9,6 +9,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      admin_compensate: { Args: { p_reason: string; p_transaction_id: number }; Returns: number };
       admin_economy_snapshots: {
         Args: { p_days?: number };
         Returns: {
@@ -31,6 +32,17 @@ export type Database = {
           reviewed_at: string;
           signal_id: number;
           user_name: string;
+        }[];
+      };
+      admin_list_compensations: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          admin_name: string;
+          compensation_transaction_id: number;
+          created_at: string;
+          original_kind: string;
+          original_transaction_id: number;
+          reason: string;
         }[];
       };
       admin_list_countries: {
@@ -94,6 +106,20 @@ export type Database = {
       admin_start_independence_war: {
         Args: { p_country_code: string; p_damage_target: number };
         Returns: number;
+      };
+      admin_transaction_legs: {
+        Args: { p_transaction_id: number };
+        Returns: {
+          amount: number;
+          compensated_by: number;
+          created_at: string;
+          credit: string;
+          currency_code: string;
+          debit: string;
+          kind: string;
+          memo: string;
+          posting_kind: string;
+        }[];
       };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       appoint_governor: { Args: { p_name: string }; Returns: undefined };
