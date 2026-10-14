@@ -666,8 +666,12 @@ export type Database = {
       get_travel_terms: {
         Args: Record<PropertyKey, never>;
         Returns: {
+          currency_code: string;
           enabled: boolean;
-          price: number;
+          gold_per_km: number;
+          rate: number;
+          rate_from_market: boolean;
+          region_code: string;
         }[];
       };
       hospital_treatment: {
@@ -1210,6 +1214,15 @@ export type Database = {
           registered_at: string;
           vice_president_name: string;
           votes: number;
+        }[];
+      };
+      list_travel_destinations: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          km: number;
+          price: number;
+          region_code: string;
         }[];
       };
       list_war_authorizations: {

@@ -30,10 +30,6 @@ export function joinResistance(region: string, key: string) {
   return supabase.rpc('join_resistance', { p_region_code: region, p_key: key });
 }
 
-export function travel(region: string, key: string) {
-  return supabase.rpc('travel', { p_region_code: region, p_key: key });
-}
-
 export async function independenceAttack(warId: number, key: string) {
   const { data, error } = await supabase.rpc('independence_attack', {
     p_war_id: warId,

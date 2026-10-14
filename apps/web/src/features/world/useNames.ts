@@ -18,3 +18,9 @@ export function useRegionName(): (code: string) => string {
   const world = useWorld();
   return (code) => world.data?.regions.get(code)?.name ?? code;
 }
+
+/** The country that holds a region now (its owner, which differs from its home when occupied). */
+export function useRegionOwner(): (code: string) => string {
+  const world = useWorld();
+  return (code) => world.data?.regions.get(code)?.owner_country_code ?? code.slice(0, 3);
+}

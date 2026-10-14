@@ -169,6 +169,12 @@ const profileSecurityRoute = createRoute({
   ),
 });
 
+const travelRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/travel',
+  component: lazyRouteComponent(() => import('./pages/travel/TravelPage'), 'TravelPage'),
+});
+
 const regimentsRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/regiments',
@@ -330,6 +336,7 @@ const routeTree = rootRoute.addChildren([
     profileEditRoute,
     profileSecurityRoute,
     regimentsRoute,
+    travelRoute,
     accountRoute,
     workRoute,
     companiesRoute,

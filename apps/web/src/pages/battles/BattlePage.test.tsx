@@ -64,7 +64,6 @@ function signIn(office: string | null, extra: Parameters<typeof answerRpc>[0] = 
     list_launch_targets: { data: [], error: null },
     get_independence_war: { data: [], error: null },
     list_my_titles: { data: [], error: null },
-    get_travel_terms: { data: [{ enabled: false, price: 0 }], error: null },
     list_occupied_regions: {
       data: [
         {
@@ -103,7 +102,10 @@ describe('battles', () => {
     );
     expect(screen.queryByRole('region', { name: 'Lanzar una ofensiva' })).toBeNull();
     const travelPanel = screen.getByRole('region', { name: 'Viajar' });
-    expect(await within(travelPanel).findByText(/no están habilitados/)).toBeVisible();
+    expect(within(travelPanel).getByRole('link', { name: 'Viajar' })).toHaveAttribute(
+      'href',
+      '/travel',
+    );
     const resistance = screen.getByRole('region', { name: 'Resistencia' });
     expect(await within(resistance).findByText('3 de 10 organizadores')).toBeVisible();
   });

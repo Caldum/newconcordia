@@ -142,6 +142,8 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Logro | Achievement | `list_my_achievements` |
 | Rango nacional | National rank | `get_my_profile_details.national_rank` |
 | Lingote (de oro) | Gold bar | GOLD on the side panel |
+| Viaje, ubicación | Trip, location | `travel`, `travel_events`, `citizens.region_code` |
+| Paridad oro/moneda | GOLD rate | `game.gold_rate` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

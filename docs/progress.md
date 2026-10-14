@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-11-02.
+Last update: 2026-11-03.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -154,6 +154,9 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   its maximum, gold in bars and the national money by name; the profile with level, description, national
   rank, party and regiment with pictures, achievements, friends and referrals; editing the profile (picture,
   description, email, password); regiments (ADR 0041).
+- 2026-11-03 · P2 (owner's decision on PD-03): where each citizen is, on the side panel; travel opened, instant,
+  at 0.0001 GOLD per real kilometre charged in the national currency at the 6-hour market rate or 500 per GOLD
+  (ADR 0042).
 
 ## Next step
 
@@ -161,7 +164,7 @@ Stages 1 to 4 (R1–R7, G1–G6, H1–H3, W1–W6) are on `develop` and in the d
 of `docs/roadmap.md`:
 
 1. L5: terms and privacy acceptance, moderation and reports (PD-14), closed beta.
-2. Apply `20261101090000_society.sql` and `20261102090000_profiles.sql` to the development project
+2. Apply `20261101090000_society.sql`, `20261102090000_profiles.sql` and the later migrations to the development project
    (`supabase db push`), and have the owner review the storage policies of the `pictures` bucket.
 3. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 4. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,

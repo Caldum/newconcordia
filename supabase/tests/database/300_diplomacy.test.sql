@@ -164,12 +164,12 @@ reset role;
 
 -- Travel. -----------------------------------------------------------------------------------------------------------------------
 select pg_temp.act_as(:'ana');
-select results_eq($$ select enabled from public.get_travel_terms() $$, $$ values (false) $$, 'travel is off');
-select throws_ok($$ select public.travel('ARG-02', gen_random_uuid()) $$, '22023', 'travel_disabled', 'until its price is decided');
+select results_eq($$ select enabled from public.get_travel_terms() $$, $$ values (true) $$,
+                  'travel is open since its price was decided (ADR 0042)');
+select throws_ok($$ select public.travel('ZZZ-01', gen_random_uuid()) $$, '22023', 'region_invalid', 'only to a region');
 reset role;
-update game.balance_params set value = 1 where key = 'travel_enabled';
 select pg_temp.act_as(:'ana');
-select is(public.travel('ARG-02', gen_random_uuid()), 'ARG-02', 'when enabled, a citizen travels');
+select is(public.travel('ARG-02', gen_random_uuid()), 'ARG-02', 'a citizen travels');
 select throws_ok($$ select public.travel('ARG-02', gen_random_uuid()) $$, '22023', 'region_invalid', 'somewhere else');
 reset role;
 update game.player_stats set health = 0 where user_id = :'ana';

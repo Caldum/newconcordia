@@ -92,12 +92,8 @@ export const messages = defineMessages({
     travelTitle: 'Viajar',
     travelHint:
       'Quienes no son del país de un bando ni aliados solo pueden pelear desde la región de la batalla. Con salud 0 no se viaja.',
-    travelOff: 'Los viajes todavía no están habilitados: falta decidir su precio y su duración.',
     travelHere: (region: string) => `Estás en ${region}.`,
-    travelTo: 'Destino',
     travel: 'Viajar',
-    traveled: (region: string) => `Llegaste a ${region}.`,
-    error_travel_disabled: 'Los viajes todavía no están habilitados.',
     independenceTitle: 'Guerra de independencia',
     independenceHint:
       'Modo de prueba: solo cuenta el daño de los ciudadanos del país, hasta la meta o 7 días. Quien más daño hace recibe el título de Héroe Libertador.',
@@ -222,12 +218,8 @@ export const messages = defineMessages({
     travelTitle: 'Travel',
     travelHint:
       'Those who are neither of a side’s country nor its allies can fight only from the battle’s region. Nobody travels at 0 health.',
-    travelOff: 'Travel is not open yet: its price and duration are still to be decided.',
     travelHere: (region: string) => `You are in ${region}.`,
-    travelTo: 'Destination',
     travel: 'Travel',
-    traveled: (region: string) => `You arrived in ${region}.`,
-    error_travel_disabled: 'Travel is not open yet.',
     independenceTitle: 'Independence war',
     independenceHint:
       'Test mode: only the damage of the country’s citizens counts, up to the target or 7 days. Whoever does most damage receives the Liberating Hero title.',

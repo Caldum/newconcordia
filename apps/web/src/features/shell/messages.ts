@@ -15,6 +15,8 @@ export const messages = defineMessages({
     admin: 'Administración',
     signOut: 'Cerrar sesión',
     sidebar: 'Tu ciudadano',
+    youAreIn: 'Estás en',
+    travel: 'Viajar',
     messages: 'Mensajes',
     messagesUnread: (count: number) =>
       count === 1 ? 'Mensajes (1 sin leer)' : `Mensajes (${String(count)} sin leer)`,
@@ -44,6 +46,8 @@ export const messages = defineMessages({
     admin: 'Administration',
     signOut: 'Sign out',
     sidebar: 'Your citizen',
+    youAreIn: 'You are in',
+    travel: 'Travel',
     messages: 'Messages',
     messagesUnread: (count: number) =>
       count === 1 ? 'Messages (1 unread)' : `Messages (${String(count)} unread)`,
