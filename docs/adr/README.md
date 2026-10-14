@@ -39,3 +39,4 @@ marked «Superseded by NNNN».
 | 0031 | Public hospitals | Accepted |
 | 0032 | War authorization and enemy designation | Accepted |
 | 0033 | Battles and attacks | Accepted |
+| 0034 | Resistance | Accepted |

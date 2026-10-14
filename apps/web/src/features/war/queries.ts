@@ -63,6 +63,18 @@ const authorizationSchema = z.object({
   closed_at: z.string().nullable(),
 });
 
+const occupiedSchema = z.object({
+  region_code: z.string(),
+  restore_country_code: z.string(),
+  occupier_country_code: z.string(),
+  organizers: z.number().int(),
+  needed: z.number().int(),
+  /** The resistance battle under way, if any. */
+  battle_id: z.number().int().nullable(),
+  i_organize: z.boolean(),
+});
+
+export type OccupiedRegion = z.infer<typeof occupiedSchema>;
 export type BattleRow = z.infer<typeof battleRowSchema>;
 export type Battle = z.infer<typeof battleSchema>;
 export type BattleRound = z.infer<typeof roundSchema>;
@@ -116,6 +128,13 @@ export function useLaunchTargets(enabled: boolean) {
     queryKey: ['war', 'targets'],
     enabled,
     queryFn: () => rows(supabase.rpc('list_launch_targets'), targetSchema),
+  });
+}
+
+export function useOccupiedRegions() {
+  return useQuery({
+    queryKey: ['war', 'occupied'],
+    queryFn: () => rows(supabase.rpc('list_occupied_regions'), occupiedSchema),
   });
 }
 

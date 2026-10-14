@@ -7,6 +7,7 @@ import { useDocumentTitle } from '../../lib/useDocumentTitle';
 import { BattleList } from './BattleList';
 import { LaunchPanel } from './LaunchPanel';
 import { messages } from './messages';
+import { ResistancePanel } from './ResistancePanel';
 import { WarAuthorizationsPanel } from './WarAuthorizationsPanel';
 
 /** `/battles`: ongoing and recent battles, the president's launches and the war authorizations. */
@@ -29,6 +30,7 @@ export function BattlesPage() {
         <div className={styles.column}>
           {isPresident ? <LaunchPanel /> : null}
           <WarAuthorizationsPanel canCancel={isPresident} />
+          <ResistancePanel />
         </div>
       </div>
     </main>

@@ -62,6 +62,20 @@ function signIn(office: string | null, extra: Parameters<typeof answerRpc>[0] = 
     get_my_inventory: { data: [{ good_code: 'weapon_q2', quantity: 1 }], error: null },
     list_war_authorizations: { data: [], error: null },
     list_launch_targets: { data: [], error: null },
+    list_occupied_regions: {
+      data: [
+        {
+          region_code: region,
+          restore_country_code: 'ARG',
+          occupier_country_code: 'BRA',
+          organizers: 3,
+          needed: 10,
+          battle_id: null,
+          i_organize: false,
+        },
+      ],
+      error: null,
+    },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
     ...extra,
@@ -85,6 +99,8 @@ describe('battles', () => {
       '/battles/3',
     );
     expect(screen.queryByRole('region', { name: 'Lanzar una ofensiva' })).toBeNull();
+    const resistance = screen.getByRole('region', { name: 'Resistencia' });
+    expect(await within(resistance).findByText('3 de 10 organizadores')).toBeVisible();
   });
 
   it('shows the live score and attacks for a side', async () => {

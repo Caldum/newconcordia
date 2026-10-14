@@ -74,6 +74,21 @@ export const messages = defineMessages({
     noWeapons: 'No tienes armas en el inventario.',
     setOrder: 'Hacerla la batalla prioritaria del país',
     orderSet: 'Es la batalla prioritaria del país.',
+    resistanceTitle: 'Resistencia',
+    resistanceHint:
+      'En una región ocupada, diez organizadores de cualquier ciudadanía pagan 2 Oro cada uno (se queman) y la batalla empieza en el acto. Si gana la resistencia, la región vuelve a quien la tenía y cada organizador recibe 5 Oro.',
+    noOccupied: 'No hay regiones ocupadas.',
+    occupiedLine: (region: string, occupier: string, restore: string) =>
+      `${region}: ocupada por ${occupier}, volvería a ${restore}`,
+    organizers: (count: number, needed: number) =>
+      `${String(count)} de ${String(needed)} organizadores`,
+    resistanceFighting: 'La resistencia está peleando.',
+    join: 'Organizar (2 Oro)',
+    joinAria: (region: string) => `Organizar la resistencia de ${region} por 2 Oro`,
+    joined: 'Te sumaste a la resistencia.',
+    error_not_occupied: 'Esa región no está ocupada.',
+    error_already_organizer: 'Ya organizas esta resistencia.',
+    error_insufficient_funds: 'No tienes 2 Oro.',
     error_not_president: 'Solo la presidencia lanza ofensivas.',
     error_region_invalid: 'No puedes atacar esa región.',
     error_battle_active: 'Esa región ya tiene una batalla.',
@@ -165,6 +180,21 @@ export const messages = defineMessages({
     noWeapons: 'You have no weapons in your inventory.',
     setOrder: 'Make it the country’s priority battle',
     orderSet: 'It is the country’s priority battle.',
+    resistanceTitle: 'Resistance',
+    resistanceHint:
+      'In an occupied region, ten organizers of any citizenship pay 2 Gold each (burned) and the battle starts at once. If the resistance wins, the region returns to who held it and each organizer receives 5 Gold.',
+    noOccupied: 'There are no occupied regions.',
+    occupiedLine: (region: string, occupier: string, restore: string) =>
+      `${region}: occupied by ${occupier}, would return to ${restore}`,
+    organizers: (count: number, needed: number) =>
+      `${String(count)} of ${String(needed)} organizers`,
+    resistanceFighting: 'The resistance is fighting.',
+    join: 'Organize (2 Gold)',
+    joinAria: (region: string) => `Organize the resistance of ${region} for 2 Gold`,
+    joined: 'You joined the resistance.',
+    error_not_occupied: 'That region is not occupied.',
+    error_already_organizer: 'You already organize this resistance.',
+    error_insufficient_funds: 'You do not have 2 Gold.',
     error_not_president: 'Only the president launches offensives.',
     error_region_invalid: 'You cannot attack that region.',
     error_battle_active: 'That region already has a battle.',

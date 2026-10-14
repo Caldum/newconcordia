@@ -534,6 +534,13 @@ export type Database = {
       };
       issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
       join_party: { Args: { p_party_id: number }; Returns: undefined };
+      join_resistance: {
+        Args: { p_key: string; p_region_code: string };
+        Returns: {
+          battle_id: number;
+          organizers: number;
+        }[];
+      };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
       launch_offensive: { Args: { p_key: string; p_region_code: string }; Returns: number };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
@@ -843,6 +850,18 @@ export type Database = {
           quantity: number;
           sold: number;
           status: string;
+        }[];
+      };
+      list_occupied_regions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          battle_id: number;
+          i_organize: boolean;
+          needed: number;
+          occupier_country_code: string;
+          organizers: number;
+          region_code: string;
+          restore_country_code: string;
         }[];
       };
       list_parties: {

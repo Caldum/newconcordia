@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-25.
+Last update: 2026-10-26.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -134,13 +134,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-25 · W2 + W3: battles for regions in hourly rounds, first to 5, ties to the defender, cooldown and
   annexation; attacks with the damage formula, weapons with uses, additive XP bonuses for the enemy and the
   priority battle, injuries after the gains; battle pages with a live score (ADR 0033).
+- 2026-10-26 · W4: resistance in occupied regions with ten organizers burning 2 GOLD each, an immediate battle
+  with the occupier defending, the region returned and 5 GOLD to each organizer on victory (ADR 0034).
 
 ## Next step
 
 Stages 1 (R1–R7), 2 (G1–G6) and 3 (H1–H3) are on `develop` and in the development project. Next, Stage 4
 of `docs/roadmap.md`:
 
-1. W4–W6: resistance, diplomacy, the independence war.
+1. W5–W6: diplomacy, travel and presence; the independence war.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

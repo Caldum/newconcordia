@@ -118,6 +118,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Batalla prioritaria | Priority battle | `battle_orders` |
 | Arma equipada | Equipped weapon | `equipped_weapons` |
 | Anexión | Annexation | `region_owner_changes` |
+| Resistencia, organizador | Resistance, organizer | `resistance_drives`, `resistance_organizers` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

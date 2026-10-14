@@ -26,6 +26,10 @@ export function setBattleOrder(battleId: number) {
   return supabase.rpc('set_battle_order', { p_battle_id: battleId });
 }
 
+export function joinResistance(region: string, key: string) {
+  return supabase.rpc('join_resistance', { p_region_code: region, p_key: key });
+}
+
 export function cancelWarAuthorization(authorizationId: number) {
   return supabase.rpc('cancel_war_authorization', { p_authorization_id: authorizationId });
 }
