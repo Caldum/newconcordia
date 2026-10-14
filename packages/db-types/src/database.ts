@@ -66,6 +66,18 @@ export type Database = {
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       appoint_governor: { Args: { p_name: string }; Returns: undefined };
       appoint_minister: { Args: { p_ministry: string; p_name: string }; Returns: undefined };
+      attack: {
+        Args: { p_battle_id: number; p_key: string; p_side: string };
+        Returns: {
+          civil_xp: number;
+          damage: number;
+          energy: number;
+          health: number;
+          health_lost: number;
+          military_xp: number;
+          weapon_uses_left: number;
+        }[];
+      };
       authorize_cb_transfer: {
         Args: { p_amount: number; p_company_name: string; p_currency: string };
         Returns: number;
@@ -73,6 +85,15 @@ export type Database = {
       authorize_second_shift: {
         Args: { p_company_id: number; p_employee_name: string; p_wage?: number };
         Returns: undefined;
+      };
+      battle_ranking: {
+        Args: { p_battle_id: number };
+        Returns: {
+          attacks: number;
+          damage: number;
+          name: string;
+          side: string;
+        }[];
       };
       break_motion_tie: { Args: { p_choice: string; p_motion_id: number }; Returns: undefined };
       break_tie: { Args: { p_bill_id: number; p_choice: string }; Returns: undefined };
@@ -111,6 +132,7 @@ export type Database = {
         Args: { p_amount: number; p_currency: string; p_key: string; p_party_id: number };
         Returns: undefined;
       };
+      equip_weapon: { Args: { p_good_code: string }; Returns: number };
       execute_cb_transfer: { Args: { p_authorization_id: number }; Returns: number };
       found_company: {
         Args: { p_good_code: string; p_key: string; p_name: string; p_region_code: string };
@@ -166,6 +188,27 @@ export type Database = {
           p_offer_id: number;
         };
         Returns: number;
+      };
+      get_battle: {
+        Args: { p_battle_id: number };
+        Returns: {
+          attacker_country_code: string;
+          attacker_damage: number;
+          attacker_rounds: number;
+          battle_id: number;
+          current_round: number;
+          defender_country_code: string;
+          defender_damage: number;
+          defender_rounds: number;
+          finished_at: string;
+          kind: string;
+          my_side_order: boolean;
+          region_code: string;
+          round_ends_at: string;
+          started_at: string;
+          status: string;
+          winner: string;
+        }[];
       };
       get_cabinet: {
         Args: { p_country_code: string };
@@ -430,6 +473,13 @@ export type Database = {
           place: number;
         }[];
       };
+      get_my_weapon: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          good_code: string;
+          uses_left: number;
+        }[];
+      };
       get_national_election: {
         Args: { p_country_code: string; p_kind: string };
         Returns: {
@@ -485,9 +535,36 @@ export type Database = {
       issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
       join_party: { Args: { p_party_id: number }; Returns: undefined };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
+      launch_offensive: { Args: { p_key: string; p_region_code: string }; Returns: number };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_party: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
+      list_battle_rounds: {
+        Args: { p_battle_id: number };
+        Returns: {
+          attacker_damage: number;
+          defender_damage: number;
+          round_no: number;
+          winner: string;
+        }[];
+      };
+      list_battles: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attacker_country_code: string;
+          attacker_rounds: number;
+          battle_id: number;
+          current_round: number;
+          defender_country_code: string;
+          defender_rounds: number;
+          finished_at: string;
+          kind: string;
+          region_code: string;
+          started_at: string;
+          status: string;
+          winner: string;
+        }[];
+      };
       list_bill_votes: {
         Args: { p_bill_id: number };
         Returns: {
@@ -637,6 +714,14 @@ export type Database = {
           region_code: string;
           vacancies: number;
           wage: number;
+        }[];
+      };
+      list_launch_targets: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          needs_authorization: boolean;
+          region_code: string;
         }[];
       };
       list_market: {
@@ -933,6 +1018,7 @@ export type Database = {
       request_resignation: { Args: Record<PropertyKey, never>; Returns: number };
       resign_office: { Args: Record<PropertyKey, never>; Returns: string };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
+      set_battle_order: { Args: { p_battle_id: number }; Returns: undefined };
       set_care_policy: { Args: { p_policy: string }; Returns: undefined };
       set_company_offer: {
         Args: { p_company_id: number; p_vacancies: number; p_wage: number };

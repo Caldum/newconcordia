@@ -113,6 +113,11 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Política de atención | Care policy | `care_policies`, `care_policy_changes` |
 | Autorización de guerra | War authorization | `war_authorizations`, `bills.kind = war_authorization` |
 | País enemigo | Enemy country | `enemy_designations`, `game.enemy_of` |
+| Batalla, ronda | Battle, round | `battles`, `battle_rounds` |
+| Ataque | Attack | `battle_attacks`, `attack` |
+| Batalla prioritaria | Priority battle | `battle_orders` |
+| Arma equipada | Equipped weapon | `equipped_weapons` |
+| Anexión | Annexation | `region_owner_changes` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

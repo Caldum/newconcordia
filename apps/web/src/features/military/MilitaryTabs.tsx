@@ -5,8 +5,8 @@ import { defineMessages, useMessages } from '../../i18n';
 import styles from './MilitaryTabs.module.css';
 
 const messages = defineMessages({
-  es: { tabs: 'Militar', training: 'Entrenamiento', hospital: 'Hospital' },
-  en: { tabs: 'Military', training: 'Training', hospital: 'Hospital' },
+  es: { tabs: 'Militar', training: 'Entrenamiento', hospital: 'Hospital', battles: 'Batallas' },
+  en: { tabs: 'Military', training: 'Training', hospital: 'Hospital', battles: 'Battles' },
 });
 
 const current = {
@@ -14,7 +14,7 @@ const current = {
   activeOptions: { exact: true },
 };
 
-/** Training and the hospital; battles join them in Stage 4. */
+/** Training, the hospital and battles. */
 export function MilitaryTabs() {
   const copy = useMessages(messages);
   return (
@@ -24,6 +24,9 @@ export function MilitaryTabs() {
       </Link>
       <Link to="/hospital" {...current}>
         {copy.hospital}
+      </Link>
+      <Link to="/battles" activeProps={current.activeProps}>
+        {copy.battles}
       </Link>
     </nav>
   );
