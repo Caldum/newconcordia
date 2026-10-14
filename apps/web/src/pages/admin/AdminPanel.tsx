@@ -11,12 +11,14 @@ import { AbuseSection } from './AbuseSection';
 import { AdminLogSection } from './AdminLogSection';
 import styles from './AdminPage.module.css';
 import { AdminTeamSection } from './AdminTeamSection';
+import { BetaSection } from './BetaSection';
 import { CompensationSection } from './CompensationSection';
 import { CountriesSection } from './CountriesSection';
 import { EconomySection } from './EconomySection';
 import { IndependenceSection } from './IndependenceSection';
 import { messages } from './messages';
 import { RegionsSection } from './RegionsSection';
+import { ReportsSection } from './ReportsSection';
 
 /** The admin's work: switching countries and regions for the next day, the log and the team. */
 export function AdminPanel() {
@@ -43,7 +45,9 @@ export function AdminPanel() {
         onSchedule={scheduling.run}
       />
       <EconomySection />
+      <ReportsSection />
       <AbuseSection />
+      <BetaSection />
       <CompensationSection />
       <IndependenceSection />
       <AdminLogSection countries={countries.data ?? []} />

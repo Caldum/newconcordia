@@ -49,3 +49,4 @@ marked «Superseded by NNNN».
 | 0041 | Profile, side panel, pictures, friends, referrals and regiments | Accepted |
 | 0042 | Travel priced by distance | Accepted |
 | 0043 | Referral rewards | Accepted |
+| 0044 | Terms acceptance, moderation and closed beta | Accepted |

@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { AuthLayout } from '../../features/auth/AuthLayout';
 import { SignedOutOnly } from '../../features/auth/guards';
 import { Story } from '../../features/auth/Story';
+import { BetaNotice } from '../../features/moderation/BetaNotice';
 import { referrerFromSearch, rememberReferrer } from '../../features/profile/referral';
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
@@ -21,6 +22,7 @@ export function SignUpPage() {
   return (
     <SignedOutOnly>
       <AuthLayout story={<Story title={copy.storyTitle}>{copy.storyBody}</Story>}>
+        <BetaNotice />
         <SignUpForm />
       </AuthLayout>
     </SignedOutOnly>

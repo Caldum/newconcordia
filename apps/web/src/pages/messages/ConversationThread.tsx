@@ -1,6 +1,7 @@
 import { Panel } from '@concordia/atlas/Panel';
 
 import styles from '../../features/economy/economy.module.css';
+import { ReportButton } from '../../features/moderation/ReportButton';
 import { useConversation } from '../../features/society/queries';
 import { formatDateTime, useLocale, useMessages } from '../../i18n';
 
@@ -24,7 +25,18 @@ export function ConversationThread({ withName }: { withName: string }) {
             <span>
               <strong>{m.mine ? copy.you : withName}</strong>
               <br />
-              <span style={{ whiteSpace: 'pre-wrap' }}>{m.body}</span>
+              {m.hidden ? (
+                <span className={styles.muted}>{copy.hiddenMessage}</span>
+              ) : (
+                <span style={{ whiteSpace: 'pre-wrap' }}>{m.body}</span>
+              )}
+              {m.mine || m.hidden ? null : (
+                <ReportButton
+                  kind="message"
+                  target={String(m.message_id)}
+                  what={copy.reportWhat(withName)}
+                />
+              )}
             </span>
             <span className={styles.muted}>{formatDateTime(m.sent_at, locale)}</span>
           </li>

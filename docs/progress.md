@@ -159,13 +159,17 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   (ADR 0042).
 - 2026-11-03 · P3 (owner's decision): referrers earn 10% of the GOLD their referrals get from the system or buy
   on the market (net) in their first 30 days, claimable 30 days more; a referral panel (ADR 0043).
+- 2026-11-03 · L5: players accept the terms and privacy in force (by version), draft public texts, reports of
+  articles, messages and citizens with audited moderation (hide, show again), and an invitation-only closed beta
+  that ships off (ADR 0044).
 
 ## Next step
 
 Stages 1 to 4 (R1–R7, G1–G6, H1–H3, W1–W6) are on `develop` and in the development project. Next, Stage 5
 of `docs/roadmap.md`:
 
-1. L5: terms and privacy acceptance, moderation and reports (PD-14), closed beta.
+1. Stage 5 is built. The owner decides the legal texts and the minimum age (PD-14, `docs/setup.md` step 8)
+   before a public beta.
 2. Apply `20261101090000_society.sql`, `20261102090000_profiles.sql` and the later migrations to the development project
    (`supabase db push`), and have the owner review the storage policies of the `pictures` bucket.
 3. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).

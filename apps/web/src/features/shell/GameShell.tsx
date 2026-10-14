@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 
 import { LanguageSwitch, useMessages } from '../../i18n';
 import { signOut } from '../auth/api';
+import { LegalGate } from '../legal/LegalGate';
 
 import { GameNav } from './GameNav';
 import styles from './GameShell.module.css';
@@ -37,7 +38,9 @@ export function GameShell({ children }: { children: ReactNode }) {
       </header>
       <div className={styles.frame}>
         <Sidebar />
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}>
+          <LegalGate>{children}</LegalGate>
+        </div>
       </div>
       <ReferralClaim />
     </div>

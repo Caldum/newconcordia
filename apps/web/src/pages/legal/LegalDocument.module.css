@@ -1,0 +1,33 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 760px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-7);
+}
+
+.main h1 {
+  margin: 0;
+}
+
+.version {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.section h2,
+.section p {
+  margin: 0 0 var(--space-2);
+}
+
+.section p {
+  max-width: 68ch;
+}
+
+@media (width < 720px) {
+  .main {
+    padding: var(--space-5) var(--space-4);
+  }
+}

@@ -10,6 +10,7 @@ export const messages = defineMessages({
     submit: 'Crear mi ciudadano',
     sending: 'Creando tu ciudadano…',
     countryNotInPlay: 'Ese país no está en juego. Elige otro de la lista.',
+    betaClosed: 'Concordia está en beta cerrada: solo entran los correos invitados.',
     failed: 'No pudimos crear tu ciudadano. Vuelve a intentar en unos minutos.',
   },
   en: {
@@ -21,6 +22,7 @@ export const messages = defineMessages({
     submit: 'Create my citizen',
     sending: 'Creating your citizen…',
     countryNotInPlay: 'That country is not in play. Choose another one from the list.',
+    betaClosed: 'Concordia is in closed beta: only invited emails can join.',
     failed: 'We could not create your citizen. Try again in a few minutes.',
   },
 });

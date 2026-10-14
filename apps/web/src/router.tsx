@@ -20,6 +20,18 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
   notFoundComponent: NotFoundPage,
 });
 
+const termsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/terms',
+  component: lazyRouteComponent(() => import('./pages/legal/TermsPage'), 'TermsPage'),
+});
+
+const privacyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/privacy',
+  component: lazyRouteComponent(() => import('./pages/legal/PrivacyPage'), 'PrivacyPage'),
+});
+
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
@@ -323,6 +335,8 @@ const adminRoute = createRoute({
 });
 
 const routeTree = rootRoute.addChildren([
+  termsRoute,
+  privacyRoute,
   indexRoute,
   mapRoute,
   signUpRoute,

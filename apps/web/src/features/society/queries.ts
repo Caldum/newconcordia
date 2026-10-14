@@ -48,6 +48,8 @@ const messageSchema = z.object({
   mine: z.boolean(),
   body: z.string(),
   sent_at: z.string(),
+  /** Hidden by moderation: kept in its place without its text. */
+  hidden: z.boolean(),
 });
 
 export type Mission = z.infer<typeof missionSchema>;

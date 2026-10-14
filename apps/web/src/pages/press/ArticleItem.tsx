@@ -3,6 +3,7 @@ import { Button } from '@concordia/atlas/Button';
 import { ActionFeedback } from '../../features/actions/ActionFeedback';
 import { useGameAction } from '../../features/actions/useGameAction';
 import styles from '../../features/economy/economy.module.css';
+import { ReportButton } from '../../features/moderation/ReportButton';
 import { readArticle } from '../../features/society/api';
 import type { Article } from '../../features/society/queries';
 import { formatDateTime, useLocale, useMessages } from '../../i18n';
@@ -36,6 +37,13 @@ export function ArticleItem({ article }: { article: Article }) {
           </>
         ) : null}
         <ActionFeedback problem={read.problem} copy={copy} />
+        {opened ? (
+          <ReportButton
+            kind="article"
+            target={String(article.article_id)}
+            what={copy.reportWhat(article.title)}
+          />
+        ) : null}
       </span>
       {opened ? null : (
         <Button

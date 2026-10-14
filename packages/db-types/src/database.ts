@@ -9,6 +9,10 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      accept_legal: {
+        Args: { p_privacy_version: number; p_terms_version: number };
+        Returns: undefined;
+      };
       admin_compensate: { Args: { p_reason: string; p_transaction_id: number }; Returns: number };
       admin_economy_snapshots: {
         Args: { p_days?: number };
@@ -21,6 +25,7 @@ export type Database = {
           minted: number;
         }[];
       };
+      admin_invite_beta: { Args: { p_email: string; p_note?: string }; Returns: undefined };
       admin_list_abuse_signals: {
         Args: { p_open_only?: boolean };
         Returns: {
@@ -32,6 +37,16 @@ export type Database = {
           reviewed_at: string;
           signal_id: number;
           user_name: string;
+        }[];
+      };
+      admin_list_beta_invites: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          created_at: string;
+          email: string;
+          invited_by: string;
+          note: string;
+          used_at: string;
         }[];
       };
       admin_list_compensations: {
@@ -83,6 +98,25 @@ export type Database = {
           scheduled: boolean;
         }[];
       };
+      admin_list_reports: {
+        Args: { p_status?: string };
+        Returns: {
+          created_at: string;
+          details: string;
+          reason: string;
+          report_id: number;
+          reporter_name: string;
+          reports_on_target: number;
+          resolution: string;
+          status: string;
+          target_author: string;
+          target_excerpt: string;
+          target_hidden: boolean;
+          target_id: string;
+          target_kind: string;
+          target_title: string;
+        }[];
+      };
       admin_list_team: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -91,10 +125,15 @@ export type Database = {
           name: string;
         }[];
       };
+      admin_resolve_report: {
+        Args: { p_action: string; p_note?: string; p_report_id: number };
+        Returns: undefined;
+      };
       admin_review_abuse_signal: {
         Args: { p_note: string; p_signal_id: number };
         Returns: undefined;
       };
+      admin_revoke_beta_invite: { Args: { p_email: string }; Returns: undefined };
       admin_schedule_country: {
         Args: { p_active: boolean; p_country_code: string };
         Returns: number;
@@ -103,6 +142,7 @@ export type Database = {
         Args: { p_enabled: boolean; p_region_code: string };
         Returns: number;
       };
+      admin_set_closed_beta: { Args: { p_closed: boolean }; Returns: undefined };
       admin_start_independence_war: {
         Args: { p_country_code: string; p_damage_target: number };
         Returns: number;
@@ -121,6 +161,7 @@ export type Database = {
           posting_kind: string;
         }[];
       };
+      admin_unhide: { Args: { p_kind: string; p_target: string }; Returns: undefined };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       answer_friend: { Args: { p_accept: boolean; p_name: string }; Returns: undefined };
       appoint_governor: { Args: { p_name: string }; Returns: undefined };
@@ -283,6 +324,12 @@ export type Database = {
           winner: string;
         }[];
       };
+      get_beta_status: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          closed: boolean;
+        }[];
+      };
       get_cabinet: {
         Args: { p_country_code: string };
         Returns: {
@@ -387,6 +434,13 @@ export type Database = {
           proclaimed_at: string;
         }[];
       };
+      get_legal_versions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          privacy_version: number;
+          terms_version: number;
+        }[];
+      };
       get_market_license_terms: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -486,6 +540,14 @@ export type Database = {
           wage: number;
           work_tax: number;
           worked_today: boolean;
+        }[];
+      };
+      get_my_legal_status: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          accepted: boolean;
+          document: string;
+          version: number;
         }[];
       };
       get_my_missions: {
@@ -950,6 +1012,7 @@ export type Database = {
         Args: { p_with_name: string };
         Returns: {
           body: string;
+          hidden: boolean;
           message_id: number;
           mine: boolean;
           sent_at: string;
@@ -1338,6 +1401,10 @@ export type Database = {
       register_party_list: { Args: { p_names: string[] }; Returns: number };
       register_ticket: { Args: { p_president: string; p_vice_president: string }; Returns: number };
       remove_friend: { Args: { p_name: string }; Returns: undefined };
+      report_content: {
+        Args: { p_details?: string; p_kind: string; p_reason: string; p_target: string };
+        Returns: number;
+      };
       request_citizenship: {
         Args: { p_country_code: string };
         Returns: {

@@ -1,0 +1,40 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: min(100%, 280px);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.select,
+.textarea {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 8px 12px;
+  border: 1px solid var(--line-control);
+  border-radius: var(--radius-s);
+  background: var(--land);
+  font: inherit;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.sent {
+  color: var(--positive-text);
+  font-size: 13px;
+}

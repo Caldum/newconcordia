@@ -145,6 +145,9 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Viaje, ubicación | Trip, location | `travel`, `travel_events`, `citizens.region_code` |
 | Paridad oro/moneda | GOLD rate | `game.gold_rate` |
 | Recompensa por referidos | Referral reward | `referral_claims`, `claim_referral_rewards`, `referral_bonus` |
+| Términos y condiciones, política de privacidad | Terms, privacy policy | `legal_acceptances`, `terms_version`, `privacy_version` |
+| Denuncia, moderación | Report, moderation | `reports`, `report_content`, `admin_resolve_report` |
+| Beta cerrada, invitación | Closed beta, invitation | `closed_beta`, `beta_invites` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

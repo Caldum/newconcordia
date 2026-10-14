@@ -25,7 +25,7 @@ export function CreateCitizenForm({ email, onCreated }: { email: string; onCreat
   const [forcedNameStatus, setForcedNameStatus] = useState<NameStatus | null>(null);
   const [showErrors, setShowErrors] = useState(false);
   const [sending, setSending] = useState(false);
-  const [problem, setProblem] = useState<'countryNotInPlay' | 'failed' | null>(null);
+  const [problem, setProblem] = useState<'countryNotInPlay' | 'betaClosed' | 'failed' | null>(null);
   const nameInput = useRef<HTMLInputElement>(null);
 
   const onNameStatus = useCallback((status: NameStatus | 'unknown') => {
@@ -50,6 +50,8 @@ export function CreateCitizenForm({ email, onCreated }: { email: string; onCreat
         nameInput.current?.focus();
       } else if (error.message === 'country_not_in_play') {
         setProblem('countryNotInPlay');
+      } else if (error.message === 'beta_closed') {
+        setProblem('betaClosed');
       } else {
         setProblem('failed');
       }

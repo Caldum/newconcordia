@@ -133,9 +133,14 @@ Supabase project (staging and production), with each environment's own web addre
 
 ## 8. Terms of use and privacy policy
 
-The sign-up screen in the canvas asks to accept the terms of use and the privacy policy. Those texts are a
-legal decision, so the form does not show the checkbox yet (ADR 0006). When you have both texts, add them to
-`docs/legal/` (or send them) and they will be published as pages and linked from the sign-up form.
+Players accept the terms and the privacy policy before playing (ADR 0044). `/terms` and `/privacy` show a
+short draft until you send the reviewed texts. When you have them:
+
+1. Send both texts (Spanish and English), or put them in `docs/legal/`; they replace the draft in
+   `apps/web/src/pages/legal/messages.ts`.
+2. Decide the minimum age (PD-14), so the acceptance can ask for it.
+3. Raise `terms_version` and `privacy_version` in `game.balance_params` when a new text is published: every
+   player is asked to accept it again.
 
 ## 9. Make yourself admin (D07)
 
