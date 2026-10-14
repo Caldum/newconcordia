@@ -35,3 +35,4 @@ marked «Superseded by NNNN».
 | 0027 | Bills, budget escrow and decrees | Accepted |
 | 0028 | Treasury, ministries and the public audit | Accepted |
 | 0029 | Central Bank and foreign exchange | Accepted |
+| 0030 | Training centers, injuries and zero health | Accepted |

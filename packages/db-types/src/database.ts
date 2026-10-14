@@ -374,6 +374,19 @@ export type Database = {
           tax: number;
         }[];
       };
+      get_my_training: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          energy: number;
+          fee: number;
+          injury_chance: number;
+          kind: string;
+          level: number;
+          strength: number;
+          trained_today: boolean;
+          upgrade_cost: number;
+        }[];
+      };
       get_my_waitlist: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -642,6 +655,16 @@ export type Database = {
           status: string;
         }[];
       };
+      list_my_injuries: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          cause: string;
+          created_at: string;
+          health_after: number;
+          health_lost: number;
+          reference: string;
+        }[];
+      };
       list_my_market_licenses: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -836,6 +859,16 @@ export type Database = {
         Returns: undefined;
       };
       take_job: { Args: { p_company_id: number }; Returns: undefined };
+      train: {
+        Args: { p_kind: string };
+        Returns: {
+          energy: number;
+          health: number;
+          health_lost: number;
+          strength_gained: number;
+          xp_gained: number;
+        }[];
+      };
       transfer_money: {
         Args: {
           p_amount: number;
@@ -847,6 +880,7 @@ export type Database = {
         Returns: number;
       };
       upgrade_company: { Args: { p_company_id: number; p_key: string }; Returns: number };
+      upgrade_training_center: { Args: { p_key: string; p_kind: string }; Returns: number };
       use_kit: {
         Args: { p_good_code: string; p_key: string };
         Returns: {

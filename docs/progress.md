@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-21.
+Last update: 2026-10-22.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -123,13 +123,16 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-21 · G6: FX offers of every national currency against GOLD with locked funds and partial takes, the
   Central Bank funded by law and trading through its governor, its transfers to the Treasury and single-use
   authorizations for companies; an Exchange tab in the market. Stage 2 complete (ADR 0029).
+- 2026-10-22 · H1 + H2: personal training centers Basic, Advanced and Elite N1–N5 with one session per UTC day,
+  burned fees and upgrades, strength and civil XP, injuries after the gains, the game dice, zero health blocks
+  training; a Military section with the training page (ADR 0030).
 
 ## Next step
 
 Stages 1 (R1–R7) and 2 (G1–G6) are on `develop` and in the development project. Next, Stage 3 of
 `docs/roadmap.md`:
 
-1. H1–H3: training centers, injuries and kits, public hospitals.
+1. H3: public hospitals.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

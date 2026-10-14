@@ -202,6 +202,12 @@ const fxRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/fx/FxPage'), 'FxPage'),
 });
 
+const trainingRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/training',
+  component: lazyRouteComponent(() => import('./pages/training/TrainingPage'), 'TrainingPage'),
+});
+
 const partiesRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/parties',
@@ -266,6 +272,7 @@ const routeTree = rootRoute.addChildren([
     sellRoute,
     licensesRoute,
     fxRoute,
+    trainingRoute,
     partiesRoute,
     electionsRoute,
     governmentRoute,
