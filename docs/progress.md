@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-14.
+Last update: 2026-10-15.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -102,11 +102,14 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-14 · R6 amended by the owner: buy orders removed; foreign market licenses cost 10 GOLD (5 to the
   market country, 5 burned), are permanent and required; Buy and Sell choose among the own and licensed
   markets, and a sale abroad shows the export tax (ADR 0022).
+- 2026-10-15 · R7: personal medical kits (5 × Q HP up to 100, usable at zero health, the whole kit spent,
+  refused at full health) and the Stage 1 journey: work → produce a kit → sell → buy → consume, with the
+  ledger balanced (ADR 0023). Stage 1 is complete.
 
 ## Next step
 
-Everything through R6 is on `develop` and in the development project. Next, Stage 1 of `docs/roadmap.md`:
+Stage 1 (R1–R7) is on `develop` and in the development project. Next, Stage 2 of `docs/roadmap.md`:
 
-1. R7: the Stage 1 demo journey (work → produce a kit → sell → another buys → consume).
+1. G1–G6: parties, elections, offices, bills, treasury and ministries, Central Bank and FX.
 2. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

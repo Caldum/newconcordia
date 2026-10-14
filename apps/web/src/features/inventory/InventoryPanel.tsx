@@ -8,8 +8,9 @@ import { InventoryItem } from './InventoryItem';
 import panel from './InventoryPanel.module.css';
 import { messages } from './messages';
 import { useGoodsEffects } from './queries';
+import { UseKitButton } from './UseKitButton';
 
-/** The player's goods and what each is for; food is eaten automatically (Inventory canvas). */
+/** The player's goods and what each is for; food is eaten automatically, kits are used here (Inventory canvas). */
 export function InventoryPanel() {
   const copy = useMessages(messages);
   const inventory = useMyInventory();
@@ -30,7 +31,9 @@ export function InventoryPanel() {
       {hasFood ? <p className={styles.muted}>{copy.autoFood(perMeal)}</p> : null}
       <ul className={panel.items}>
         {rows.map((line) => (
-          <InventoryItem key={line.good_code} line={line} effect={effectOf(line.good_code)} />
+          <InventoryItem key={line.good_code} line={line} effect={effectOf(line.good_code)}>
+            {effectOf(line.good_code)?.heal ? <UseKitButton goodCode={line.good_code} /> : null}
+          </InventoryItem>
         ))}
       </ul>
     </Panel>

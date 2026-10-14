@@ -468,6 +468,13 @@ export type Database = {
         Returns: number;
       };
       upgrade_company: { Args: { p_company_id: number; p_key: string }; Returns: number };
+      use_kit: {
+        Args: { p_good_code: string; p_key: string };
+        Returns: {
+          healed: number;
+          health: number;
+        }[];
+      };
       withdraw_from_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };
         Returns: number;

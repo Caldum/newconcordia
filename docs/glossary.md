@@ -84,6 +84,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Mercado | Market | `market_offers`, `market_trades` |
 | Oferta (del mercado) | Offer, sell order | `market_offers` (`status`) |
 | Impuesto a la exportación | Export tax | `country_policies.export_tax` |
+| Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |
 | IVA | VAT | `country_policies.vat` |

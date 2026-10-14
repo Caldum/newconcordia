@@ -1,4 +1,5 @@
 import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { citizenRow } from '../../test/fixtures/citizen';
@@ -6,7 +7,13 @@ import { balanceRows } from '../../test/fixtures/ledger';
 import { profileRow } from '../../test/fixtures/profile';
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
-import { answerRpc, fakeSession, resetSupabaseMock, setSession } from '../../test/supabaseMock';
+import {
+  answerRpc,
+  fakeSession,
+  resetSupabaseMock,
+  setSession,
+  supabaseMock,
+} from '../../test/supabaseMock';
 
 vi.mock('../../lib/supabase', async () => ({
   supabase: (await import('../../test/supabaseMock')).supabaseMock,
@@ -77,5 +84,24 @@ describe('inventory', () => {
     const items = await screen.findByRole('region', { name: 'Objetos' });
     expect(await within(items).findByText('Armas Q3')).toBeVisible();
     expect(within(items).queryByText(/Comes automáticamente/)).not.toBeInTheDocument();
+  });
+
+  it('uses a kit and says what it healed', async () => {
+    const user = userEvent.setup();
+    signIn({ use_kit: { data: [{ healed: 10, health: 95 }], error: null } });
+    await renderRoute('/account');
+    await user.click(await screen.findByRole('button', { name: 'Usar uno de Botiquines Q2' }));
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('use_kit', {
+      p_good_code: 'kit_q2',
+      p_key: expect.stringMatching(/^[0-9a-f-]{36}$/) as unknown,
+    });
+    expect(await screen.findByText('Recuperaste 10 de salud. Ahora tienes 95.')).toBeVisible();
+  });
+
+  it('does not offer kits at full health', async () => {
+    signIn({ get_my_profile: { data: [profileRow({ health: 100 })], error: null } });
+    await renderRoute('/account');
+    expect(await screen.findByText('Tienes la salud completa.')).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Usar uno de Botiquines Q2' })).toBeDisabled();
   });
 });
