@@ -25,6 +25,25 @@ export const messages = defineMessages({
     enemyLine: (country: string) =>
       `Declara enemigo a ${country}: la presidencia puede atacarlo sin otra ley y el combate contra ese país da +50 % de experiencia.`,
     noEnemyLine: 'Termina la designación de país enemigo.',
+    kind_alliance: 'Alianza',
+    kind_break_relations: 'Ruptura de relaciones',
+    kind_peace: 'Paz',
+    kind_embargo: 'Embargo',
+    kind_lift_embargo: 'Fin de un embargo',
+    embargoKind: 'Tipo de embargo',
+    embargo_economic: 'económico',
+    embargo_arms: 'de armas',
+    allianceLine: (country: string) =>
+      `Propone una alianza con ${country}. Se forma cuando ${country} aprueba la misma ley.`,
+    break_relationsLine: (country: string) =>
+      `Rompe relaciones con ${country}: expulsa a sus embajadores y termina la alianza.`,
+    peaceLine: (country: string) =>
+      `Paz con ${country}: deja de ser enemigo, cancela las autorizaciones de guerra contra ese país y restablece las relaciones.`,
+    embargoLine: (kind: string, country: string) =>
+      `Embargo ${kind} contra ${country}: se corta el comercio directo y los productos de ese origen.`,
+    liftEmbargoLine: (kind: string, country: string) =>
+      `Levanta el embargo ${kind} contra ${country}.`,
+    error_relations_broken: 'Las relaciones con ese país están rotas.',
     bankAllocationLine: (gold: string, credit: string) =>
       `${gold} Oro y ${credit} Crédito del Tesoro al Banco Central. Quedan reservados mientras se vota.`,
     ministry: 'Ministerio',
@@ -151,6 +170,25 @@ export const messages = defineMessages({
     enemyLine: (country: string) =>
       `Declares ${country} the enemy: the president may attack it without another law, and fighting it gives +50 % experience.`,
     noEnemyLine: 'Ends the enemy designation.',
+    kind_alliance: 'Alliance',
+    kind_break_relations: 'Breaking relations',
+    kind_peace: 'Peace',
+    kind_embargo: 'Embargo',
+    kind_lift_embargo: 'Lifting an embargo',
+    embargoKind: 'Kind of embargo',
+    embargo_economic: 'economic',
+    embargo_arms: 'arms',
+    allianceLine: (country: string) =>
+      `Proposes an alliance with ${country}. It forms when ${country} approves the same law.`,
+    break_relationsLine: (country: string) =>
+      `Breaks relations with ${country}: expels its ambassadors and ends the alliance.`,
+    peaceLine: (country: string) =>
+      `Peace with ${country}: no longer the enemy, its war authorizations are cancelled and relations restored.`,
+    embargoLine: (kind: string, country: string) =>
+      `An ${kind} embargo against ${country}: direct trade and goods of that origin are cut.`,
+    liftEmbargoLine: (kind: string, country: string) =>
+      `Lifts the ${kind} embargo against ${country}.`,
+    error_relations_broken: 'Relations with that country are broken.',
     bankAllocationLine: (gold: string, credit: string) =>
       `${gold} Gold and ${credit} Credit from the Treasury to the Central Bank. Reserved while the vote lasts.`,
     ministry: 'Ministry',

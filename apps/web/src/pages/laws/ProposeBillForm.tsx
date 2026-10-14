@@ -17,6 +17,7 @@ import { useMessages } from '../../i18n';
 
 import { AllocationFields } from './AllocationFields';
 import { CountryField } from './CountryField';
+import { EmbargoFields } from './EmbargoFields';
 import { messages } from './messages';
 import { TaxFields } from './TaxFields';
 import { TransferFields } from './TransferFields';
@@ -30,6 +31,11 @@ const kinds: readonly BillKind[] = [
   'central_bank_allocation',
   'war_authorization',
   'enemy_designation',
+  'alliance',
+  'break_relations',
+  'peace',
+  'embargo',
+  'lift_embargo',
 ];
 
 /** Presenting a bill: its kind, title, text and terms. Once presented it cannot be withdrawn. */
@@ -186,6 +192,18 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
                 change({ country });
               }}
             />
+          ) : null}
+          {kind === 'alliance' || kind === 'break_relations' || kind === 'peace' ? (
+            <CountryField
+              label={copy.country}
+              value={draft.country ?? ''}
+              onChange={(country) => {
+                change({ country });
+              }}
+            />
+          ) : null}
+          {kind === 'embargo' || kind === 'lift_embargo' ? (
+            <EmbargoFields draft={draft} onChange={change} />
           ) : null}
           {kind === 'currency_issuance' ? (
             <Field

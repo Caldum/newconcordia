@@ -30,6 +30,10 @@ export function joinResistance(region: string, key: string) {
   return supabase.rpc('join_resistance', { p_region_code: region, p_key: key });
 }
 
+export function travel(region: string, key: string) {
+  return supabase.rpc('travel', { p_region_code: region, p_key: key });
+}
+
 export function cancelWarAuthorization(authorizationId: number) {
   return supabase.rpc('cancel_war_authorization', { p_authorization_id: authorizationId });
 }

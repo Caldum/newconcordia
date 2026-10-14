@@ -138,6 +138,15 @@ export function useOccupiedRegions() {
   });
 }
 
+const travelSchema = z.object({ enabled: z.boolean(), price: z.number().int() });
+
+export function useTravelTerms() {
+  return useQuery({
+    queryKey: ['war', 'travel'],
+    queryFn: async () => (await rows(supabase.rpc('get_travel_terms'), travelSchema))[0] ?? null,
+  });
+}
+
 export function useWarAuthorizations(country: string) {
   return useQuery({
     queryKey: ['war', country, 'authorizations'],

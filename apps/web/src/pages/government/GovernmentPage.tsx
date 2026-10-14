@@ -10,6 +10,7 @@ import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 import { AppointForm } from './AppointForm';
 import { CabinetPanel } from './CabinetPanel';
+import { ForeignRelationsPanel } from './ForeignRelationsPanel';
 import { messages } from './messages';
 import { MotionsPanel } from './MotionsPanel';
 import { MyOfficePanel } from './MyOfficePanel';
@@ -40,6 +41,7 @@ export function GovernmentPage() {
         <div className={styles.column}>
           {office ? <MyOfficePanel office={office} /> : null}
           <MotionsPanel inCongress={office === 'congress'} />
+          <ForeignRelationsPanel />
         </div>
       </div>
     </main>

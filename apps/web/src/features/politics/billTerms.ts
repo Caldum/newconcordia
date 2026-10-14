@@ -8,7 +8,14 @@ export type BillKind =
   | 'currency_issuance'
   | 'central_bank_allocation'
   | 'war_authorization'
-  | 'enemy_designation';
+  | 'enemy_designation'
+  | 'alliance'
+  | 'break_relations'
+  | 'peace'
+  | 'embargo'
+  | 'lift_embargo';
+
+export type EmbargoKind = 'economic' | 'arms';
 
 export const taxKeys = ['vat', 'tariff', 'work_tax', 'export_tax'] as const;
 export type TaxKey = (typeof taxKeys)[number];
@@ -103,6 +110,7 @@ export interface BillDraft {
   ministry: MinistryCode;
   /** National Credit of an allocation. */
   credit: string;
+  embargo: EmbargoKind;
 }
 
 export const emptyBillDraft: BillDraft = {
@@ -111,6 +119,7 @@ export const emptyBillDraft: BillDraft = {
   amount: '',
   ministry: 'health',
   credit: '',
+  embargo: 'economic',
 };
 
 /** The terms the database expects for a kind, or null when the draft does not make a valid bill. */
@@ -138,5 +147,12 @@ export function billTerms(
     case 'enemy_designation':
       if (draft.country === null) return null;
       return draft.country === '' ? {} : { country_code: draft.country };
+    case 'alliance':
+    case 'break_relations':
+    case 'peace':
+      return draft.country ? { country_code: draft.country } : null;
+    case 'embargo':
+    case 'lift_embargo':
+      return draft.country ? { country_code: draft.country, kind: draft.embargo } : null;
   }
 }

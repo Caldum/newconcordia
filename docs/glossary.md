@@ -119,6 +119,11 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Arma equipada | Equipped weapon | `equipped_weapons` |
 | Anexión | Annexation | `region_owner_changes` |
 | Resistencia, organizador | Resistance, organizer | `resistance_drives`, `resistance_organizers` |
+| Alianza | Alliance | `alliances`, `alliance_approvals` |
+| Ruptura de relaciones | Broken relations | `broken_relations` |
+| Embargo (económico, de armas) | Embargo (economic, arms) | `embargoes`, `game.trade_blocked` |
+| Paz | Peace | `bills.kind = peace` |
+| Viaje, presencia | Travel, presence | `travel`, `citizens.region_code` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

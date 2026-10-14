@@ -61,6 +61,18 @@ function signIn(office: string | null, extra: Answers = {}) {
     get_cabinet: { data: cabinet, error: null },
     get_my_office: { data: office ? [{ office, country_code: 'ARG' }] : [], error: null },
     list_motions: { data: [impeachment], error: null },
+    list_foreign_relations: {
+      data: [
+        {
+          relation: 'embargo',
+          other_country_code: 'BRA',
+          ours: true,
+          detail: 'arms',
+          since: '2026-11-08T10:00:00Z',
+        },
+      ],
+      error: null,
+    },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
     ...extra,
@@ -81,6 +93,8 @@ describe('government', () => {
     const panel = await screen.findByRole('region', { name: 'Gabinete' });
     expect(await within(panel).findByText('Camila Ríos · Frente Federal')).toBeVisible();
     expect(within(panel).getAllByText('Vacante')).toHaveLength(6);
+    const relations = screen.getByRole('region', { name: 'Relaciones exteriores' });
+    expect(await within(relations).findByText(/Embargo de armas contra/)).toBeVisible();
     expect(
       within(panel).getByRole('button', { name: 'Remover a quien ocupa Ministerio de Economía' }),
     ).toBeVisible();

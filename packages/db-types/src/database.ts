@@ -524,6 +524,13 @@ export type Database = {
           institution: string;
         }[];
       };
+      get_travel_terms: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          enabled: boolean;
+          price: number;
+        }[];
+      };
       hospital_treatment: {
         Args: { p_key: string };
         Returns: {
@@ -677,6 +684,16 @@ export type Database = {
           issued_at: string;
           issued_by_name: string;
           title: string;
+        }[];
+      };
+      list_foreign_relations: {
+        Args: { p_country_code: string };
+        Returns: {
+          detail: string;
+          other_country_code: string;
+          ours: boolean;
+          relation: string;
+          since: string;
         }[];
       };
       list_goods: {
@@ -1064,6 +1081,7 @@ export type Database = {
         };
         Returns: number;
       };
+      travel: { Args: { p_key: string; p_region_code: string }; Returns: string };
       upgrade_company: { Args: { p_company_id: number; p_key: string }; Returns: number };
       upgrade_hospital: { Args: { p_key: string; p_region_code: string }; Returns: number };
       upgrade_training_center: { Args: { p_key: string; p_kind: string }; Returns: number };

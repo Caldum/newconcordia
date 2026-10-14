@@ -301,6 +301,11 @@ const billSchema = z.object({
     'central_bank_allocation',
     'war_authorization',
     'enemy_designation',
+    'alliance',
+    'break_relations',
+    'peace',
+    'embargo',
+    'lift_embargo',
   ]),
   title: z.string(),
   body: z.string(),
@@ -336,6 +341,17 @@ const decreeSchema = z.object({
   issued_at: z.string(),
 });
 
+const relationSchema = z.object({
+  relation: z.enum(['alliance', 'alliance_pending', 'broken_relations', 'embargo', 'enemy']),
+  other_country_code: z.string(),
+  /** This country made it. */
+  ours: z.boolean(),
+  /** The kind of an embargo. */
+  detail: z.enum(['economic', 'arms']).nullable(),
+  since: z.string(),
+});
+
+export type ForeignRelation = z.infer<typeof relationSchema>;
 export type Bill = z.infer<typeof billSchema>;
 export type Initiative = z.infer<typeof initiativeSchema>;
 export type Decree = z.infer<typeof decreeSchema>;
@@ -354,6 +370,14 @@ export function useMyInitiative() {
     enabled,
     queryFn: async () =>
       (await rows(supabase.rpc('get_my_initiative'), initiativeSchema))[0] ?? null,
+  });
+}
+
+export function useForeignRelations(country: string) {
+  return useQuery({
+    queryKey: ['government', country, 'relations'],
+    queryFn: () =>
+      rows(supabase.rpc('list_foreign_relations', { p_country_code: country }), relationSchema),
   });
 }
 

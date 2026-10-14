@@ -64,8 +64,8 @@ select throws_ok($$ select public.propose_bill('war_authorization', 'Guerra prop
                  '22023', 'country_invalid', 'not against one''s own country');
 select throws_ok($$ select public.propose_bill('war_authorization', 'Guerra a Chile', '', '{"country_code": "CHL"}', null) $$,
                  '22023', 'country_inactive', 'only against a country in play');
-select throws_ok($$ select public.propose_bill('alliance', 'Alianza', '', '{"country_code": "BRA"}', null) $$,
-                 '22023', 'bill_kind_invalid', 'diplomacy arrives later');
+select throws_ok($$ select public.propose_bill('treaty', 'Tratado', '', '{"country_code": "BRA"}', null) $$,
+                 '22023', 'bill_kind_invalid', 'only known kinds of foreign policy');
 reset role;
 
 -- An authorization that expires. -----------------------------------------------------------------------------------

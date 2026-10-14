@@ -8,6 +8,7 @@ import { BattleList } from './BattleList';
 import { LaunchPanel } from './LaunchPanel';
 import { messages } from './messages';
 import { ResistancePanel } from './ResistancePanel';
+import { TravelPanel } from './TravelPanel';
 import { WarAuthorizationsPanel } from './WarAuthorizationsPanel';
 
 /** `/battles`: ongoing and recent battles, the president's launches and the war authorizations. */
@@ -31,6 +32,7 @@ export function BattlesPage() {
           {isPresident ? <LaunchPanel /> : null}
           <WarAuthorizationsPanel canCancel={isPresident} />
           <ResistancePanel />
+          <TravelPanel />
         </div>
       </div>
     </main>

@@ -62,6 +62,7 @@ function signIn(office: string | null, extra: Parameters<typeof answerRpc>[0] = 
     get_my_inventory: { data: [{ good_code: 'weapon_q2', quantity: 1 }], error: null },
     list_war_authorizations: { data: [], error: null },
     list_launch_targets: { data: [], error: null },
+    get_travel_terms: { data: [{ enabled: false, price: 0 }], error: null },
     list_occupied_regions: {
       data: [
         {
@@ -99,6 +100,8 @@ describe('battles', () => {
       '/battles/3',
     );
     expect(screen.queryByRole('region', { name: 'Lanzar una ofensiva' })).toBeNull();
+    const travelPanel = screen.getByRole('region', { name: 'Viajar' });
+    expect(await within(travelPanel).findByText(/no están habilitados/)).toBeVisible();
     const resistance = screen.getByRole('region', { name: 'Resistencia' });
     expect(await within(resistance).findByText('3 de 10 organizadores')).toBeVisible();
   });

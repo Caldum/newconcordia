@@ -37,6 +37,26 @@ export function BillTerms({ bill }: { bill: Bill }) {
       </>
     );
   }
+  if (
+    bill.kind === 'alliance' ||
+    bill.kind === 'break_relations' ||
+    bill.kind === 'peace' ||
+    bill.kind === 'embargo' ||
+    bill.kind === 'lift_embargo'
+  ) {
+    const country = countryName(String(bill.terms.country_code));
+    const embargo = bill.terms.kind === 'arms' ? copy.embargo_arms : copy.embargo_economic;
+    return (
+      <>
+        <br />
+        {bill.kind === 'embargo'
+          ? copy.embargoLine(embargo, country)
+          : bill.kind === 'lift_embargo'
+            ? copy.liftEmbargoLine(embargo, country)
+            : copy[`${bill.kind}Line`](country)}
+      </>
+    );
+  }
   if (bill.kind === 'war_authorization') {
     return (
       <>
