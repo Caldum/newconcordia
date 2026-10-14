@@ -235,6 +235,18 @@ const notificationsRoute = createRoute({
   ),
 });
 
+const pressRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/press',
+  component: lazyRouteComponent(() => import('./pages/press/PressPage'), 'PressPage'),
+});
+
+const messagesRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/messages',
+  component: lazyRouteComponent(() => import('./pages/messages/MessagesPage'), 'MessagesPage'),
+});
+
 const partiesRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/parties',
@@ -301,6 +313,8 @@ const routeTree = rootRoute.addChildren([
     fxRoute,
     trainingRoute,
     notificationsRoute,
+    pressRoute,
+    messagesRoute,
     hospitalRoute,
     battlesRoute,
     battleRoute,

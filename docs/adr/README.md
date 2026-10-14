@@ -45,3 +45,4 @@ marked «Superseded by NNNN».
 | 0037 | Rate limits and abuse signals | Accepted |
 | 0038 | Notifications and balance telemetry | Accepted |
 | 0039 | Compensating entries and backups | Accepted |
+| 0040 | Daily missions, first steps, press and messages | Accepted |

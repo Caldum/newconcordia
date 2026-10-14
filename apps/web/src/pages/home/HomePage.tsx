@@ -7,10 +7,12 @@ import { useWorld } from '../../features/world/useWorld';
 import { useLocale, useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
+import { FirstStepsPanel } from './FirstStepsPanel';
 import styles from './HomePage.module.css';
 import { messages } from './messages';
+import { MissionsPanel } from './MissionsPanel';
 
-/** The signed-in player's start screen until the game home arrives (D08). */
+/** The signed-in player's start screen: who they are, today's missions and the first steps. */
 export function HomePage({ citizen }: { citizen: Citizen }) {
   const copy = useMessages(messages);
   const { locale } = useLocale();
@@ -40,6 +42,8 @@ export function HomePage({ citizen }: { citizen: Citizen }) {
             {copy.citizenship}
           </Link>
         </div>
+        <MissionsPanel />
+        <FirstStepsPanel />
       </main>
     </GameShell>
   );

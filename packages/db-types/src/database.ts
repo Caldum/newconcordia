@@ -173,6 +173,13 @@ export type Database = {
       };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       check_request: { Args: Record<PropertyKey, never>; Returns: undefined };
+      claim_daily_missions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          reward: number;
+          streak: number;
+        }[];
+      };
       count_unread_notifications: { Args: Record<PropertyKey, never>; Returns: number };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
       create_my_citizen: {
@@ -198,6 +205,7 @@ export type Database = {
         Args: { p_good_code: string; p_key: string; p_name: string; p_region_code: string };
         Returns: number;
       };
+      found_newspaper: { Args: { p_name: string }; Returns: number };
       found_party: {
         Args: { p_description: string; p_key: string; p_name: string };
         Returns: number;
@@ -426,6 +434,13 @@ export type Database = {
           to_country_code: string;
         }[];
       };
+      get_my_first_steps: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          done: boolean;
+          step: string;
+        }[];
+      };
       get_my_hospital: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -466,6 +481,25 @@ export type Database = {
           wage: number;
           work_tax: number;
           worked_today: boolean;
+        }[];
+      };
+      get_my_missions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          claimed: boolean;
+          done: boolean;
+          goal: number;
+          mission: string;
+          progress: number;
+          streak: number;
+        }[];
+      };
+      get_my_newspaper: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          articles: number;
+          name: string;
+          newspaper_id: number;
         }[];
       };
       get_my_office: {
@@ -644,6 +678,18 @@ export type Database = {
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_party: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
+      list_articles: {
+        Args: { p_country_code: string };
+        Returns: {
+          article_id: number;
+          author: string;
+          newspaper: string;
+          published_at: string;
+          read_by_me: boolean;
+          readers: number;
+          title: string;
+        }[];
+      };
       list_battle_rounds: {
         Args: { p_battle_id: number };
         Returns: {
@@ -754,6 +800,15 @@ export type Database = {
           since: string;
         }[];
       };
+      list_conversations: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          last_at: string;
+          last_body: string;
+          other_name: string;
+          unread: number;
+        }[];
+      };
       list_countries: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -849,6 +904,15 @@ export type Database = {
           quantity: number;
           seller_name: string;
           tariff: number;
+        }[];
+      };
+      list_messages: {
+        Args: { p_with_name: string };
+        Returns: {
+          body: string;
+          message_id: number;
+          mine: boolean;
+          sent_at: string;
         }[];
       };
       list_motion_votes: {
@@ -1151,6 +1215,21 @@ export type Database = {
       };
       propose_impeachment: { Args: Record<PropertyKey, never>; Returns: number };
       propose_removal: { Args: { p_office: string }; Returns: number };
+      publish_article: {
+        Args: { p_body: string; p_key: string; p_title: string };
+        Returns: number;
+      };
+      read_article: {
+        Args: { p_article_id: number };
+        Returns: {
+          article_id: number;
+          author: string;
+          body: string;
+          newspaper: string;
+          published_at: string;
+          title: string;
+        }[];
+      };
       register_candidacy: { Args: Record<PropertyKey, never>; Returns: number };
       register_party_list: { Args: { p_names: string[] }; Returns: number };
       register_ticket: { Args: { p_president: string; p_vice_president: string }; Returns: number };
@@ -1164,6 +1243,7 @@ export type Database = {
       request_resignation: { Args: Record<PropertyKey, never>; Returns: number };
       resign_office: { Args: Record<PropertyKey, never>; Returns: string };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
+      send_message: { Args: { p_body: string; p_key: string; p_to_name: string }; Returns: number };
       set_battle_order: { Args: { p_battle_id: number }; Returns: undefined };
       set_care_policy: { Args: { p_policy: string }; Returns: undefined };
       set_company_offer: {

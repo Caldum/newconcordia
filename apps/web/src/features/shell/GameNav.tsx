@@ -34,6 +34,9 @@ export function GameNav() {
       <Link to="/parties" {...current}>
         {copy.politics}
       </Link>
+      <Link to="/press" {...current}>
+        {copy.society}
+      </Link>
       <Link to="/notifications" {...current}>
         {unread > 0 ? copy.noticesUnread(unread) : copy.notices}
       </Link>

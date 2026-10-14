@@ -131,6 +131,9 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Aviso | Notification | `notifications`, `notification_reads` |
 | Foto económica diaria | Economy snapshot | `economy_snapshots` |
 | Asiento compensatorio | Compensating entry | `ledger_compensations`, `admin_compensate` |
+| Misiones diarias, racha | Daily missions, streak | `mission_claims`, `claim_daily_missions` |
+| Periódico, artículo | Newspaper, article | `newspapers`, `articles`, `article_reads` |
+| Mensaje privado | Private message | `messages` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-31.
+Last update: 2026-11-01.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -148,13 +148,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   automatic news of battles and conquests, an unread count, and a daily economy snapshot for admins (ADR 0038).
 - 2026-10-31 · L3: compensating entries to reverse money after incidents (once, audited, supply kept consistent),
   backups with PITR and a monthly restore drill in the runbook (ADR 0039).
+- 2026-11-01 · L4: the four daily missions with 1 GOLD and the 7-day streak, a first-steps checklist on the home
+  screen, newspapers and articles, private messages; a Society section (ADR 0040).
 
 ## Next step
 
 Stages 1 to 4 (R1–R7, G1–G6, H1–H3, W1–W6) are on `develop` and in the development project. Next, Stage 5
 of `docs/roadmap.md`:
 
-1. L4–L5: onboarding
+1. L5:
    and daily missions, terms and closed beta.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
