@@ -16,6 +16,8 @@ export function useMovementText() {
     hold: copy.kind_hold,
     hold_release: copy.kind_hold_release,
     level_reward: copy.kind_level_reward,
+    party_founding: copy.kind_party_founding,
+    party_donation: copy.kind_party_donation,
   };
 
   return {
@@ -25,6 +27,7 @@ export function useMovementText() {
       switch (movement.counterparty_kind) {
         case 'citizen':
         case 'company':
+        case 'party':
           return movement.counterparty_name ?? '';
         case 'escrow':
           return copy.escrow;

@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-10-09",
   // 00:00 UTC: the game day changes (business time is UTC, ADR 0014).
-  "triggers": { "crons": ["0 0 * * *", "0 * * * *"] },
+  "triggers": { "crons": ["0 0 * * *", "0 * * * *", "5 * * * *"] },
   "observability": {
     "enabled": true,
     "logs": { "enabled": true, "head_sampling_rate": 1 },

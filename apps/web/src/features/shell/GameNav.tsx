@@ -26,6 +26,9 @@ export function GameNav() {
       <Link to="/market" {...current}>
         {copy.market}
       </Link>
+      <Link to="/parties" {...current}>
+        {copy.politics}
+      </Link>
       <Link to="/citizenship" {...current}>
         {copy.citizenship}
       </Link>

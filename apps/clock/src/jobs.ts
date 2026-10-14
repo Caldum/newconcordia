@@ -2,6 +2,7 @@
 const jobsByCron = {
   '0 0 * * *': 'day_change',
   '0 * * * *': 'citizenship_timeouts',
+  '5 * * * *': 'elections',
 } as const satisfies Record<string, string>;
 
 export type JobName = (typeof jobsByCron)[keyof typeof jobsByCron];

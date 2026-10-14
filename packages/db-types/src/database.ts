@@ -91,8 +91,16 @@ export type Database = {
         Args: { p_approve: boolean; p_request_id: number };
         Returns: undefined;
       };
+      donate_to_party: {
+        Args: { p_amount: number; p_currency: string; p_key: string; p_party_id: number };
+        Returns: undefined;
+      };
       found_company: {
         Args: { p_good_code: string; p_key: string; p_name: string; p_region_code: string };
+        Returns: number;
+      };
+      found_party: {
+        Args: { p_description: string; p_key: string; p_name: string };
         Returns: number;
       };
       fund_company: {
@@ -131,6 +139,14 @@ export type Database = {
           game_day: string;
           next_day_starts_at: string;
           server_time: string;
+        }[];
+      };
+      get_last_party_election: {
+        Args: { p_party_id: number };
+        Returns: {
+          ballots: number;
+          election_id: number;
+          proclaimed_at: string;
         }[];
       };
       get_market_license_terms: {
@@ -201,6 +217,14 @@ export type Database = {
           worked_today: boolean;
         }[];
       };
+      get_my_party: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          is_leader: boolean;
+          joined_at: string;
+          party_id: number;
+        }[];
+      };
       get_my_profile: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -250,9 +274,39 @@ export type Database = {
           place: number;
         }[];
       };
+      get_party_election: {
+        Args: { p_party_id: number };
+        Returns: {
+          ballots: number;
+          candidates: number;
+          election_id: number;
+          i_am_candidate: boolean;
+          i_can_vote: boolean;
+          i_voted: boolean;
+          registration_closes_at: string;
+          status: string;
+          takes_office_at: string;
+          voters: number;
+          voting_ends_at: string;
+          voting_starts_at: string;
+        }[];
+      };
+      join_party: { Args: { p_party_id: number }; Returns: undefined };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
+      leave_party: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
+      list_candidates: {
+        Args: { p_election_id: number };
+        Returns: {
+          candidacy_id: number;
+          civil_level: number;
+          elected: boolean;
+          name: string;
+          registered_at: string;
+          votes: number;
+        }[];
+      };
       list_citizenship_requests: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -385,6 +439,28 @@ export type Database = {
           status: string;
         }[];
       };
+      list_parties: {
+        Args: { p_country_code: string };
+        Returns: {
+          credit: number;
+          description: string;
+          founded_at: string;
+          gold: number;
+          leader_name: string;
+          members: number;
+          name: string;
+          party_id: number;
+        }[];
+      };
+      list_party_members: {
+        Args: { p_party_id: number };
+        Returns: {
+          civil_level: number;
+          is_leader: boolean;
+          joined_at: string;
+          name: string;
+        }[];
+      };
       list_region_resources: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -444,6 +520,7 @@ export type Database = {
         };
         Returns: number;
       };
+      register_candidacy: { Args: Record<PropertyKey, never>; Returns: number };
       request_citizenship: {
         Args: { p_country_code: string };
         Returns: {
@@ -475,6 +552,8 @@ export type Database = {
           health: number;
         }[];
       };
+      vote: { Args: { p_candidacy_id: number }; Returns: undefined };
+      withdraw_candidacy: { Args: Record<PropertyKey, never>; Returns: undefined };
       withdraw_from_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };
         Returns: number;

@@ -11,6 +11,10 @@ describe('jobForCron', () => {
     expect(jobForCron('0 * * * *')).toBe('citizenship_timeouts');
   });
 
+  it('maps five past each hour to the elections', () => {
+    expect(jobForCron('5 * * * *')).toBe('elections');
+  });
+
   it('returns undefined for a cron the Worker does not know', () => {
     expect(jobForCron('*/5 * * * *')).toBeUndefined();
   });

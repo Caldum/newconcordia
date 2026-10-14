@@ -23,8 +23,16 @@ const movementSchema = z.object({
   /** Hundredths, negative when money left the account. */
   amount: z.number().int(),
   balance_after: z.number().int(),
-  counterparty_kind: z.enum(['citizen', 'company', 'treasury', 'escrow', 'issuer', 'sink']),
-  /** The citizen or company; null for the rest. */
+  counterparty_kind: z.enum([
+    'citizen',
+    'company',
+    'party',
+    'treasury',
+    'escrow',
+    'issuer',
+    'sink',
+  ]),
+  /** The citizen, company or party; null for the rest. */
   counterparty_name: z.string().nullable(),
   counterparty_country_code: z.string().nullable(),
 });

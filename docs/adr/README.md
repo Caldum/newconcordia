@@ -29,3 +29,4 @@ marked «Superseded by NNNN».
 | 0021 | Market orders, matching and the export tax | Partly superseded by 0022 |
 | 0022 | Market licenses at 10 GOLD, and no buy orders | Accepted |
 | 0023 | Personal medical kits | Accepted |
+| 0024 | Parties and the party leaders' election | Accepted |
