@@ -2,7 +2,6 @@ import { Link } from '@tanstack/react-router';
 
 import { useMessages } from '../../i18n';
 import { useIsAdmin } from '../admin/queries';
-import { useUnreadCount } from '../notifications/queries';
 
 import styles from './GameShell.module.css';
 import { messages } from './messages';
@@ -13,7 +12,6 @@ const current = { activeProps: { 'aria-current': 'page' as const } };
 export function GameNav() {
   const copy = useMessages(messages);
   const isAdmin = useIsAdmin();
-  const unread = useUnreadCount().data ?? 0;
   return (
     <nav aria-label={copy.nav} className={styles.nav}>
       <Link to="/" activeOptions={{ exact: true }} {...current}>
@@ -36,9 +34,6 @@ export function GameNav() {
       </Link>
       <Link to="/press" {...current}>
         {copy.society}
-      </Link>
-      <Link to="/notifications" {...current}>
-        {unread > 0 ? copy.noticesUnread(unread) : copy.notices}
       </Link>
       <Link to="/citizenship" {...current}>
         {copy.citizenship}

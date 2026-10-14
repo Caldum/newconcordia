@@ -151,6 +151,30 @@ const profileRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/profile/ProfilePage'), 'ProfilePage'),
 });
 
+const profileEditRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/profile/edit',
+  component: lazyRouteComponent(
+    () => import('./pages/profile-edit/ProfileInfoPage'),
+    'ProfileInfoPage',
+  ),
+});
+
+const profileSecurityRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/profile/edit/security',
+  component: lazyRouteComponent(
+    () => import('./pages/profile-edit/ProfileSecurityPage'),
+    'ProfileSecurityPage',
+  ),
+});
+
+const regimentsRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/regiments',
+  component: lazyRouteComponent(() => import('./pages/regiments/RegimentsPage'), 'RegimentsPage'),
+});
+
 const accountRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/account',
@@ -303,6 +327,9 @@ const routeTree = rootRoute.addChildren([
     changeCitizenshipRoute,
     citizenshipRequestsRoute,
     profileRoute,
+    profileEditRoute,
+    profileSecurityRoute,
+    regimentsRoute,
     accountRoute,
     workRoute,
     companiesRoute,

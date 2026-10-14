@@ -1,4 +1,5 @@
 import { supabase } from '../../lib/supabase';
+import { storePicture } from '../profile/api';
 
 import type { BillKind } from './billTerms';
 
@@ -169,4 +170,15 @@ export interface NewDecree {
 
 export function issueDecree(decree: NewDecree, key: string) {
   return supabase.rpc('issue_decree', { p_title: decree.title, p_body: decree.body, p_key: key });
+}
+
+/** The leader uploads and sets the party picture. */
+export async function uploadPartyEmblem(partyId: number, file: File) {
+  const stored = await storePicture(`parties/${String(partyId)}`, file);
+  if (stored.error || !stored.data) return stored;
+  return supabase.rpc('set_party_emblem', { p_path: stored.data });
+}
+
+export function removePartyEmblem() {
+  return supabase.rpc('set_party_emblem', {});
 }

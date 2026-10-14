@@ -109,3 +109,18 @@ export function useConversation(withName: string | null) {
       rows(supabase.rpc('list_messages', { p_with_name: withName ?? '' }), messageSchema),
   });
 }
+
+/** Private messages waiting to be read, checked every minute for the side panel. */
+export function useUnreadMessages() {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'unread-messages'],
+    enabled,
+    refetchInterval: 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('count_unread_messages');
+      if (error) throw error;
+      return z.number().int().parse(data);
+    },
+  });
+}

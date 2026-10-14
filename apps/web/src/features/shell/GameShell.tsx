@@ -9,10 +9,10 @@ import { signOut } from '../auth/api';
 import { GameNav } from './GameNav';
 import styles from './GameShell.module.css';
 import { messages } from './messages';
-import { PlayerStatus } from './PlayerStatus';
-import { Wallet } from './Wallet';
+import { ReferralClaim } from './ReferralClaim';
+import { Sidebar } from './Sidebar';
 
-/** The frame of the signed-in screens: the game bar (NavBar canvas) and the page. */
+/** The frame of the signed-in screens: the game bar (NavBar canvas), the player's side panel and the page. */
 export function GameShell({ children }: { children: ReactNode }) {
   const copy = useMessages(messages);
   return (
@@ -23,8 +23,6 @@ export function GameShell({ children }: { children: ReactNode }) {
         </Link>
         <GameNav />
         <div className={styles.tools}>
-          <Wallet />
-          <PlayerStatus />
           <LanguageSwitch />
           <Button
             variant="ghost"
@@ -37,7 +35,11 @@ export function GameShell({ children }: { children: ReactNode }) {
           </Button>
         </div>
       </header>
-      {children}
+      <div className={styles.frame}>
+        <Sidebar />
+        <div className={styles.content}>{children}</div>
+      </div>
+      <ReferralClaim />
     </div>
   );
 }

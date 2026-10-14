@@ -1,0 +1,200 @@
+import type { Locale } from '../../i18n';
+
+/**
+ * The real-world currency each country's Credit is named after (ISO 4217), for its name on screen: «pesos
+ * argentinos», «euros». The game keeps one Credit per country; this only names it.
+ */
+const currencyCountries: Readonly<Record<string, string>> = {
+  AED: 'ARE',
+  AFN: 'AFG',
+  ALL: 'ALB',
+  AMD: 'ARM',
+  ANG: 'CUW SXM',
+  AOA: 'AGO',
+  ARS: 'ARG',
+  AUD: 'AUS ATC CSI HMD IOA KIR NFK NRU TUV',
+  AWG: 'ABW',
+  AZN: 'AZE',
+  BAM: 'BIH',
+  BBD: 'BRB',
+  BDT: 'BGD',
+  BGN: 'BGR',
+  BHD: 'BHR',
+  BIF: 'BDI',
+  BMD: 'BMU',
+  BND: 'BRN',
+  BOB: 'BOL',
+  BRL: 'BRA',
+  BSD: 'BHS',
+  BTN: 'BTN',
+  BWP: 'BWA',
+  BYN: 'BLR',
+  BZD: 'BLZ',
+  CAD: 'CAN',
+  CDF: 'COD',
+  CHF: 'CHE LIE',
+  CLP: 'CHL',
+  CNY: 'CHN',
+  COP: 'COL',
+  CRC: 'CRI',
+  CUP: 'CUB',
+  CVE: 'CPV',
+  CZK: 'CZE',
+  DJF: 'DJI',
+  DKK: 'DNK FRO GRL',
+  DOP: 'DOM',
+  DZD: 'DZA',
+  EGP: 'EGY',
+  ERN: 'ERI',
+  ETB: 'ETH',
+  EUR: 'ALD AND ATF AUT BEL BLM CLP CYP DEU ESB ESP EST FIN FRA GRC HRV IRL ITA KOS LTU LUX LVA MAF MCO MLT MNE NLD PRT SMR SPM SVK SVN VAT WSB',
+  FJD: 'FJI',
+  FKP: 'FLK',
+  GBP: 'GBR GGY IMN JEY SGS',
+  GEL: 'GEO',
+  GHS: 'GHA',
+  GIP: 'GIB',
+  GMD: 'GMB',
+  GNF: 'GIN',
+  GTQ: 'GTM',
+  GYD: 'GUY',
+  HKD: 'HKG',
+  HNL: 'HND',
+  HTG: 'HTI',
+  HUF: 'HUN',
+  IDR: 'IDN',
+  ILS: 'ISR PSX',
+  INR: 'IND KAS',
+  IQD: 'IRQ',
+  IRR: 'IRN',
+  ISK: 'ISL',
+  JMD: 'JAM',
+  JOD: 'JOR',
+  JPY: 'JPN',
+  KES: 'KEN',
+  KGS: 'KGZ',
+  KHR: 'KHM',
+  KMF: 'COM',
+  KPW: 'PRK',
+  KRW: 'KOR',
+  KWD: 'KWT',
+  KYD: 'CYM',
+  KZT: 'KAZ KAB',
+  LAK: 'LAO',
+  LBP: 'LBN',
+  LKR: 'LKA',
+  LRD: 'LBR',
+  LSL: 'LSO',
+  LYD: 'LBY',
+  MAD: 'MAR SAH',
+  MDL: 'MDA',
+  MGA: 'MDG',
+  MKD: 'MKD',
+  MMK: 'MMR',
+  MNT: 'MNG',
+  MOP: 'MAC',
+  MRU: 'MRT',
+  MUR: 'MUS',
+  MVR: 'MDV',
+  MWK: 'MWI',
+  MXN: 'MEX',
+  MYR: 'MYS',
+  MZN: 'MOZ',
+  NAD: 'NAM',
+  NGN: 'NGA',
+  NIO: 'NIC',
+  NOK: 'NOR',
+  NPR: 'NPL',
+  NZD: 'NZL COK NIU PCN',
+  OMR: 'OMN',
+  PAB: 'PAN',
+  PEN: 'PER',
+  PGK: 'PNG',
+  PHP: 'PHL PGA',
+  PKR: 'PAK',
+  PLN: 'POL',
+  PYG: 'PRY',
+  QAR: 'QAT',
+  RON: 'ROU',
+  RSD: 'SRB',
+  RUB: 'RUS',
+  RWF: 'RWA',
+  SAR: 'SAU',
+  SBD: 'SLB',
+  SCR: 'SYC',
+  SDG: 'SDN',
+  SEK: 'SWE',
+  SGD: 'SGP',
+  SHP: 'SHN',
+  SLE: 'SLE',
+  SOS: 'SOM SOL',
+  SRD: 'SUR',
+  SSP: 'SDS',
+  STN: 'STP',
+  SYP: 'SYR',
+  SZL: 'SWZ',
+  THB: 'THA',
+  TJS: 'TJK',
+  TMT: 'TKM',
+  TND: 'TUN',
+  TOP: 'TON',
+  TRY: 'TUR CYN',
+  TTD: 'TTO',
+  TWD: 'TWN',
+  TZS: 'TZA',
+  UAH: 'UKR',
+  UGX: 'UGA',
+  USD: 'USA ASM ECU FSM GUM IOT MHL MNP PLW PRI SLV TCA TLS UMI USG VGB VIR',
+  UYU: 'URY',
+  UZS: 'UZB',
+  VES: 'VEN',
+  VND: 'VNM',
+  VUV: 'VUT',
+  WST: 'WSM',
+  XAF: 'CAF CMR COG GAB GNQ TCD',
+  XCD: 'AIA ATG DMA GRD KNA LCA MSR VCT',
+  XOF: 'BEN BFA CIV GNB MLI NER SEN TGO',
+  XPF: 'NCL PYF WLF',
+  YER: 'YEM',
+  ZAR: 'ZAF',
+  ZMW: 'ZMB',
+  ZWG: 'ZWE',
+};
+
+const currencyByCountry = new Map(
+  Object.entries(currencyCountries).flatMap(([currency, countries]) =>
+    countries.split(' ').map((country) => [country, currency] as const),
+  ),
+);
+
+/** «ARG» → «ARS»; undefined for a country without a currency of its own. */
+export function currencyOf(countryCode: string): string | undefined {
+  return currencyByCountry.get(countryCode);
+}
+
+const intlLocale: Readonly<Record<Locale, string>> = { es: 'es', en: 'en-US' };
+
+/**
+ * The currency name in the locale's plural for a whole amount: «pesos argentinos», «euro». Null when the country
+ * has no currency or the browser cannot name it; the caller falls back to «Crédito».
+ */
+export function currencyName(units: number, countryCode: string, locale: Locale): string | null {
+  const currency = currencyOf(countryCode);
+  if (!currency) return null;
+  try {
+    const name = new Intl.NumberFormat(intlLocale[locale], {
+      style: 'currency',
+      currency,
+      currencyDisplay: 'name',
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    })
+      .formatToParts(units)
+      .filter((part) => part.type === 'currency')
+      .map((part) => part.value)
+      .join('');
+    return name && name !== currency ? name : null;
+  } catch {
+    return null;
+  }
+}

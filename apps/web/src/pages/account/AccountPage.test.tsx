@@ -48,11 +48,15 @@ describe('account', () => {
     localStorage.clear();
   });
 
-  it('shows Gold and Credit in the game bar and links to the account', async () => {
+  it('shows gold in bars and the national money by name in the side panel', async () => {
     signIn();
     await renderRoute('/');
-    const link = await screen.findByRole('link', { name: 'Tu cuenta: Oro 1.240 y Crédito 38.450' });
+    const link = await screen.findByRole('link', {
+      name: 'Tu cuenta: 1.240 lingotes de oro y 38.450 pesos argentinos',
+    });
     expect(link).toHaveAttribute('href', '/account');
+    expect(within(link).getByText('lingotes')).toBeVisible();
+    expect(within(link).getByText('pesos argentinos')).toBeVisible();
   });
 
   it('shows the balances of each currency', async () => {
@@ -245,7 +249,9 @@ describe('account', () => {
     ).toBeVisible();
     expect(await screen.findAllByText('Welcome gift', { selector: 'td' })).toHaveLength(2);
     expect(
-      screen.getByRole('link', { name: 'Your account: Gold 1,240 and Credit 38,450' }),
+      screen.getByRole('link', {
+        name: 'Your account: 1,240 bars of gold and 38,450 Argentine pesos',
+      }),
     ).toBeVisible();
   });
 });

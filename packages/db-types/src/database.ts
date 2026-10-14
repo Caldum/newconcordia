@@ -122,6 +122,7 @@ export type Database = {
         }[];
       };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      answer_friend: { Args: { p_accept: boolean; p_name: string }; Returns: undefined };
       appoint_governor: { Args: { p_name: string }; Returns: undefined };
       appoint_minister: { Args: { p_ministry: string; p_name: string }; Returns: undefined };
       attack: {
@@ -164,6 +165,7 @@ export type Database = {
         Args: { p_key: string; p_market_country_code: string };
         Returns: number;
       };
+      can_store_picture: { Args: { p_name: string }; Returns: boolean };
       cancel_cb_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       cancel_war_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
@@ -180,6 +182,7 @@ export type Database = {
           streak: number;
         }[];
       };
+      count_unread_messages: { Args: Record<PropertyKey, never>; Returns: number };
       count_unread_notifications: { Args: Record<PropertyKey, never>; Returns: number };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
       create_my_citizen: {
@@ -210,6 +213,7 @@ export type Database = {
         Args: { p_description: string; p_key: string; p_name: string };
         Returns: number;
       };
+      found_regiment: { Args: { p_name: string }; Returns: number };
       fund_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };
         Returns: number;
@@ -545,6 +549,35 @@ export type Database = {
           strength: number;
         }[];
       };
+      get_my_profile_details: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          avatar_path: string;
+          bio: string;
+          friends: number;
+          national_citizens: number;
+          national_rank: number;
+          party_emblem_path: string;
+          party_id: number;
+          party_name: string;
+          referrals: number;
+          regiment_emblem_path: string;
+          regiment_id: number;
+          regiment_name: string;
+        }[];
+      };
+      get_my_regiment: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          emblem_path: string;
+          is_leader: boolean;
+          joined_at: string;
+          leader: string;
+          members: number;
+          name: string;
+          regiment_id: number;
+        }[];
+      };
       get_my_shifts_today: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -666,6 +699,7 @@ export type Database = {
       };
       issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
       join_party: { Args: { p_party_id: number }; Returns: undefined };
+      join_regiment: { Args: { p_regiment_id: number }; Returns: undefined };
       join_resistance: {
         Args: { p_key: string; p_region_code: string };
         Returns: {
@@ -677,6 +711,7 @@ export type Database = {
       launch_offensive: { Args: { p_key: string; p_region_code: string }; Returns: number };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_party: { Args: Record<PropertyKey, never>; Returns: undefined };
+      leave_regiment: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
       list_articles: {
         Args: { p_country_code: string };
@@ -941,6 +976,14 @@ export type Database = {
           yes: number;
         }[];
       };
+      list_my_achievements: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          achieved: boolean;
+          achieved_at: string;
+          achievement: string;
+        }[];
+      };
       list_my_companies: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -963,6 +1006,16 @@ export type Database = {
           shifts_today: number;
           vacancies: number;
           wage: number;
+        }[];
+      };
+      list_my_friends: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          avatar_path: string;
+          country_code: string;
+          name: string;
+          since: string;
+          status: string;
         }[];
       };
       list_my_fx_offers: {
@@ -1034,6 +1087,15 @@ export type Database = {
           status: string;
         }[];
       };
+      list_my_referrals: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          avatar_path: string;
+          country_code: string;
+          joined_at: string;
+          name: string;
+        }[];
+      };
       list_my_titles: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1100,6 +1162,17 @@ export type Database = {
           memo: string;
           ordered_by: string;
           posting_id: number;
+        }[];
+      };
+      list_regiments: {
+        Args: { p_country_code: string };
+        Returns: {
+          emblem_path: string;
+          founded_at: string;
+          leader: string;
+          members: number;
+          name: string;
+          regiment_id: number;
         }[];
       };
       list_region_resources: {
@@ -1233,6 +1306,7 @@ export type Database = {
       register_candidacy: { Args: Record<PropertyKey, never>; Returns: number };
       register_party_list: { Args: { p_names: string[] }; Returns: number };
       register_ticket: { Args: { p_president: string; p_vice_president: string }; Returns: number };
+      remove_friend: { Args: { p_name: string }; Returns: undefined };
       request_citizenship: {
         Args: { p_country_code: string };
         Returns: {
@@ -1240,6 +1314,7 @@ export type Database = {
           status: string;
         }[];
       };
+      request_friend: { Args: { p_name: string }; Returns: string };
       request_resignation: { Args: Record<PropertyKey, never>; Returns: number };
       resign_office: { Args: Record<PropertyKey, never>; Returns: string };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
@@ -1250,6 +1325,11 @@ export type Database = {
         Args: { p_company_id: number; p_vacancies: number; p_wage: number };
         Returns: undefined;
       };
+      set_my_avatar: { Args: { p_path?: string }; Returns: undefined };
+      set_my_bio: { Args: { p_bio: string }; Returns: undefined };
+      set_my_referrer: { Args: { p_name: string }; Returns: undefined };
+      set_party_emblem: { Args: { p_path?: string }; Returns: undefined };
+      set_regiment_emblem: { Args: { p_path?: string }; Returns: undefined };
       take_job: { Args: { p_company_id: number }; Returns: undefined };
       train: {
         Args: { p_kind: string };

@@ -5,8 +5,20 @@ import { defineMessages, useMessages } from '../../i18n';
 import styles from './MilitaryTabs.module.css';
 
 const messages = defineMessages({
-  es: { tabs: 'Militar', training: 'Entrenamiento', hospital: 'Hospital', battles: 'Batallas' },
-  en: { tabs: 'Military', training: 'Training', hospital: 'Hospital', battles: 'Battles' },
+  es: {
+    tabs: 'Militar',
+    training: 'Entrenamiento',
+    hospital: 'Hospital',
+    battles: 'Batallas',
+    regiments: 'Regimientos',
+  },
+  en: {
+    tabs: 'Military',
+    training: 'Training',
+    hospital: 'Hospital',
+    battles: 'Battles',
+    regiments: 'Regiments',
+  },
 });
 
 const current = {
@@ -14,7 +26,7 @@ const current = {
   activeOptions: { exact: true },
 };
 
-/** Training, the hospital and battles. */
+/** Training, the hospital, battles and regiments. */
 export function MilitaryTabs() {
   const copy = useMessages(messages);
   return (
@@ -27,6 +39,9 @@ export function MilitaryTabs() {
       </Link>
       <Link to="/battles" activeProps={current.activeProps}>
         {copy.battles}
+      </Link>
+      <Link to="/regiments" {...current}>
+        {copy.regiments}
       </Link>
     </nav>
   );

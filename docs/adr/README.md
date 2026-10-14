@@ -46,3 +46,4 @@ marked «Superseded by NNNN».
 | 0038 | Notifications and balance telemetry | Accepted |
 | 0039 | Compensating entries and backups | Accepted |
 | 0040 | Daily missions, first steps, press and messages | Accepted |
+| 0041 | Profile, side panel, pictures, friends, referrals and regiments | Accepted |

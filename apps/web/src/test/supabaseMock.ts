@@ -66,6 +66,10 @@ export const supabaseMock = {
     updateUser: vi.fn(() => Promise.resolve(ok)),
     verifyOtp: vi.fn(() => Promise.resolve(ok)),
   },
+  storage: {
+    upload: vi.fn(() => Promise.resolve({ data: null, error: null })),
+    publicUrl: (path: string) => `https://pictures.test/${path}`,
+  },
 };
 
 /** Changes the signed-in state and tells every listener, as Supabase does. */
@@ -92,4 +96,5 @@ export function resetSupabaseMock(): void {
   listeners.clear();
   supabaseMock.rpc.mockReset();
   for (const method of Object.values(supabaseMock.auth)) method.mockClear();
+  supabaseMock.storage.upload.mockClear();
 }

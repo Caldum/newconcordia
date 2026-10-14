@@ -134,6 +134,14 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Misiones diarias, racha | Daily missions, streak | `mission_claims`, `claim_daily_missions` |
 | Periódico, artículo | Newspaper, article | `newspapers`, `articles`, `article_reads` |
 | Mensaje privado | Private message | `messages` |
+| Foto de perfil, foto del partido o del regimiento | Picture | bucket `pictures`, `avatar_path`, `emblem_path` |
+| Descripción | Description | `citizens.bio` |
+| Amigo, solicitud de amistad | Friend, friend request | `friendships` |
+| Referido | Referral | `citizens.referred_by_user_id` |
+| Regimiento | Regiment | `regiments`, `regiment_members` |
+| Logro | Achievement | `list_my_achievements` |
+| Rango nacional | National rank | `get_my_profile_details.national_rank` |
+| Lingote (de oro) | Gold bar | GOLD on the side panel |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

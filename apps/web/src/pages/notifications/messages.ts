@@ -13,6 +13,8 @@ export const messages = defineMessages({
     injury: (lost: number, after: number) =>
       `Te lesionaste: perdiste ${String(lost)} de salud y quedaste en ${String(after)}.`,
     office_taken: 'Asumiste un cargo nacional.',
+    friend_requested: (name: string) => `${name} quiere ser tu amigo. Respóndele desde tu perfil.`,
+    friend_accepted: (name: string) => `${name} aceptó tu amistad.`,
     citizenship_approved: (country: string) => `Aprobaron tu ciudadanía de ${country}.`,
     citizenship_rejected: (country: string) => `Rechazaron tu ciudadanía de ${country}.`,
     battle_started: (attacker: string, defender: string, region: string) =>
@@ -45,6 +47,9 @@ export const messages = defineMessages({
     injury: (lost: number, after: number) =>
       `You got injured: you lost ${String(lost)} health and are at ${String(after)}.`,
     office_taken: 'You took a national office.',
+    friend_requested: (name: string) =>
+      `${name} wants to be your friend. Answer from your profile.`,
+    friend_accepted: (name: string) => `${name} accepted your friendship.`,
     citizenship_approved: (country: string) => `Your citizenship of ${country} was approved.`,
     citizenship_rejected: (country: string) => `Your citizenship of ${country} was rejected.`,
     battle_started: (attacker: string, defender: string, region: string) =>

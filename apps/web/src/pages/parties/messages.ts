@@ -2,6 +2,7 @@ import { defineMessages } from '../../i18n';
 
 export const messages = defineMessages({
   es: {
+    emblemTitle: 'Foto del partido',
     documentTitle: 'Partidos · Concordia',
     title: (country: string) => `Partidos de ${country}`,
     intro:
@@ -83,6 +84,7 @@ export const messages = defineMessages({
       'No se pudo completar. Revisa tu conexión y vuelve a intentar: no se cobra dos veces.',
   },
   en: {
+    emblemTitle: 'Party picture',
     documentTitle: 'Parties · Concordia',
     title: (country: string) => `Parties of ${country}`,
     intro:

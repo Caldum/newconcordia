@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-11-01.
+Last update: 2026-11-02.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -150,14 +150,19 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
   backups with PITR and a monthly restore drill in the runbook (ADR 0039).
 - 2026-11-01 · L4: the four daily missions with 1 GOLD and the 7-day streak, a first-steps checklist on the home
   screen, newspapers and articles, private messages; a Society section (ADR 0040).
+- 2026-11-02 · P1 (owner's request): a side panel with picture, name, message and notice badges, energy out of
+  its maximum, gold in bars and the national money by name; the profile with level, description, national
+  rank, party and regiment with pictures, achievements, friends and referrals; editing the profile (picture,
+  description, email, password); regiments (ADR 0041).
 
 ## Next step
 
 Stages 1 to 4 (R1–R7, G1–G6, H1–H3, W1–W6) are on `develop` and in the development project. Next, Stage 5
 of `docs/roadmap.md`:
 
-1. L5:
-   and daily missions, terms and closed beta.
-2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
-3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+1. L5: terms and privacy acceptance, moderation and reports (PD-14), closed beta.
+2. Apply `20261101090000_society.sql` and `20261102090000_profiles.sql` to the development project
+   (`supabase db push`), and have the owner review the storage policies of the `pictures` bucket.
+3. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
+4. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

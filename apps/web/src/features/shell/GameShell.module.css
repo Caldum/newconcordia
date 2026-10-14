@@ -65,53 +65,29 @@
   }
 }
 
-.chip {
-  display: inline-flex;
+.frame {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  align-items: start;
 }
 
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--touch-min);
-  height: var(--touch-min);
-  border-radius: var(--radius-s);
-  background: var(--ink);
-  color: var(--on-ink);
-  font-weight: 700;
-  text-decoration: none;
+.frame > aside {
+  position: sticky;
+  top: 0;
+  min-height: calc(100vh - var(--bar-height));
 }
 
-.avatar:hover {
-  background: var(--ink-hover);
+.content {
+  min-width: 0;
 }
 
-.wallet {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  min-height: var(--touch-min);
-  padding: 0 var(--space-2);
-  border-radius: var(--radius-s);
-  color: var(--ink);
-  font-weight: 650;
-  font-variant-numeric: tabular-nums;
-  text-decoration: none;
-}
+@media (width < 1024px) {
+  .frame {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-.wallet > span:not(.walletSeparator) {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 var(--space-2);
-}
-
-.wallet:hover {
-  background: var(--land-soft);
-}
-
-.walletSeparator {
-  width: 1px;
-  height: 18px;
-  background: var(--line);
+  .frame > aside {
+    position: static;
+    min-height: 0;
+  }
 }

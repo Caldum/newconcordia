@@ -8,6 +8,7 @@ import { DonateForm } from './DonateForm';
 import { LeaderElection } from './LeaderElection';
 import { LeavePartyButton } from './LeavePartyButton';
 import { messages } from './messages';
+import { PartyEmblemPanel } from './PartyEmblemPanel';
 import { PartyMembers } from './PartyMembers';
 
 interface MyPartyProps {
@@ -34,6 +35,7 @@ export function MyParty({ party, isLeader }: MyPartyProps) {
         {isLeader ? <p>{copy.youLead}</p> : null}
         <LeavePartyButton />
       </Panel>
+      {isLeader ? <PartyEmblemPanel party={party} /> : null}
       <LeaderElection partyId={party.party_id} />
       <DonateForm partyId={party.party_id} />
       <PartyMembers partyId={party.party_id} />

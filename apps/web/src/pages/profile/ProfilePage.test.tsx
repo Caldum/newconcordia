@@ -1,11 +1,18 @@
 import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { citizenRow } from '../../test/fixtures/citizen';
 import { profileRow } from '../../test/fixtures/profile';
 import { countryRows, regionRows } from '../../test/fixtures/world';
 import { renderRoute } from '../../test/renderRoute';
-import { answerRpc, fakeSession, resetSupabaseMock, setSession } from '../../test/supabaseMock';
+import {
+  answerRpc,
+  fakeSession,
+  resetSupabaseMock,
+  setSession,
+  supabaseMock,
+} from '../../test/supabaseMock';
 
 vi.mock('../../lib/supabase', async () => ({
   supabase: (await import('../../test/supabaseMock')).supabaseMock,
@@ -15,7 +22,23 @@ vi.mock('../../lib/supabase', async () => ({
 const citizen = citizenRow({
   joined_at: '2026-08-28T15:00:00Z',
   citizen_since: '2026-08-28T15:00:00Z',
+  adaptation_ends_at: '2026-09-04T15:00:00Z',
 });
+
+const details = {
+  bio: 'Soldado de la Pampa.',
+  avatar_path: 'citizens/u1/a.webp',
+  national_rank: 3,
+  national_citizens: 120,
+  party_id: 4,
+  party_name: 'Partido Federal',
+  party_emblem_path: null,
+  regiment_id: 2,
+  regiment_name: 'Granaderos',
+  regiment_emblem_path: null,
+  friends: 0,
+  referrals: 1,
+};
 
 function signIn(profile = profileRow()) {
   answerRpc({
@@ -104,10 +127,12 @@ describe('profile', () => {
   it('shows where the citizen lives and their citizenship', async () => {
     signIn();
     await renderRoute('/profile');
-    const path = await screen.findByRole('region', { name: 'Trayectoria' });
-    expect(await within(path).findByText('Buenos Aires')).toBeVisible();
-    expect(within(path).getByText('Argentina, desde el 28 de agosto de 2026')).toBeVisible();
-    expect(within(path).getByText('ARG-003413')).toBeVisible();
+    const record = await screen.findByRole('region', { name: 'Ciudadano' });
+    expect(await within(record).findByText('Buenos Aires')).toBeVisible();
+    expect(within(record).getByText('Argentina, desde el 28 de agosto de 2026')).toBeVisible();
+    expect(within(record).getByText('Ciudadano con todos sus derechos')).toBeVisible();
+    expect(within(record).getByText('28 de agosto de 2026')).toBeVisible();
+    expect(within(record).getByText('ARG-003413')).toBeVisible();
     expect(screen.getByRole('link', { name: 'Mi perfil' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Cambiar de país' })).toHaveAttribute(
       'href',
@@ -177,6 +202,119 @@ describe('profile', () => {
       'aria-valuetext',
       '80 of 100',
     );
+  });
+
+  it('shows the side panel with the picture, unread badges and energy out of the maximum', async () => {
+    answerRpc({
+      get_my_citizen: { data: [citizen], error: null },
+      get_my_profile: { data: [profileRow()], error: null },
+      get_my_profile_details: { data: [details], error: null },
+      count_unread_messages: { data: 3, error: null },
+      count_unread_notifications: { data: 1, error: null },
+      list_countries: { data: countryRows, error: null },
+      list_regions: { data: regionRows, error: null },
+    });
+    setSession(fakeSession());
+    await renderRoute('/');
+    const panel = await screen.findByRole('complementary', { name: 'Tu ciudadano' });
+    expect(within(panel).getByRole('link', { name: 'Tu perfil: Camila Ríos' })).toHaveAttribute(
+      'href',
+      '/profile',
+    );
+    expect(
+      await within(panel).findByRole('link', { name: 'Mensajes (3 sin leer)' }),
+    ).toHaveAttribute('href', '/messages');
+    expect(await within(panel).findByRole('link', { name: 'Avisos (1 nuevo)' })).toHaveAttribute(
+      'href',
+      '/notifications',
+    );
+    expect(within(panel).getByText('80/100')).toBeVisible();
+    expect(panel.querySelector('img')).toHaveAttribute(
+      'src',
+      'https://pictures.test/citizens/u1/a.webp',
+    );
+  });
+
+  it('shows the description, national rank, party, regiment, achievements, friends and referrals', async () => {
+    const user = userEvent.setup();
+    answerRpc({
+      get_my_citizen: { data: [citizen], error: null },
+      get_my_profile: { data: [profileRow()], error: null },
+      get_my_profile_details: { data: [details], error: null },
+      list_my_achievements: {
+        data: [
+          { achievement: 'first_shift', achieved: true, achieved_at: '2026-09-01T10:00:00Z' },
+          { achievement: 'level_10', achieved: false, achieved_at: null },
+        ],
+        error: null,
+      },
+      list_my_friends: {
+        data: [
+          {
+            name: 'Juan Pérez',
+            avatar_path: null,
+            country_code: 'ARG',
+            status: 'incoming',
+            since: '2026-11-07T10:00:00Z',
+          },
+        ],
+        error: null,
+      },
+      list_my_referrals: {
+        data: [
+          {
+            name: 'Bea Lima',
+            avatar_path: null,
+            country_code: 'ARG',
+            joined_at: '2026-11-07T09:00:00Z',
+          },
+        ],
+        error: null,
+      },
+      answer_friend: { data: null, error: null },
+      request_friend: { data: 'requested', error: null },
+      list_countries: { data: countryRows, error: null },
+      list_regions: { data: regionRows, error: null },
+    });
+    setSession(fakeSession());
+    await renderRoute('/profile');
+    expect(await screen.findByText('Soldado de la Pampa.')).toBeVisible();
+    expect(screen.getByText('Nivel 8')).toBeVisible();
+    for (const link of screen.getAllByRole('link', { name: 'Editar perfil' })) {
+      expect(link).toHaveAttribute('href', '/profile/edit');
+    }
+    const record = screen.getByRole('region', { name: 'Ciudadano' });
+    expect(
+      await within(record).findByText('Puesto 3 de 120 en Argentina, por experiencia'),
+    ).toBeVisible();
+    const affiliations = screen.getByRole('region', { name: 'Partido y regimiento' });
+    expect(within(affiliations).getByRole('link', { name: 'Partido Federal' })).toBeVisible();
+    expect(within(affiliations).getByRole('link', { name: 'Granaderos' })).toHaveAttribute(
+      'href',
+      '/regiments',
+    );
+    const achievements = await screen.findByRole('region', { name: 'Logros · 1 de 2' });
+    expect(within(achievements).getByText('Primera jornada de trabajo')).toBeVisible();
+    expect(within(achievements).getByText('Conseguido el 1 de septiembre de 2026')).toBeVisible();
+    expect(within(achievements).getByText('Todavía no')).toBeVisible();
+
+    const friends = await screen.findByRole('region', { name: 'Amigos · 0' });
+    expect(await within(friends).findByText('Quiere ser tu amigo')).toBeVisible();
+    await user.click(within(friends).getByRole('button', { name: 'Aceptar a Juan Pérez' }));
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('answer_friend', {
+      p_name: 'Juan Pérez',
+      p_accept: true,
+    });
+    await user.type(within(friends).getByLabelText('Nombre del ciudadano'), 'Ana Gómez');
+    await user.click(within(friends).getByRole('button', { name: 'Pedir amistad' }));
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('request_friend', { p_name: 'Ana Gómez' });
+    expect(await within(friends).findByText('Solicitud enviada.')).toBeVisible();
+
+    const referrals = await screen.findByRole('region', { name: 'Referidos · 1' });
+    expect(within(referrals).getByText('Bea Lima')).toBeVisible();
+    expect(
+      within(referrals).getByText('http://localhost:3000/sign-up?ref=Camila%20R%C3%ADos'),
+    ).toBeVisible();
   });
 
   it('sends visitors to sign in', async () => {

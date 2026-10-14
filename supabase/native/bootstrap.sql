@@ -74,3 +74,30 @@ as $$
   )::uuid;
 $$;
 grant execute on function auth.uid() to anon, authenticated, service_role;
+
+-- Supabase Storage: buckets and objects with the columns the game reads, and RLS on objects as Supabase has it.
+create schema storage;
+grant usage on schema storage to anon, authenticated, service_role;
+
+create table storage.buckets (
+  id text primary key,
+  name text not null,
+  owner uuid,
+  public boolean default false,
+  file_size_limit bigint,
+  allowed_mime_types text[],
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table storage.objects (
+  id uuid primary key default gen_random_uuid(),
+  bucket_id text references storage.buckets (id),
+  name text,
+  owner uuid,
+  metadata jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+alter table storage.objects enable row level security;
+grant select, insert, update, delete on storage.buckets, storage.objects to anon, authenticated, service_role;

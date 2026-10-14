@@ -17,6 +17,9 @@ export function useNotificationText(): (notification: GameNotification) => strin
         return copy.injury(number('health_lost'), number('health_after'));
       case 'office_taken':
         return copy.office_taken;
+      case 'friend_requested':
+      case 'friend_accepted':
+        return copy[kind](text('name'));
       case 'citizenship_approved':
       case 'citizenship_rejected':
         return copy[kind](countryName(text('country_code')));
