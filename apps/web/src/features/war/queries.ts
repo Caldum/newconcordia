@@ -147,6 +147,46 @@ export function useTravelTerms() {
   });
 }
 
+const independenceSchema = z.object({
+  war_id: z.number().int(),
+  damage_target: z.number().int(),
+  damage_total: z.number().int(),
+  started_at: z.string(),
+  ends_at: z.string(),
+  status: z.enum(['active', 'closing', 'won', 'expired']),
+  hero_name: z.string().nullable(),
+});
+
+const titleSchema = z.object({
+  title: z.enum(['liberating_hero']),
+  country_code: z.string(),
+  granted_at: z.string(),
+});
+
+export type IndependenceWar = z.infer<typeof independenceSchema>;
+
+export function useIndependenceWar(country: string) {
+  return useQuery({
+    queryKey: ['war', country, 'independence'],
+    queryFn: async () =>
+      (
+        await rows(
+          supabase.rpc('get_independence_war', { p_country_code: country }),
+          independenceSchema,
+        )
+      )[0] ?? null,
+  });
+}
+
+export function useMyTitles() {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'titles'],
+    enabled,
+    queryFn: () => rows(supabase.rpc('list_my_titles'), titleSchema),
+  });
+}
+
 export function useWarAuthorizations(country: string) {
   return useQuery({
     queryKey: ['war', country, 'authorizations'],

@@ -124,6 +124,8 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Embargo (económico, de armas) | Embargo (economic, arms) | `embargoes`, `game.trade_blocked` |
 | Paz | Peace | `bills.kind = peace` |
 | Viaje, presencia | Travel, presence | `travel`, `citizens.region_code` |
+| Guerra de independencia | Independence war | `independence_wars`, `independence_attacks` |
+| Héroe Libertador | Liberating Hero | `titles.title = liberating_hero` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

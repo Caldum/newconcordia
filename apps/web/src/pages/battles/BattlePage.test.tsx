@@ -62,6 +62,8 @@ function signIn(office: string | null, extra: Parameters<typeof answerRpc>[0] = 
     get_my_inventory: { data: [{ good_code: 'weapon_q2', quantity: 1 }], error: null },
     list_war_authorizations: { data: [], error: null },
     list_launch_targets: { data: [], error: null },
+    get_independence_war: { data: [], error: null },
+    list_my_titles: { data: [], error: null },
     get_travel_terms: { data: [{ enabled: false, price: 0 }], error: null },
     list_occupied_regions: {
       data: [

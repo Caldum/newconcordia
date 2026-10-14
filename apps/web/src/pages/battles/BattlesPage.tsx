@@ -5,6 +5,7 @@ import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
 import { BattleList } from './BattleList';
+import { IndependencePanel } from './IndependencePanel';
 import { LaunchPanel } from './LaunchPanel';
 import { messages } from './messages';
 import { ResistancePanel } from './ResistancePanel';
@@ -26,6 +27,7 @@ export function BattlesPage() {
       </div>
       <div className={styles.layout}>
         <div className={styles.column}>
+          <IndependencePanel />
           <BattleList />
         </div>
         <div className={styles.column}>

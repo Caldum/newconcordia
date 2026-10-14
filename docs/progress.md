@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-27.
+Last update: 2026-10-28.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -139,13 +139,16 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-27 · W5: alliances by laws of both nations, broken relations, economic and arms embargoes enforced on
   the market, peace, allies fighting remotely and treated by «allies» hospitals, travel shipped off until PD-03
   (ADR 0035).
+- 2026-10-28 · W6: the independence war as an audited sandbox (off until PD-02): nationals against an NPC until an
+  admin-set target or 7 days, and the Liberating Hero title. Stage 4 complete (ADR 0036).
 
 ## Next step
 
-Stages 1 (R1–R7), 2 (G1–G6) and 3 (H1–H3) are on `develop` and in the development project. Next, Stage 4
+Stages 1 to 4 (R1–R7, G1–G6, H1–H3, W1–W6) are on `develop` and in the development project. Next, Stage 5
 of `docs/roadmap.md`:
 
-1. W6: the independence war (sandbox until PD-02).
+1. L1–L5: rate limits and anti-abuse, notifications and telemetry, backups and compensating entries, onboarding
+   and daily missions, terms and closed beta.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

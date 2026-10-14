@@ -63,6 +63,10 @@ export type Database = {
         Args: { p_enabled: boolean; p_region_code: string };
         Returns: number;
       };
+      admin_start_independence_war: {
+        Args: { p_country_code: string; p_damage_target: number };
+        Returns: number;
+      };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       appoint_governor: { Args: { p_name: string }; Returns: undefined };
       appoint_minister: { Args: { p_ministry: string; p_name: string }; Returns: undefined };
@@ -283,6 +287,18 @@ export type Database = {
           good_code: string;
           quantity: number;
           region_code: string;
+        }[];
+      };
+      get_independence_war: {
+        Args: { p_country_code: string };
+        Returns: {
+          damage_target: number;
+          damage_total: number;
+          ends_at: string;
+          hero_name: string;
+          started_at: string;
+          status: string;
+          war_id: number;
         }[];
       };
       get_last_national_election: {
@@ -537,6 +553,25 @@ export type Database = {
           good_code: string;
           healed: number;
           health: number;
+        }[];
+      };
+      independence_attack: {
+        Args: { p_key: string; p_war_id: number };
+        Returns: {
+          damage: number;
+          energy: number;
+          health: number;
+          health_lost: number;
+          military_xp: number;
+          war_status: string;
+        }[];
+      };
+      independence_ranking: {
+        Args: { p_war_id: number };
+        Returns: {
+          attacks: number;
+          damage: number;
+          name: string;
         }[];
       };
       issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
@@ -867,6 +902,14 @@ export type Database = {
           quantity: number;
           sold: number;
           status: string;
+        }[];
+      };
+      list_my_titles: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          granted_at: string;
+          title: string;
         }[];
       };
       list_occupied_regions: {

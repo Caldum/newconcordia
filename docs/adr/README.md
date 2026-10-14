@@ -41,3 +41,4 @@ marked «Superseded by NNNN».
 | 0033 | Battles and attacks | Accepted |
 | 0034 | Resistance | Accepted |
 | 0035 | Diplomacy, travel and presence | Accepted |
+| 0036 | Independence war sandbox | Accepted |

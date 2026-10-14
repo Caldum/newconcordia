@@ -11,6 +11,7 @@ import { AdminLogSection } from './AdminLogSection';
 import styles from './AdminPage.module.css';
 import { AdminTeamSection } from './AdminTeamSection';
 import { CountriesSection } from './CountriesSection';
+import { IndependenceSection } from './IndependenceSection';
 import { messages } from './messages';
 import { RegionsSection } from './RegionsSection';
 
@@ -38,6 +39,7 @@ export function AdminPanel() {
         regions={regions.data ?? []}
         onSchedule={scheduling.run}
       />
+      <IndependenceSection />
       <AdminLogSection countries={countries.data ?? []} />
       <AdminTeamSection />
     </>
