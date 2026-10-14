@@ -10,7 +10,7 @@ const current = {
   activeOptions: { exact: true },
 };
 
-/** Parties and elections, the two sides of politics. */
+/** Parties, elections and the government. */
 export function PoliticsTabs() {
   const copy = useMessages(messages);
   return (
@@ -20,6 +20,9 @@ export function PoliticsTabs() {
       </Link>
       <Link to="/elections" {...current}>
         {copy.elections}
+      </Link>
+      <Link to="/government" {...current}>
+        {copy.government}
       </Link>
     </nav>
   );

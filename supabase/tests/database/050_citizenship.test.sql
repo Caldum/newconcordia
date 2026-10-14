@@ -2,7 +2,7 @@
 -- approved on its own at 72 hours.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(37);
+select plan(38);
 
 create function pg_temp.new_player(p_email text, p_name text, p_country text, p_waitlist text default null)
 returns uuid
@@ -76,9 +76,17 @@ select results_eq(
 select is(public.count_waitlist('URY'), 1, 'anyone can see how many people wait');
 reset role;
 
--- A change approved by the destination's Interior minister (acceptance, first half).
-insert into game.offices (country_code, office, user_id) values ('ARG', 'interior_minister', :'marcos');
+-- A change approved by the destination's president (acceptance, first half; the Interior ministry is gone, G3).
+insert into game.offices (country_code, office, user_id) values ('ARG', 'president', :'marcos');
+-- Office holders cannot change citizenship (G3).
 insert into game.offices (country_code, office, user_id) values ('FRA', 'president', :'pierre');
+select pg_temp.act_as(:'pierre');
+select throws_ok(
+  $$ select * from public.request_citizenship('ARG') $$,
+  '42501', 'office_locks_citizenship', 'an office holder cannot change citizenship'
+);
+reset role;
+delete from game.offices where user_id = :'pierre';
 
 select pg_temp.act_as(:'pierre');
 select results_eq(
@@ -112,11 +120,11 @@ select pg_temp.act_as(:'marcos');
 select results_eq(
   $$ select citizen_name, from_country_code from public.list_citizenship_requests() $$,
   $$ values ('Pierre Martin', 'FRA') $$,
-  'the Interior minister sees the requests to the country'
+  'the president sees the requests to the country'
 );
 select lives_ok(
   $$ select public.decide_citizenship_request((select request_id from public.list_citizenship_requests() limit 1), true) $$,
-  'the Interior minister approves'
+  'the president approves'
 );
 reset role;
 select results_eq(
@@ -128,7 +136,7 @@ select results_eq(
 select is(
   (select count(*) from game.offices where user_id = :'pierre')::int,
   0,
-  'leaving a country leaves its offices'
+  'a former office holder has no office left'
 );
 select ok(not game.can_vote_in_elections(:'pierre'), 'after a change, elections wait 7 days again');
 
@@ -168,6 +176,7 @@ select is(
 
 -- Automatic countries and the waitlist approve at once; players can withdraw.
 update game.countries set citizenship_mode = 'automatic' where code = 'ESP';
+delete from game.offices where user_id = :'marcos';
 select pg_temp.act_as(:'marcos');
 select results_eq($$ select status from public.request_citizenship('ESP') $$, $$ values ('approved') $$,
   'a country with automatic citizenship approves at once');

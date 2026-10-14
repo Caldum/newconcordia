@@ -64,6 +64,8 @@ export type Database = {
         Returns: number;
       };
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      appoint_governor: { Args: { p_name: string }; Returns: undefined };
+      appoint_minister: { Args: { p_ministry: string; p_name: string }; Returns: undefined };
       authorize_second_shift: {
         Args: { p_company_id: number; p_employee_name: string; p_wage?: number };
         Returns: undefined;
@@ -91,6 +93,7 @@ export type Database = {
         Args: { p_approve: boolean; p_request_id: number };
         Returns: undefined;
       };
+      dismiss_official: { Args: { p_office: string }; Returns: undefined };
       donate_to_party: {
         Args: { p_amount: number; p_currency: string; p_key: string; p_party_id: number };
         Returns: undefined;
@@ -106,6 +109,15 @@ export type Database = {
       fund_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };
         Returns: number;
+      };
+      get_cabinet: {
+        Args: { p_country_code: string };
+        Returns: {
+          name: string;
+          office: string;
+          party_name: string;
+          since: string;
+        }[];
       };
       get_citizenship_rules: {
         Args: { p_country_code: string };
@@ -233,6 +245,13 @@ export type Database = {
           wage: number;
           work_tax: number;
           worked_today: boolean;
+        }[];
+      };
+      get_my_office: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          country_code: string;
+          office: string;
         }[];
       };
       get_my_party: {
@@ -423,6 +442,32 @@ export type Database = {
           tariff: number;
         }[];
       };
+      list_motion_votes: {
+        Args: { p_motion_id: number };
+        Returns: {
+          cast_at: string;
+          choice: string;
+          name: string;
+        }[];
+      };
+      list_motions: {
+        Args: { p_country_code: string };
+        Returns: {
+          abstain: number;
+          closes_at: string;
+          kind: string;
+          members: number;
+          motion_id: number;
+          my_vote: string;
+          no: number;
+          opened_at: string;
+          proposed_by_name: string;
+          status: string;
+          target_name: string;
+          target_office: string;
+          yes: number;
+        }[];
+      };
       list_my_companies: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -587,6 +632,8 @@ export type Database = {
         };
         Returns: number;
       };
+      propose_impeachment: { Args: Record<PropertyKey, never>; Returns: number };
+      propose_removal: { Args: { p_office: string }; Returns: number };
       register_candidacy: { Args: Record<PropertyKey, never>; Returns: number };
       register_party_list: { Args: { p_names: string[] }; Returns: number };
       register_ticket: { Args: { p_president: string; p_vice_president: string }; Returns: number };
@@ -597,6 +644,8 @@ export type Database = {
           status: string;
         }[];
       };
+      request_resignation: { Args: Record<PropertyKey, never>; Returns: number };
+      resign_office: { Args: Record<PropertyKey, never>; Returns: string };
       run_job: { Args: { p_at?: string; p_job: string }; Returns: Json };
       set_company_offer: {
         Args: { p_company_id: number; p_vacancies: number; p_wage: number };
@@ -622,6 +671,7 @@ export type Database = {
         }[];
       };
       vote: { Args: { p_candidacy_id: number }; Returns: undefined };
+      vote_motion: { Args: { p_choice: string; p_motion_id: number }; Returns: undefined };
       withdraw_candidacy: { Args: Record<PropertyKey, never>; Returns: undefined };
       withdraw_from_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };

@@ -90,6 +90,9 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Fórmula presidencial | Presidential ticket | candidacy with `user_id` and `running_mate_user_id` |
 | Lista de partido, banca | Party list, seat | `party_list_members`, `elections.seats`, `dhondt` |
 | Mandato | Mandate | `mandates` |
+| Ministro, gobernador del Banco Central | Minister, Central Bank governor | `offices` (`minister_*`, `central_bank_governor`) |
+| Sucesión | Succession | `fill_executive`, `succession_events` |
+| Moción (renuncia, remoción, juicio político) | Motion (resignation, removal, impeachment) | `congress_motions`, `motion_votes` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

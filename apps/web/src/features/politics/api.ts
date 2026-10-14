@@ -74,3 +74,52 @@ export function registerPartyList(names: readonly string[]) {
 export function withdrawPartyCandidacy(kind: 'president' | 'congress') {
   return supabase.rpc('withdraw_party_candidacy', { p_kind: kind });
 }
+
+export type Ministry = 'economy' | 'defense' | 'foreign_affairs' | 'health' | 'development';
+
+export interface Appointment {
+  /** A ministry, or the Central Bank. */
+  office: Ministry | 'central_bank_governor';
+  name: string;
+}
+
+export function appoint({ office, name }: Appointment) {
+  return office === 'central_bank_governor'
+    ? supabase.rpc('appoint_governor', { p_name: name })
+    : supabase.rpc('appoint_minister', { p_ministry: office, p_name: name });
+}
+
+export function dismissOfficial(office: Ministry | 'central_bank_governor') {
+  return supabase.rpc('dismiss_official', { p_office: office });
+}
+
+export function resignOffice() {
+  return supabase.rpc('resign_office');
+}
+
+export function requestResignation() {
+  return supabase.rpc('request_resignation');
+}
+
+export function proposeRemoval(office: 'president' | 'vice_president') {
+  return supabase.rpc('propose_removal', { p_office: office });
+}
+
+export function proposeImpeachment() {
+  return supabase.rpc('propose_impeachment');
+}
+
+export interface MotionVote {
+  motionId: number;
+  choice: 'yes' | 'no' | 'abstain';
+}
+
+export function voteMotion({ motionId, choice }: MotionVote) {
+  return supabase.rpc('vote_motion', { p_motion_id: motionId, p_choice: choice });
+}
+
+/** Leaves the player's office: at once, or (president and vice president) by asking Congress. */
+export async function leaveOffice(executive: boolean) {
+  const { error } = executive ? await requestResignation() : await resignOffice();
+  return { data: null, error };
+}

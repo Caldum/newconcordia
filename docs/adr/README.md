@@ -31,3 +31,4 @@ marked «Superseded by NNNN».
 | 0023 | Personal medical kits | Accepted |
 | 0024 | Parties and the party leaders' election | Accepted |
 | 0025 | National elections: the presidential ticket and Congress | Accepted |
+| 0026 | Offices, incompatibilities and succession | Accepted |

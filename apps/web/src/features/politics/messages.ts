@@ -5,10 +5,12 @@ export const messages = defineMessages({
     tabs: 'Política',
     parties: 'Partidos',
     elections: 'Elecciones',
+    government: 'Gobierno',
   },
   en: {
     tabs: 'Politics',
     parties: 'Parties',
     elections: 'Elections',
+    government: 'Government',
   },
 });

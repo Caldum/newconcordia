@@ -221,3 +221,71 @@ export function useCongress(country: string) {
       rows(supabase.rpc('list_congress', { p_country_code: country }), congressMemberSchema),
   });
 }
+
+const officeSchema = z.enum([
+  'president',
+  'vice_president',
+  'minister_economy',
+  'minister_defense',
+  'minister_foreign_affairs',
+  'minister_health',
+  'minister_development',
+  'central_bank_governor',
+]);
+
+const cabinetSchema = z.object({
+  office: officeSchema,
+  name: z.string(),
+  party_name: z.string().nullable(),
+  since: z.string(),
+});
+
+const myOfficeSchema = z.object({
+  office: z.union([officeSchema, z.literal('congress')]),
+  country_code: z.string(),
+});
+
+const motionSchema = z.object({
+  motion_id: z.number().int(),
+  kind: z.enum(['resignation', 'inactivity_removal', 'impeachment']),
+  target_name: z.string(),
+  target_office: z.enum(['president', 'vice_president']),
+  proposed_by_name: z.string(),
+  /** Seats occupied when it opened: the base of absolute majorities and 2/3. */
+  members: z.number().int(),
+  opened_at: z.string(),
+  closes_at: z.string(),
+  status: z.enum(['open', 'counting', 'approved', 'rejected']),
+  yes: z.number().int(),
+  no: z.number().int(),
+  abstain: z.number().int(),
+  my_vote: z.enum(['yes', 'no', 'abstain']).nullable(),
+});
+
+export type Office = z.infer<typeof officeSchema>;
+export type CabinetSeat = z.infer<typeof cabinetSchema>;
+export type MyOffice = z.infer<typeof myOfficeSchema>;
+export type Motion = z.infer<typeof motionSchema>;
+
+export function useCabinet(country: string) {
+  return useQuery({
+    queryKey: ['government', country, 'cabinet'],
+    queryFn: () => rows(supabase.rpc('get_cabinet', { p_country_code: country }), cabinetSchema),
+  });
+}
+
+export function useMyOffice() {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'office'],
+    enabled,
+    queryFn: async () => (await rows(supabase.rpc('get_my_office'), myOfficeSchema))[0] ?? null,
+  });
+}
+
+export function useMotions(country: string) {
+  return useQuery({
+    queryKey: ['government', country, 'motions'],
+    queryFn: () => rows(supabase.rpc('list_motions', { p_country_code: country }), motionSchema),
+  });
+}
