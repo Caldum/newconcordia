@@ -30,3 +30,4 @@ marked «Superseded by NNNN».
 | 0022 | Market licenses at 10 GOLD, and no buy orders | Accepted |
 | 0023 | Personal medical kits | Accepted |
 | 0024 | Parties and the party leaders' election | Accepted |
+| 0025 | National elections: the presidential ticket and Congress | Accepted |

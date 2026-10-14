@@ -141,6 +141,24 @@ export type Database = {
           server_time: string;
         }[];
       };
+      get_government: {
+        Args: { p_country_code: string };
+        Returns: {
+          name: string;
+          office: string;
+          party_name: string;
+          since: string;
+        }[];
+      };
+      get_last_national_election: {
+        Args: { p_country_code: string; p_kind: string };
+        Returns: {
+          ballots: number;
+          election_id: number;
+          proclaimed_at: string;
+          seats: number;
+        }[];
+      };
       get_last_party_election: {
         Args: { p_party_id: number };
         Returns: {
@@ -274,6 +292,24 @@ export type Database = {
           place: number;
         }[];
       };
+      get_national_election: {
+        Args: { p_country_code: string; p_kind: string };
+        Returns: {
+          ballots: number;
+          candidacies: number;
+          election_id: number;
+          i_can_vote: boolean;
+          i_voted: boolean;
+          registration_closes_at: string;
+          registration_opens_at: string;
+          seats: number;
+          status: string;
+          takes_office_at: string;
+          voters: number;
+          voting_ends_at: string;
+          voting_starts_at: string;
+        }[];
+      };
       get_party_election: {
         Args: { p_party_id: number };
         Returns: {
@@ -316,6 +352,14 @@ export type Database = {
           created_at: string;
           from_country_code: string;
           request_id: number;
+        }[];
+      };
+      list_congress: {
+        Args: { p_country_code: string };
+        Returns: {
+          name: string;
+          party_name: string;
+          since: string;
         }[];
       };
       list_countries: {
@@ -452,6 +496,17 @@ export type Database = {
           party_id: number;
         }[];
       };
+      list_party_lists: {
+        Args: { p_election_id: number };
+        Returns: {
+          candidacy_id: number;
+          candidates: string[];
+          party_name: string;
+          registered_at: string;
+          seats: number;
+          votes: number;
+        }[];
+      };
       list_party_members: {
         Args: { p_party_id: number };
         Returns: {
@@ -484,6 +539,18 @@ export type Database = {
         Returns: {
           category: string;
           code: string;
+        }[];
+      };
+      list_tickets: {
+        Args: { p_election_id: number };
+        Returns: {
+          candidacy_id: number;
+          elected: boolean;
+          party_name: string;
+          president_name: string;
+          registered_at: string;
+          vice_president_name: string;
+          votes: number;
         }[];
       };
       market_summary: {
@@ -521,6 +588,8 @@ export type Database = {
         Returns: number;
       };
       register_candidacy: { Args: Record<PropertyKey, never>; Returns: number };
+      register_party_list: { Args: { p_names: string[] }; Returns: number };
+      register_ticket: { Args: { p_president: string; p_vice_president: string }; Returns: number };
       request_citizenship: {
         Args: { p_country_code: string };
         Returns: {
@@ -559,6 +628,7 @@ export type Database = {
         Returns: number;
       };
       withdraw_offer: { Args: { p_offer_id: number }; Returns: undefined };
+      withdraw_party_candidacy: { Args: { p_kind: string }; Returns: undefined };
       work: {
         Args: { p_company_id?: number; p_key: string };
         Returns: {

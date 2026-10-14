@@ -1,6 +1,7 @@
 import { Note } from '@concordia/atlas/Note';
 
 import styles from '../../features/economy/economy.module.css';
+import { PoliticsTabs } from '../../features/politics/PoliticsTabs';
 import { useMyParty, useParties } from '../../features/politics/queries';
 import { useCurrentCitizen } from '../../features/shell/CurrentCitizen';
 import { useCountryName } from '../../features/world/useNames';
@@ -24,6 +25,7 @@ export function PartiesPage() {
 
   return (
     <main className={styles.page}>
+      <PoliticsTabs />
       <div className={styles.intro}>
         <h1 className="at-title-1">{copy.title(countryName(citizen.country_code))}</h1>
         <p className="at-body-l">{copy.intro}</p>

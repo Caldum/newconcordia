@@ -52,3 +52,25 @@ export function withdrawCandidacy() {
 export function vote(candidacyId: number) {
   return supabase.rpc('vote', { p_candidacy_id: candidacyId });
 }
+
+export interface NewTicket {
+  /** Citizen names, as the party leader picks them among the members. */
+  president: string;
+  vicePresident: string;
+}
+
+export function registerTicket(ticket: NewTicket) {
+  return supabase.rpc('register_ticket', {
+    p_president: ticket.president,
+    p_vice_president: ticket.vicePresident,
+  });
+}
+
+/** Names in list order. */
+export function registerPartyList(names: readonly string[]) {
+  return supabase.rpc('register_party_list', { p_names: [...names] });
+}
+
+export function withdrawPartyCandidacy(kind: 'president' | 'congress') {
+  return supabase.rpc('withdraw_party_candidacy', { p_kind: kind });
+}

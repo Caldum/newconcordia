@@ -121,3 +121,103 @@ export function useLastPartyElection(partyId: number) {
       )[0] ?? null,
   });
 }
+
+const nationalElectionSchema = z.object({
+  election_id: z.number().int(),
+  status: z.enum(['registration', 'voting', 'validation']),
+  registration_opens_at: z.string(),
+  registration_closes_at: z.string(),
+  voting_starts_at: z.string(),
+  voting_ends_at: z.string(),
+  takes_office_at: z.string(),
+  /** Congress: seats in play once candidacies close. */
+  seats: z.number().int().nullable(),
+  candidacies: z.number().int(),
+  voters: z.number().int(),
+  ballots: z.number().int(),
+  i_voted: z.boolean(),
+  i_can_vote: z.boolean(),
+});
+
+const ticketSchema = z.object({
+  candidacy_id: z.number().int(),
+  party_name: z.string(),
+  president_name: z.string(),
+  vice_president_name: z.string(),
+  registered_at: z.string(),
+  votes: z.number().int().nullable(),
+  elected: z.boolean(),
+});
+
+const partyListSchema = z.object({
+  candidacy_id: z.number().int(),
+  party_name: z.string(),
+  candidates: z.array(z.string()),
+  registered_at: z.string(),
+  votes: z.number().int().nullable(),
+  seats: z.number().int().nullable(),
+});
+
+const officeholderSchema = z.object({
+  office: z.enum(['president', 'vice_president']),
+  name: z.string(),
+  party_name: z.string().nullable(),
+  since: z.string(),
+});
+
+const congressMemberSchema = z.object({
+  name: z.string(),
+  party_name: z.string().nullable(),
+  since: z.string(),
+});
+
+export type ElectionKind = 'president' | 'congress';
+export type NationalElection = z.infer<typeof nationalElectionSchema>;
+export type Ticket = z.infer<typeof ticketSchema>;
+export type PartyList = z.infer<typeof partyListSchema>;
+export type Officeholder = z.infer<typeof officeholderSchema>;
+export type CongressMember = z.infer<typeof congressMemberSchema>;
+
+export function useNationalElection(country: string, kind: ElectionKind) {
+  return useQuery({
+    queryKey: ['elections', country, kind],
+    queryFn: async () =>
+      (
+        await rows(
+          supabase.rpc('get_national_election', { p_country_code: country, p_kind: kind }),
+          nationalElectionSchema,
+        )
+      )[0] ?? null,
+  });
+}
+
+export function useTickets(electionId: number) {
+  return useQuery({
+    queryKey: ['elections', 'tickets', electionId],
+    queryFn: () => rows(supabase.rpc('list_tickets', { p_election_id: electionId }), ticketSchema),
+  });
+}
+
+export function usePartyLists(electionId: number) {
+  return useQuery({
+    queryKey: ['elections', 'lists', electionId],
+    queryFn: () =>
+      rows(supabase.rpc('list_party_lists', { p_election_id: electionId }), partyListSchema),
+  });
+}
+
+export function useGovernment(country: string) {
+  return useQuery({
+    queryKey: ['elections', country, 'government'],
+    queryFn: () =>
+      rows(supabase.rpc('get_government', { p_country_code: country }), officeholderSchema),
+  });
+}
+
+export function useCongress(country: string) {
+  return useQuery({
+    queryKey: ['elections', country, 'congress-members'],
+    queryFn: () =>
+      rows(supabase.rpc('list_congress', { p_country_code: country }), congressMemberSchema),
+  });
+}

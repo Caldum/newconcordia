@@ -87,6 +87,9 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Partido, afiliado, líder | Party, member, leader | `parties`, `party_memberships`, `leader_user_id` |
 | Donación | Donation | `donate_to_party`, account kind `party` |
 | Elección, candidatura, padrón, voto | Election, candidacy, voter snapshot, ballot | `elections`, `candidacies`, `election_voters`, `ballots` |
+| Fórmula presidencial | Presidential ticket | candidacy with `user_id` and `running_mate_user_id` |
+| Lista de partido, banca | Party list, seat | `party_list_members`, `elections.seats`, `dhondt` |
+| Mandato | Mandate | `mandates` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

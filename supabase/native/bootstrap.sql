@@ -49,7 +49,8 @@ create table auth.users (
   raw_app_meta_data jsonb,
   raw_user_meta_data jsonb,
   created_at timestamptz,
-  updated_at timestamptz
+  updated_at timestamptz,
+  last_sign_in_at timestamptz
 );
 
 create function auth.uid()
