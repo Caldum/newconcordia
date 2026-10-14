@@ -157,6 +157,8 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-11-03 · P2 (owner's decision on PD-03): where each citizen is, on the side panel; travel opened, instant,
   at 0.0001 GOLD per real kilometre charged in the national currency at the 6-hour market rate or 500 per GOLD
   (ADR 0042).
+- 2026-11-03 · P3 (owner's decision): referrers earn 10% of the GOLD their referrals get from the system or buy
+  on the market (net) in their first 30 days, claimable 30 days more; a referral panel (ADR 0043).
 
 ## Next step
 

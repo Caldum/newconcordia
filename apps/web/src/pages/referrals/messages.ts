@@ -1,0 +1,58 @@
+import { defineMessages } from '../../i18n';
+
+export const messages = defineMessages({
+  es: {
+    documentTitle: 'Referidos · Concordia',
+    title: 'Referidos',
+    intro:
+      'Ganas el 10 % del oro que tus referidos consigan en sus primeros 30 días: lo que el juego les paga y lo que compran en el mercado, descontando lo que venden. Tienes 30 días más para reclamarlo; después vence.',
+    loadFailed: 'No se pudo cargar el panel. Recarga la página para intentar de nuevo.',
+    summaryTitle: 'Tu oro por referidos',
+    claimable: 'Para reclamar ahora',
+    earned: 'Ganado en total',
+    claimed: 'Ya reclamado',
+    nextExpiry: (date: string) => `El próximo vence el ${date}.`,
+    claim: (gold: string) => `Reclamar ${gold} de oro`,
+    nothing: 'No hay nada para reclamar ahora.',
+    claimedNow: (gold: string) => `Reclamaste ${gold} de oro.`,
+    listTitle: (count: number) => `Tus referidos · ${String(count)}`,
+    none: 'Todavía no tienes referidos. Comparte tu enlace.',
+    joined: (date: string) => `Llegó el ${date}`,
+    goldCounted: (earned: string, bought: string) =>
+      `Ganó ${earned} y compró ${bought} de oro neto`,
+    share: (due: string, claimed: string) => `Tu parte: ${due} · reclamado ${claimed}`,
+    earning: (date: string) => `Sumando hasta el ${date}`,
+    claimableUntil: (gold: string, date: string) => `${gold} para reclamar hasta el ${date}`,
+    done: 'Todo reclamado',
+    expired: (date: string) => `Venció el ${date}`,
+    error_nothing_to_claim: 'No hay nada para reclamar ahora.',
+    error_other: 'No se pudo completar. Revisa tu conexión y vuelve a intentar.',
+  },
+  en: {
+    documentTitle: 'Referrals · Concordia',
+    title: 'Referrals',
+    intro:
+      'You earn 10% of the gold your referrals get in their first 30 days: what the game pays them and what they buy on the market, minus what they sell. You have 30 more days to claim it; then it expires.',
+    loadFailed: 'The panel did not load. Reload the page to try again.',
+    summaryTitle: 'Your gold from referrals',
+    claimable: 'To claim now',
+    earned: 'Earned in total',
+    claimed: 'Already claimed',
+    nextExpiry: (date: string) => `The next one expires on ${date}.`,
+    claim: (gold: string) => `Claim ${gold} gold`,
+    nothing: 'There is nothing to claim now.',
+    claimedNow: (gold: string) => `You claimed ${gold} gold.`,
+    listTitle: (count: number) => `Your referrals · ${String(count)}`,
+    none: 'No referrals yet. Share your link.',
+    joined: (date: string) => `Arrived on ${date}`,
+    goldCounted: (earned: string, bought: string) =>
+      `Earned ${earned} and bought ${bought} gold net`,
+    share: (due: string, claimed: string) => `Your share: ${due} · claimed ${claimed}`,
+    earning: (date: string) => `Adding up until ${date}`,
+    claimableUntil: (gold: string, date: string) => `${gold} to claim until ${date}`,
+    done: 'All claimed',
+    expired: (date: string) => `Expired on ${date}`,
+    error_nothing_to_claim: 'There is nothing to claim now.',
+    error_other: 'It did not go through. Check your connection and try again.',
+  },
+});

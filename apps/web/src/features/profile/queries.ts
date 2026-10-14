@@ -60,7 +60,27 @@ const referralSchema = z.object({
   joined_at: z.string(),
 });
 
+const rewardSchema = z.object({
+  name: z.string(),
+  avatar_path: z.string().nullable(),
+  country_code: z.string(),
+  joined_at: z.string(),
+  /** Their GOLD counts until here. */
+  earning_until: z.string(),
+  /** The share can be claimed until here. */
+  claim_until: z.string(),
+  /** GOLD hundredths paid to them by the system in the window. */
+  gold_earned: z.number().int(),
+  /** GOLD hundredths they bought on the market, net of sales. */
+  gold_bought: z.number().int(),
+  due: z.number().int(),
+  claimed: z.number().int(),
+  claimable: z.number().int(),
+  status: z.enum(['earning', 'claimable', 'done', 'expired']),
+});
+
 export type ProfileDetails = z.infer<typeof detailsSchema>;
+export type ReferralReward = z.infer<typeof rewardSchema>;
 export type Achievement = z.infer<typeof achievementSchema>;
 export type Friend = z.infer<typeof friendSchema>;
 export type Referral = z.infer<typeof referralSchema>;
@@ -99,5 +119,15 @@ export function useReferrals() {
     queryKey: ['me', userId, 'referrals'],
     enabled,
     queryFn: () => rows(supabase.rpc('list_my_referrals'), referralSchema),
+  });
+}
+
+/** Each referral with the GOLD they got and the referrer's share: due, claimed and claimable. */
+export function useReferralRewards() {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'referral-rewards'],
+    enabled,
+    queryFn: () => rows(supabase.rpc('list_my_referral_rewards'), rewardSchema),
   });
 }

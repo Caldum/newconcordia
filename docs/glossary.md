@@ -144,6 +144,7 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Lingote (de oro) | Gold bar | GOLD on the side panel |
 | Viaje, ubicación | Trip, location | `travel`, `travel_events`, `citizens.region_code` |
 | Paridad oro/moneda | GOLD rate | `game.gold_rate` |
+| Recompensa por referidos | Referral reward | `referral_claims`, `claim_referral_rewards`, `referral_bonus` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

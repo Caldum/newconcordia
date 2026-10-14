@@ -182,6 +182,7 @@ export type Database = {
           streak: number;
         }[];
       };
+      claim_referral_rewards: { Args: Record<PropertyKey, never>; Returns: number };
       count_unread_messages: { Args: Record<PropertyKey, never>; Returns: number };
       count_unread_notifications: { Args: Record<PropertyKey, never>; Returns: number };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
@@ -1088,6 +1089,23 @@ export type Database = {
           price: number;
           quantity: number;
           sold: number;
+          status: string;
+        }[];
+      };
+      list_my_referral_rewards: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          avatar_path: string;
+          claim_until: string;
+          claimable: number;
+          claimed: number;
+          country_code: string;
+          due: number;
+          earning_until: string;
+          gold_bought: number;
+          gold_earned: number;
+          joined_at: string;
+          name: string;
           status: string;
         }[];
       };

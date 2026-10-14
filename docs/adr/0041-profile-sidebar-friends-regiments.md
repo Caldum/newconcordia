@@ -1,6 +1,6 @@
 # 0041 · Profile, side panel, pictures, friends, referrals and regiments
 
-Date: 2026-11-02 · Status: Accepted
+Date: 2026-11-02 · Status: Accepted · Point 5 replaced by ADR 0043
 
 ## Context
 

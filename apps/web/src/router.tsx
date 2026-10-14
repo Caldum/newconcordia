@@ -169,6 +169,12 @@ const profileSecurityRoute = createRoute({
   ),
 });
 
+const referralsRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/referrals',
+  component: lazyRouteComponent(() => import('./pages/referrals/ReferralsPage'), 'ReferralsPage'),
+});
+
 const travelRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/travel',
@@ -337,6 +343,7 @@ const routeTree = rootRoute.addChildren([
     profileSecurityRoute,
     regimentsRoute,
     travelRoute,
+    referralsRoute,
     accountRoute,
     workRoute,
     companiesRoute,

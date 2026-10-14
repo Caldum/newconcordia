@@ -53,9 +53,9 @@ export const messages = defineMessages({
     earnedOn: (date: string) => `Conseguido el ${date}`,
     notYet: 'Todavía no',
     referrals: (count: number) => `Referidos · ${String(count)}`,
-    referralHint: 'Quien se registre con tu enlace queda como tu referido. No da premios.',
-    copyLink: 'Copiar enlace',
-    copied: 'Enlace copiado',
+    referralHint:
+      'Quien se registre con tu enlace queda como tu referido. Ganas el 10 % del oro que consiga en sus primeros 30 días.',
+    referralPanel: 'Abrir el panel de referidos',
     joinedOn: (date: string) => `Llegó el ${date}`,
   },
   en: {
@@ -110,9 +110,9 @@ export const messages = defineMessages({
     earnedOn: (date: string) => `Earned on ${date}`,
     notYet: 'Not yet',
     referrals: (count: number) => `Referrals · ${String(count)}`,
-    referralHint: 'Whoever signs up with your link becomes your referral. It gives no rewards.',
-    copyLink: 'Copy link',
-    copied: 'Link copied',
+    referralHint:
+      'Whoever signs up with your link becomes your referral. You earn 10% of the gold they get in their first 30 days.',
+    referralPanel: 'Open the referral panel',
     joinedOn: (date: string) => `Arrived on ${date}`,
   },
 });

@@ -54,3 +54,8 @@ export function setMyReferrer(name: string) {
 export function changeEmail(email: string) {
   return supabase.auth.updateUser({ email }, { emailRedirectTo: emailRedirectTo() });
 }
+
+/** Claims every referral share that is claimable now; the GOLD paid, in hundredths. */
+export function claimReferralRewards() {
+  return supabase.rpc('claim_referral_rewards');
+}

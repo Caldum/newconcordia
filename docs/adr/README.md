@@ -48,3 +48,4 @@ marked «Superseded by NNNN».
 | 0040 | Daily missions, first steps, press and messages | Accepted |
 | 0041 | Profile, side panel, pictures, friends, referrals and regiments | Accepted |
 | 0042 | Travel priced by distance | Accepted |
+| 0043 | Referral rewards | Accepted |
