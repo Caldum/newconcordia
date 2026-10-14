@@ -70,6 +70,8 @@ export type Database = {
         Args: { p_company_id: number; p_employee_name: string; p_wage?: number };
         Returns: undefined;
       };
+      break_motion_tie: { Args: { p_choice: string; p_motion_id: number }; Returns: undefined };
+      break_tie: { Args: { p_bill_id: number; p_choice: string }; Returns: undefined };
       buy: {
         Args: { p_company_id?: number; p_key: string; p_offer_id: number; p_quantity: number };
         Returns: number;
@@ -223,6 +225,14 @@ export type Database = {
           to_country_code: string;
         }[];
       };
+      get_my_initiative: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          allowed: number;
+          office: string;
+          used: number;
+        }[];
+      };
       get_my_inventory: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -346,11 +356,43 @@ export type Database = {
           voting_starts_at: string;
         }[];
       };
+      issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
       join_party: { Args: { p_party_id: number }; Returns: undefined };
       join_waitlist: { Args: { p_country_code: string }; Returns: undefined };
       leave_job: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_party: { Args: Record<PropertyKey, never>; Returns: undefined };
       leave_waitlist: { Args: Record<PropertyKey, never>; Returns: undefined };
+      list_bill_votes: {
+        Args: { p_bill_id: number };
+        Returns: {
+          cast_at: string;
+          choice: string;
+          name: string;
+        }[];
+      };
+      list_bills: {
+        Args: { p_country_code: string };
+        Returns: {
+          abstain: number;
+          bill_id: number;
+          body: string;
+          closes_at: string;
+          failure: string;
+          kind: string;
+          majority: string;
+          members: number;
+          my_vote: string;
+          no: number;
+          opened_at: string;
+          proposed_by_name: string;
+          proposer_office: string;
+          status: string;
+          terms: Json;
+          tiebreak: string;
+          title: string;
+          yes: number;
+        }[];
+      };
       list_candidates: {
         Args: { p_election_id: number };
         Returns: {
@@ -392,6 +434,16 @@ export type Database = {
           name_es: string;
           official_name_en: string;
           official_name_es: string;
+        }[];
+      };
+      list_decrees: {
+        Args: { p_country_code: string };
+        Returns: {
+          body: string;
+          decree_id: number;
+          issued_at: string;
+          issued_by_name: string;
+          title: string;
         }[];
       };
       list_goods: {
@@ -632,6 +684,10 @@ export type Database = {
         };
         Returns: number;
       };
+      propose_bill: {
+        Args: { p_body: string; p_key: string; p_kind: string; p_terms: Json; p_title: string };
+        Returns: number;
+      };
       propose_impeachment: { Args: Record<PropertyKey, never>; Returns: number };
       propose_removal: { Args: { p_office: string }; Returns: number };
       register_candidacy: { Args: Record<PropertyKey, never>; Returns: number };
@@ -671,6 +727,7 @@ export type Database = {
         }[];
       };
       vote: { Args: { p_candidacy_id: number }; Returns: undefined };
+      vote_bill: { Args: { p_bill_id: number; p_choice: string }; Returns: undefined };
       vote_motion: { Args: { p_choice: string; p_motion_id: number }; Returns: undefined };
       withdraw_candidacy: { Args: Record<PropertyKey, never>; Returns: undefined };
       withdraw_from_company: {

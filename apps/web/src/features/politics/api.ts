@@ -1,5 +1,7 @@
 import { supabase } from '../../lib/supabase';
 
+import type { BillKind } from './billTerms';
+
 // Party and election actions. Founding and donating take the idempotency key; the rest are naturally
 // idempotent in the database (one membership, one candidacy, one ballot).
 
@@ -122,4 +124,49 @@ export function voteMotion({ motionId, choice }: MotionVote) {
 export async function leaveOffice(executive: boolean) {
   const { error } = executive ? await requestResignation() : await resignOffice();
   return { data: null, error };
+}
+
+export interface NewBill {
+  kind: BillKind;
+  title: string;
+  body: string;
+  /** Taxes as fractions, or the transfer's country and amount in hundredths; {} for ordinary laws. */
+  terms: Record<string, string | number>;
+}
+
+export function proposeBill(bill: NewBill, key: string) {
+  return supabase.rpc('propose_bill', {
+    p_kind: bill.kind,
+    p_title: bill.title,
+    p_body: bill.body,
+    p_terms: bill.terms,
+    p_key: key,
+  });
+}
+
+export interface BillVote {
+  billId: number;
+  choice: 'yes' | 'no' | 'abstain';
+}
+
+export function voteBill({ billId, choice }: BillVote) {
+  return supabase.rpc('vote_bill', { p_bill_id: billId, p_choice: choice });
+}
+
+export interface TieBreak {
+  billId: number;
+  choice: 'yes' | 'no';
+}
+
+export function breakTie({ billId, choice }: TieBreak) {
+  return supabase.rpc('break_tie', { p_bill_id: billId, p_choice: choice });
+}
+
+export interface NewDecree {
+  title: string;
+  body: string;
+}
+
+export function issueDecree(decree: NewDecree, key: string) {
+  return supabase.rpc('issue_decree', { p_title: decree.title, p_body: decree.body, p_key: key });
 }

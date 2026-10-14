@@ -289,3 +289,68 @@ export function useMotions(country: string) {
     queryFn: () => rows(supabase.rpc('list_motions', { p_country_code: country }), motionSchema),
   });
 }
+
+const billSchema = z.object({
+  bill_id: z.number().int(),
+  kind: z.enum(['ordinary', 'taxes', 'gold_transfer']),
+  title: z.string(),
+  body: z.string(),
+  terms: z.record(z.string(), z.union([z.string(), z.number()])),
+  majority: z.enum(['simple', 'two_thirds']),
+  proposed_by_name: z.string(),
+  proposer_office: z.string(),
+  /** Seats occupied at presentation: the base of the quorum. */
+  members: z.number().int(),
+  opened_at: z.string(),
+  closes_at: z.string(),
+  status: z.enum(['voting', 'counting', 'executed', 'rejected', 'not_executed']),
+  yes: z.number().int(),
+  no: z.number().int(),
+  abstain: z.number().int(),
+  tiebreak: z.enum(['yes', 'no']).nullable(),
+  failure: z.string().nullable(),
+  my_vote: z.enum(['yes', 'no', 'abstain']).nullable(),
+});
+
+const initiativeSchema = z.object({
+  office: z.string(),
+  used: z.number().int(),
+  /** Null: no limit (the president). */
+  allowed: z.number().int().nullable(),
+});
+
+const decreeSchema = z.object({
+  decree_id: z.number().int(),
+  title: z.string(),
+  body: z.string(),
+  issued_by_name: z.string(),
+  issued_at: z.string(),
+});
+
+export type Bill = z.infer<typeof billSchema>;
+export type Initiative = z.infer<typeof initiativeSchema>;
+export type Decree = z.infer<typeof decreeSchema>;
+
+export function useBills(country: string) {
+  return useQuery({
+    queryKey: ['laws', country, 'bills'],
+    queryFn: () => rows(supabase.rpc('list_bills', { p_country_code: country }), billSchema),
+  });
+}
+
+export function useMyInitiative() {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'initiative'],
+    enabled,
+    queryFn: async () =>
+      (await rows(supabase.rpc('get_my_initiative'), initiativeSchema))[0] ?? null,
+  });
+}
+
+export function useDecrees(country: string) {
+  return useQuery({
+    queryKey: ['laws', country, 'decrees'],
+    queryFn: () => rows(supabase.rpc('list_decrees', { p_country_code: country }), decreeSchema),
+  });
+}

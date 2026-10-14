@@ -217,6 +217,12 @@ const governmentRoute = createRoute({
   ),
 });
 
+const lawsRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/laws',
+  component: lazyRouteComponent(() => import('./pages/laws/LawsPage'), 'LawsPage'),
+});
+
 const adminRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/admin',
@@ -250,6 +256,7 @@ const routeTree = rootRoute.addChildren([
     partiesRoute,
     electionsRoute,
     governmentRoute,
+    lawsRoute,
     adminRoute,
   ]),
 ]);

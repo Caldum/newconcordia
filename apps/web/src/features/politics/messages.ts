@@ -6,11 +6,13 @@ export const messages = defineMessages({
     parties: 'Partidos',
     elections: 'Elecciones',
     government: 'Gobierno',
+    laws: 'Leyes',
   },
   en: {
     tabs: 'Politics',
     parties: 'Parties',
     elections: 'Elections',
     government: 'Government',
+    laws: 'Laws',
   },
 });

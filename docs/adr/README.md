@@ -32,3 +32,4 @@ marked «Superseded by NNNN».
 | 0024 | Parties and the party leaders' election | Accepted |
 | 0025 | National elections: the presidential ticket and Congress | Accepted |
 | 0026 | Offices, incompatibilities and succession | Accepted |
+| 0027 | Bills, budget escrow and decrees | Accepted |

@@ -10,7 +10,7 @@ const current = {
   activeOptions: { exact: true },
 };
 
-/** Parties, elections and the government. */
+/** Parties, elections, the government and the laws. */
 export function PoliticsTabs() {
   const copy = useMessages(messages);
   return (
@@ -23,6 +23,9 @@ export function PoliticsTabs() {
       </Link>
       <Link to="/government" {...current}>
         {copy.government}
+      </Link>
+      <Link to="/laws" {...current}>
+        {copy.laws}
       </Link>
     </nav>
   );

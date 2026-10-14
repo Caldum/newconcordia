@@ -93,6 +93,10 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Ministro, gobernador del Banco Central | Minister, Central Bank governor | `offices` (`minister_*`, `central_bank_governor`) |
 | Sucesión | Succession | `fill_executive`, `succession_events` |
 | Moción (renuncia, remoción, juicio político) | Motion (resignation, removal, impeachment) | `congress_motions`, `motion_votes` |
+| Proyecto de ley (ordinaria, impuestos, transferencia de Oro) | Bill (ordinary, taxes, gold transfer) | `bills`, `bill_votes`, `bill_reservations` |
+| Desempate de la vicepresidencia | Vice president's tie-break | `bills.tiebreak`, `congress_motions.tiebreak` |
+| Aprobada pero no ejecutada | Approved but not executed | `bills.status = not_executed` |
+| Decreto | Decree | `decrees` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |
