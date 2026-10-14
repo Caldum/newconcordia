@@ -66,6 +66,10 @@ export type Database = {
       am_i_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       appoint_governor: { Args: { p_name: string }; Returns: undefined };
       appoint_minister: { Args: { p_ministry: string; p_name: string }; Returns: undefined };
+      authorize_cb_transfer: {
+        Args: { p_amount: number; p_company_name: string; p_currency: string };
+        Returns: number;
+      };
       authorize_second_shift: {
         Args: { p_company_id: number; p_employee_name: string; p_wage?: number };
         Returns: undefined;
@@ -80,7 +84,12 @@ export type Database = {
         Args: { p_key: string; p_market_country_code: string };
         Returns: number;
       };
+      cancel_cb_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
+      central_bank_to_treasury: {
+        Args: { p_amount: number; p_currency: string; p_key: string };
+        Returns: number;
+      };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
       create_my_citizen: {
@@ -100,6 +109,7 @@ export type Database = {
         Args: { p_amount: number; p_currency: string; p_key: string; p_party_id: number };
         Returns: undefined;
       };
+      execute_cb_transfer: { Args: { p_authorization_id: number }; Returns: number };
       found_company: {
         Args: { p_good_code: string; p_key: string; p_name: string; p_region_code: string };
         Returns: number;
@@ -110,6 +120,49 @@ export type Database = {
       };
       fund_company: {
         Args: { p_amount: number; p_company_id: number; p_key: string };
+        Returns: number;
+      };
+      fx_book: {
+        Args: { p_currency: string };
+        Returns: {
+          gold_amount: number;
+          is_central_bank: boolean;
+          mine: boolean;
+          offer_id: number;
+          owner_name: string;
+          price: number;
+          side: string;
+        }[];
+      };
+      fx_cancel: { Args: { p_offer_id: number }; Returns: undefined };
+      fx_post_offer: {
+        Args: {
+          p_central_bank?: boolean;
+          p_currency: string;
+          p_gold_amount: number;
+          p_key: string;
+          p_price: number;
+          p_side: string;
+        };
+        Returns: number;
+      };
+      fx_summary: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          best_buy: number;
+          best_sell: number;
+          currency_code: string;
+          last_price: number;
+          volume_24h: number;
+        }[];
+      };
+      fx_take: {
+        Args: {
+          p_central_bank?: boolean;
+          p_gold_amount: number;
+          p_key: string;
+          p_offer_id: number;
+        };
         Returns: number;
       };
       get_cabinet: {
@@ -421,6 +474,21 @@ export type Database = {
           votes: number;
         }[];
       };
+      list_cb_authorizations: {
+        Args: { p_country_code: string };
+        Returns: {
+          amount: number;
+          authorization_id: number;
+          authorized_by_name: string;
+          closed_at: string;
+          company_id: number;
+          company_name: string;
+          created_at: string;
+          currency_code: string;
+          executed_by_name: string;
+          status: string;
+        }[];
+      };
       list_citizenship_requests: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -559,6 +627,19 @@ export type Database = {
           shifts_today: number;
           vacancies: number;
           wage: number;
+        }[];
+      };
+      list_my_fx_offers: {
+        Args: { p_central_bank?: boolean };
+        Returns: {
+          created_at: string;
+          currency_code: string;
+          gold_amount: number;
+          initial_gold_amount: number;
+          offer_id: number;
+          price: number;
+          side: string;
+          status: string;
         }[];
       };
       list_my_market_licenses: {

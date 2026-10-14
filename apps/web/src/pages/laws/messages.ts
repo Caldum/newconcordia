@@ -14,6 +14,9 @@ export const messages = defineMessages({
     kind_gold_transfer: 'Transferencia de Oro',
     kind_ministry_allocation: 'Presupuesto para un ministerio',
     kind_currency_issuance: 'Emisión de moneda',
+    kind_central_bank_allocation: 'Fondos para el Banco Central',
+    bankAllocationLine: (gold: string, credit: string) =>
+      `${gold} Oro y ${credit} Crédito del Tesoro al Banco Central. Quedan reservados mientras se vota.`,
     ministry: 'Ministerio',
     ministry_economy: 'Economía',
     ministry_defense: 'Defensa',
@@ -127,6 +130,9 @@ export const messages = defineMessages({
     kind_gold_transfer: 'Gold transfer',
     kind_ministry_allocation: 'Budget for a ministry',
     kind_currency_issuance: 'Currency issuance',
+    kind_central_bank_allocation: 'Funds for the Central Bank',
+    bankAllocationLine: (gold: string, credit: string) =>
+      `${gold} Gold and ${credit} Credit from the Treasury to the Central Bank. Reserved while the vote lasts.`,
     ministry: 'Ministry',
     ministry_economy: 'Economy',
     ministry_defense: 'Defense',

@@ -12,6 +12,9 @@ const named = [
   'work_tax',
   'market_license',
   'candidacy_fee',
+  'central_bank_allocation',
+  'central_bank_transfer',
+  'fx_trade',
 ] as const;
 
 export type MovementKind = (typeof named)[number] | 'other';

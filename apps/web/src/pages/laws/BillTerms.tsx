@@ -37,6 +37,17 @@ export function BillTerms({ bill }: { bill: Bill }) {
       </>
     );
   }
+  if (bill.kind === 'central_bank_allocation') {
+    return (
+      <>
+        <br />
+        {copy.bankAllocationLine(
+          formatMoney(Number(bill.terms.gold), locale),
+          formatMoney(Number(bill.terms.credit), locale),
+        )}
+      </>
+    );
+  }
   if (bill.kind === 'currency_issuance') {
     return (
       <>

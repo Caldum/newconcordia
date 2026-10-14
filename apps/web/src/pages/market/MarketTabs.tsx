@@ -10,7 +10,7 @@ const current = {
   activeOptions: { exact: true },
 };
 
-/** Buying, selling and the licenses for other countries' markets. */
+/** Buying, selling, the licenses for other countries' markets and currency exchange. */
 export function MarketTabs() {
   const copy = useMessages(messages);
   return (
@@ -23,6 +23,9 @@ export function MarketTabs() {
       </Link>
       <Link to="/market/licenses" {...current}>
         {copy.licensesTab}
+      </Link>
+      <Link to="/market/fx" {...current}>
+        {copy.fxTab}
       </Link>
     </nav>
   );

@@ -81,6 +81,10 @@ describe('issuanceTerms', () => {
 describe('billTerms', () => {
   it('reads the fields of each kind', () => {
     expect(billTerms('ordinary', emptyBillDraft)).toEqual({});
+    expect(billTerms('central_bank_allocation', { ...emptyBillDraft, amount: '40' })).toEqual({
+      gold: 4000,
+      credit: 0,
+    });
     expect(billTerms('currency_issuance', { ...emptyBillDraft, amount: '5' })).toEqual({
       amount: 500,
     });

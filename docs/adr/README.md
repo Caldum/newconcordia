@@ -34,3 +34,4 @@ marked «Superseded by NNNN».
 | 0026 | Offices, incompatibilities and succession | Accepted |
 | 0027 | Bills, budget escrow and decrees | Accepted |
 | 0028 | Treasury, ministries and the public audit | Accepted |
+| 0029 | Central Bank and foreign exchange | Accepted |

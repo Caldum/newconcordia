@@ -8,6 +8,7 @@ export const messages = defineMessages({
     buyTab: 'Comprar',
     sellTab: 'Vender',
     licensesTab: 'Licencias',
+    fxTab: 'Divisas',
     market: 'Mercado',
     title: (country: string) => `Mercado de ${country}`,
     intro: (vat: string, tariff: string) =>
@@ -90,6 +91,7 @@ export const messages = defineMessages({
     buyTab: 'Buy',
     sellTab: 'Sell',
     licensesTab: 'Licenses',
+    fxTab: 'Exchange',
     market: 'Market',
     title: (country: string) => `Market of ${country}`,
     intro: (vat: string, tariff: string) =>

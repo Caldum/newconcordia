@@ -25,6 +25,7 @@ const kinds: readonly BillKind[] = [
   'gold_transfer',
   'ministry_allocation',
   'currency_issuance',
+  'central_bank_allocation',
 ];
 
 /** Presenting a bill: its kind, title, text and terms. Once presented it cannot be withdrawn. */
@@ -152,8 +153,13 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
               }}
             />
           ) : null}
-          {kind === 'ministry_allocation' ? (
-            <AllocationFields draft={draft} invalid={invalid} onChange={change} />
+          {kind === 'ministry_allocation' || kind === 'central_bank_allocation' ? (
+            <AllocationFields
+              draft={draft}
+              invalid={invalid}
+              toCentralBank={kind === 'central_bank_allocation'}
+              onChange={change}
+            />
           ) : null}
           {kind === 'currency_issuance' ? (
             <Field

@@ -7,13 +7,15 @@ import { useCountryName } from '../../features/world/useNames';
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
+import { AuthorizationsPanel } from './AuthorizationsPanel';
+import { CentralBankPanel } from './CentralBankPanel';
 import { messages } from './messages';
 import { MinistryPanel } from './MinistryPanel';
 import { MinistryStock } from './MinistryStock';
 import { PublicFundsPanel } from './PublicFundsPanel';
 import { PublicMovementsPanel } from './PublicMovementsPanel';
 
-/** `/finances`: the public funds and movements of the State, and the minister's own ministry. */
+/** `/finances`: the State's public funds and movements, the minister's ministry, the Central Bank and its authorizations. */
 export function FinancesPage() {
   const copy = useMessages(messages);
   useDocumentTitle(copy.documentTitle);
@@ -36,7 +38,12 @@ export function FinancesPage() {
         </div>
         <div className={styles.column}>
           {ministry ? <MinistryPanel ministry={ministry} /> : null}
+          {office === 'central_bank_governor' ? <CentralBankPanel /> : null}
           {office === 'president' ? <MinistryStock ministry="health" /> : null}
+          <AuthorizationsPanel
+            isEconomyMinister={office === 'minister_economy'}
+            isGovernor={office === 'central_bank_governor'}
+          />
         </div>
       </div>
     </main>

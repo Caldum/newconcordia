@@ -11,35 +11,44 @@ import { messages } from './messages';
 interface AllocationFieldsProps {
   draft: BillDraft;
   invalid: boolean;
+  /** The Central Bank receives the funds: no ministry to pick. */
+  toCentralBank: boolean;
   onChange: (patch: Partial<BillDraft>) => void;
 }
 
-/** Which ministry receives funds from the Treasury, and how much Gold and Credit. */
-export function AllocationFields({ draft, invalid, onChange }: AllocationFieldsProps) {
+/** Which ministry (or the Central Bank) receives funds from the Treasury, and how much Gold and Credit. */
+export function AllocationFields({
+  draft,
+  invalid,
+  toCentralBank,
+  onChange,
+}: AllocationFieldsProps) {
   const copy = useMessages(messages);
   const selectId = useId();
 
   return (
     <>
-      <div className={styles.field}>
-        <label htmlFor={selectId} className={styles.label}>
-          {copy.ministry}
-        </label>
-        <select
-          id={selectId}
-          className={styles.select}
-          value={draft.ministry}
-          onChange={(event) => {
-            onChange({ ministry: event.target.value as MinistryCode });
-          }}
-        >
-          {ministries.map((code) => (
-            <option key={code} value={code}>
-              {copy[`ministry_${code}`]}
-            </option>
-          ))}
-        </select>
-      </div>
+      {toCentralBank ? null : (
+        <div className={styles.field}>
+          <label htmlFor={selectId} className={styles.label}>
+            {copy.ministry}
+          </label>
+          <select
+            id={selectId}
+            className={styles.select}
+            value={draft.ministry}
+            onChange={(event) => {
+              onChange({ ministry: event.target.value as MinistryCode });
+            }}
+          >
+            {ministries.map((code) => (
+              <option key={code} value={code}>
+                {copy[`ministry_${code}`]}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       <Field
         label={copy.allocationGold}
         inputMode="decimal"

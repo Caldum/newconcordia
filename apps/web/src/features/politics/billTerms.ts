@@ -1,7 +1,12 @@
 import { parseAmount } from '../ledger/amount';
 
 export type BillKind =
-  'ordinary' | 'taxes' | 'gold_transfer' | 'ministry_allocation' | 'currency_issuance';
+  | 'ordinary'
+  | 'taxes'
+  | 'gold_transfer'
+  | 'ministry_allocation'
+  | 'currency_issuance'
+  | 'central_bank_allocation';
 
 export const taxKeys = ['vat', 'tariff', 'work_tax', 'export_tax'] as const;
 export type TaxKey = (typeof taxKeys)[number];
@@ -122,5 +127,9 @@ export function billTerms(
       return allocationTerms(draft.ministry, draft.amount, draft.credit);
     case 'currency_issuance':
       return issuanceTerms(draft.amount);
+    case 'central_bank_allocation': {
+      const terms = allocationTerms(draft.ministry, draft.amount, draft.credit);
+      return terms && { gold: terms.gold, credit: terms.credit };
+    }
   }
 }

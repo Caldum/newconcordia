@@ -103,6 +103,9 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Emisión de moneda | Currency issuance | `bills.kind = currency_issuance`, mint reason `currency_issuance` |
 | Pago ministerial | Ministerial payment | `ministry_pay` |
 | Auditoría pública | Public audit | `list_public_movements` |
+| Banco Central | Central Bank | `accounts.kind = central_bank`, `require_governor` |
+| Divisas (oferta de cambio) | Foreign exchange (FX offer) | `fx_offers`, `fx_trades` |
+| Autorización de transferencia | Transfer authorization | `cb_authorizations` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |
