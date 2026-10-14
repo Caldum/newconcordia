@@ -1,3 +1,4 @@
+import type { MinistryCode } from '../../features/politics/billTerms';
 import type { Bill } from '../../features/politics/queries';
 import { useCountryName } from '../../features/world/useNames';
 import { formatMoney, formatPercent, useLocale, useMessages } from '../../i18n';
@@ -20,6 +21,27 @@ export function BillTerms({ bill }: { bill: Bill }) {
           formatMoney(Number(bill.terms.amount), locale),
           countryName(String(bill.terms.country_code)),
         )}
+      </>
+    );
+  }
+  if (bill.kind === 'ministry_allocation') {
+    const ministry = String(bill.terms.ministry) as MinistryCode;
+    return (
+      <>
+        <br />
+        {copy.allocationLine(
+          formatMoney(Number(bill.terms.gold), locale),
+          formatMoney(Number(bill.terms.credit), locale),
+          copy[`ministry_${ministry}`],
+        )}
+      </>
+    );
+  }
+  if (bill.kind === 'currency_issuance') {
+    return (
+      <>
+        <br />
+        {copy.issuanceLine(formatMoney(Number(bill.terms.amount), locale))}
       </>
     );
   }

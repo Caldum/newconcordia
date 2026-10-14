@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-10-19.
+Last update: 2026-10-20.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -117,12 +117,15 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-10-19 · G4: bills with initiative limits per term, 24-hour votes, quorum and simple majority with the vice
   president's tie-break (also on resignations), budget escrow from presentation, atomic execution or approved but
   not executed; tax and Gold transfer laws; presidential decrees; a Laws tab (ADR 0027).
+- 2026-10-20 · G5: ministry and Central Bank accounts, budgets for ministries and currency issuance by law,
+  ministerial payments and purchases within competences, the public audit of institutional money, ministry stock
+  private to its minister and the president; a Finances tab (ADR 0028).
 
 ## Next step
 
 Stage 1 (R1–R7) is on `develop` and in the development project. Next, Stage 2 of `docs/roadmap.md`:
 
-1. G5–G6: treasury and ministries, Central Bank and FX.
+1. G6: Central Bank and FX.
 2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
 3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

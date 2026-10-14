@@ -292,7 +292,7 @@ export function useMotions(country: string) {
 
 const billSchema = z.object({
   bill_id: z.number().int(),
-  kind: z.enum(['ordinary', 'taxes', 'gold_transfer']),
+  kind: z.enum(['ordinary', 'taxes', 'gold_transfer', 'ministry_allocation', 'currency_issuance']),
   title: z.string(),
   body: z.string(),
   terms: z.record(z.string(), z.union([z.string(), z.number()])),

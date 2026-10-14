@@ -189,6 +189,14 @@ export type Database = {
           required: boolean;
         }[];
       };
+      get_ministry_stock: {
+        Args: { p_ministry: string };
+        Returns: {
+          good_code: string;
+          origin_country_code: string;
+          quantity: number;
+        }[];
+      };
       get_my_balances: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -354,6 +362,15 @@ export type Database = {
           voters: number;
           voting_ends_at: string;
           voting_starts_at: string;
+        }[];
+      };
+      get_public_finances: {
+        Args: { p_country_code: string };
+        Returns: {
+          balance: number;
+          currency_code: string;
+          held: number;
+          institution: string;
         }[];
       };
       issue_decree: { Args: { p_body: string; p_key: string; p_title: string }; Returns: number };
@@ -613,6 +630,21 @@ export type Database = {
           name: string;
         }[];
       };
+      list_public_movements: {
+        Args: { p_before?: number; p_country_code: string };
+        Returns: {
+          amount: number;
+          counterparty_kind: string;
+          counterparty_name: string;
+          created_at: string;
+          currency_code: string;
+          institution: string;
+          kind: string;
+          memo: string;
+          ordered_by: string;
+          posting_id: number;
+        }[];
+      };
       list_region_resources: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -662,6 +694,21 @@ export type Database = {
           tariff: number;
           vat: number;
         }[];
+      };
+      ministry_buy: {
+        Args: { p_key: string; p_offer_id: number; p_quantity: number };
+        Returns: number;
+      };
+      ministry_pay: {
+        Args: {
+          p_amount: number;
+          p_citizen_name?: string;
+          p_company_id?: number;
+          p_concept: string;
+          p_currency: string;
+          p_key: string;
+        };
+        Returns: number;
       };
       move_goods: {
         Args: {

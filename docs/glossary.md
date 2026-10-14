@@ -97,6 +97,12 @@ fixes the correspondence. When a new term appears in the code, it is added here 
 | Desempate de la vicepresidencia | Vice president's tie-break | `bills.tiebreak`, `congress_motions.tiebreak` |
 | Aprobada pero no ejecutada | Approved but not executed | `bills.status = not_executed` |
 | Decreto | Decree | `decrees` |
+| Tesoro | Treasury | `accounts.kind = treasury` |
+| Cuenta de un ministerio | Ministry account | `accounts.kind = ministry`, `ministry_account` |
+| Presupuesto (asignación por ley) | Allocation by law | `bills.kind = ministry_allocation` |
+| Emisión de moneda | Currency issuance | `bills.kind = currency_issuance`, mint reason `currency_issuance` |
+| Pago ministerial | Ministerial payment | `ministry_pay` |
+| Auditoría pública | Public audit | `list_public_movements` |
 | Usar un botiquín | Use a kit | `use_kit`, `kit_uses` |
 | Licencia de mercado extranjero | Foreign market license | `market_access_licenses`, `buy_market_license` (10 GOLD) |
 | Inventario | Inventory | `inventories` |

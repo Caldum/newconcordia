@@ -7,6 +7,7 @@ export const messages = defineMessages({
     elections: 'Elecciones',
     government: 'Gobierno',
     laws: 'Leyes',
+    finances: 'Finanzas',
   },
   en: {
     tabs: 'Politics',
@@ -14,5 +15,6 @@ export const messages = defineMessages({
     elections: 'Elections',
     government: 'Government',
     laws: 'Laws',
+    finances: 'Finances',
   },
 });

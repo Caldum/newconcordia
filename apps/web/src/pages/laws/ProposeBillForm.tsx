@@ -9,16 +9,23 @@ import { useGameAction } from '../../features/actions/useGameAction';
 import styles from '../../features/economy/economy.module.css';
 import { proposeBill } from '../../features/politics/api';
 import type { NewBill } from '../../features/politics/api';
-import { emptyTaxDraft, taxTerms, transferTerms } from '../../features/politics/billTerms';
-import type { BillKind, TaxDraft } from '../../features/politics/billTerms';
+import { billTerms, emptyBillDraft } from '../../features/politics/billTerms';
+import type { BillDraft, BillKind } from '../../features/politics/billTerms';
 import type { Initiative } from '../../features/politics/queries';
 import { useMessages } from '../../i18n';
 
+import { AllocationFields } from './AllocationFields';
 import { messages } from './messages';
 import { TaxFields } from './TaxFields';
 import { TransferFields } from './TransferFields';
 
-const kinds: readonly BillKind[] = ['ordinary', 'taxes', 'gold_transfer'];
+const kinds: readonly BillKind[] = [
+  'ordinary',
+  'taxes',
+  'gold_transfer',
+  'ministry_allocation',
+  'currency_issuance',
+];
 
 /** Presenting a bill: its kind, title, text and terms. Once presented it cannot be withdrawn. */
 export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
@@ -27,33 +34,31 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
   const [kind, setKind] = useState<BillKind>('ordinary');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [taxes, setTaxes] = useState<TaxDraft>(emptyTaxDraft);
-  const [country, setCountry] = useState<string | null>(null);
-  const [amount, setAmount] = useState('');
+  const [draft, setDraft] = useState<BillDraft>(emptyBillDraft);
   const [checked, setChecked] = useState(false);
   const propose = useGameAction((key, bill: NewBill) => proposeBill(bill, key), {
-    refreshes: [['laws']],
+    refreshes: [['laws'], ['finances']],
     onSuccess: () => {
       setTitle('');
       setBody('');
-      setTaxes(emptyTaxDraft);
-      setAmount('');
+      setDraft(emptyBillDraft);
       setChecked(false);
     },
   });
   const left = initiative.allowed === null ? null : initiative.allowed - initiative.used;
   const titleValid = title.trim().length >= 3 && title.trim().length <= 120;
-  const terms =
-    kind === 'taxes'
-      ? taxTerms(taxes)
-      : kind === 'gold_transfer'
-        ? transferTerms(country, amount)
-        : {};
+  const terms = billTerms(kind, draft);
+  const invalid = checked && terms === null;
 
   /** Any change is a new request: a new key, and the last outcome no longer applies. */
   const edit = (apply: () => void) => {
     apply();
     propose.changed();
+  };
+  const change = (patch: Partial<BillDraft>) => {
+    edit(() => {
+      setDraft((current) => ({ ...current, ...patch }));
+    });
   };
 
   return (
@@ -127,29 +132,39 @@ export function ProposeBillForm({ initiative }: { initiative: Initiative }) {
           />
           {kind === 'taxes' ? (
             <TaxFields
-              draft={taxes}
-              invalid={checked && terms === null}
-              onChange={(draft) => {
-                edit(() => {
-                  setTaxes(draft);
-                });
+              draft={draft.taxes}
+              invalid={invalid}
+              onChange={(taxes) => {
+                change({ taxes });
               }}
             />
           ) : null}
           {kind === 'gold_transfer' ? (
             <TransferFields
-              country={country}
-              amount={amount}
-              invalid={checked && terms === null}
-              onCountry={(code) => {
-                edit(() => {
-                  setCountry(code);
-                });
+              country={draft.country}
+              amount={draft.amount}
+              invalid={invalid}
+              onCountry={(country) => {
+                change({ country });
               }}
-              onAmount={(text) => {
-                edit(() => {
-                  setAmount(text);
-                });
+              onAmount={(amount) => {
+                change({ amount });
+              }}
+            />
+          ) : null}
+          {kind === 'ministry_allocation' ? (
+            <AllocationFields draft={draft} invalid={invalid} onChange={change} />
+          ) : null}
+          {kind === 'currency_issuance' ? (
+            <Field
+              label={copy.issuanceAmount}
+              hint={copy.issuanceHint}
+              inputMode="decimal"
+              autoComplete="off"
+              value={draft.amount}
+              error={invalid ? copy.amountInvalid : undefined}
+              onChange={(event) => {
+                change({ amount: event.target.value });
               }}
             />
           ) : null}

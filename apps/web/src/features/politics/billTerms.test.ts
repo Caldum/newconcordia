@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import { emptyTaxDraft, parsePercent, taxTerms, transferTerms } from './billTerms';
+import {
+  allocationTerms,
+  billTerms,
+  emptyBillDraft,
+  emptyTaxDraft,
+  issuanceTerms,
+  parsePercent,
+  taxTerms,
+  transferTerms,
+} from './billTerms';
 
 describe('parsePercent', () => {
   it('reads whole and decimal percentages', () => {
@@ -39,5 +48,49 @@ describe('transferTerms', () => {
     expect(transferTerms('BRA', '40')).toEqual({ country_code: 'BRA', amount: 4000 });
     expect(transferTerms(null, '40')).toBeNull();
     expect(transferTerms('BRA', '0')).toBeNull();
+  });
+});
+
+describe('allocationTerms', () => {
+  it('takes Gold, Credit or both', () => {
+    expect(allocationTerms('health', '30', '500')).toEqual({
+      ministry: 'health',
+      gold: 3000,
+      credit: 50000,
+    });
+    expect(allocationTerms('defense', '', '10,5')).toEqual({
+      ministry: 'defense',
+      gold: 0,
+      credit: 1050,
+    });
+  });
+
+  it('is null with nothing or an invalid amount', () => {
+    expect(allocationTerms('health', '', '')).toBeNull();
+    expect(allocationTerms('health', 'diez', '')).toBeNull();
+  });
+});
+
+describe('issuanceTerms', () => {
+  it('needs a positive amount', () => {
+    expect(issuanceTerms('2000')).toEqual({ amount: 200000 });
+    expect(issuanceTerms('0')).toBeNull();
+  });
+});
+
+describe('billTerms', () => {
+  it('reads the fields of each kind', () => {
+    expect(billTerms('ordinary', emptyBillDraft)).toEqual({});
+    expect(billTerms('currency_issuance', { ...emptyBillDraft, amount: '5' })).toEqual({
+      amount: 500,
+    });
+    expect(billTerms('gold_transfer', { ...emptyBillDraft, amount: '5' })).toBeNull();
+    expect(
+      billTerms('ministry_allocation', { ...emptyBillDraft, ministry: 'defense', credit: '5' }),
+    ).toEqual({
+      ministry: 'defense',
+      gold: 0,
+      credit: 500,
+    });
   });
 });
