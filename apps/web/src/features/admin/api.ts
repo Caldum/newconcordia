@@ -22,6 +22,11 @@ export function startIndependenceWar({ country, target }: IndependenceWarStart) 
   });
 }
 
+/** Marks an anti-abuse signal reviewed, with a note; audited. */
+export function reviewAbuseSignal(signalId: number, note: string) {
+  return supabase.rpc('admin_review_abuse_signal', { p_signal_id: signalId, p_note: note });
+}
+
 /** Schedules a country or a region on or off; the database checks the admin and logs it. */
 export function schedule({ target, code, on }: Schedule) {
   return target === 'country'

@@ -39,6 +39,24 @@ const logSchema = z.object({
 
 const teamSchema = z.object({ name: z.string(), email: z.string(), added_at: z.string() });
 
+const signalSchema = z.object({
+  signal_id: z.number().int(),
+  kind: z.enum([
+    'shared_ip',
+    'self_trading',
+    'large_transfer',
+    'hold_inconsistent',
+    'ledger_imbalance',
+  ]),
+  user_name: z.string().nullable(),
+  other_name: z.string().nullable(),
+  detail: z.record(z.string(), z.unknown()),
+  created_at: z.string(),
+  reviewed_at: z.string().nullable(),
+  review_note: z.string().nullable(),
+});
+
+export type AbuseSignal = z.infer<typeof signalSchema>;
 export type AdminCountry = z.infer<typeof countrySchema>;
 export type AdminRegion = z.infer<typeof regionSchema>;
 export type AdminLogEntry = z.infer<typeof logSchema>;
@@ -61,6 +79,10 @@ function useAdminQuery<T>(name: string, schema: z.ZodType<T>, enabled = true) {
 /** Whether the signed-in account administers the game (the database decides every action anyway). */
 export function useIsAdmin() {
   return useAdminQuery('am_i_admin', z.boolean());
+}
+
+export function useAbuseSignals(enabled: boolean) {
+  return useAdminQuery('admin_list_abuse_signals', z.array(signalSchema), enabled);
 }
 
 export function useAdminCountries(enabled: boolean) {

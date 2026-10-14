@@ -42,3 +42,4 @@ marked «Superseded by NNNN».
 | 0034 | Resistance | Accepted |
 | 0035 | Diplomacy, travel and presence | Accepted |
 | 0036 | Independence war sandbox | Accepted |
+| 0037 | Rate limits and abuse signals | Accepted |

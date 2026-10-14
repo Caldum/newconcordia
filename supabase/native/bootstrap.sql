@@ -53,6 +53,16 @@ create table auth.users (
   last_sign_in_at timestamptz
 );
 
+-- Sessions with the address they came from: the anti-abuse scan (L1) reads them.
+create table auth.sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users (id) on delete cascade,
+  created_at timestamptz,
+  updated_at timestamptz,
+  user_agent text,
+  ip inet
+);
+
 create function auth.uid()
 returns uuid
 language sql

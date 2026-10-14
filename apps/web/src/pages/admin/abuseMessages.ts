@@ -1,0 +1,38 @@
+import { defineMessages } from '../../i18n';
+
+export const abuseMessages = defineMessages({
+  es: {
+    title: 'Señales de abuso',
+    hint: 'Las detecta el juego cada hora. No cambian ninguna regla: revísalas y deja una nota. Las direcciones IP nunca se muestran.',
+    none: 'No hay señales pendientes.',
+    kind_shared_ip: 'Dos cuentas desde la misma dirección',
+    kind_self_trading: 'Comercio entre cuentas que comparten dirección',
+    kind_large_transfer: 'Transferencia grande entre ciudadanos',
+    kind_hold_inconsistent: 'Reserva de fondos inconsistente',
+    kind_ledger_imbalance: 'Moneda que no suma cero',
+    note: 'Nota',
+    review: 'Marcar revisada',
+    reviewed: 'Señal revisada.',
+    error_not_admin: 'Solo la administración puede hacerlo.',
+    error_signal_not_found: 'Esa señal no existe.',
+    error_signal_reviewed: 'Esa señal ya fue revisada.',
+    error_other: 'No se pudo completar. Revisa tu conexión y vuelve a intentar.',
+  },
+  en: {
+    title: 'Abuse signals',
+    hint: 'The game detects them every hour. They change no rule: review them and leave a note. IP addresses are never shown.',
+    none: 'There are no pending signals.',
+    kind_shared_ip: 'Two accounts from the same address',
+    kind_self_trading: 'Trade between accounts sharing an address',
+    kind_large_transfer: 'Large transfer between citizens',
+    kind_hold_inconsistent: 'Inconsistent fund hold',
+    kind_ledger_imbalance: 'Currency that does not sum to zero',
+    note: 'Note',
+    review: 'Mark reviewed',
+    reviewed: 'Signal reviewed.',
+    error_not_admin: 'Only administrators can do this.',
+    error_signal_not_found: 'That signal does not exist.',
+    error_signal_reviewed: 'That signal was already reviewed.',
+    error_other: 'It did not go through. Check your connection and try again.',
+  },
+});

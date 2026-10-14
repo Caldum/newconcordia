@@ -9,6 +9,19 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      admin_list_abuse_signals: {
+        Args: { p_open_only?: boolean };
+        Returns: {
+          created_at: string;
+          detail: Json;
+          kind: string;
+          other_name: string;
+          review_note: string;
+          reviewed_at: string;
+          signal_id: number;
+          user_name: string;
+        }[];
+      };
       admin_list_countries: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -54,6 +67,10 @@ export type Database = {
           email: string;
           name: string;
         }[];
+      };
+      admin_review_abuse_signal: {
+        Args: { p_note: string; p_signal_id: number };
+        Returns: undefined;
       };
       admin_schedule_country: {
         Args: { p_active: boolean; p_country_code: string };
@@ -118,6 +135,7 @@ export type Database = {
         Returns: number;
       };
       check_citizen_name: { Args: { p_name: string; p_signup_key?: string }; Returns: string };
+      check_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       count_waitlist: { Args: { p_country_code: string }; Returns: number };
       create_my_citizen: {
         Args: { p_country_code: string; p_locale: string; p_name: string };

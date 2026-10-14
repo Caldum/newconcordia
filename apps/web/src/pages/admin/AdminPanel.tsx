@@ -7,6 +7,7 @@ import type { Schedule } from '../../features/admin/api';
 import { useAdminCountries, useAdminRegions } from '../../features/admin/queries';
 import { useMessages } from '../../i18n';
 
+import { AbuseSection } from './AbuseSection';
 import { AdminLogSection } from './AdminLogSection';
 import styles from './AdminPage.module.css';
 import { AdminTeamSection } from './AdminTeamSection';
@@ -39,6 +40,7 @@ export function AdminPanel() {
         regions={regions.data ?? []}
         onSchedule={scheduling.run}
       />
+      <AbuseSection />
       <IndependenceSection />
       <AdminLogSection countries={countries.data ?? []} />
       <AdminTeamSection />
