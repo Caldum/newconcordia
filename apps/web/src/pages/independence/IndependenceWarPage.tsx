@@ -9,6 +9,7 @@ import { useIndependenceWar } from '../../features/war/queries';
 import { useCountryName } from '../../features/world/useNames';
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
+import { WeaponPanel } from '../battles/WeaponPanel';
 
 import { Battlefield } from './Battlefield';
 import { HeroesPanel } from './HeroesPanel';
@@ -57,7 +58,10 @@ export function IndependenceWarPage() {
           <div className={styles.layout}>
             <div className={styles.column}>
               {data.status === 'active' ? (
-                <StrikePanel warId={data.war_id} country={citizen.country_code} />
+                <>
+                  <StrikePanel warId={data.war_id} country={citizen.country_code} />
+                  <WeaponPanel />
+                </>
               ) : null}
               <StrikeFeed warId={data.war_id} myName={citizen.name} />
             </div>

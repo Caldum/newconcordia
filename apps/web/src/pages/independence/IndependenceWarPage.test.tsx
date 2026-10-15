@@ -35,6 +35,7 @@ function signIn(extra: Parameters<typeof answerRpc>[0] = {}) {
     get_my_citizen: { data: [citizenRow()], error: null },
     get_my_profile: { data: [profileRow()], error: null },
     get_my_weapon: { data: [], error: null },
+    get_my_inventory: { data: [{ good_code: 'weapon_q5', quantity: 20 }], error: null },
     get_independence_war: { data: [war], error: null },
     independence_feed: {
       data: [
@@ -195,6 +196,16 @@ describe('the independence war, live', () => {
     await user.click(await within(panel).findByRole('button', { name: '5 golpes seguidos' }));
     expect(await within(panel).findByText('2 golpes, 40 de daño.')).toBeVisible();
     expect(within(panel).getByText('Paraste antes: Necesitas 10 de energía.')).toBeVisible();
+  });
+
+  it('equips a weapon from the inventory right beside the strike', async () => {
+    const user = userEvent.setup();
+    signIn({ equip_weapon: { data: 5, error: null } });
+    await renderRoute('/battles/independence');
+    const weapon = await screen.findByRole('region', { name: 'Arma' });
+    expect(within(weapon).getByText('Peleas sin arma.')).toBeVisible();
+    await user.click(await within(weapon).findByRole('button', { name: 'Equipar Armas Q5' }));
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('equip_weapon', { p_good_code: 'weapon_q5' });
   });
 
   it('says so when the country has no war', async () => {
