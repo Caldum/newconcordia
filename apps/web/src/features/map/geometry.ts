@@ -97,3 +97,19 @@ export function borderPaths(topology: WorldTopology, ownerOf: OwnerOf) {
     regionBorders: toPath(regionBorders) ?? '',
   };
 }
+
+/** A country's regions and the viewBox that frames them, for its silhouette; null when it has none. */
+export function countryOutline(
+  shapes: readonly Shape[],
+  country: string,
+): { shapes: { d: string }[]; viewBox: string } | null {
+  const own = shapes.filter((shape) => shape.isRegion && shape.homeCountry === country);
+  if (own.length === 0) return null;
+  const x0 = Math.min(...own.map((shape) => shape.bounds[0][0]));
+  const y0 = Math.min(...own.map((shape) => shape.bounds[0][1]));
+  const x1 = Math.max(...own.map((shape) => shape.bounds[1][0]));
+  const y1 = Math.max(...own.map((shape) => shape.bounds[1][1]));
+  const pad = Math.max(x1 - x0, y1 - y0) * 0.02;
+  const box = [x0 - pad, y0 - pad, x1 - x0 + 2 * pad, y1 - y0 + 2 * pad].map((n) => n.toFixed(1));
+  return { shapes: own.map((shape) => ({ d: shape.d })), viewBox: box.join(' ') };
+}

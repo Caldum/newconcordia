@@ -1,5 +1,6 @@
 import { Button } from '@concordia/atlas/Button';
 import { Panel } from '@concordia/atlas/Panel';
+import { Link } from '@tanstack/react-router';
 
 import { ActionFeedback } from '../../features/actions/ActionFeedback';
 import { useGameAction } from '../../features/actions/useGameAction';
@@ -55,6 +56,7 @@ export function IndependencePanel() {
             copy={copy}
             success={fight.result ? copy.independenceAttacked(fight.result.damage) : null}
           />
+          <Link to="/battles/independence">{copy.independenceLive}</Link>
           {war.status === 'active' ? (
             <div>
               <Button

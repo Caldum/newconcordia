@@ -165,6 +165,9 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-11-04 · P4 (owner's request): the pictures permissions reviewed: 10 pictures per folder, the picture in
   use cannot be deleted and the replaced one is, citizens only, and moderators clear a reported citizen's picture
   and description; citizens reportable from the friends list (ADR 0045).
+- 2026-11-05 · War live (owner's request): the independence war screen, refreshed every 2 seconds, with the
+  country's map filling up, strikes one or five at a time, everyone's latest strikes, the pace per minute and the
+  heroes; a simulator of bots that train, work and fight as the owner's referrals (ADR 0046).
 
 ## Next step
 

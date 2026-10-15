@@ -7,6 +7,8 @@ import { useSignedInUser } from '../auth/useSignedInUser';
 
 /** The live score refreshes this often while a battle page is open. */
 const liveMs = 5000;
+/** The independence war screen refreshes this often: strikes show up within two seconds. */
+const independenceLiveMs = 2000;
 
 const battleRowSchema = z.object({
   battle_id: z.number().int(),
@@ -156,9 +158,11 @@ const titleSchema = z.object({
 
 export type IndependenceWar = z.infer<typeof independenceSchema>;
 
-export function useIndependenceWar(country: string) {
+/** The country's latest independence war; `live` refreshes it every two seconds for the war screen. */
+export function useIndependenceWar(country: string, { live = false }: { live?: boolean } = {}) {
   return useQuery({
     queryKey: ['war', country, 'independence'],
+    refetchInterval: live ? independenceLiveMs : false,
     queryFn: async () =>
       (
         await rows(
@@ -186,5 +190,79 @@ export function useWarAuthorizations(country: string) {
         supabase.rpc('list_war_authorizations', { p_country_code: country }),
         authorizationSchema,
       ),
+  });
+}
+
+const strikeSchema = z.object({
+  attack_id: z.number().int(),
+  name: z.string(),
+  damage: z.number().int(),
+  health_lost: z.number().int(),
+  created_at: z.string(),
+});
+
+const pulseSchema = z.object({
+  minute: z.string(),
+  damage: z.number().int(),
+  strikes: z.number().int(),
+  fighters: z.number().int(),
+});
+
+const myIndependenceSchema = z.object({
+  damage: z.number().int(),
+  strikes: z.number().int(),
+  /** Null until the player strikes. */
+  place: z.number().int().nullable(),
+  fighters: z.number().int(),
+});
+
+const heroSchema = z.object({
+  name: z.string(),
+  damage: z.number().int(),
+  attacks: z.number().int(),
+});
+
+export type Strike = z.infer<typeof strikeSchema>;
+export type IndependenceHero = z.infer<typeof heroSchema>;
+
+/** The latest strikes of an independence war, newest first. */
+export function useIndependenceFeed(warId: number) {
+  return useQuery({
+    queryKey: ['war', 'independence', warId, 'feed'],
+    refetchInterval: independenceLiveMs,
+    queryFn: () =>
+      rows(supabase.rpc('independence_feed', { p_war_id: warId, p_limit: 20 }), strikeSchema),
+  });
+}
+
+/** Damage per minute over the last 30 minutes (only minutes with strikes). */
+export function useIndependencePulse(warId: number) {
+  return useQuery({
+    queryKey: ['war', 'independence', warId, 'pulse'],
+    refetchInterval: independenceLiveMs,
+    queryFn: () => rows(supabase.rpc('independence_pulse', { p_war_id: warId }), pulseSchema),
+  });
+}
+
+/** The ten nationals with most damage. */
+export function useIndependenceHeroes(warId: number) {
+  return useQuery({
+    queryKey: ['war', 'independence', warId, 'heroes'],
+    refetchInterval: independenceLiveMs,
+    queryFn: () => rows(supabase.rpc('independence_ranking', { p_war_id: warId }), heroSchema),
+  });
+}
+
+/** The player's damage, strikes and place. */
+export function useMyIndependence(warId: number) {
+  const { userId, enabled } = useSignedInUser();
+  return useQuery({
+    queryKey: ['me', userId, 'independence', warId],
+    enabled,
+    refetchInterval: independenceLiveMs,
+    queryFn: async () =>
+      (
+        await rows(supabase.rpc('get_my_independence', { p_war_id: warId }), myIndependenceSchema)
+      )[0] ?? null,
   });
 }

@@ -513,6 +513,15 @@ export type Database = {
           region_code: string;
         }[];
       };
+      get_my_independence: {
+        Args: { p_war_id: number };
+        Returns: {
+          damage: number;
+          fighters: number;
+          place: number;
+          strikes: number;
+        }[];
+      };
       get_my_initiative: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -757,6 +766,25 @@ export type Database = {
           health_lost: number;
           military_xp: number;
           war_status: string;
+        }[];
+      };
+      independence_feed: {
+        Args: { p_limit?: number; p_war_id: number };
+        Returns: {
+          attack_id: number;
+          created_at: string;
+          damage: number;
+          health_lost: number;
+          name: string;
+        }[];
+      };
+      independence_pulse: {
+        Args: { p_war_id: number };
+        Returns: {
+          damage: number;
+          fighters: number;
+          minute: string;
+          strikes: number;
         }[];
       };
       independence_ranking: {

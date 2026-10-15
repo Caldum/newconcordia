@@ -268,6 +268,15 @@ const battlesRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/battles/BattlesPage'), 'BattlesPage'),
 });
 
+const independenceWarRoute = createRoute({
+  getParentRoute: () => gameRoute,
+  path: '/battles/independence',
+  component: lazyRouteComponent(
+    () => import('./pages/independence/IndependenceWarPage'),
+    'IndependenceWarPage',
+  ),
+});
+
 const battleRoute = createRoute({
   getParentRoute: () => gameRoute,
   path: '/battles/$battleId',
@@ -372,6 +381,7 @@ const routeTree = rootRoute.addChildren([
     messagesRoute,
     hospitalRoute,
     battlesRoute,
+    independenceWarRoute,
     battleRoute,
     partiesRoute,
     electionsRoute,

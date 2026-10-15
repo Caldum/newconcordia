@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { borderPaths, buildShapes, MAP_HEIGHT, MAP_WIDTH } from './geometry';
+import { borderPaths, buildShapes, countryOutline, MAP_HEIGHT, MAP_WIDTH } from './geometry';
 import type { WorldTopology } from './geometry';
 
 const topology = JSON.parse(
@@ -55,5 +55,23 @@ describe('borderPaths', () => {
       countryBorders: '',
       regionBorders: '',
     });
+  });
+});
+
+describe('countryOutline', () => {
+  const shapes = buildShapes(topology);
+
+  it('frames the regions of a country', () => {
+    const outline = countryOutline(shapes, 'ARG');
+    expect(outline?.shapes.length).toBe(shapes.filter((s) => s.id.startsWith('ARG-')).length);
+    const [x, y, width, height] = (outline?.viewBox ?? '').split(' ').map(Number);
+    expect(width).toBeGreaterThan(0);
+    expect(height).toBeGreaterThan(width ?? 0);
+    expect(x).toBeGreaterThan(0);
+    expect(y).toBeGreaterThan(0);
+  });
+
+  it('has nothing for a country not in play', () => {
+    expect(countryOutline(shapes, 'URY')).toBeNull();
   });
 });
