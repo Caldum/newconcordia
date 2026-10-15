@@ -6,22 +6,32 @@ import { ActionFeedback } from '../../features/actions/ActionFeedback';
 import { useGameAction } from '../../features/actions/useGameAction';
 import styles from '../../features/economy/economy.module.css';
 import { resolveReport } from '../../features/moderation/api';
+import type { ReportAction } from '../../features/moderation/api';
 import type { ModerationReport } from '../../features/moderation/queries';
+import { Avatar } from '../../features/profile/Avatar';
 import { formatDateTime, useLocale, useMessages } from '../../i18n';
 
 import { moderationMessages } from './moderationMessages';
 
-/** One report: what was reported, by whom and why, and hiding it or dismissing the report. */
+/**
+ * One report: what was reported, by whom and why, and dismissing it, hiding the article or message, or clearing the
+ * citizen's picture and description.
+ */
 export function ReportItem({ report }: { report: ModerationReport }) {
   const copy = useMessages(moderationMessages);
   const { locale } = useLocale();
   const [note, setNote] = useState('');
-  const resolve = useGameAction((_, action: 'dismiss' | 'hide') =>
+  const resolve = useGameAction((_, action: ReportAction) =>
     resolveReport(report.report_id, action, note.trim()),
   );
   const canHide = report.target_kind !== 'citizen' && !report.target_hidden;
+  const isCitizen = report.target_kind === 'citizen';
+  const canClear = isCitizen && (report.target_picture !== null || report.target_excerpt !== null);
   return (
     <li>
+      {isCitizen && report.target_author ? (
+        <Avatar name={report.target_author} path={report.target_picture} size={48} />
+      ) : null}
       <span>
         <strong>
           {copy[`kind_${report.target_kind}`]} · {copy[`reason_${report.reason}`]}
@@ -76,6 +86,17 @@ export function ReportItem({ report }: { report: ModerationReport }) {
               }}
             >
               {copy.hide}
+            </Button>
+          ) : null}
+          {canClear ? (
+            <Button
+              variant="war"
+              disabled={resolve.pending}
+              onClick={() => {
+                resolve.run('clear_profile');
+              }}
+            >
+              {copy.clearProfile}
             </Button>
           ) : null}
           <Button

@@ -4,7 +4,7 @@ export const moderationMessages = defineMessages({
   es: {
     reportsTitle: 'Denuncias',
     reportsHint:
-      'Ocultar saca el artículo o el mensaje de la vista de los jugadores, sin borrarlo. Cada decisión queda en el registro.',
+      'Ocultar saca el artículo o el mensaje de la vista de los jugadores, sin borrarlo. A un ciudadano denunciado se le puede quitar la foto y la descripción. Cada decisión queda en el registro.',
     none: 'No hay denuncias abiertas.',
     kind_article: 'Artículo',
     kind_message: 'Mensaje',
@@ -20,6 +20,7 @@ export const moderationMessages = defineMessages({
     hidden: 'Ya está oculto',
     note: 'Nota de la decisión',
     hide: 'Ocultar',
+    clearProfile: 'Quitar foto y descripción',
     dismiss: 'Descartar',
     resolved: 'Denuncia resuelta.',
     betaTitle: 'Beta cerrada',
@@ -37,8 +38,7 @@ export const moderationMessages = defineMessages({
     pending: 'Todavía no entró',
     noInvites: 'Todavía no hay invitaciones.',
     error_report_closed: 'Otra persona ya resolvió esa denuncia.',
-    error_action_invalid:
-      'A un ciudadano no se lo oculta: descarta la denuncia o usa otras herramientas.',
+    error_action_invalid: 'Esa decisión no sirve para lo denunciado.',
     error_target_invalid: 'Lo denunciado ya no existe.',
     error_email_invalid: 'Escribe un correo válido.',
     error_not_admin: 'Solo la administración puede hacer esto.',
@@ -47,7 +47,7 @@ export const moderationMessages = defineMessages({
   en: {
     reportsTitle: 'Reports',
     reportsHint:
-      'Hiding takes the article or message out of the players’ view without deleting it. Every decision goes in the log.',
+      'Hiding takes the article or message out of the players’ view without deleting it. A reported citizen can lose their picture and description. Every decision goes in the log.',
     none: 'There are no open reports.',
     kind_article: 'Article',
     kind_message: 'Message',
@@ -63,6 +63,7 @@ export const moderationMessages = defineMessages({
     hidden: 'Already hidden',
     note: 'Decision note',
     hide: 'Hide',
+    clearProfile: 'Remove picture and description',
     dismiss: 'Dismiss',
     resolved: 'Report resolved.',
     betaTitle: 'Closed beta',
@@ -80,7 +81,7 @@ export const moderationMessages = defineMessages({
     pending: 'Has not joined yet',
     noInvites: 'There are no invitations yet.',
     error_report_closed: 'Someone else already resolved that report.',
-    error_action_invalid: 'A citizen is not hidden: dismiss the report or use other tools.',
+    error_action_invalid: 'That decision does not apply to what was reported.',
     error_target_invalid: 'What was reported no longer exists.',
     error_email_invalid: 'Write a valid email.',
     error_not_admin: 'Only administration can do this.',

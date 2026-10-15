@@ -20,6 +20,8 @@ const reportSchema = z.object({
   target_hidden: z.boolean(),
   reports_on_target: z.number().int(),
   resolution: z.string().nullable(),
+  /** The reported citizen's picture, if they have one. */
+  target_picture: z.string().nullable(),
 });
 
 const inviteSchema = z.object({

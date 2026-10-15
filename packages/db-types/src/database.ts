@@ -114,6 +114,7 @@ export type Database = {
           target_hidden: boolean;
           target_id: string;
           target_kind: string;
+          target_picture: string;
           target_title: string;
         }[];
       };
@@ -206,7 +207,9 @@ export type Database = {
         Args: { p_key: string; p_market_country_code: string };
         Returns: number;
       };
+      can_delete_picture: { Args: { p_name: string }; Returns: boolean };
       can_store_picture: { Args: { p_name: string }; Returns: boolean };
+      can_upload_picture: { Args: { p_name: string }; Returns: boolean };
       cancel_cb_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
       cancel_citizenship_request: { Args: Record<PropertyKey, never>; Returns: undefined };
       cancel_war_authorization: { Args: { p_authorization_id: number }; Returns: undefined };
@@ -1423,11 +1426,11 @@ export type Database = {
         Args: { p_company_id: number; p_vacancies: number; p_wage: number };
         Returns: undefined;
       };
-      set_my_avatar: { Args: { p_path?: string }; Returns: undefined };
+      set_my_avatar: { Args: { p_path?: string }; Returns: string };
       set_my_bio: { Args: { p_bio: string }; Returns: undefined };
       set_my_referrer: { Args: { p_name: string }; Returns: undefined };
-      set_party_emblem: { Args: { p_path?: string }; Returns: undefined };
-      set_regiment_emblem: { Args: { p_path?: string }; Returns: undefined };
+      set_party_emblem: { Args: { p_path?: string }; Returns: string };
+      set_regiment_emblem: { Args: { p_path?: string }; Returns: string };
       take_job: { Args: { p_company_id: number }; Returns: undefined };
       train: {
         Args: { p_kind: string };

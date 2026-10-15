@@ -20,8 +20,13 @@ export function reportContent(report: NewReport) {
   });
 }
 
-/** Moderation: dismiss a report or hide what it reports; the database checks the admin and logs it. */
-export function resolveReport(reportId: number, action: 'dismiss' | 'hide', note: string) {
+export type ReportAction = 'dismiss' | 'hide' | 'clear_profile';
+
+/**
+ * Moderation: dismiss a report, hide the reported article or message, or clear a reported citizen's picture and
+ * description; the database checks the admin and logs it.
+ */
+export function resolveReport(reportId: number, action: ReportAction, note: string) {
   return supabase.rpc('admin_resolve_report', {
     p_report_id: reportId,
     p_action: action,

@@ -68,6 +68,7 @@ export const supabaseMock = {
   },
   storage: {
     upload: vi.fn(() => Promise.resolve({ data: null, error: null })),
+    remove: vi.fn(() => Promise.resolve({ data: null, error: null })),
     publicUrl: (path: string) => `https://pictures.test/${path}`,
   },
 };
@@ -97,4 +98,5 @@ export function resetSupabaseMock(): void {
   supabaseMock.rpc.mockReset();
   for (const method of Object.values(supabaseMock.auth)) method.mockClear();
   supabaseMock.storage.upload.mockClear();
+  supabaseMock.storage.remove.mockClear();
 }

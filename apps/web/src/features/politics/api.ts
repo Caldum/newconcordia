@@ -1,5 +1,5 @@
 import { supabase } from '../../lib/supabase';
-import { storePicture } from '../profile/api';
+import { dropReplaced, storePicture } from '../profile/api';
 
 import type { BillKind } from './billTerms';
 
@@ -176,9 +176,9 @@ export function issueDecree(decree: NewDecree, key: string) {
 export async function uploadPartyEmblem(partyId: number, file: File) {
   const stored = await storePicture(`parties/${String(partyId)}`, file);
   if (stored.error || !stored.data) return stored;
-  return supabase.rpc('set_party_emblem', { p_path: stored.data });
+  return dropReplaced(await supabase.rpc('set_party_emblem', { p_path: stored.data }));
 }
 
-export function removePartyEmblem() {
-  return supabase.rpc('set_party_emblem', {});
+export async function removePartyEmblem() {
+  return dropReplaced(await supabase.rpc('set_party_emblem', {}));
 }

@@ -19,15 +19,26 @@ export function pictureUrl(path: string): string {
   return supabase.storage.publicUrl(path);
 }
 
+/**
+ * After setting a picture, deletes the one it replaced so the folder keeps room. A failed delete only leaves an
+ * unused picture behind, so it does not fail the action.
+ */
+export async function dropReplaced<T extends { data: string | null; error: unknown }>(
+  result: T,
+): Promise<T> {
+  if (!result.error && result.data) await supabase.storage.remove(result.data);
+  return result;
+}
+
 export async function uploadAvatar(userId: string, file: File) {
   const stored = await storePicture(`citizens/${userId}`, file);
   if (stored.error || !stored.data) return stored;
-  return supabase.rpc('set_my_avatar', { p_path: stored.data });
+  return dropReplaced(await supabase.rpc('set_my_avatar', { p_path: stored.data }));
 }
 
 /** Back to the initials. */
-export function removeAvatar() {
-  return supabase.rpc('set_my_avatar', {});
+export async function removeAvatar() {
+  return dropReplaced(await supabase.rpc('set_my_avatar', {}));
 }
 
 export function setMyBio(bio: string) {

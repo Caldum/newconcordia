@@ -272,6 +272,7 @@ describe('profile', () => {
         error: null,
       },
       answer_friend: { data: null, error: null },
+      report_content: { data: 1, error: null },
       request_friend: { data: 'requested', error: null },
       list_countries: { data: countryRows, error: null },
       list_regions: { data: regionRows, error: null },
@@ -304,6 +305,14 @@ describe('profile', () => {
     expect(supabaseMock.rpc).toHaveBeenCalledWith('answer_friend', {
       p_name: 'Juan Pérez',
       p_accept: true,
+    });
+    await user.click(within(friends).getByRole('button', { name: 'Denunciar a Juan Pérez' }));
+    await user.click(within(friends).getByRole('button', { name: 'Enviar denuncia' }));
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('report_content', {
+      p_kind: 'citizen',
+      p_target: 'Juan Pérez',
+      p_reason: 'spam',
+      p_details: '',
     });
     await user.type(within(friends).getByLabelText('Nombre del ciudadano'), 'Ana Gómez');
     await user.click(within(friends).getByRole('button', { name: 'Pedir amistad' }));

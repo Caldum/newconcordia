@@ -50,3 +50,4 @@ marked «Superseded by NNNN».
 | 0042 | Travel priced by distance | Accepted |
 | 0043 | Referral rewards | Accepted |
 | 0044 | Terms acceptance, moderation and closed beta | Accepted |
+| 0045 | Picture safety | Accepted |

@@ -52,6 +52,11 @@ const storage = {
     });
     return { data: null, error: response.ok ? null : new Error('picture_upload_failed') };
   },
+  /** Deletes a picture the player no longer uses; the storage policies refuse one in use. */
+  async remove(path: string): Promise<{ data: null; error: Error | null }> {
+    const response = await fetchWithSession(`${objects}pictures/${path}`, { method: 'DELETE' });
+    return { data: null, error: response.ok ? null : new Error('picture_remove_failed') };
+  },
   publicUrl: (path: string) => `${objects}public/pictures/${path}`,
 };
 

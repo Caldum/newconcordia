@@ -2,6 +2,7 @@ import { Button } from '@concordia/atlas/Button';
 
 import { ActionFeedback } from '../../features/actions/ActionFeedback';
 import { useGameAction } from '../../features/actions/useGameAction';
+import { ReportButton } from '../../features/moderation/ReportButton';
 import { answerFriend, removeFriend } from '../../features/profile/api';
 import { Avatar } from '../../features/profile/Avatar';
 import type { Friend } from '../../features/profile/queries';
@@ -11,7 +12,7 @@ import { useMessages } from '../../i18n';
 import { friendMessages } from './friendMessages';
 import styles from './ProfilePage.module.css';
 
-/** A friend or a pending request, with what can be done about it. */
+/** A friend or a pending request, with what can be done about it; friends and requesters can be reported. */
 export function FriendRow({ friend }: { friend: Friend }) {
   const copy = useMessages(friendMessages);
   const countryName = useCountryName();
@@ -71,6 +72,9 @@ export function FriendRow({ friend }: { friend: Friend }) {
           </Button>
         )}
       </span>
+      {friend.status === 'outgoing' ? null : (
+        <ReportButton kind="citizen" target={friend.name} what={copy.reportWhat(friend.name)} />
+      )}
       <ActionFeedback problem={answer.problem ?? remove.problem} copy={copy} />
     </li>
   );

@@ -42,7 +42,7 @@ function signIn() {
       error: null,
     },
     set_my_bio: { data: null, error: null },
-    set_my_avatar: { data: null, error: null },
+    set_my_avatar: { data: 'citizens/u1/old.webp', error: null },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
   });
@@ -80,6 +80,8 @@ describe('edit profile', () => {
     expect(within(picture).getByLabelText('Elegir una foto')).toHaveAttribute('type', 'file');
     await user.click(within(picture).getByRole('button', { name: 'Quitar la foto' }));
     expect(supabaseMock.rpc).toHaveBeenCalledWith('set_my_avatar', {});
+    // The replaced picture is deleted so the folder keeps room.
+    expect(supabaseMock.storage.remove).toHaveBeenCalledWith('citizens/u1/old.webp');
   });
 
   it('refuses a description over 500 characters', async () => {

@@ -38,6 +38,19 @@ const report = {
   target_hidden: false,
   reports_on_target: 2,
   resolution: null,
+  target_picture: null,
+};
+
+const citizenReport = {
+  ...report,
+  report_id: 10,
+  target_kind: 'citizen',
+  target_id: 'u2',
+  target_author: 'Juan Pérez',
+  target_title: null,
+  target_excerpt: 'Descripción ofensiva',
+  reports_on_target: 1,
+  target_picture: 'citizens/u2/a.webp',
 };
 
 describe('terms, moderation and the closed beta', () => {
@@ -160,7 +173,7 @@ describe('terms, moderation and the closed beta', () => {
       am_i_admin: { data: true, error: null },
       admin_list_countries: { data: [], error: null },
       admin_list_regions: { data: [], error: null },
-      admin_list_reports: { data: [report], error: null },
+      admin_list_reports: { data: [report, citizenReport], error: null },
       admin_resolve_report: { data: null, error: null },
       get_beta_status: { data: [{ closed: false }], error: null },
       admin_list_beta_invites: {
@@ -182,13 +195,28 @@ describe('terms, moderation and the closed beta', () => {
     await renderRoute('/admin');
     const reports = await screen.findByRole('region', { name: 'Denuncias' });
     expect(await within(reports).findByText('Texto ofensivo')).toBeVisible();
-    expect(within(reports).getByText(/Denunció Ana Gómez/)).toBeVisible();
-    await user.type(within(reports).getByLabelText('Nota de la decisión'), 'Insultos');
-    await user.click(within(reports).getByRole('button', { name: 'Ocultar' }));
+    const [articleReport, citizenReported] = within(reports).getAllByRole('listitem');
+    if (!articleReport || !citizenReported) throw new Error('two reports expected');
+    expect(within(articleReport).getByText(/Denunció Ana Gómez/)).toBeVisible();
+    expect(
+      within(articleReport).queryByRole('button', { name: 'Quitar foto y descripción' }),
+    ).toBeNull();
+    await user.type(within(articleReport).getByLabelText('Nota de la decisión'), 'Insultos');
+    await user.click(within(articleReport).getByRole('button', { name: 'Ocultar' }));
     expect(supabaseMock.rpc).toHaveBeenCalledWith('admin_resolve_report', {
       p_report_id: 9,
       p_action: 'hide',
       p_note: 'Insultos',
+    });
+    expect(within(citizenReported).getByText('Descripción ofensiva')).toBeVisible();
+    expect(within(citizenReported).queryByRole('button', { name: 'Ocultar' })).toBeNull();
+    await user.click(
+      within(citizenReported).getByRole('button', { name: 'Quitar foto y descripción' }),
+    );
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('admin_resolve_report', {
+      p_report_id: 10,
+      p_action: 'clear_profile',
+      p_note: '',
     });
 
     const beta = screen.getByRole('region', { name: 'Beta cerrada' });

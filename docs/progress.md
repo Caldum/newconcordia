@@ -162,16 +162,16 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-11-03 · L5: players accept the terms and privacy in force (by version), draft public texts, reports of
   articles, messages and citizens with audited moderation (hide, show again), and an invitation-only closed beta
   that ships off (ADR 0044).
+- 2026-11-04 · P4 (owner's request): the pictures permissions reviewed: 10 pictures per folder, the picture in
+  use cannot be deleted and the replaced one is, citizens only, and moderators clear a reported citizen's picture
+  and description; citizens reportable from the friends list (ADR 0045).
 
 ## Next step
 
-Stages 1 to 4 (R1–R7, G1–G6, H1–H3, W1–W6) are on `develop` and in the development project. Next, Stage 5
-of `docs/roadmap.md`:
+Stages 1 to 5 and P1–P4 are on `develop` and in the development project. Stage 5 of `docs/roadmap.md` is
+built:
 
-1. Stage 5 is built. The owner decides the legal texts and the minimum age (PD-14, `docs/setup.md` step 8)
-   before a public beta.
-2. Apply `20261101090000_society.sql`, `20261102090000_profiles.sql` and the later migrations to the development project
-   (`supabase db push`), and have the owner review the storage policies of the `pictures` bucket.
-3. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
-4. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+1. The owner decides the legal texts and the minimum age (PD-14, `docs/setup.md` step 8) before a public beta.
+2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
+3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.
