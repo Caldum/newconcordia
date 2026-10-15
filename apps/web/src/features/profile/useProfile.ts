@@ -5,8 +5,8 @@ import { z } from 'zod';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../auth/AuthProvider';
 
-import { energyAt } from './energy';
-import type { EnergyReading } from './energy';
+import { energyAt, refreshInMs } from './energy';
+import type { EnergyReading, EnergyView } from './energy';
 
 const profileSchema = z.object({
   name: z.string(),
@@ -35,9 +35,15 @@ const profileSchema = z.object({
   influence: z.number().int(),
   energy: z.number().int(),
   energy_max: z.number().int(),
-  energy_per_hour: z.number().int(),
-  /** Null when the bar is full. */
-  next_energy_at: z.string().nullable(),
+  /** Energy food may restore now (ADR 0047). */
+  food_appetite: z.number().int(),
+  food_appetite_max: z.number().int(),
+  food_energy_per_interval: z.number().int(),
+  food_interval_minutes: z.number().int(),
+  /** Last settled meal interval; null before the first. */
+  food_at: z.string().nullable(),
+  /** What the next meal gives; null without food. */
+  next_meal_energy: z.number().int().nullable(),
   /** Server time of the reading. */
   checked_at: z.string(),
 });
@@ -55,8 +61,12 @@ async function fetchMyProfile(): Promise<Profile | null> {
     energyReading: {
       energy: row.energy,
       energyMax: row.energy_max,
-      energyPerHour: row.energy_per_hour,
-      nextEnergyAt: row.next_energy_at === null ? null : Date.parse(row.next_energy_at),
+      appetite: row.food_appetite,
+      appetiteMax: row.food_appetite_max,
+      perInterval: row.food_energy_per_interval,
+      intervalMs: row.food_interval_minutes * 60_000,
+      foodAt: Date.parse(row.food_at ?? row.checked_at),
+      nextMealEnergy: row.next_meal_energy,
       checkedAt: Date.parse(row.checked_at),
       receivedAt: Date.now(),
     },
@@ -70,30 +80,33 @@ export function useProfile() {
   return useQuery({
     queryKey: ['me', userId, 'profile'],
     queryFn: fetchMyProfile,
-    // Food is eaten every 5 minutes on the server, settled when the profile is read (R4).
-    refetchInterval: 5 * 60_000,
+    // Meals are settled on the server when the profile is read (ADR 0047): read again right after the next one.
+    refetchInterval: (query) => {
+      const reading = query.state.data?.energyReading;
+      return reading ? refreshInMs(reading, Date.now()) : false;
+    },
     enabled: auth.status === 'signedIn',
   });
 }
 
-/** Energy to show now, rising point by point between readings. The database decides what is spent. */
-export function useEnergy(reading: EnergyReading | undefined): number | undefined {
+/** How often the appetite on the bar moves while it fills; a CSS transition smooths each step. */
+const fillStepMs = 1000;
+
+/** Energy and appetite to show now, the appetite filling between readings. The database decides what is eaten. */
+export function useEnergy(reading: EnergyReading | undefined): EnergyView | undefined {
   const [now, setNow] = useState(() => Date.now());
   const shown = reading ? energyAt(reading, now) : undefined;
-  const nextAt = shown?.nextAt ?? null;
+  const filling = shown?.filling ?? false;
 
   useEffect(() => {
-    if (nextAt === null) return;
-    const timer = setTimeout(
-      () => {
-        setNow(Date.now());
-      },
-      Math.max(0, nextAt - Date.now()),
-    );
+    if (!filling) return;
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, fillStepMs);
     return () => {
-      clearTimeout(timer);
+      clearInterval(timer);
     };
-  }, [nextAt]);
+  }, [filling]);
 
-  return shown?.energy;
+  return shown;
 }

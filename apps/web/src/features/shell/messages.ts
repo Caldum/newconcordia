@@ -25,7 +25,12 @@ export const messages = defineMessages({
       count === 1 ? 'Avisos (1 nuevo)' : `Avisos (${String(count)} nuevos)`,
     energy: 'Energía',
     energyValue: (energy: number, max: number) => `${String(energy)} de ${String(max)}`,
-    recharge: (perHour: number) => `Se recarga ${String(perHour)} por hora`,
+    food_full: () => 'Energía completa',
+    food_eating: (per: number, minutes: number) =>
+      `Comiendo: recuperas ${String(per)} cada ${minutes === 1 ? 'minuto' : `${String(minutes)} minutos`}`,
+    food_waiting: (_per: number, _minutes: number, meal: number) =>
+      `Tu próxima comida da ${String(meal)}: la comes cuando te falten ${String(meal)}`,
+    food_hungry: () => 'Sin comida no recuperas energía',
     profile: (name: string) => `Tu perfil: ${name}`,
     bars: (count: number) => (count === 1 ? 'lingote' : 'lingotes'),
     credit: 'Crédito',
@@ -56,7 +61,12 @@ export const messages = defineMessages({
       count === 1 ? 'Notices (1 new)' : `Notices (${String(count)} new)`,
     energy: 'Energy',
     energyValue: (energy: number, max: number) => `${String(energy)} of ${String(max)}`,
-    recharge: (perHour: number) => `Recharges ${String(perHour)} per hour`,
+    food_full: () => 'Energy full',
+    food_eating: (per: number, minutes: number) =>
+      `Eating: you recover ${String(per)} every ${minutes === 1 ? 'minute' : `${String(minutes)} minutes`}`,
+    food_waiting: (_per: number, _minutes: number, meal: number) =>
+      `Your next meal gives ${String(meal)}: you eat it once you are missing ${String(meal)}`,
+    food_hungry: () => 'Without food you recover no energy',
     profile: (name: string) => `Your profile: ${name}`,
     bars: (count: number) => (count === 1 ? 'bar' : 'bars'),
     credit: 'Credit',

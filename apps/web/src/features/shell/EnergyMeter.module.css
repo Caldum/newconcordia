@@ -1,0 +1,25 @@
+.track {
+  display: flex;
+}
+
+.fill,
+.appetite {
+  flex: none;
+  transition: width 1s linear;
+}
+
+.appetite {
+  opacity: 0.45;
+}
+
+/* No meal is coming: the appetite still shows, fainter. */
+.hungry {
+  opacity: 0.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .appetite {
+    transition: none;
+  }
+}

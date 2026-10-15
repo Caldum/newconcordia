@@ -605,8 +605,12 @@ export type Database = {
           damage: number;
           energy: number;
           energy_max: number;
-          energy_per_hour: number;
           experience: number;
+          food_appetite: number;
+          food_appetite_max: number;
+          food_at: string;
+          food_energy_per_interval: number;
+          food_interval_minutes: number;
           health: number;
           health_max: number;
           influence: number;
@@ -615,8 +619,8 @@ export type Database = {
           level_experience: number;
           military_xp: number;
           name: string;
-          next_energy_at: string;
           next_level_experience: number;
+          next_meal_energy: number;
           next_rank_xp: number;
           rank_step: number;
           rank_xp: number;

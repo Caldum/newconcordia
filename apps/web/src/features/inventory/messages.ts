@@ -6,7 +6,7 @@ export const messages = defineMessages({
     empty: 'Todavía no tienes objetos. Compra en el mercado o pásalos desde tu empresa.',
     food: (energy: number) => `Da ${String(energy)} de energía.`,
     autoFood: (perMeal: number) =>
-      `Comes automáticamente: cada 5 minutos, si te falta energía, comes la comida de menor calidad que alcance y recuperas hasta ${String(perMeal)}.`,
+      `Comes automáticamente: cada minuto puedes recuperar ${String(perMeal)} de energía. Comes primero la de menor calidad, entera, cuando ya juntaste lo que da y te falta esa energía.`,
     kit: (health: number) => `Cura ${String(health)} de salud.`,
     weapon: (multiplier: string) => `Multiplica tu daño ×${multiplier}. Se gasta una por golpe.`,
     fuel: 'Ya no se produce: quedó del juego anterior.',
@@ -26,7 +26,7 @@ export const messages = defineMessages({
     empty: 'You have no items yet. Buy on the market or move them from your company.',
     food: (energy: number) => `Gives ${String(energy)} energy.`,
     autoFood: (perMeal: number) =>
-      `You eat on your own: every 5 minutes, if you are missing energy, you eat the lowest quality that covers it and recover up to ${String(perMeal)}.`,
+      `You eat on your own: every minute you can recover ${String(perMeal)} energy. The lowest quality goes first, whole, once you have built up what it gives and are missing that much.`,
     kit: (health: number) => `Heals ${String(health)} health.`,
     weapon: (multiplier: string) => `Multiplies your damage ×${multiplier}. One is spent per hit.`,
     fuel: 'No longer produced: left over from the earlier game.',

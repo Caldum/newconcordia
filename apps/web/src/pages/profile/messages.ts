@@ -25,9 +25,12 @@ export const messages = defineMessages({
     influence: 'Influencia',
     influenceNote: 'Por artículos y cargos',
     energy: 'Energía',
-    recharge: (perHour: number, max: number) =>
-      `Se recarga ${String(perHour)} por hora, hasta ${String(max)}`,
-    full: 'Llena',
+    food_full: () => 'Llena',
+    food_eating: (per: number, minutes: number) =>
+      `Comiendo: ${String(per)} cada ${minutes === 1 ? 'minuto' : `${String(minutes)} minutos`}`,
+    food_waiting: (_per: number, _minutes: number, meal: number) =>
+      `Tu próxima comida espera a que te falten ${String(meal)}`,
+    food_hungry: () => 'Sin comida no se llena',
     levelTag: (level: number) => `Nivel ${String(level)}`,
     editProfile: 'Editar perfil',
     citizen: 'Ciudadano',
@@ -82,9 +85,12 @@ export const messages = defineMessages({
     influence: 'Influence',
     influenceNote: 'From articles and offices',
     energy: 'Energy',
-    recharge: (perHour: number, max: number) =>
-      `Recharges ${String(perHour)} per hour, up to ${String(max)}`,
-    full: 'Full',
+    food_full: () => 'Full',
+    food_eating: (per: number, minutes: number) =>
+      `Eating: ${String(per)} every ${minutes === 1 ? 'minute' : `${String(minutes)} minutes`}`,
+    food_waiting: (_per: number, _minutes: number, meal: number) =>
+      `Your next meal waits until you are missing ${String(meal)}`,
+    food_hungry: () => 'Without food it does not fill',
     levelTag: (level: number) => `Level ${String(level)}`,
     editProfile: 'Edit profile',
     citizen: 'Citizen',

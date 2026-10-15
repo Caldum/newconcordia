@@ -52,3 +52,4 @@ marked «Superseded by NNNN».
 | 0044 | Terms acceptance, moderation and closed beta | Accepted |
 | 0045 | Picture safety | Accepted |
 | 0046 | The independence war, live, and a war simulator | Accepted |
+| 0047 | Energy only from food, a minute at a time | Accepted |

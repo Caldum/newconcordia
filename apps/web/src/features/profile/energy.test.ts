@@ -1,48 +1,94 @@
 import { describe, expect, it } from 'vitest';
 
-import { energyAt } from './energy';
+import { energyAt, foodState, refreshInMs } from './energy';
 import type { EnergyReading } from './energy';
 
 const minute = 60_000;
 
-// The server said 80 at 15:00 its time, next point at 15:06. This browser's clock runs 2 minutes behind.
+// The server said 80 at 15:00:20 its time, with 2 of appetite settled at 15:00 and a Q2 (4) as the next meal.
+// This browser's clock runs 2 minutes behind.
 const reading: EnergyReading = {
   energy: 80,
   energyMax: 100,
-  energyPerHour: 10,
-  nextEnergyAt: Date.parse('2026-10-08T15:06:00Z'),
-  checkedAt: Date.parse('2026-10-08T15:00:00Z'),
-  receivedAt: Date.parse('2026-10-08T14:58:00Z'),
+  appetite: 2,
+  appetiteMax: 10,
+  perInterval: 2,
+  intervalMs: minute,
+  foodAt: Date.parse('2026-10-08T15:00:00Z'),
+  nextMealEnergy: 4,
+  checkedAt: Date.parse('2026-10-08T15:00:20Z'),
+  receivedAt: Date.parse('2026-10-08T14:58:20Z'),
 };
+const browserAt = (serverIso: string) => Date.parse(serverIso) - 2 * minute;
 
 describe('energyAt', () => {
-  it('shows what the server said until the next point arrives', () => {
-    expect(energyAt(reading, reading.receivedAt)).toEqual({
+  it('fills the appetite smoothly, 2 a minute, toward the next meal', () => {
+    expect(energyAt(reading, browserAt('2026-10-08T15:00:30Z'))).toEqual({
       energy: 80,
-      nextAt: reading.receivedAt + 6 * minute,
+      energyMax: 100,
+      appetite: 3,
+      fed: true,
+      nextMealAt: browserAt('2026-10-08T15:01:00Z'),
+      filling: true,
     });
-    expect(energyAt(reading, reading.receivedAt + 5 * minute).energy).toBe(80);
   });
 
-  it('adds a point every 6 minutes on the server clock', () => {
-    expect(energyAt(reading, reading.receivedAt + 6 * minute)).toEqual({
-      energy: 81,
-      nextAt: reading.receivedAt + 12 * minute,
-    });
-    expect(energyAt(reading, reading.receivedAt + 3 * 60 * minute + 6 * minute).energy).toBe(100);
+  it('stops at what the meal gives until the server says it was eaten', () => {
+    const view = energyAt(reading, browserAt('2026-10-08T15:05:00Z'));
+    expect(view.appetite).toBe(4);
+    expect(view.energy).toBe(80);
+    expect(view.filling).toBe(false);
   });
 
-  it('never goes above the maximum, and a full bar has no next point', () => {
-    expect(energyAt(reading, reading.receivedAt + 24 * 60 * minute)).toEqual({
+  it('waits for as many minutes as the meal needs', () => {
+    const q5 = { ...reading, appetite: 0, nextMealEnergy: 10 };
+    expect(energyAt(q5, reading.receivedAt).nextMealAt).toBe(browserAt('2026-10-08T15:05:00Z'));
+  });
+
+  it('without food the appetite still fills, up to 10, but nothing will be eaten', () => {
+    const hungry = { ...reading, nextMealEnergy: null };
+    expect(energyAt(hungry, browserAt('2026-10-08T15:30:00Z'))).toMatchObject({
+      appetite: 10,
+      fed: false,
+      nextMealAt: null,
+    });
+  });
+
+  it('never fills past what is missing, so a meal larger than that waits', () => {
+    const almost = { ...reading, energy: 98, appetite: 0, nextMealEnergy: 4 };
+    expect(energyAt(almost, browserAt('2026-10-08T15:10:00Z'))).toMatchObject({
+      appetite: 2,
+      fed: false,
+      nextMealAt: null,
+    });
+  });
+
+  it('a full bar has no appetite', () => {
+    const full = { ...reading, energy: 100, appetite: 0 };
+    expect(energyAt(full, browserAt('2026-10-08T15:10:00Z'))).toMatchObject({
       energy: 100,
-      nextAt: null,
+      appetite: 0,
+      nextMealAt: null,
     });
-    const full = { ...reading, energy: 100, nextEnergyAt: null };
-    expect(energyAt(full, reading.receivedAt + 60 * minute)).toEqual({ energy: 100, nextAt: null });
+  });
+});
+
+describe('refreshInMs', () => {
+  it('reads again just after the next meal', () => {
+    expect(refreshInMs(reading, reading.receivedAt)).toBe(40_000 + 1000);
   });
 
-  it('keeps energy above the maximum as it is', () => {
-    const fed = { ...reading, energy: 150, nextEnergyAt: null };
-    expect(energyAt(fed, reading.receivedAt + 60 * minute)).toEqual({ energy: 150, nextAt: null });
+  it('falls back to a slow refresh when no meal is coming', () => {
+    expect(refreshInMs({ ...reading, nextMealEnergy: null }, reading.receivedAt)).toBe(5 * minute);
+  });
+});
+
+describe('foodState', () => {
+  const at = (r: EnergyReading) => foodState(r, energyAt(r, r.receivedAt));
+  it('says whether the bar is full, eating, waiting or hungry', () => {
+    expect(at({ ...reading, energy: 100, appetite: 0 })).toBe('full');
+    expect(at(reading)).toBe('eating');
+    expect(at({ ...reading, energy: 98, appetite: 0 })).toBe('waiting');
+    expect(at({ ...reading, nextMealEnergy: null })).toBe('hungry');
   });
 });

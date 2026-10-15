@@ -27,8 +27,9 @@ Interface copy: `docs/voice.md`. Game terms ↔ code names: `docs/glossary.md`. 
 - Business time is UTC: the game day changes at 00:00 UTC; elections follow the monthly UTC calendar
   (president day 5, party leaders day 15, Congress day 25).
 - Player: civil level L at 100 × L² XP (level 0 at start, 1 GOLD per new level, once); health 0–100 with no
-  passive regeneration; energy up to 100 (recharge 10 per hour kept from the GDD) plus automatic Q1–Q5 food
-  every 5 minutes; military strength, XP and ranks (Novice + 15 ranks × I–V, threshold 100 × n²).
+  passive regeneration; energy up to 100 only from automatic food (no hourly recharge, ADR 0047): Q1–Q5
+  give 2–10, eaten whole as the appetite builds 2 a minute; training costs 10; military strength, XP and
+  ranks (Novice + 15 ranks × I–V, threshold 100 × n²).
 - Sign-up grant: 5 GOLD, 100 national currency, 10 Q1 food. Money in hundredths; issuance only by law or an
   explicit system reward; escrow for buy orders, bills and war authorizations.
 - Companies N1–N5 (10/25/50/100/200 GOLD; civil level 5/10/20/30/40); 15 resources by region; extractors only

@@ -52,18 +52,18 @@ select pg_temp.gold(:'ana') as gold0 \gset
 select pg_temp.act_as(:'ana');
 select results_eq(
   $$ select kind, level, trained_today, energy, fee, strength, upgrade_cost from public.get_my_training() $$,
-  $$ values ('basic', 1, false, 10, 0::bigint, 5, 500::bigint), ('advanced', 1, false, 15, 50::bigint, 5, 500::bigint),
-            ('elite', 1, false, 20, 150::bigint, 10, 500::bigint) $$,
-  'three centers at N1 with the specification''s costs and gains'
+  $$ values ('basic', 1, false, 10, 0::bigint, 5, 500::bigint), ('advanced', 1, false, 10, 50::bigint, 5, 500::bigint),
+            ('elite', 1, false, 10, 150::bigint, 10, 500::bigint) $$,
+  'three centers at N1, every session 10 energy (ADR 0047)'
 );
 select throws_ok($$ select * from public.train('gym') $$, '22023', 'center_invalid', 'Basic, Advanced or Elite');
 select results_eq($$ select strength_gained, xp_gained, health_lost, energy from public.train('basic') $$,
                   $$ values (5, 5, 0, 90) $$, 'a Basic session: 10 energy, 5 strength, 5 civil XP');
 select throws_ok($$ select * from public.train('basic') $$, '22023', 'already_trained', 'once per center and day');
-select results_eq($$ select strength_gained, energy from public.train('advanced') $$, $$ values (5, 75) $$,
-                  'Advanced: 15 energy, 5 strength at N1');
-select results_eq($$ select strength_gained, energy from public.train('elite') $$, $$ values (10, 55) $$,
-                  'Elite: 20 energy, 10 strength at N1');
+select results_eq($$ select strength_gained, energy from public.train('advanced') $$, $$ values (5, 80) $$,
+                  'Advanced: 10 energy, 5 strength at N1');
+select results_eq($$ select strength_gained, energy from public.train('elite') $$, $$ values (10, 70) $$,
+                  'Elite: 10 energy, 10 strength at N1');
 reset role;
 select is((select strength from game.player_stats where user_id = :'ana'), 20, 'strength adds up');
 select is((select experience from game.player_stats where user_id = :'ana'), 20::bigint, 'civil XP is 1 per strength point');

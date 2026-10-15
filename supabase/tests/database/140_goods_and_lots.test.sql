@@ -44,9 +44,9 @@ select results_eq(
 );
 select results_eq(
   $$ select quality, input_good_code, input_per_unit, energy from game.goods where code like 'food_q%' order by quality $$,
-  $$ values (1, 'food_raw', 1::numeric, 10), (2, 'food_raw', 2::numeric, 20), (3, 'food_raw', 3::numeric, 30),
-            (4, 'food_raw', 4::numeric, 40), (5, 'food_raw', 5::numeric, 50) $$,
-  'food Q1–Q5: Q food raw per unit, 10 × Q energy'
+  $$ values (1, 'food_raw', 1::numeric, 2), (2, 'food_raw', 2::numeric, 4), (3, 'food_raw', 3::numeric, 6),
+            (4, 'food_raw', 4::numeric, 8), (5, 'food_raw', 5::numeric, 10) $$,
+  'food Q1–Q5: Q food raw per unit, 2 × Q energy (ADR 0047)'
 );
 select results_eq(
   $$ select quality, input_good_code, input_per_unit, damage_multiplier from game.goods where code like 'weapon_q%' order by quality $$,

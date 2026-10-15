@@ -1,8 +1,8 @@
--- D08: profile and energy. Acceptance (GDD): with the clock moved 3 hours forward, energy rises by 30 and
--- never goes above 100.
+-- D08: profile and energy. Since ADR 0047 energy only comes from food (tested in 150): without it, energy
+-- stays where it is.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(24);
+select plan(22);
 
 create function pg_temp.new_player(p_email text, p_name text, p_country text)
 returns uuid
@@ -27,13 +27,12 @@ set local game.fixed_now = '2026-10-08 12:00:00+00';
 
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('marcos@example.com', 'Marcos Villalba', 'ARG') as marcos \gset
--- Without food, so only the hourly recharge moves energy (automatic food is tested in 150).
+-- Without food, so nothing moves energy (automatic food is tested in 150).
 select game.take_goods(game.holder_for_citizen(:'camila'), 'food_q1', 10, 'test', 'test');
 select game.take_goods(game.holder_for_citizen(:'marcos'), 'food_q1', 10, 'test', 'test');
 
 -- Balance parameters.
 select is(game.param('energy_max'), 100::numeric, 'energy tops out at 100');
-select is(game.param('energy_per_hour'), 10::numeric, 'energy recharges 10 per hour');
 select throws_ok(
   $$ select game.param('no_such_param') $$,
   'P0002',
@@ -70,47 +69,37 @@ select throws_ok(
   'only citizens spend energy'
 );
 
--- Acceptance: 3 hours later energy rises by 30.
+-- Without food energy does not rise, however long the player waits (ADR 0047).
 select pg_temp.act_as(:'camila');
 select is((select energy from public.get_my_profile()), 50, 'right after spending, energy is 50');
 reset role;
 set local game.fixed_now = '2026-10-08 15:00:00+00';
 select pg_temp.act_as(:'camila');
-select is((select energy from public.get_my_profile()), 80, 'acceptance: 3 hours later energy rose by 30');
-select is(
-  (select next_energy_at from public.get_my_profile()),
-  '2026-10-08 15:06:00+00'::timestamptz,
-  'the next point arrives 6 minutes later'
-);
+select is((select energy from public.get_my_profile()), 50, 'three hours later, without food, energy is still 50');
+select is((select next_meal_energy from public.get_my_profile()), null, 'and no meal is coming');
 reset role;
-select is(
-  (select energy from game.player_stats where user_id = :'camila'),
-  50,
-  'reading energy computes it without writing'
+select ok(
+  not exists (select 1 from game.balance_params where key = 'energy_per_hour'),
+  'energy no longer recharges by the hour'
 );
-
--- Acceptance: never above 100.
 set local game.fixed_now = '2026-10-09 03:00:00+00';
 select pg_temp.act_as(:'camila');
-select is((select energy from public.get_my_profile()), 100, 'acceptance: energy never goes above 100');
-select is((select next_energy_at from public.get_my_profile()), null, 'a full bar has no next point');
+select is((select food_appetite from public.get_my_profile()), 10, 'meanwhile the appetite built up to 10');
 reset role;
-
--- Spending keeps the progress toward the next point.
 set local game.fixed_now = '2026-10-10 12:00:00+00';
-select is(game.spend_energy(:'camila', 50), 50, 'spending from a full bar');
+select is(game.spend_energy(:'camila', 10), 40, 'spending takes from what is there');
 set local game.fixed_now = '2026-10-10 15:45:00+00';
-select is(game.spend_energy(:'camila', 10), 77, '3 h 45 min recharged 37 points before spending 10');
+select is(game.spend_energy(:'camila', 10), 30, 'and nothing came back in between');
 set local game.fixed_now = '2026-10-10 15:48:00+00';
 select pg_temp.act_as(:'camila');
-select is((select energy from public.get_my_profile()), 78, 'the 3 minutes already recharged count toward the next point');
+select is((select energy from public.get_my_profile()), 30, 'still 30 when read');
 reset role;
 
--- Energy above the maximum (food, D12) is kept, and recharge does not add to it.
+-- Energy above the maximum is kept.
 update game.player_stats set energy = 150, energy_at = game.now() where user_id = :'marcos';
 set local game.fixed_now = '2026-10-10 18:00:00+00';
 select pg_temp.act_as(:'marcos');
-select is((select energy from public.get_my_profile()), 150, 'energy above the maximum is kept and does not recharge');
+select is((select energy from public.get_my_profile()), 150, 'energy above the maximum is kept');
 reset role;
 select is(game.spend_energy(:'marcos', 60), 90, 'spending from above the maximum');
 
@@ -119,7 +108,7 @@ update game.player_stats set experience = 6420, damage = 1500000, influence = 34
 select pg_temp.act_as(:'camila');
 select results_eq(
   $$ select name, level, experience, level_experience, next_level_experience, health, strength, damage,
-            rank_step, next_rank_xp, influence, energy_max, energy_per_hour, checked_at
+            rank_step, next_rank_xp, influence, energy_max, food_appetite_max, checked_at
      from public.get_my_profile() $$,
   $$ values ('Camila Ríos', 8, 6420::bigint, 6400::bigint, 8100::bigint, 100, 0, 1500000::bigint,
              0, 100::bigint, 340, 100, 10, '2026-10-10 18:00:00+00'::timestamptz) $$,

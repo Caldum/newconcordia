@@ -62,11 +62,20 @@ describe('profile', () => {
     const meter = await screen.findByRole('meter', { name: 'Energía' });
     expect(meter).toHaveAttribute('aria-valuetext', '80 de 100');
     expect(meter).toHaveAttribute('aria-valuenow', '80');
-    expect(meter.closest('[title]')).toHaveAttribute('title', 'Se recarga 10 por hora');
+    expect(meter.closest('[title]')).toHaveAttribute('title', 'Comiendo: recuperas 2 cada minuto');
+    expect(meter.querySelector('[data-fed]')).toHaveAttribute('data-fed', 'true');
     expect(screen.getByRole('link', { name: 'Tu perfil: Camila Ríos' })).toHaveAttribute(
       'href',
       '/profile',
     );
+  });
+
+  it('shows the appetite fainter when there is no food', async () => {
+    signIn(profileRow({ next_meal_energy: null }));
+    await renderRoute('/');
+    const meter = await screen.findByRole('meter', { name: 'Energía' });
+    expect(meter.closest('[title]')).toHaveAttribute('title', 'Sin comida no recuperas energía');
+    expect(meter.querySelector('[data-fed]')).toHaveAttribute('data-fed', 'false');
   });
 
   it('keeps the game working when the profile does not load', async () => {
@@ -121,7 +130,7 @@ describe('profile', () => {
     ).toBeVisible();
     const energy = screen.getByRole('group', { name: 'Energía' });
     expect(within(energy).getByText('80')).toBeVisible();
-    expect(within(energy).getByText('Se recarga 10 por hora, hasta 100')).toBeVisible();
+    expect(within(energy).getByText('Comiendo: 2 cada minuto')).toBeVisible();
   });
 
   it('shows where the citizen lives and their citizenship', async () => {
@@ -148,7 +157,7 @@ describe('profile', () => {
         rank_xp: 562500,
         next_rank_xp: null,
         energy: 100,
-        next_energy_at: null,
+        food_appetite: 0,
       }),
     );
     await renderRoute('/profile');

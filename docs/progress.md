@@ -168,6 +168,9 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-11-05 · War live (owner's request): the independence war screen, refreshed every 2 seconds, with the
   country's map filling up, strikes one or five at a time, everyone's latest strikes, the pace per minute and the
   heroes; a simulator of bots that train, work and fight as the owner's referrals (ADR 0046).
+- 2026-11-08 · Energy (owner's request): no hourly recharge; food gives 2 per quality, eaten whole as the
+  appetite builds 2 a minute, never wasted; every training session costs 10; the energy bar fills live, fainter
+  without food (ADR 0047).
 
 ## Next step
 

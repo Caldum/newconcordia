@@ -24,7 +24,7 @@ const effects = ['food_q1', 'weapon_q3', 'kit_q2', 'military_raw'].map((code) =>
   damage_multiplier: code === 'weapon_q3' ? 1.6 : null,
   energy: code === 'food_q1' ? 10 : null,
   heal: code === 'kit_q2' ? 10 : null,
-  food_energy_per_interval: 10,
+  food_energy_per_interval: 2,
 }));
 
 type Answers = Parameters<typeof answerRpc>[0];
@@ -73,7 +73,7 @@ describe('inventory', () => {
     expect(within(items).getByText('2,5')).toBeVisible();
     expect(
       within(items).getByText(
-        'Comes automáticamente: cada 5 minutos, si te falta energía, comes la comida de menor calidad que alcance y recuperas hasta 10.',
+        'Comes automáticamente: cada minuto puedes recuperar 2 de energía. Comes primero la de menor calidad, entera, cuando ya juntaste lo que da y te falta esa energía.',
       ),
     ).toBeVisible();
   });

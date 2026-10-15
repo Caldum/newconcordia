@@ -1,8 +1,9 @@
--- R4: automatic food every 5 minutes. Acceptance (roadmap R4): intervals catch up after absence; nothing is
--- eaten at 100 energy.
+-- R4 and ADR 0047: automatic food. Appetite builds up 2 a minute (up to 10 and to what is missing); once it
+-- covers the lowest-quality food held, that unit is eaten whole. Intervals catch up after absence; nothing is
+-- eaten at 100 energy; without food energy does not rise.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(17);
+select plan(24);
 
 create function pg_temp.new_player(p_email text, p_name text, p_country text)
 returns uuid
@@ -34,7 +35,7 @@ set local game.fixed_now = '2026-10-13 12:00:00+00';
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as camila \gset
 select pg_temp.new_player('ana@example.com', 'Ana Souza', 'BRA') as ana \gset
 
-select is(game.food_tick('2026-10-13 12:04:59+00'), '2026-10-13 12:00:00+00'::timestamptz, 'intervals run on a 5-minute UTC grid');
+select is(game.food_tick('2026-10-13 12:04:59+00'), '2026-10-13 12:04:00+00'::timestamptz, 'intervals run on a 1-minute UTC grid');
 
 -- Full energy: nothing is eaten, however long the player is away.
 select game.settle_food(:'camila');
@@ -42,56 +43,68 @@ set local game.fixed_now = '2026-10-13 13:00:00+00';
 select is(game.settle_food(:'camila'), 100, 'at 100 energy the bar stays full');
 select is(pg_temp.food(:'camila', 'food_q1'), 10::numeric, 'acceptance: nothing is eaten at 100 energy');
 
--- Spending 50 at 13:00. At 13:05 one Q1 food gives 10.
+-- Spending 50 at 13:00. At 13:01 the appetite is 2 and one Q1 food gives 2.
 select game.spend_energy(:'camila', 50);
-set local game.fixed_now = '2026-10-13 13:07:00+00';
-select is(game.settle_food(:'camila'), 61, 'one interval: 50 + 10 from food + 1 recharged');
+set local game.fixed_now = '2026-10-13 13:01:30+00';
+select is(game.settle_food(:'camila'), 52, 'one minute: 50 + 2 from a Q1 food');
 select is(pg_temp.food(:'camila', 'food_q1'), 9::numeric, 'one Q1 food was eaten');
-select is(game.settle_food(:'camila'), 61, 'settling again in the same interval eats nothing more');
+select is(game.settle_food(:'camila'), 52, 'settling again in the same minute eats nothing more');
 
--- Away until 14:00: 13:10, 13:15, 13:20 and 13:25 bring the bar to 100; then nothing more.
+-- Away until 14:00: one Q1 a minute until the food runs out at 13:10; then energy stays.
 set local game.fixed_now = '2026-10-13 14:00:00+00';
-select is(game.settle_food(:'camila'), 100, 'acceptance: the missed intervals are caught up on arrival');
-select is(pg_temp.food(:'camila', 'food_q1'), 5::numeric, 'four more were eaten, then the bar was full');
+select is(game.settle_food(:'camila'), 70, 'acceptance: the missed minutes are caught up, and without food nothing more');
+select is(pg_temp.food(:'camila', 'food_q1'), 0::numeric, 'all ten were eaten');
 select is(
   (select count(*) from game.inventory_movements
    where kind = 'automatic_food' and from_holder_id = game.holder_for_citizen(:'camila'))::int,
-  5,
+  10,
   'each meal is in the inventory log'
 );
-select is(
-  (select energy from game.player_stats where user_id = :'camila'),
-  100,
-  'food never takes energy above 100'
-);
 
--- The lowest sufficient quality goes first; the excess over 10 is lost.
+-- The lowest quality goes first and waits until the appetite covers all of it.
 select game.take_goods(game.holder_for_citizen(:'ana'), 'food_q1', 10, 'test', 'test');
 select game.put_goods(game.holder_for_citizen(:'ana'), 'food_q3', 'BRA', 1, 'test', 'test');
 select game.put_goods(game.holder_for_citizen(:'ana'), 'food_q2', 'BRA', 1, 'test', 'test');
 select game.spend_energy(:'ana', 40);
+set local game.fixed_now = '2026-10-13 14:01:00+00';
+select is(game.settle_food(:'ana'), 60, 'a Q2 gives 4: with 2 of appetite nothing is eaten yet');
+select is(pg_temp.food(:'ana', 'food_q2'), 1::numeric, 'the Q2 waits');
+set local game.fixed_now = '2026-10-13 14:02:00+00';
+select is(game.settle_food(:'ana'), 64, 'the next minute the Q2 is eaten whole');
 set local game.fixed_now = '2026-10-13 14:05:00+00';
-select is(game.settle_food(:'ana'), 70, 'Q2 gives 20 but an interval restores at most 10');
-select results_eq(
-  format($$ select pg_temp.food(%L, 'food_q2'), pg_temp.food(%L, 'food_q3') $$, :'ana', :'ana'),
-  $$ values (0::numeric, 1::numeric) $$,
-  'the lowest quality available was eaten first'
-);
+select is(game.settle_food(:'ana'), 70, 'then the Q3 after three minutes');
 
--- Without food only the hourly recharge remains.
-select game.take_goods(game.holder_for_citizen(:'ana'), 'food_q3', 1, 'test', 'test');
-select game.spend_energy(:'ana', 70);
+-- Nothing is wasted: a Q5 waits until 10 are missing.
+update game.player_stats set energy = 98, food_appetite = 0 where user_id = :'ana';
+select game.put_goods(game.holder_for_citizen(:'ana'), 'food_q5', 'BRA', 1, 'test', 'test');
+set local game.fixed_now = '2026-10-13 14:30:00+00';
+select is(game.settle_food(:'ana'), 98, 'with 2 missing a Q5 is not eaten');
+select is(pg_temp.food(:'ana', 'food_q5'), 1::numeric, 'and stays in the inventory');
+select game.spend_energy(:'ana', 8);
+set local game.fixed_now = '2026-10-13 14:40:00+00';
+select is(game.settle_food(:'ana'), 100, 'once 10 are missing and built up, it gives all 10');
+
+-- Food that arrives is eaten from the next minute on, one meal a minute, never in minutes already past.
 set local game.fixed_now = '2026-10-13 15:00:00+00';
-select is(game.settle_food(:'ana'), 10, 'no food: 0 + 10 recharged in an hour');
+select game.put_goods(game.holder_for_citizen(:'camila'), 'food_q1', 'ARG', 20, 'test', 'test');
+select is(game.settle_food(:'camila'), 70, 'food bought now is not eaten in the past hour');
+set local game.fixed_now = '2026-10-13 15:01:00+00';
+select is(game.settle_food(:'camila'), 72, 'one meal the next minute');
+select is(pg_temp.food(:'camila', 'food_q1'), 19::numeric, 'only one');
 
 -- Arriving settles: the profile and the inventory show the meals.
-select game.spend_energy(:'camila', 30);
 set local game.fixed_now = '2026-10-13 15:05:00+00';
 select pg_temp.act_as(:'camila');
-select is((select energy from public.get_my_profile()), 80, 'reading the profile eats the pending interval');
+select is((select energy from public.get_my_profile()), 80, 'reading the profile eats the pending minutes');
+select results_eq(
+  $$ select food_appetite, food_appetite_max, food_energy_per_interval, food_interval_minutes, food_at, next_meal_energy
+     from public.get_my_profile() $$,
+  $$ values (8, 10, 2, 1, '2026-10-13 15:05:00+00'::timestamptz, 2) $$,
+  'the profile says how much appetite there is and what the next meal gives'
+);
 select is(
   (select quantity from public.get_my_inventory() where good_code = 'food_q1'),
-  4::numeric,
+  15::numeric,
   'and the inventory shows what was eaten'
 );
 reset role;
