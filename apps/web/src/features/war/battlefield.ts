@@ -17,7 +17,7 @@ export const SCENE = { width: 640, height: 320 } as const;
 export const TANK_FRAME = { width: 288, height: 135, count: 12 } as const;
 
 /** The barrel's tip in a frame, as a share of its width and height, facing right. */
-const BARREL_TIP = [372 / 384, 63.5 / 180] as const;
+const BARREL_TIP = [354 / 384, 76.5 / 180] as const;
 
 /** How long the firing frames last. */
 export const FIRE_MS = 1200;

@@ -12,7 +12,9 @@
 // their company and hire, the rest take a job; each bot trains, works once a game day and strikes whenever it has
 // energy, at a human pace. The database decides everything, as for any player.
 //
-// Options: SIM_COUNTRY (ARG), SIM_BOTS (20), SIM_MINUTES (120), SIM_TARGET (6000), SIM_REFERRER (NachoCaldum).
+// Options: SIM_COUNTRY (ARG), SIM_BOTS (20), SIM_MINUTES (120), SIM_TARGET (6000), SIM_REFERRER (NachoCaldum),
+// SIM_FOOD (0): Q1 rations each bot receives at the start, a simulation supply recorded as such in the inventory
+// movements, so automatic food keeps them fighting (10 energy every 5 minutes per ration).
 // Never point it at production: it creates accounts and opens a war.
 
 import { randomUUID } from 'node:crypto';
@@ -30,6 +32,7 @@ const minutes = Number(process.env.SIM_MINUTES ?? 120);
 const target = Number(process.env.SIM_TARGET ?? 6000);
 // Who invited the bots: they sign up as this citizen's referrals.
 const referrer = process.env.SIM_REFERRER ?? 'NachoCaldum';
+const food = Number(process.env.SIM_FOOD ?? 0);
 const until = Date.now() + minutes * 60_000;
 
 const heroes = [
@@ -179,6 +182,16 @@ async function setup() {
       [founder.id],
     );
     founder.founds = companies[index];
+  }
+  if (food > 0) {
+    const supply = `simulation:${new Date().toISOString()}`;
+    for (const bot of bots) {
+      await owner(
+        `select game.put_goods(game.holder_for_citizen($1), 'food_q1', $2, $3, 'simulation_supply', $4)`,
+        [bot.id, country, food, `${supply}:${bot.id}`],
+      );
+    }
+    log(`supplied ${food} rations to each bot`);
   }
   return { bots, warId: Number(war.id) };
 }
