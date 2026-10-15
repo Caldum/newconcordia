@@ -106,6 +106,42 @@ describe('the independence war, live', () => {
     expect(screen.getByRole('region', { name: 'Ritmo de la batalla' })).toBeVisible();
   });
 
+  it('turns each new strike into a shot on the battlefield', async () => {
+    let feed = [
+      {
+        attack_id: 8,
+        name: 'Camila Ríos',
+        damage: 12,
+        health_lost: 0,
+        created_at: '2026-11-07T10:04:00Z',
+      },
+    ];
+    signIn({ independence_feed: () => ({ data: feed, error: null }) });
+    const { container } = await renderRoute('/battles/independence');
+    await screen.findByRole('region', { name: 'Últimos golpes' });
+    // The first read draws the four tanks at rest, without shots: nothing is new yet.
+    expect(container.querySelectorAll('[data-hit]')).toHaveLength(0);
+    expect(container.querySelectorAll('[aria-hidden="true"] img')).toHaveLength(4);
+    feed = [
+      {
+        attack_id: 9,
+        name: 'Bot Belgrano',
+        damage: 14,
+        health_lost: 0,
+        created_at: '2026-11-07T10:05:00Z',
+      },
+      ...feed,
+    ];
+    await vi.waitFor(
+      () => {
+        expect([...container.querySelectorAll('[data-hit]')].map((t) => t.textContent)).toEqual([
+          '−14',
+        ]);
+      },
+      { timeout: 5000 },
+    );
+  });
+
   it('strikes five times in a row with a key for each strike', async () => {
     const user = userEvent.setup();
     signIn({

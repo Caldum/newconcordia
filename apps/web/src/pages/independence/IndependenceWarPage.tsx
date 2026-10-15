@@ -10,6 +10,7 @@ import { useCountryName } from '../../features/world/useNames';
 import { useMessages } from '../../i18n';
 import { useDocumentTitle } from '../../lib/useDocumentTitle';
 
+import { Battlefield } from './Battlefield';
 import { HeroesPanel } from './HeroesPanel';
 import own from './IndependenceWar.module.css';
 import { LiberationBoard } from './LiberationBoard';
@@ -47,6 +48,12 @@ export function IndependenceWarPage() {
       {data ? (
         <>
           <LiberationBoard war={data} country={citizen.country_code} />
+          <Battlefield
+            warId={data.war_id}
+            myName={citizen.name}
+            country={citizen.country_code}
+            status={data.status}
+          />
           <div className={styles.layout}>
             <div className={styles.column}>
               {data.status === 'active' ? (

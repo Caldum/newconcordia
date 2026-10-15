@@ -3,7 +3,8 @@
 //   SIM_DB_URL=postgresql://… node supabase/scripts/simulate-war.js
 //
 // Setup, as the database owner and recorded in the admin log as «Simulación»:
-//   - creates the bots (bot01@sim.concordia.test …) as new citizens of the country, through the sign-up trigger,
+//   - invites the bots (bot01@sim.concordia.test …) to the closed beta and creates them as new citizens of the
+//     country, through the sign-up trigger,
 //     and each names SIM_REFERRER as who invited them (set_my_referrer, as any new citizen);
 //   - turns the independence war sandbox on and opens the country's war if none is active, with SIM_TARGET damage;
 //   - gives four founders civil level 5 (the level rewards pay their GOLD) so they can found an N1 company each.
@@ -114,6 +115,12 @@ async function setup() {
     const name = `Bot ${heroes[index % heroes.length]}${index >= heroes.length ? ` ${number}` : ''}`;
     let [row] = await owner('select id from auth.users where email = $1', [email]);
     if (!row) {
+      // A closed beta lets in only invited emails: the bots are invited like anyone else.
+      await owner(
+        `insert into game.beta_invites (email, invited_by, note, created_at)
+         values ($1, null, 'Simulación', now()) on conflict (email) do nothing`,
+        [email],
+      );
       [row] = await owner(
         `insert into auth.users (instance_id, id, aud, role, email, encrypted_password, raw_user_meta_data,
                                  raw_app_meta_data, email_confirmed_at, created_at, updated_at)

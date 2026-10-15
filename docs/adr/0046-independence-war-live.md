@@ -21,7 +21,18 @@ seguidos», the latest strikes and the round's heroes.
    30 minutes) and `get_my_independence`. A Realtime broadcast can replace the polling later.
 3. **Five in a row** are five ordinary attacks one after another, each with a key derived from the burst's, so a
    retry repeats the same strikes; the burst stops at the first refusal and says why.
-4. **Simulator.** `supabase/scripts/simulate-war.js` (development only, `SIM_DB_URL`) creates bots as new citizens
+4. **Battlefield.** Above the columns, a scene shows each new strike as a shell from one of the country's tanks at
+   the occupier's, with the damage over the blast (the player's in gold); the occupier fires back every few seconds;
+   once won its tanks go dark and smoke and the country's flag goes up. It is decorative (`aria-hidden`): the
+   latest strikes list says the same in words. The tank (a 12-frame strip), the snowy street and the snow are the
+   owner's images; the shell, blast and smoke are Kenney's «Tanks» pack (CC0). See
+   `apps/web/src/assets/war/README.md`.
+5. **Smooth and light.** No animation framework: plain HTML layers that animate only `transform` and `opacity`,
+   which the compositor runs on the GPU off the main thread; the background is painted once; each tank is one image
+   that never remounts (the Web Animations API plays its frames, so nothing blinks); distances use container units,
+   so the scene scales without JavaScript; the occupier's fire stops while the scene is off screen or the tab hidden;
+   with reduced motion nothing moves. About 380 KB of images, loaded only by this route.
+6. **Simulator.** `supabase/scripts/simulate-war.js` (development only, `SIM_DB_URL`) creates bots as new citizens
    through the sign-up trigger, each naming `SIM_REFERRER` as who invited them; turns the sandbox on and opens the
    war with `SIM_TARGET` damage, both logged as «Simulación» in the admin log; gives four founders civil level 5
    by XP (the level rewards pay their GOLD) to found one N1 company each. Then every bot plays through the public
