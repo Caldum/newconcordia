@@ -3,7 +3,7 @@
 -- eaten at 100 energy; without food energy does not rise.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(24);
+select plan(26);
 
 create function pg_temp.new_player(p_email text, p_name text, p_country text)
 returns uuid
@@ -92,6 +92,17 @@ set local game.fixed_now = '2026-10-13 15:01:00+00';
 select is(game.settle_food(:'camila'), 72, 'one meal the next minute');
 select is(pg_temp.food(:'camila', 'food_q1'), 19::numeric, 'only one');
 
+-- Six minutes hungry build up 10 of appetite, but it is not banked: with food it never exceeds the next meal (a Q3 waits 3 minutes).
+set local game.fixed_now = '2026-10-13 15:00:30+00';
+select game.spend_energy(:'ana', 30);
+set local game.fixed_now = '2026-10-13 15:06:30+00';
+select game.put_goods(game.holder_for_citizen(:'ana'), 'food_q1', 'BRA', 1, 'test', 'test');
+select game.put_goods(game.holder_for_citizen(:'ana'), 'food_q3', 'BRA', 1, 'test', 'test');
+set local game.fixed_now = '2026-10-13 15:09:00+00';
+select is(game.settle_food(:'ana'), 72, 'after a hungry spell the Q1 comes the next minute, and the Q3 still waits');
+set local game.fixed_now = '2026-10-13 15:10:00+00';
+select is(game.settle_food(:'ana'), 78, 'three minutes after the Q1, the Q3');
+
 -- Arriving settles: the profile and the inventory show the meals.
 set local game.fixed_now = '2026-10-13 15:05:00+00';
 select pg_temp.act_as(:'camila');
@@ -99,7 +110,7 @@ select is((select energy from public.get_my_profile()), 80, 'reading the profile
 select results_eq(
   $$ select food_appetite, food_appetite_max, food_energy_per_interval, food_interval_minutes, food_at, next_meal_energy
      from public.get_my_profile() $$,
-  $$ values (8, 10, 2, 1, '2026-10-13 15:05:00+00'::timestamptz, 2) $$,
+  $$ values (0, 10, 2, 1, '2026-10-13 15:05:00+00'::timestamptz, 2) $$,
   'the profile says how much appetite there is and what the next meal gives'
 );
 select is(

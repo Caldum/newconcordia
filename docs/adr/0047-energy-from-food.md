@@ -20,6 +20,9 @@ quality level (Q1 2 to Q5 10). Energy fills 2 per minute. A meal bigger than tha
    subtracted from the appetite. The player never jumps to a higher quality, so the cheapest food goes first.
    With the cap at what is missing, nothing is wasted. A player at 98 with only a Q2 stays at 98 until spending.
    At most one meal per interval, so at most 2 per minute in the long run.
+   While food is held, the appetite is also capped at the next meal's energy (amended 2026-11-10,
+   `20261110090000_meal_appetite_cap.sql`). Appetite built up without food is not banked, so after a hungry spell a Q3
+   still waits three minutes.
 4. **Settled on arrival**, as in ADR 0018:
    - Reading the profile or the inventory and spending or adding energy all catch up the missed intervals.
    - The loop is bounded: a full bar or a lack of food ends it at once, and the bar fills within 50 meals.
