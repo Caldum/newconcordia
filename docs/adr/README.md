@@ -53,3 +53,4 @@ marked «Superseded by NNNN».
 | 0045 | Picture safety | Accepted |
 | 0046 | The independence war, live, and a war simulator | Accepted |
 | 0047 | Energy only from food, a minute at a time | Accepted |
+| 0048 | The market square: buying where you are, a ticket, figures for the government | Accepted |

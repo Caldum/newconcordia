@@ -49,3 +49,18 @@ export function buyMarketLicense(marketCountryCode: string, key: string) {
     p_key: key,
   });
 }
+
+export interface TicketPurchase {
+  lines: readonly { offerId: number; quantity: number }[];
+  /** Into this own company's depot; the player's inventory when null. */
+  companyId: number | null;
+}
+
+/** Buys every line of a ticket at once, or none (ADR 0048). */
+export function buyTicket({ lines, companyId }: TicketPurchase, key: string) {
+  return supabase.rpc('buy_ticket', {
+    p_lines: lines.map((line) => ({ offer_id: line.offerId, quantity: line.quantity })),
+    ...(companyId === null ? {} : { p_company_id: companyId }),
+    p_key: key,
+  });
+}

@@ -171,6 +171,9 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-11-08 · Energy (owner's request): no hourly recharge; food gives 2 per quality, eaten whole as the
   appetite builds 2 a minute, never wasted; every training session costs 10; the energy bar fills live, fainter
   without food (ADR 0047).
+- 2026-11-09 · Market square (owner's request): players buy in the market of the country they are in (travel to
+  buy elsewhere); filters by category and quality starting on Food Q1; a ticket buys several offers at once; the
+  market's figures only for the president and the minister of the economy (ADR 0048).
 
 ## Next step
 

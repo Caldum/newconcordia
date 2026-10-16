@@ -35,7 +35,7 @@ Interface copy: `docs/voice.md`. Game terms ↔ code names: `docs/glossary.md`. 
 - Companies N1–N5 (10/25/50/100/200 GOLD; civil level 5/10/20/30/40); 15 resources by region; extractors only
   where the resource exists; production formulas of spec section 5.
 - Market: sell and buy orders with locked funds, partial fills, price-time priority, export tax; FX through
-  GOLD pairs.
+  GOLD pairs. Players buy where they are, several offers per ticket (ADR 0048).
 - Government: president and vice president on a monthly joint ticket; five ministries and a Central Bank
   governor; Congress of `max(8, floor(A/50))` seats by D'Hondt; bills with budget escrow; succession is atomic.
 - War: authorization law with 50 GOLD escrow, only the president launches; battles of 9 rounds of 1 hour, first

@@ -61,72 +61,148 @@ function signIn(extra: Answers = {}) {
     list_my_market_licenses: { data: [], error: null },
     list_countries: { data: countryRows, error: null },
     list_regions: { data: regionRows, error: null },
+    get_my_office: { data: [], error: null },
     ...extra,
   });
   setSession(fakeSession());
 }
 
-describe('market', () => {
+describe('the market square', () => {
   afterEach(() => {
     resetSupabaseMock();
     localStorage.clear();
   });
 
-  it('shows the goods, the offers cheapest first and the VAT included', async () => {
+  it('shows the market of the country the player is in, on food Q1, without figures', async () => {
     signIn();
     await renderRoute('/market');
     expect(
-      await screen.findByRole('heading', { level: 1, name: 'Mercado de Argentina' }),
+      await screen.findByRole('heading', { level: 1, name: 'Plaza del mercado' }),
     ).toBeVisible();
     expect(
-      screen.getByText(
-        'Precios en Crédito con IVA 5 % incluido. Los productos importados pagan además 10 % de arancel.',
+      await screen.findByText(
+        'Estás en Argentina y compras en su mercado. Precios en Crédito con IVA 5 % incluido; los importados pagan además 10 % de arancel. Para comprar en otro país, viaja.',
       ),
     ).toBeVisible();
-    expect(screen.getByRole('button', { name: /Comida Q1 desde 12,60/ })).toHaveAttribute(
+    const category = screen.getByRole('group', { name: 'Categoría' });
+    expect(within(category).getByRole('button', { name: 'Alimentos' })).toHaveAttribute(
       'aria-pressed',
       'true',
     );
-    expect(
-      screen.getByRole('button', { name: /Materia prima alimentaria sin ofertas/ }),
-    ).toBeVisible();
+    const quality = screen.getByRole('group', { name: 'Calidad' });
+    expect(within(quality).getByRole('button', { name: 'Q1' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(within(quality).queryByRole('button', { name: /Todas/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
     const table = await screen.findByRole('table', { name: 'Ofertas de Comida Q1' });
     expect(within(table).getAllByRole('row')).toHaveLength(3);
-    expect(
-      screen.getByText('Promedio de las últimas 24 h: 13,00. El vendedor paga 1 % de comisión.'),
-    ).toBeVisible();
+    expect(screen.getByText('2 ofertas encontradas')).toBeVisible();
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('list_market', {
+      p_country_code: 'ARG',
+      p_good_code: 'food_q1',
+    });
+    expect(screen.queryByRole('region', { name: /Cifras del mercado/ })).not.toBeInTheDocument();
+    expect(supabaseMock.rpc).not.toHaveBeenCalledWith('market_stats', expect.anything());
   });
 
-  it('buys with the tariff on imports and an idempotency key', async () => {
+  it('switches to another category on its first quality', async () => {
     const user = userEvent.setup();
-    signIn({ buy: { data: 2860, error: null } });
+    signIn();
+    await renderRoute('/market');
+    await user.click(await screen.findByRole('button', { name: 'Armas' }));
+    expect(await screen.findByRole('table', { name: 'Ofertas de Armas Q1' })).toBeVisible();
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('list_market', {
+      p_country_code: 'ARG',
+      p_good_code: 'weapon_q1',
+    });
+  });
+
+  it('builds a ticket from several offers and buys it all at once', async () => {
+    const user = userEvent.setup();
+    signIn({ buy_ticket: { data: 4120, error: null } });
     await renderRoute('/market');
     await user.click(
-      await screen.findByRole('button', { name: 'Elegir la oferta de Gastronomía Ibérica' }),
+      await screen.findByRole('button', { name: 'Una unidad más de Gastronomía Ibérica' }),
     );
-    const purchase = screen.getByRole('region', { name: 'Comprar Comida Q1' });
-    const quantity = within(purchase).getByLabelText('Cantidad');
-    await user.clear(quantity);
-    await user.type(quantity, '2');
-    expect(within(purchase).getByText('Arancel por importación, 10 %')).toBeVisible();
-    expect(within(purchase).getByText('28,60')).toBeVisible();
-    await user.click(within(purchase).getByRole('button', { name: 'Comprar 2' }));
-    expect(supabaseMock.rpc).toHaveBeenCalledWith('buy', {
-      p_offer_id: 2,
-      p_quantity: 2,
+    await user.click(screen.getByRole('button', { name: 'Una unidad más de Gastronomía Ibérica' }));
+    await user.click(screen.getByRole('button', { name: 'Una unidad más de Cocina de Campaña' }));
+    const ticket = screen.getByRole('region', { name: 'Tu ticket' });
+    expect(within(ticket).getByText('2 × 13,00, a Gastronomía Ibérica')).toBeVisible();
+    expect(within(ticket).getByText('1 × 12,60, a Cocina de Campaña')).toBeVisible();
+    expect(within(ticket).getByText('Arancel por importación, 10 %')).toBeVisible();
+    expect(within(ticket).getByText('41,20')).toBeVisible();
+    await user.click(within(ticket).getByRole('button', { name: 'Comprar 3 unidades' }));
+    expect(supabaseMock.rpc).toHaveBeenCalledWith('buy_ticket', {
+      p_lines: [
+        { offer_id: 2, quantity: 2 },
+        { offer_id: 1, quantity: 1 },
+      ],
       p_key: expect.stringMatching(/^[0-9a-f-]{36}$/) as unknown,
     });
-    expect(await screen.findByText('Compraste 2 de Comida Q1 por 28,60 Crédito.')).toBeVisible();
+    expect(
+      await within(ticket).findByText('Compraste 3 unidades por 41,20 Crédito.'),
+    ).toBeVisible();
+    expect(within(ticket).queryByRole('button', { name: /Comprar/ })).not.toBeInTheDocument();
   });
 
-  it('explains a purchase the buyer cannot pay', async () => {
+  it('takes a line out of the ticket', async () => {
     const user = userEvent.setup();
-    signIn({ buy: { data: null, error: { message: 'insufficient_funds' } } });
+    signIn();
     await renderRoute('/market');
-    await user.click(await screen.findByRole('button', { name: 'Comprar 1' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent(
-      'No te alcanza el Crédito para esta compra.',
+    await user.click(
+      await screen.findByRole('button', { name: 'Una unidad más de Cocina de Campaña' }),
     );
+    const ticket = screen.getByRole('region', { name: 'Tu ticket' });
+    await user.click(
+      within(ticket).getByRole('button', { name: 'Quitar Comida Q1 de Cocina de Campaña' }),
+    );
+    expect(
+      within(ticket).getByText(/Elige cantidades en las ofertas y se suman aquí/),
+    ).toBeVisible();
+    expect(screen.getByLabelText('Unidades a comprar a Cocina de Campaña')).toHaveValue('0');
+  });
+
+  it('explains that buying elsewhere needs travelling', async () => {
+    const user = userEvent.setup();
+    signIn({ buy_ticket: { data: null, error: { message: 'not_in_market_country' } } });
+    await renderRoute('/market');
+    await user.click(
+      await screen.findByRole('button', { name: 'Una unidad más de Cocina de Campaña' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Comprar 1 unidad' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Solo compras en el mercado del país donde estás. Viaja para comprar en otro.',
+    );
+  });
+
+  it('shows the figures to the minister of the economy', async () => {
+    signIn({
+      get_my_office: { data: [{ office: 'minister_economy', country_code: 'ARG' }], error: null },
+      market_stats: {
+        data: [
+          {
+            volume_24h: 108400,
+            volume_prev_24h: 100000,
+            trades_24h: 40,
+            average_ticket_24h: 2710,
+            average_ticket_prev_24h: 2768,
+            active_offers: 1248,
+            offers_today: 126,
+          },
+        ],
+        error: null,
+      },
+    });
+    await renderRoute('/market');
+    const stats = await screen.findByRole('region', { name: 'Cifras del mercado de Argentina' });
+    expect(within(stats).getByText('1.084,00')).toBeVisible();
+    expect(within(stats).getByText('+8,4 %')).toBeVisible();
+    expect(within(stats).getByText('27,10')).toBeVisible();
+    expect(within(stats).getByText('−2,1 %')).toBeVisible();
+    expect(within(stats).getByText('1.248')).toBeVisible();
+    expect(within(stats).getByText('+126 hoy')).toBeVisible();
   });
 });
 

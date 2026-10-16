@@ -113,3 +113,27 @@ export function useMarketLicenseTerms() {
     staleTime: 60_000,
   });
 }
+
+const statsSchema = z.object({
+  /** Hundredths paid in the last 24 hours, tariffs included. */
+  volume_24h: z.number().int(),
+  volume_prev_24h: z.number().int(),
+  trades_24h: z.number().int(),
+  average_ticket_24h: z.number().int().nullable(),
+  average_ticket_prev_24h: z.number().int().nullable(),
+  active_offers: z.number().int(),
+  offers_today: z.number().int(),
+});
+
+export type MarketStats = z.infer<typeof statsSchema>;
+
+/** The market's figures: only the president and the minister of the economy may ask (ADR 0048). */
+export function useMarketStats(country: string, enabled: boolean) {
+  return useQuery({
+    queryKey: ['market', country, 'stats'],
+    enabled,
+    queryFn: async () =>
+      (await rows(supabase.rpc('market_stats', { p_country_code: country }), statsSchema))[0] ??
+      null,
+  });
+}

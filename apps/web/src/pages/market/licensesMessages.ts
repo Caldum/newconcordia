@@ -5,7 +5,7 @@ export const licensesMessages = defineMessages({
     documentTitle: 'Licencias de mercado · Concordia',
     title: 'Licencias de mercado',
     intro: (country: string) =>
-      `En el mercado de ${country} comercias sin licencia. Para comprar o vender en otro país necesitas la suya: se paga una vez y es para siempre.`,
+      `En el mercado de ${country} vendes sin licencia. Para vender en otro país desde aquí necesitas la suya: se paga una vez y es para siempre. Para comprar en otro país no hace falta licencia: viaja y compra en su mercado.`,
     terms: (price: string, share: string, burned: string) =>
       `Cada licencia cuesta ${price} Oro: ${share} van al tesoro de ese país y ${burned} salen del juego.`,
     loadFailed: 'No se pudieron cargar las licencias. Recarga la página para intentar de nuevo.',
@@ -27,7 +27,7 @@ export const licensesMessages = defineMessages({
     documentTitle: 'Market licenses · Concordia',
     title: 'Market licenses',
     intro: (country: string) =>
-      `You trade in the market of ${country} without a license. Buying or selling in another country needs theirs: you pay once and it lasts forever.`,
+      `You sell in the market of ${country} without a license. Selling in another country from here needs theirs: you pay once and it lasts forever. Buying in another country needs no license: travel there and buy in its market.`,
     terms: (price: string, share: string, burned: string) =>
       `Each license costs ${price} Gold: ${share} go to that country's treasury and ${burned} leave the game.`,
     loadFailed: 'The licenses did not load. Reload the page to try again.',

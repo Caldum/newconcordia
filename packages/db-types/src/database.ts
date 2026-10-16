@@ -207,6 +207,10 @@ export type Database = {
         Args: { p_key: string; p_market_country_code: string };
         Returns: number;
       };
+      buy_ticket: {
+        Args: { p_company_id?: number; p_key: string; p_lines: Json };
+        Returns: number;
+      };
       can_delete_picture: { Args: { p_name: string }; Returns: boolean };
       can_store_picture: { Args: { p_name: string }; Returns: boolean };
       can_upload_picture: { Args: { p_name: string }; Returns: boolean };
@@ -1353,6 +1357,18 @@ export type Database = {
         }[];
       };
       mark_notifications_seen: { Args: Record<PropertyKey, never>; Returns: undefined };
+      market_stats: {
+        Args: { p_country_code: string };
+        Returns: {
+          active_offers: number;
+          average_ticket_24h: number;
+          average_ticket_prev_24h: number;
+          offers_today: number;
+          trades_24h: number;
+          volume_24h: number;
+          volume_prev_24h: number;
+        }[];
+      };
       market_summary: {
         Args: { p_country_code: string };
         Returns: {
