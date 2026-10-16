@@ -1,10 +1,136 @@
+/* The console's shell gives the width and the margins. */
 .page {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  max-width: var(--page-max);
-  margin: 0 auto;
-  padding: var(--space-8) var(--space-7);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.head p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+}
+
+.signIn {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: var(--space-6) var(--space-4);
+  background: var(--sea);
+}
+
+.signIn > form {
+  width: min(100%, 440px);
+  padding: var(--space-6);
+  border-radius: var(--radius-l);
+  background: var(--land);
+  box-shadow: inset 0 0 0 1px var(--panel-border);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.stats > div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+.stats > div:last-child {
+  border-bottom: 0;
+}
+
+.stats dt {
+  color: var(--text-muted);
+}
+
+.stats dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list > li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.list > li:last-child {
+  border-bottom: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.row > * {
+  flex: 1 1 160px;
+}
+
+.row > button {
+  flex: 0 0 auto;
+}
+
+.meta {
+  color: var(--text-muted);
+  font-size: var(--support-font-size);
+}
+
+.split {
+  color: var(--text-muted);
+  font-size: var(--support-font-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: var(--space-3);
+  border: 1px solid var(--line-control);
+  border-radius: var(--radius-m);
+  background: var(--land);
+  color: var(--ink);
+  font: inherit;
+}
+
+.textarea:focus-visible {
+  outline: 0;
+  border-color: var(--info);
+  box-shadow: 0 0 0 4px rgb(31 95 184 / 16%);
 }
 
 .page h1 {
@@ -121,10 +247,6 @@
 }
 
 @media (width < 720px) {
-  .page {
-    padding: var(--space-6) var(--space-4);
-  }
-
   .section {
     padding: var(--space-5) var(--space-4);
   }

@@ -19,7 +19,13 @@ import { remembersSession, setRememberSession } from '../../lib/sessionStorage';
 
 import { messages } from './messages';
 
-export function SignInForm() {
+interface SignInFormProps {
+  /** Staff accounts sign in to the console: no Google, no sign-up, and the console afterwards (ADR 0049). */
+  audience?: 'player' | 'staff';
+}
+
+export function SignInForm({ audience = 'player' }: SignInFormProps) {
+  const staff = audience === 'staff';
   const copy = useMessages(messages);
   const shared = useMessages(authMessages);
   const navigate = useNavigate();
@@ -53,18 +59,22 @@ export function SignInForm() {
       setProblem(authProblem(error));
       return;
     }
-    await navigate({ to: '/' });
+    await navigate({ to: staff ? '/admin' : '/' });
   };
 
   return (
     <form className={styles.form} noValidate onSubmit={(event) => void submit(event)}>
       <div className={styles.heading}>
-        <h1 className="at-title-1">{copy.title}</h1>
-        <p>
-          {copy.firstTime} <Link to="/sign-up">{copy.signUp}</Link>
-        </p>
+        <h1 className="at-title-1">{staff ? copy.staffTitle : copy.title}</h1>
+        {staff ? (
+          <p>{copy.staffIntro}</p>
+        ) : (
+          <p>
+            {copy.firstTime} <Link to="/sign-up">{copy.signUp}</Link>
+          </p>
+        )}
       </div>
-      <GoogleSignIn />
+      {staff ? null : <GoogleSignIn />}
       <Field
         label={shared.email}
         type="email"
@@ -115,7 +125,7 @@ export function SignInForm() {
         <Note tone="error">{problem === 'missing' ? copy.missing : shared.problem(problem)}</Note>
       ) : null}
       <Button type="submit" size="large" className={styles.submit} disabled={sending}>
-        {sending ? copy.sending : copy.submit}
+        {sending ? copy.sending : staff ? copy.staffSubmit : copy.submit}
       </Button>
     </form>
   );

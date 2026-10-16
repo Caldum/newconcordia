@@ -22,6 +22,9 @@ const reportSchema = z.object({
   resolution: z.string().nullable(),
   /** The reported citizen's picture, if they have one. */
   target_picture: z.string().nullable(),
+  reviewed_at: z.string().nullable(),
+  /** The staff member who closed it. */
+  reviewed_by: z.string().nullable(),
 });
 
 const inviteSchema = z.object({
@@ -32,15 +35,34 @@ const inviteSchema = z.object({
   used_at: z.string().nullable(),
 });
 
+const mySanctionSchema = z.object({
+  kind: z.enum(['warning', 'mute', 'suspension']),
+  reason: z.enum(['spam', 'abuse', 'hate', 'cheating', 'multi_account', 'name', 'other']),
+  note: z.string(),
+  starts_at: z.string(),
+  ends_at: z.string().nullable(),
+});
+
+export type MySanction = z.infer<typeof mySanctionSchema>;
+
+/** The player's sanctions in force and warnings of the last 7 days. */
+export function useMySanctions() {
+  return useQuery({
+    queryKey: ['me', 'sanctions'],
+    queryFn: () => rows(supabase.rpc('get_my_sanctions'), mySanctionSchema),
+  });
+}
+
 export type ModerationReport = z.infer<typeof reportSchema>;
 export type BetaInvite = z.infer<typeof inviteSchema>;
 
-/** Open reports for moderators, oldest first. */
-export function useOpenReports(enabled: boolean) {
+export type ReportStatus = 'open' | 'actioned' | 'dismissed';
+
+/** Reports for moderators: open ones oldest first, closed ones latest first. */
+export function useReports(status: ReportStatus) {
   return useQuery({
-    queryKey: ['me', 'admin', 'reports'],
-    enabled,
-    queryFn: () => rows(supabase.rpc('admin_list_reports', { p_status: 'open' }), reportSchema),
+    queryKey: ['me', 'admin', 'reports', status],
+    queryFn: () => rows(supabase.rpc('admin_list_reports', { p_status: status }), reportSchema),
   });
 }
 

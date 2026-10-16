@@ -337,10 +337,83 @@ const financesRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/finances/FinancesPage'), 'FinancesPage'),
 });
 
-const adminRoute = createRoute({
-  getParentRoute: () => gameRoute,
+// The admin console: staff accounts, never players, in a layout of its own apart from the game (ADR 0049).
+const adminSignInRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin/sign-in',
+  component: lazyRouteComponent(() => import('./pages/admin/AdminSignInPage'), 'AdminSignInPage'),
+});
+
+const consoleRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'console',
+  component: lazyRouteComponent(() => import('./features/admin/AdminLayout'), 'AdminLayout'),
+});
+
+const adminOverviewRoute = createRoute({
+  getParentRoute: () => consoleRoute,
   path: '/admin',
-  component: lazyRouteComponent(() => import('./pages/admin/AdminPage'), 'AdminPage'),
+  component: lazyRouteComponent(() => import('./pages/admin/OverviewPage'), 'OverviewPage'),
+});
+
+const adminReportsRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/reports',
+  component: lazyRouteComponent(() => import('./pages/admin/ReportsPage'), 'ReportsPage'),
+});
+
+const adminCitizensRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/citizens',
+  component: lazyRouteComponent(() => import('./pages/admin/CitizensPage'), 'CitizensPage'),
+});
+
+const adminCitizenRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/citizens/$name',
+  component: lazyRouteComponent(() => import('./pages/admin/CitizenPage'), 'CitizenPage'),
+});
+
+const adminSanctionsRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/sanctions',
+  component: lazyRouteComponent(() => import('./pages/admin/SanctionsPage'), 'SanctionsPage'),
+});
+
+const adminGoldRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/gold',
+  component: lazyRouteComponent(() => import('./pages/admin/GoldPricesPage'), 'GoldPricesPage'),
+});
+
+const adminParamsRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/params',
+  component: lazyRouteComponent(() => import('./pages/admin/ParamsPage'), 'ParamsPage'),
+});
+
+const adminEconomyRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/economy',
+  component: lazyRouteComponent(() => import('./pages/admin/EconomyPage'), 'EconomyPage'),
+});
+
+const adminWorldRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/world',
+  component: lazyRouteComponent(() => import('./pages/admin/WorldPage'), 'WorldPage'),
+});
+
+const adminAccessRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/access',
+  component: lazyRouteComponent(() => import('./pages/admin/AccessPage'), 'AccessPage'),
+});
+
+const adminLogRoute = createRoute({
+  getParentRoute: () => consoleRoute,
+  path: '/admin/log',
+  component: lazyRouteComponent(() => import('./pages/admin/LogPage'), 'LogPage'),
 });
 
 const routeTree = rootRoute.addChildren([
@@ -357,6 +430,20 @@ const routeTree = rootRoute.addChildren([
   authConfirmRoute,
   authCallbackRoute,
   citizenRoute,
+  adminSignInRoute,
+  consoleRoute.addChildren([
+    adminOverviewRoute,
+    adminReportsRoute,
+    adminCitizensRoute,
+    adminCitizenRoute,
+    adminSanctionsRoute,
+    adminGoldRoute,
+    adminParamsRoute,
+    adminEconomyRoute,
+    adminWorldRoute,
+    adminAccessRoute,
+    adminLogRoute,
+  ]),
   gameRoute.addChildren([
     citizenshipRoute,
     changeCitizenshipRoute,
@@ -388,7 +475,6 @@ const routeTree = rootRoute.addChildren([
     governmentRoute,
     lawsRoute,
     financesRoute,
-    adminRoute,
   ]),
 ]);
 

@@ -42,3 +42,45 @@ export const reportMessages = defineMessages({
     error_other: 'It did not go through. Check your connection and try again.',
   },
 });
+
+/** What a sanctioned player reads at the top of every game screen. */
+export const sanctionMessages = defineMessages({
+  es: {
+    warning: 'La moderación te dejó una advertencia.',
+    mute: (until: string | null) =>
+      until
+        ? `Estás silenciado hasta el ${until}: no puedes enviar mensajes, publicar ni cambiar tu foto o tu descripción.`
+        : 'Estás silenciado: no puedes enviar mensajes, publicar ni cambiar tu foto o tu descripción.',
+    suspension: (until: string | null) =>
+      until
+        ? `Tu cuenta está suspendida hasta el ${until}: puedes mirar, pero no jugar.`
+        : 'Tu cuenta está suspendida: puedes mirar, pero no jugar.',
+    reason: (reason: string) => `Motivo: ${reason}.`,
+    reason_spam: 'spam o publicidad',
+    reason_abuse: 'insultos o acoso',
+    reason_hate: 'odio o discriminación',
+    reason_cheating: 'trampas',
+    reason_multi_account: 'cuentas múltiples',
+    reason_name: 'nombre inapropiado',
+    reason_other: 'otro',
+  },
+  en: {
+    warning: 'The moderators left you a warning.',
+    mute: (until: string | null) =>
+      until
+        ? `You are muted until ${until}: you cannot send messages, publish or change your picture or description.`
+        : 'You are muted: you cannot send messages, publish or change your picture or description.',
+    suspension: (until: string | null) =>
+      until
+        ? `Your account is suspended until ${until}: you can look around, but not play.`
+        : 'Your account is suspended: you can look around, but not play.',
+    reason: (reason: string) => `Reason: ${reason}.`,
+    reason_spam: 'spam or advertising',
+    reason_abuse: 'insults or harassment',
+    reason_hate: 'hate or discrimination',
+    reason_cheating: 'cheating',
+    reason_multi_account: 'multiple accounts',
+    reason_name: 'inappropriate name',
+    reason_other: 'other',
+  },
+});

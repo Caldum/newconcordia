@@ -1,5 +1,6 @@
 import { Button } from '@concordia/atlas/Button';
 import { Field } from '@concordia/atlas/Field';
+import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
 import { ActionFeedback } from '../../features/actions/ActionFeedback';
@@ -27,6 +28,7 @@ export function ReportItem({ report }: { report: ModerationReport }) {
   const canHide = report.target_kind !== 'citizen' && !report.target_hidden;
   const isCitizen = report.target_kind === 'citizen';
   const canClear = isCitizen && (report.target_picture !== null || report.target_excerpt !== null);
+  const open = report.status === 'open';
   return (
     <li>
       {isCitizen && report.target_author ? (
@@ -61,13 +63,30 @@ export function ReportItem({ report }: { report: ModerationReport }) {
           {copy.reportedBy(report.reporter_name ?? '—', formatDateTime(report.created_at, locale))}
           {report.target_hidden ? ` · ${copy.hidden}` : null}
         </span>
+        {report.reviewed_at ? (
+          <>
+            <br />
+            <span className={styles.muted}>
+              {copy.closedBy(report.reviewed_by ?? '—', formatDateTime(report.reviewed_at, locale))}
+              {report.resolution ? ` · «${report.resolution}»` : null}
+            </span>
+          </>
+        ) : null}
+        {report.target_author ? (
+          <>
+            <br />
+            <Link to="/admin/citizens/$name" params={{ name: report.target_author }}>
+              {copy.openRecord(report.target_author)}
+            </Link>
+          </>
+        ) : null}
         <ActionFeedback
           problem={resolve.problem}
           copy={copy}
           success={resolve.succeeded ? copy.resolved : null}
         />
       </span>
-      {resolve.succeeded ? null : (
+      {resolve.succeeded || !open ? null : (
         <span className={styles.inline}>
           <Field
             label={copy.note}

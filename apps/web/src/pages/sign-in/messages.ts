@@ -13,6 +13,10 @@ export const messages = defineMessages({
     missing: 'Escribe tu correo y tu contraseña.',
     submit: 'Entrar a Concordia',
     sending: 'Entrando…',
+    staffDocumentTitle: 'Administración · Iniciar sesión · Concordia',
+    staffTitle: 'Administración',
+    staffIntro: 'Entra con tu cuenta del equipo. Las cuentas de jugador no administran.',
+    staffSubmit: 'Entrar a la administración',
   },
   en: {
     documentTitle: 'Sign in · Concordia',
@@ -26,5 +30,9 @@ export const messages = defineMessages({
     missing: 'Write your email and your password.',
     submit: 'Enter Concordia',
     sending: 'Signing in…',
+    staffDocumentTitle: 'Administration · Sign in · Concordia',
+    staffTitle: 'Administration',
+    staffIntro: 'Sign in with your team account. Player accounts do not administer.',
+    staffSubmit: 'Enter the administration',
   },
 });

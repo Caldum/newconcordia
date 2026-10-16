@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { LanguageSwitch, useMessages } from '../../i18n';
 import { signOut } from '../auth/api';
 import { LegalGate } from '../legal/LegalGate';
+import { SanctionNotice } from '../moderation/SanctionNotice';
 
 import { GameNav } from './GameNav';
 import styles from './GameShell.module.css';
@@ -39,6 +40,7 @@ export function GameShell({ children }: { children: ReactNode }) {
       <div className={styles.frame}>
         <Sidebar />
         <div className={styles.content}>
+          <SanctionNotice />
           <LegalGate>{children}</LegalGate>
         </div>
       </div>

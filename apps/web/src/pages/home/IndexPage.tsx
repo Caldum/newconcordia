@@ -1,6 +1,7 @@
 import { Note } from '@concordia/atlas/Note';
 import { Navigate } from '@tanstack/react-router';
 
+import { useStaff } from '../../features/admin/queries';
 import { useAuth } from '../../features/auth/AuthProvider';
 import { useCitizen } from '../../features/auth/useCitizen';
 import { useMessages } from '../../i18n';
@@ -13,6 +14,7 @@ import { messages } from './messages';
 export function IndexPage() {
   const auth = useAuth();
   const citizen = useCitizen();
+  const staff = useStaff(citizen.isSuccess && !citizen.data);
   const copy = useMessages(messages);
 
   if (auth.status === 'loading') return null;
@@ -25,6 +27,10 @@ export function IndexPage() {
       </main>
     );
   }
-  if (!citizen.data) return <Navigate to="/citizen" replace />;
+  if (!citizen.data) {
+    // Staff accounts have no citizen: they go to the console (ADR 0049).
+    if (staff.isPending) return null;
+    return <Navigate to={staff.data ? '/admin' : '/citizen'} replace />;
+  }
   return <HomePage citizen={citizen.data} />;
 }
