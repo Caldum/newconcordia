@@ -39,6 +39,8 @@ const report = {
   reports_on_target: 2,
   resolution: null,
   target_picture: null,
+  reviewed_at: null,
+  reviewed_by: null,
 };
 
 const citizenReport = {
@@ -169,10 +171,8 @@ describe('terms, moderation and the closed beta', () => {
     const user = userEvent.setup();
     answerRpc({
       ...world,
-      get_my_citizen: { data: [citizenRow()], error: null },
-      am_i_admin: { data: true, error: null },
-      admin_list_countries: { data: [], error: null },
-      admin_list_regions: { data: [], error: null },
+      get_my_staff: { data: [{ role: 'admin', email: 'ada@ejemplo.com' }], error: null },
+      admin_list_team: { data: [], error: null },
       admin_list_reports: { data: [report, citizenReport], error: null },
       admin_resolve_report: { data: null, error: null },
       get_beta_status: { data: [{ closed: false }], error: null },
@@ -192,8 +192,8 @@ describe('terms, moderation and the closed beta', () => {
       admin_invite_beta: { data: null, error: null },
     });
     setSession(fakeSession());
-    await renderRoute('/admin');
-    const reports = await screen.findByRole('region', { name: 'Denuncias' });
+    await renderRoute('/admin/reports');
+    const reports = await screen.findByRole('region', { name: 'Abiertas' });
     expect(await within(reports).findByText('Texto ofensivo')).toBeVisible();
     const [articleReport, citizenReported] = within(reports).getAllByRole('listitem');
     if (!articleReport || !citizenReported) throw new Error('two reports expected');
@@ -219,7 +219,8 @@ describe('terms, moderation and the closed beta', () => {
       p_note: '',
     });
 
-    const beta = screen.getByRole('region', { name: 'Beta cerrada' });
+    await user.click(screen.getByRole('link', { name: 'Acceso' }));
+    const beta = await screen.findByRole('region', { name: 'Beta cerrada' });
     expect(
       await within(beta).findByText('El juego está abierto: cualquiera puede crear su ciudadano.'),
     ).toBeVisible();

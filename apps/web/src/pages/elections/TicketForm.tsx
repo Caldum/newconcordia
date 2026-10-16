@@ -7,6 +7,7 @@ import styles from '../../features/economy/economy.module.css';
 import { registerTicket } from '../../features/politics/api';
 import type { NewTicket } from '../../features/politics/api';
 import { usePartyMembers } from '../../features/politics/queries';
+import { useGoldPrice } from '../../features/prices/useGoldPrice';
 import { useMessages } from '../../i18n';
 
 import { messages } from './messages';
@@ -14,6 +15,7 @@ import { messages } from './messages';
 /** The party leader picks the ticket among the members and registers it. */
 export function TicketForm({ partyId }: { partyId: number }) {
   const copy = useMessages(messages);
+  const price = useGoldPrice('presidential_ticket');
   const members = usePartyMembers(partyId);
   const presidentId = useId();
   const viceId = useId();
@@ -39,7 +41,7 @@ export function TicketForm({ partyId }: { partyId: number }) {
       }}
     >
       <h3 className="at-title-3">{copy.ticketFormTitle}</h3>
-      <p className={styles.muted}>{copy.ticketFormIntro}</p>
+      <p className={styles.muted}>{copy.ticketFormIntro(price)}</p>
       <div className={styles.field}>
         <label htmlFor={presidentId} className={styles.label}>
           {copy.presidentCandidate}

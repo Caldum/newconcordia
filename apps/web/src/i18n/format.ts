@@ -67,3 +67,8 @@ export function formatDateTime(value: Date | string, locale: Locale): string {
     timeZone: gameTimeZone,
   }).format(new Date(value));
 }
+
+/** Items joined as a sentence lists them: «75, 100, 125 y 150». */
+export function formatList(items: readonly string[], locale: Locale): string {
+  return new Intl.ListFormat(intlLocale[locale], { type: 'conjunction' }).format(items);
+}

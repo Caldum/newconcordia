@@ -1,3 +1,4 @@
+import type { GoldPriceText } from '../../features/prices/goldPrice';
 import { defineMessages } from '../../i18n';
 
 export const messages = defineMessages({
@@ -20,7 +21,7 @@ export const messages = defineMessages({
     follow: 'Ver la batalla',
     launchTitle: 'Lanzar una ofensiva',
     launchHint:
-      'Solo la presidencia lanza ofensivas: contra el país enemigo, en cualquier momento; contra otro país, con una autorización de guerra vigente (sus 50 Oro se gastan al lanzar).',
+      'Solo la presidencia lanza ofensivas: contra el país enemigo, en cualquier momento; contra otro país, con una autorización de guerra vigente (su oro reservado se gasta al lanzar).',
     noTargets: 'No hay regiones que puedas atacar ahora.',
     region: 'Región',
     targetLine: (region: string, country: string, authorization: boolean) =>
@@ -35,11 +36,11 @@ export const messages = defineMessages({
     expires: (when: string) => `vence el ${when}`,
     status_pending: 'vigente',
     status_started: 'usada',
-    status_expired: 'vencida, 50 Oro devueltos',
-    status_cancelled: 'cancelada, 50 Oro devueltos',
+    status_expired: 'vencida, el oro volvió al Tesoro',
+    status_cancelled: 'cancelada, el oro volvió al Tesoro',
     cancel: 'Cancelar',
     cancelAria: (country: string) => `Cancelar la autorización contra ${country}`,
-    cancelled: 'La autorización se canceló y los 50 Oro volvieron al Tesoro.',
+    cancelled: 'La autorización se canceló y el oro reservado volvió al Tesoro.',
     battleTitle: (region: string) => `Batalla por ${region}`,
     attacker: 'Atacante',
     defender: 'Defensor',
@@ -75,20 +76,21 @@ export const messages = defineMessages({
     setOrder: 'Hacerla la batalla prioritaria del país',
     orderSet: 'Es la batalla prioritaria del país.',
     resistanceTitle: 'Resistencia',
-    resistanceHint:
-      'En una región ocupada, diez organizadores de cualquier ciudadanía pagan 2 Oro cada uno (se queman) y la batalla empieza en el acto. Si gana la resistencia, la región vuelve a quien la tenía y cada organizador recibe 5 Oro.',
+    resistanceHint: (price: GoldPriceText) =>
+      `En una región ocupada, diez organizadores de cualquier ciudadanía pagan ${price.price} Oro cada uno (${price.shared ? `${price.country} van al país que la resistencia recupera y ${price.game} salen del juego` : 'salen del juego'}) y la batalla empieza en el acto. Si gana la resistencia, la región vuelve a quien la tenía y cada organizador recibe una recompensa en oro.`,
     noOccupied: 'No hay regiones ocupadas.',
     occupiedLine: (region: string, occupier: string, restore: string) =>
       `${region}: ocupada por ${occupier}, volvería a ${restore}`,
     organizers: (count: number, needed: number) =>
       `${String(count)} de ${String(needed)} organizadores`,
     resistanceFighting: 'La resistencia está peleando.',
-    join: 'Organizar (2 Oro)',
-    joinAria: (region: string) => `Organizar la resistencia de ${region} por 2 Oro`,
+    join: (price: string) => `Organizar (${price} Oro)`,
+    joinAria: (region: string, price: string) =>
+      `Organizar la resistencia de ${region} por ${price} Oro`,
     joined: 'Te sumaste a la resistencia.',
     error_not_occupied: 'Esa región no está ocupada.',
     error_already_organizer: 'Ya organizas esta resistencia.',
-    error_insufficient_funds: 'No tienes 2 Oro.',
+    error_insufficient_funds: 'No tienes el oro que cuesta organizarla.',
     travelTitle: 'Viajar',
     travelHint:
       'Quienes no son del país de un bando ni aliados solo pueden pelear desde la región de la batalla. Con salud 0 no se viaja.',
@@ -148,7 +150,7 @@ export const messages = defineMessages({
     follow: 'Follow the battle',
     launchTitle: 'Launch an offensive',
     launchHint:
-      'Only the president launches offensives: against the enemy country at any time; against another country with a valid war authorization (its 50 Gold are spent on launch).',
+      'Only the president launches offensives: against the enemy country at any time; against another country with a valid war authorization (its reserved Gold is spent on launch).',
     noTargets: 'There are no regions you can attack now.',
     region: 'Region',
     targetLine: (region: string, country: string, authorization: boolean) =>
@@ -163,11 +165,11 @@ export const messages = defineMessages({
     expires: (when: string) => `expires ${when}`,
     status_pending: 'valid',
     status_started: 'used',
-    status_expired: 'expired, 50 Gold returned',
-    status_cancelled: 'cancelled, 50 Gold returned',
+    status_expired: 'expired, the Gold went back to the Treasury',
+    status_cancelled: 'cancelled, the Gold went back to the Treasury',
     cancel: 'Cancel',
     cancelAria: (country: string) => `Cancel the authorization against ${country}`,
-    cancelled: 'The authorization was cancelled and the 50 Gold went back to the Treasury.',
+    cancelled: 'The authorization was cancelled and the reserved Gold went back to the Treasury.',
     battleTitle: (region: string) => `Battle for ${region}`,
     attacker: 'Attacker',
     defender: 'Defender',
@@ -202,20 +204,21 @@ export const messages = defineMessages({
     setOrder: 'Make it the country’s priority battle',
     orderSet: 'It is the country’s priority battle.',
     resistanceTitle: 'Resistance',
-    resistanceHint:
-      'In an occupied region, ten organizers of any citizenship pay 2 Gold each (burned) and the battle starts at once. If the resistance wins, the region returns to who held it and each organizer receives 5 Gold.',
+    resistanceHint: (price: GoldPriceText) =>
+      `In an occupied region, ten organizers of any citizenship pay ${price.price} Gold each (${price.shared ? `${price.country} go to the country the resistance restores and ${price.game} leave the game` : 'it leaves the game'}) and the battle starts at once. If the resistance wins, the region returns to who held it and each organizer receives a Gold reward.`,
     noOccupied: 'There are no occupied regions.',
     occupiedLine: (region: string, occupier: string, restore: string) =>
       `${region}: occupied by ${occupier}, would return to ${restore}`,
     organizers: (count: number, needed: number) =>
       `${String(count)} of ${String(needed)} organizers`,
     resistanceFighting: 'The resistance is fighting.',
-    join: 'Organize (2 Gold)',
-    joinAria: (region: string) => `Organize the resistance of ${region} for 2 Gold`,
+    join: (price: string) => `Organize (${price} Gold)`,
+    joinAria: (region: string, price: string) =>
+      `Organize the resistance of ${region} for ${price} Gold`,
     joined: 'You joined the resistance.',
     error_not_occupied: 'That region is not occupied.',
     error_already_organizer: 'You already organize this resistance.',
-    error_insufficient_funds: 'You do not have 2 Gold.',
+    error_insufficient_funds: 'You do not have the Gold it costs to organize it.',
     travelTitle: 'Travel',
     travelHint:
       'Those who are neither of a side’s country nor its allies can fight only from the battle’s region. Nobody travels at 0 health.',

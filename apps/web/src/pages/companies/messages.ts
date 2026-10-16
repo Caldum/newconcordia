@@ -150,14 +150,15 @@ export const foundMessages = defineMessages({
     noRegion: 'No hay ninguna región en juego con un recurso de ese tipo.',
     levelNeeded: (needed: number, current: number) =>
       `Para fundar necesitas nivel civil ${String(needed)}; tienes ${String(current)}.`,
-    foreignCost: (country: string) => `10 Oro más el recargo de construcción de ${country}`,
+    foreignCost: (country: string, price: string) =>
+      `${price} Oro más el recargo de construcción de ${country}`,
     nameStep: '3. Nombre',
     name: 'Nombre de la empresa',
     nameHint: 'Lo ven tus empleados y el mercado. De 3 a 40 caracteres.',
     summary: 'Resumen',
     yields: 'Un turno produce',
     cost: 'Costo de fundación',
-    costValue: '10 Oro',
+    costValue: (price: string) => `${price} Oro`,
     submit: 'Fundar empresa',
     founding: 'Fundando…',
     founded: (name: string, region: string) =>
@@ -168,8 +169,7 @@ export const foundMessages = defineMessages({
     food: '100 de comida Q1, antes de bonos y salud',
     weapons: '10 armas Q1, antes de bonos y salud',
     kits: '20 botiquines Q1, antes de bonos y salud',
-    error_insufficient_funds:
-      'Fundar cuesta 10 Oro (más el recargo si no es tu país) y no te alcanza.',
+    error_insufficient_funds: 'No te alcanza el oro para fundar (más el recargo si no es tu país).',
     error_level_too_low: 'Para fundar necesitas nivel civil 5.',
     error_resource_missing: 'En esa región no hay un recurso de ese tipo para extraer.',
     error_company_name_taken: 'Ya hay una empresa con ese nombre. Elige otro.',
@@ -195,14 +195,15 @@ export const foundMessages = defineMessages({
     noRegion: 'No region in play has a resource of that kind.',
     levelNeeded: (needed: number, current: number) =>
       `To found you need civil level ${String(needed)}; you have ${String(current)}.`,
-    foreignCost: (country: string) => `10 Gold plus the construction surcharge of ${country}`,
+    foreignCost: (country: string, price: string) =>
+      `${price} Gold plus the construction surcharge of ${country}`,
     nameStep: '3. Name',
     name: 'Company name',
     nameHint: 'Your employees and the market see it. From 3 to 40 characters.',
     summary: 'Summary',
     yields: 'A shift produces',
     cost: 'Founding cost',
-    costValue: '10 Gold',
+    costValue: (price: string) => `${price} Gold`,
     submit: 'Found company',
     founding: 'Founding…',
     founded: (name: string, region: string) =>
@@ -214,7 +215,7 @@ export const foundMessages = defineMessages({
     weapons: '10 Q1 weapons, before bonuses and health',
     kits: '20 Q1 medical kits, before bonuses and health',
     error_insufficient_funds:
-      'Founding costs 10 Gold (plus the surcharge outside your country) and your balance is not enough.',
+      'Your Gold is not enough to found (plus the surcharge outside your country).',
     error_level_too_low: 'To found you need civil level 5.',
     error_resource_missing: 'That region has no resource of that kind to extract.',
     error_company_name_taken: 'There is already a company with that name. Choose another.',

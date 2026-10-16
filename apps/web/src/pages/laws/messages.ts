@@ -21,7 +21,7 @@ export const messages = defineMessages({
     enemy: 'País enemigo',
     noEnemy: 'Ninguno (termina la designación)',
     warLine: (country: string) =>
-      `Autoriza a la presidencia a lanzar una ofensiva contra ${country} dentro de las 24 horas. Reserva 50 Oro del Tesoro: se gastan al lanzarla o vuelven si vence.`,
+      `Autoriza a la presidencia a lanzar una ofensiva contra ${country} dentro de las 24 horas. Reserva oro del Tesoro: se gasta al lanzarla o vuelve si vence.`,
     enemyLine: (country: string) =>
       `Declara enemigo a ${country}: la presidencia puede atacarlo sin otra ley y el combate contra ese país da +50 % de experiencia.`,
     noEnemyLine: 'Termina la designación de país enemigo.',
@@ -166,7 +166,7 @@ export const messages = defineMessages({
     enemy: 'Enemy country',
     noEnemy: 'None (ends the designation)',
     warLine: (country: string) =>
-      `Authorizes the president to launch an offensive against ${country} within 24 hours. Reserves 50 Gold of the Treasury: spent on launch or returned if it expires.`,
+      `Authorizes the president to launch an offensive against ${country} within 24 hours. Reserves Gold of the Treasury: spent on launch or returned if it expires.`,
     enemyLine: (country: string) =>
       `Declares ${country} the enemy: the president may attack it without another law, and fighting it gives +50 % experience.`,
     noEnemyLine: 'Ends the enemy designation.',

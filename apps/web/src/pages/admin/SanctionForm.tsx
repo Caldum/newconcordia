@@ -1,7 +1,7 @@
 import { Button } from '@concordia/atlas/Button';
 import { Field } from '@concordia/atlas/Field';
+import { OptionGroup } from '@concordia/atlas/Option';
 import { Panel } from '@concordia/atlas/Panel';
-import { Segmented } from '@concordia/atlas/Segmented';
 import { useId, useState } from 'react';
 
 import { useGameAction } from '../../features/actions/useGameAction';
@@ -70,9 +70,13 @@ export function SanctionForm({ name }: { name: string }) {
           });
         }}
       >
-        <Segmented
+        <OptionGroup
           label={copy.kind}
-          segments={kinds.map((value) => ({ value, label: copy[`kind_${value}`] }))}
+          options={kinds.map((value) => ({
+            value,
+            title: copy[`kind_${value}`],
+            description: copy[`kindHint_${value}`],
+          }))}
           value={kind}
           onChange={(value) => {
             setKind(value);

@@ -3,6 +3,7 @@ export type { Catalog } from './defineMessages';
 export {
   formatDate,
   formatDateTime,
+  formatList,
   formatMoney,
   formatNumber,
   formatPercent,

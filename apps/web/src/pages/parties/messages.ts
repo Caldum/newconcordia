@@ -1,3 +1,4 @@
+import type { GoldPriceText } from '../../features/prices/goldPrice';
 import { defineMessages } from '../../i18n';
 
 export const messages = defineMessages({
@@ -18,14 +19,14 @@ export const messages = defineMessages({
     joinLabel: (party: string) => `Afiliarme a ${party}`,
     joined: (party: string) => `Te afiliaste a ${party}.`,
     foundTitle: 'Fundar un partido',
-    foundIntro:
-      'Fundar cuesta 50 Oro, que salen del juego. Quedas como líder hasta la próxima elección.',
+    foundIntro: (price: GoldPriceText) =>
+      `Fundar cuesta ${price.price} Oro: ${price.shared ? `${price.country} van al tesoro de tu país y ${price.game} salen del juego` : 'salen del juego'}. Quedas como líder hasta la próxima elección.`,
     name: 'Nombre',
     nameHint: 'De 3 a 40 caracteres. No puede repetirse en tu país.',
     nameInvalid: 'Escribe un nombre de 3 a 40 caracteres.',
     description: 'Lema',
     descriptionHint: 'Opcional, hasta 160 caracteres.',
-    found: 'Fundar por 50 Oro',
+    found: (price: string) => `Fundar por ${price} Oro`,
     founded: (party: string) => `Fundaste ${party}.`,
     mineTitle: 'Tu partido',
     youLead: 'Eres el líder.',
@@ -100,14 +101,14 @@ export const messages = defineMessages({
     joinLabel: (party: string) => `Join ${party}`,
     joined: (party: string) => `You joined ${party}.`,
     foundTitle: 'Found a party',
-    foundIntro:
-      'Founding costs 50 Gold, which leave the game. You lead it until the next election.',
+    foundIntro: (price: GoldPriceText) =>
+      `Founding costs ${price.price} Gold: ${price.shared ? `${price.country} go to your country’s treasury and ${price.game} leave the game` : 'it leaves the game'}. You lead it until the next election.`,
     name: 'Name',
     nameHint: '3 to 40 characters. It cannot repeat in your country.',
     nameInvalid: 'Write a name of 3 to 40 characters.',
     description: 'Motto',
     descriptionHint: 'Optional, up to 160 characters.',
-    found: 'Found for 50 Gold',
+    found: (price: string) => `Found for ${price} Gold`,
     founded: (party: string) => `You founded ${party}.`,
     mineTitle: 'Your party',
     youLead: 'You are the leader.',

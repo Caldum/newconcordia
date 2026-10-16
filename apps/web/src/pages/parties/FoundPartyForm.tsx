@@ -9,13 +9,15 @@ import styles from '../../features/economy/economy.module.css';
 import { foundParty } from '../../features/politics/api';
 import type { NewParty } from '../../features/politics/api';
 import { partyDescriptionMax, partyName } from '../../features/politics/partyName';
+import { useGoldPrice } from '../../features/prices/useGoldPrice';
 import { useMessages } from '../../i18n';
 
 import { messages } from './messages';
 
-/** Founding a party: its name and motto, for 50 Gold. */
+/** Founding a party: its name and motto, for its GOLD price. */
 export function FoundPartyForm() {
   const copy = useMessages(messages);
+  const price = useGoldPrice('party_founding');
   const [nameText, setNameText] = useState('');
   const [description, setDescription] = useState('');
   const [checked, setChecked] = useState(false);
@@ -45,7 +47,7 @@ export function FoundPartyForm() {
         <h2 id="found-party-title" className="at-title-3">
           {copy.foundTitle}
         </h2>
-        <p className={styles.muted}>{copy.foundIntro}</p>
+        <p className={styles.muted}>{copy.foundIntro(price)}</p>
         <Field
           label={copy.name}
           hint={copy.nameHint}
@@ -78,7 +80,7 @@ export function FoundPartyForm() {
         />
         <div>
           <Button type="submit" size="large" disabled={found.pending}>
-            {copy.found}
+            {copy.found(price.price)}
           </Button>
         </div>
       </form>

@@ -7,6 +7,7 @@ import type { GameAction } from '../../features/actions/useGameAction';
 import type { FoundCompany } from '../../features/economy/api';
 import styles from '../../features/economy/economy.module.css';
 import { isRaw, useGoodName } from '../../features/economy/goods';
+import { useGoldPrice } from '../../features/prices/useGoldPrice';
 import { useProfile } from '../../features/profile/useProfile';
 import { useCountryName, useRegionName } from '../../features/world/useNames';
 import { useMessages } from '../../i18n';
@@ -36,6 +37,7 @@ export function FoundCompanySummary({
   const regionName = useRegionName();
   const countryName = useCountryName();
   const level = useProfile().data?.level;
+  const price = useGoldPrice('company_level_1').price;
   const yields = isRaw(good)
     ? copy.rawYield('150', goodName(good).toLowerCase())
     : good === 'food_q1'
@@ -64,7 +66,11 @@ export function FoundCompanySummary({
         </div>
         <div>
           <dt>{copy.cost}</dt>
-          <dd>{foreignHost ? copy.foreignCost(countryName(foreignHost)) : copy.costValue}</dd>
+          <dd>
+            {foreignHost
+              ? copy.foreignCost(countryName(foreignHost), price)
+              : copy.costValue(price)}
+          </dd>
         </div>
       </dl>
       {level !== undefined && level < foundingCivilLevel ? (

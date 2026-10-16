@@ -4,6 +4,7 @@ import { Link } from '@tanstack/react-router';
 import { ActionFeedback } from '../../features/actions/ActionFeedback';
 import { useGameAction } from '../../features/actions/useGameAction';
 import styles from '../../features/economy/economy.module.css';
+import { useGoldPrice } from '../../features/prices/useGoldPrice';
 import { joinResistance } from '../../features/war/api';
 import type { OccupiedRegion } from '../../features/war/queries';
 import { useCountryName, useRegionName } from '../../features/world/useNames';
@@ -11,12 +12,13 @@ import { useMessages } from '../../i18n';
 
 import { messages } from './messages';
 
-/** One occupied region: who would get it back, how many organizers there are, and joining for 2 Gold. */
+/** One occupied region: who would get it back, how many organizers there are, and joining for its GOLD price. */
 export function ResistanceItem({ region }: { region: OccupiedRegion }) {
   const copy = useMessages(messages);
   const countryName = useCountryName();
   const regionName = useRegionName();
   const name = regionName(region.region_code);
+  const price = useGoldPrice('resistance_organizer').price;
   const join = useGameAction((key) => joinResistance(region.region_code, key), {
     refreshes: [['war']],
   });
@@ -48,12 +50,12 @@ export function ResistanceItem({ region }: { region: OccupiedRegion }) {
           <Button
             variant="secondary"
             disabled={join.pending}
-            aria-label={copy.joinAria(name)}
+            aria-label={copy.joinAria(name, price)}
             onClick={() => {
               join.run();
             }}
           >
-            {copy.join}
+            {copy.join(price)}
           </Button>
         )
       ) : (

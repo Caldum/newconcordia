@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { Company } from '../../features/economy/queries';
 import { citizenRow } from '../../test/fixtures/citizen';
+import { goldPricesAnswer } from '../../test/fixtures/goldPrices';
 import { balanceRows } from '../../test/fixtures/ledger';
 import { profileRow } from '../../test/fixtures/profile';
 import { countryRows, regionRows } from '../../test/fixtures/world';
@@ -47,6 +48,7 @@ type Answers = Parameters<typeof answerRpc>[0];
 
 function signIn(extra: Answers = {}) {
   answerRpc({
+    ...goldPricesAnswer,
     get_my_citizen: { data: [citizenRow()], error: null },
     get_my_profile: { data: [profileRow()], error: null },
     get_my_balances: { data: balanceRows, error: null },
@@ -186,7 +188,7 @@ describe('found a company', () => {
     await user.type(screen.getByLabelText('Nombre de la empresa'), 'Molinos');
     await user.click(screen.getByRole('button', { name: 'Fundar empresa' }));
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'Fundar cuesta 10 Oro (más el recargo si no es tu país) y no te alcanza.',
+      'No te alcanza el oro para fundar (más el recargo si no es tu país).',
     );
   });
   it('offers an extractor only where its resource exists, and warns of the surcharge abroad', async () => {

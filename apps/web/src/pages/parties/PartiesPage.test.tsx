@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { Candidate, Party, PartyElection } from '../../features/politics/queries';
 import { citizenRow } from '../../test/fixtures/citizen';
+import { goldPricesAnswer } from '../../test/fixtures/goldPrices';
 import { balanceRows } from '../../test/fixtures/ledger';
 import { profileRow } from '../../test/fixtures/profile';
 import { countryRows, regionRows } from '../../test/fixtures/world';
@@ -71,6 +72,7 @@ type Answers = Parameters<typeof answerRpc>[0];
 
 function signIn(extra: Answers = {}) {
   answerRpc({
+    ...goldPricesAnswer,
     get_my_citizen: { data: [citizenRow()], error: null },
     get_my_profile: { data: [profileRow()], error: null },
     get_my_balances: { data: balanceRows, error: null },

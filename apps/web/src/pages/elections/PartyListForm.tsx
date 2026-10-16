@@ -8,6 +8,7 @@ import { registerPartyList } from '../../features/politics/api';
 import { addToList, moveUp, removeFromList } from '../../features/politics/listDraft';
 import type { ListDraft } from '../../features/politics/listDraft';
 import { usePartyMembers } from '../../features/politics/queries';
+import { useGoldPrice } from '../../features/prices/useGoldPrice';
 import { useMessages } from '../../i18n';
 
 import { messages } from './messages';
@@ -15,6 +16,7 @@ import { messages } from './messages';
 /** The party leader orders the list for Congress among the members and registers it. */
 export function PartyListForm({ partyId }: { partyId: number }) {
   const copy = useMessages(messages);
+  const price = useGoldPrice('party_list');
   const members = usePartyMembers(partyId);
   const [list, setList] = useState<ListDraft>([]);
   const register = useGameAction((_, names: ListDraft) => registerPartyList(names), {
@@ -37,7 +39,7 @@ export function PartyListForm({ partyId }: { partyId: number }) {
       }}
     >
       <h3 className="at-title-3">{copy.listFormTitle}</h3>
-      <p className={styles.muted}>{copy.listFormIntro}</p>
+      <p className={styles.muted}>{copy.listFormIntro(price)}</p>
       {list.length === 0 ? <p className={styles.muted}>{copy.emptyList}</p> : null}
       <ol className={styles.recipes}>
         {list.map((name, index) => (

@@ -1,3 +1,4 @@
+import type { GoldPriceText } from '../../features/prices/goldPrice';
 import { defineMessages } from '../../i18n';
 
 export const messages = defineMessages({
@@ -39,8 +40,8 @@ export const messages = defineMessages({
     cannotVote:
       'No puedes votar en esta elección: votan los ciudadanos de nivel 5 o más del padrón, con 7 días de ciudadanía.',
     ticketFormTitle: 'Fórmula de tu partido',
-    ticketFormIntro:
-      'Como líder, inscribes la fórmula: dos afiliados de nivel civil 15 o más. Cuesta 20 Oro de los fondos del partido; 10 van al tesoro y 10 salen del juego.',
+    ticketFormIntro: (price: GoldPriceText) =>
+      `Como líder, inscribes la fórmula: dos afiliados de nivel civil 15 o más. Cuesta ${price.price} Oro de los fondos del partido; ${price.shared ? `${price.country} van al tesoro y ${price.game} salen del juego` : 'salen del juego'}.`,
     presidentCandidate: 'Presidencia',
     viceCandidate: 'Vicepresidencia',
     choose: 'Elige un afiliado',
@@ -48,8 +49,8 @@ export const messages = defineMessages({
     registerTicket: 'Inscribir la fórmula',
     ticketRegistered: 'La fórmula quedó inscrita.',
     listFormTitle: 'Lista de tu partido',
-    listFormIntro:
-      'Como líder, ordenas la lista: afiliados de nivel civil 10 o más. Cuesta 10 Oro de los fondos del partido; 5 van al tesoro y 5 salen del juego. Las bancas se reparten por D’Hondt.',
+    listFormIntro: (price: GoldPriceText) =>
+      `Como líder, ordenas la lista: afiliados de nivel civil 10 o más. Cuesta ${price.price} Oro de los fondos del partido; ${price.shared ? `${price.country} van al tesoro y ${price.game} salen del juego` : 'salen del juego'}. Las bancas se reparten por D’Hondt.`,
     add: 'Agregar',
     addLabel: (name: string) => `Agregar a ${name}`,
     remove: 'Quitar',
@@ -115,8 +116,8 @@ export const messages = defineMessages({
     cannotVote:
       'You cannot vote in this election: citizens of level 5 or more in the roll, with 7 days of citizenship, vote.',
     ticketFormTitle: 'Your party’s ticket',
-    ticketFormIntro:
-      'As leader, you register the ticket: two members of civil level 15 or more. It costs 20 Gold from the party’s funds; 10 go to the treasury and 10 leave the game.',
+    ticketFormIntro: (price: GoldPriceText) =>
+      `As leader, you register the ticket: two members of civil level 15 or more. It costs ${price.price} Gold from the party’s funds; ${price.shared ? `${price.country} go to the treasury and ${price.game} leave the game` : 'it leaves the game'}.`,
     presidentCandidate: 'President',
     viceCandidate: 'Vice president',
     choose: 'Pick a member',
@@ -124,8 +125,8 @@ export const messages = defineMessages({
     registerTicket: 'Register the ticket',
     ticketRegistered: 'The ticket is registered.',
     listFormTitle: 'Your party’s list',
-    listFormIntro:
-      'As leader, you order the list: members of civil level 10 or more. It costs 10 Gold from the party’s funds; 5 go to the treasury and 5 leave the game. Seats are shared by D’Hondt.',
+    listFormIntro: (price: GoldPriceText) =>
+      `As leader, you order the list: members of civil level 10 or more. It costs ${price.price} Gold from the party’s funds; ${price.shared ? `${price.country} go to the treasury and ${price.game} leave the game` : 'it leaves the game'}. Seats are shared by D’Hondt.`,
     add: 'Add',
     addLabel: (name: string) => `Add ${name}`,
     remove: 'Remove',

@@ -26,8 +26,8 @@ export const messages = defineMessages({
     upgradeAria: (region: string) => `Mejorar el hospital de ${region}`,
     upgraded: (level: number) => `El hospital ahora es nivel ${String(level)}.`,
     healthTitle: 'Ministerio de Salud',
-    healthHint:
-      'Construir cuesta 50 Oro del ministerio; mejorar, 75, 100, 125 y 150. Los botiquines pasan al instante entre tu depósito y los hospitales.',
+    healthHint: (build: string, upgrades: string) =>
+      `Construir cuesta ${build} Oro del ministerio; mejorar, ${upgrades}. Los botiquines pasan al instante entre tu depósito y los hospitales.`,
     buildRegion: 'Región',
     build: 'Construir un hospital',
     built: 'El hospital está construido.',
@@ -89,8 +89,8 @@ export const messages = defineMessages({
     upgradeAria: (region: string) => `Upgrade the hospital of ${region}`,
     upgraded: (level: number) => `The hospital is now level ${String(level)}.`,
     healthTitle: 'Ministry of Health',
-    healthHint:
-      'Building costs 50 Gold of the ministry; upgrades 75, 100, 125 and 150. Kits move at once between your store and the hospitals.',
+    healthHint: (build: string, upgrades: string) =>
+      `Building costs ${build} Gold of the ministry; upgrades ${upgrades}. Kits move at once between your store and the hospitals.`,
     buildRegion: 'Region',
     build: 'Build a hospital',
     built: 'The hospital is built.',

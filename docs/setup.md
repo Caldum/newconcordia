@@ -20,7 +20,7 @@ Golden rule: **no secret goes in the repository or in the browser**. Secrets go 
 | 6 | Accounts: Auth settings, Turnstile, Resend, email templates | Sign-up and sign-in in the cloud |
 | 7 | Google sign-in (optional) | «Continuar con Google» |
 | 8 | Terms of use and privacy policy texts | Linking them from sign-up |
-| 9 | Make yourself admin | The admin panel (`/admin`) |
+| 9 | Make yourself admin, with a staff account that does not play | The admin console (`/admin`) |
 | 10 | Local development without Docker | Running the web and the database tests on your computer |
 
 The Sentry and backup steps are added when the module that uses them arrives.
@@ -142,20 +142,27 @@ short draft until you send the reviewed texts. When you have them:
 3. Raise `terms_version` and `privacy_version` in `game.balance_params` when a new text is published: every
    player is asked to accept it again.
 
-## 9. Make yourself admin (D07)
+## 9. Make yourself admin (D07, ADR 0049)
 
-Nobody can become an admin through the web or the API. In each Supabase project:
+The administration uses its own accounts, which never play: an account that is a citizen cannot be staff, and a
+staff account cannot get a citizen. Do not use the email you play with. In each Supabase project:
 
-1. Sign up on that environment's web with your email and confirm it.
-2. Supabase → **SQL Editor** → run (with your email):
+1. Supabase → **Authentication** → **Users** → **Add user** → **Create new user**: a team email (for example
+   `you+admin@example.com`), a password, and **Auto confirm user** checked. Do not sign it up on the game's web:
+   that would make it a citizen.
+2. Supabase → **SQL Editor** → run, once, for the first admin:
 
    ```sql
-   insert into game.admins (user_id)
-   select id from auth.users where email = 'you@example.com';
+   insert into game.admins (user_id, role)
+   select id, 'admin' from auth.users where email = 'you+admin@example.com';
    ```
 
-3. Reload the web: the bar shows **Administración**. Every action there is recorded in the action log.
-   To add someone else later, run the same statement with their email.
+3. Open `/admin/sign-in` and sign in with that account. Every action in the console is recorded in its log.
+4. To add someone else, create their account the same way (step 1) and give it a role from the console:
+   **Acceso** → **Equipo** (admin: the whole console; moderator: reports, citizens and sanctions).
+
+An admin row created before ADR 0049 for an account that plays still shows under **Equipo**, marked as a citizen,
+and grants nothing; remove it from there.
 
 ## 10. Local development without Docker (ADR 0011)
 

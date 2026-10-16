@@ -24,7 +24,7 @@ export function CitizensPage() {
 
   return (
     <ConsolePage title={copy.searchTitle} intro={copy.searchIntro}>
-      <Panel className={styles.section} aria-label={copy.search}>
+      <Panel className={styles.section} aria-label={copy.searchTitle}>
         <form
           role="search"
           className={styles.row}

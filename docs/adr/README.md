@@ -54,3 +54,4 @@ marked «Superseded by NNNN».
 | 0046 | The independence war, live, and a war simulator | Accepted |
 | 0047 | Energy only from food, a minute at a time | Accepted |
 | 0048 | The market square: buying where you are, a ticket, figures for the government | Accepted |
+| 0049 | The admin console: staff apart from players, GOLD prices and their split, sanctions | Accepted |

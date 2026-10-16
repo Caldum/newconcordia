@@ -1,6 +1,6 @@
 # Progress
 
-Last update: 2026-11-03.
+Last update: 2026-11-11.
 
 Branches: `main` (production, changes only with the owner's approval) · `develop` (integration) ·
 `feat/dNN-*` (one per module, PR into `develop`).
@@ -174,13 +174,20 @@ Branches: `main` (production, changes only with the owner's approval) · `develo
 - 2026-11-09 · Market square (owner's request): players buy in the market of the country they are in (travel to
   buy elsewhere); filters by category and quality starting on Food Q1; a ticket buys several offers at once; the
   market's figures only for the president and the minister of the economy (ADR 0048).
+- 2026-11-11 · Admin console (owner's request): the administration apart from the game (`/admin/sign-in`, its own
+  bar), staff accounts that never play (admin and moderator roles); every GOLD price with its split between a
+  country's treasury and the game; every balance parameter editable with a reason; warnings, mutes and
+  suspensions; searching citizens, their record, notes, hiding, clearing and renaming; the game's copy reads the
+  prices in force (ADR 0049). Migration applied to the development project.
 
 ## Next step
 
 Stages 1 to 5 and P1–P4 are on `develop` and in the development project. Stage 5 of `docs/roadmap.md` is
 built:
 
-1. The owner decides the legal texts and the minimum age (PD-14, `docs/setup.md` step 8) before a public beta.
-2. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
-3. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
+1. The admin console (`feat/admin-console`) waits for the owner's review and merge: it lets admins grant access.
+   Before using it, create a team account that does not play (`docs/setup.md` step 9).
+2. The owner decides the legal texts and the minimum age (PD-14, `docs/setup.md` step 8) before a public beta.
+3. Deploy the clock Worker again: it has a new cron (`5 * * * *`, elections).
+4. The owner's pending steps in `docs/setup.md` (environments, Supabase, Cloudflare, Turnstile, Resend,
    Google, legal texts) to see the game in staging.

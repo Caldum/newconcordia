@@ -1,6 +1,7 @@
 import { Panel } from '@concordia/atlas/Panel';
 
 import styles from '../../features/economy/economy.module.css';
+import { useGoldPrice } from '../../features/prices/useGoldPrice';
 import { useOccupiedRegions } from '../../features/war/queries';
 import { useMessages } from '../../i18n';
 
@@ -11,6 +12,7 @@ import { ResistanceItem } from './ResistanceItem';
 export function ResistancePanel() {
   const copy = useMessages(messages);
   const occupied = useOccupiedRegions();
+  const price = useGoldPrice('resistance_organizer');
   const rows = occupied.data ?? [];
 
   return (
@@ -18,7 +20,7 @@ export function ResistancePanel() {
       <h2 id="resistance-title" className="at-title-3">
         {copy.resistanceTitle}
       </h2>
-      <p className={styles.muted}>{copy.resistanceHint}</p>
+      <p className={styles.muted}>{copy.resistanceHint(price)}</p>
       {occupied.isSuccess && rows.length === 0 ? (
         <p className={styles.muted}>{copy.noOccupied}</p>
       ) : null}
