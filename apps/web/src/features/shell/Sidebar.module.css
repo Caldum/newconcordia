@@ -136,16 +136,34 @@
 }
 
 .energyTrack {
+  display: flex;
   height: 8px;
   overflow: hidden;
   border-radius: 99px;
   background: var(--energy-track);
 }
 
+/* The energy there is, then the appetite filling toward the next meal (ADR 0047). */
 .energyTrack > span {
-  display: block;
+  flex: none;
   height: 100%;
   background: var(--energy);
+  transition: width 1s linear;
+}
+
+.energyTrack > .appetite {
+  opacity: 0.45;
+}
+
+/* No meal is coming: the appetite still shows, fainter. */
+.energyTrack > .hungry {
+  opacity: 0.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .energyTrack > span {
+    transition: none;
+  }
 }
 
 .money {
