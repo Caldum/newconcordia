@@ -32,7 +32,10 @@ update game.countries set is_active = true, color = coalesce(color, '#7BAFD4'), 
 where code = 'ARG';
 select pg_temp.new_player('ana@example.com', 'Ana Gómez', 'ARG') as ana \gset
 select pg_temp.new_player('juan@example.com', 'Juan Pérez', 'ARG') as juan \gset
-select pg_temp.new_player('mod@example.com', 'Moderadora', 'ARG') as admin \gset
+-- Staff accounts are never citizens (ADR 0049).
+insert into auth.users (instance_id, id, aud, role, email, email_confirmed_at, created_at, updated_at)
+values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', 'mod@example.com', now(), now(), now())
+returning id as admin \gset
 insert into game.admins (user_id) values (:'admin');
 insert into game.newspapers (owner_user_id, country_code, name, created_at) values (:'juan', 'ARG', 'El Faro', game.now());
 insert into game.articles (newspaper_id, author_user_id, title, body, published_at)
@@ -81,7 +84,7 @@ select pg_temp.act_as(:'juan');
 select throws_ok(format($$ select public.report_content('article', %L, 'spam') $$, :'article'), '22023', 'target_invalid',
   'nobody reports their own article');
 select ok(public.report_content('message', :'own_message'::text, 'spam') > 0, 'the recipient may report it');
-select throws_ok($$ select public.admin_list_reports() $$, '42501', 'not_admin', 'only moderators see the reports');
+select throws_ok($$ select public.admin_list_reports() $$, '42501', 'not_staff', 'only the staff sees the reports');
 reset role;
 update game.balance_params set value = 1 where key = 'reports_max_per_day';
 reset role;

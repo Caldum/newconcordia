@@ -13,6 +13,8 @@ export type Database = {
         Args: { p_privacy_version: number; p_terms_version: number };
         Returns: undefined;
       };
+      admin_add_note: { Args: { p_body: string; p_name: string }; Returns: number };
+      admin_clear_profile: { Args: { p_name: string; p_note: string }; Returns: undefined };
       admin_compensate: { Args: { p_reason: string; p_transaction_id: number }; Returns: number };
       admin_economy_snapshots: {
         Args: { p_days?: number };
@@ -24,6 +26,12 @@ export type Database = {
           held: number;
           minted: number;
         }[];
+      };
+      admin_get_citizen: { Args: { p_name: string }; Returns: Json };
+      admin_grant_staff: { Args: { p_email: string; p_role: string }; Returns: undefined };
+      admin_hide_content: {
+        Args: { p_kind: string; p_note: string; p_target: string };
+        Returns: undefined;
       };
       admin_invite_beta: { Args: { p_email: string; p_note?: string }; Returns: undefined };
       admin_list_abuse_signals: {
@@ -74,6 +82,20 @@ export type Database = {
           waiting: number;
         }[];
       };
+      admin_list_gold_prices: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          beneficiary: string;
+          category: string;
+          country_share_bp: number;
+          description: string;
+          key: string;
+          min_price: number;
+          price: number;
+          updated_at: string;
+          updated_by: string;
+        }[];
+      };
       admin_list_log: {
         Args: { p_limit?: number };
         Returns: {
@@ -84,6 +106,16 @@ export type Database = {
           created_at: string;
           id: number;
           target: string;
+        }[];
+      };
+      admin_list_params: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          description: string;
+          key: string;
+          managed: boolean;
+          updated_at: string;
+          value: number;
         }[];
       };
       admin_list_regions: {
@@ -108,6 +140,8 @@ export type Database = {
           reporter_name: string;
           reports_on_target: number;
           resolution: string;
+          reviewed_at: string;
+          reviewed_by: string;
           status: string;
           target_author: string;
           target_excerpt: string;
@@ -118,13 +152,41 @@ export type Database = {
           target_title: string;
         }[];
       };
+      admin_list_sanctions: {
+        Args: { p_active_only?: boolean };
+        Returns: {
+          active: boolean;
+          citizen_name: string;
+          created_by: string;
+          ends_at: string;
+          kind: string;
+          note: string;
+          reason: string;
+          revoke_note: string;
+          revoked_at: string;
+          revoked_by: string;
+          sanction_id: number;
+          starts_at: string;
+        }[];
+      };
       admin_list_team: {
         Args: Record<PropertyKey, never>;
         Returns: {
           added_at: string;
+          added_by: string;
           email: string;
-          name: string;
+          is_citizen: boolean;
+          role: string;
         }[];
+      };
+      admin_overview: { Args: Record<PropertyKey, never>; Returns: Json };
+      admin_rename: {
+        Args: { p_id: number; p_kind: string; p_new_name: string; p_note: string };
+        Returns: undefined;
+      };
+      admin_rename_citizen: {
+        Args: { p_name: string; p_new_name: string; p_note: string };
+        Returns: undefined;
       };
       admin_resolve_report: {
         Args: { p_action: string; p_note?: string; p_report_id: number };
@@ -135,6 +197,21 @@ export type Database = {
         Returns: undefined;
       };
       admin_revoke_beta_invite: { Args: { p_email: string }; Returns: undefined };
+      admin_revoke_sanction: {
+        Args: { p_note: string; p_sanction_id: number };
+        Returns: undefined;
+      };
+      admin_revoke_staff: { Args: { p_email: string }; Returns: undefined };
+      admin_sanction: {
+        Args: {
+          p_hours?: number;
+          p_kind: string;
+          p_name: string;
+          p_note: string;
+          p_reason: string;
+        };
+        Returns: number;
+      };
       admin_schedule_country: {
         Args: { p_active: boolean; p_country_code: string };
         Returns: number;
@@ -143,7 +220,29 @@ export type Database = {
         Args: { p_enabled: boolean; p_region_code: string };
         Returns: number;
       };
+      admin_search_citizens: {
+        Args: { p_query: string };
+        Returns: {
+          citizen_code: string;
+          country_code: string;
+          email: string;
+          joined_at: string;
+          last_sign_in_at: string;
+          level: number;
+          name: string;
+          open_reports: number;
+          sanction: string;
+        }[];
+      };
       admin_set_closed_beta: { Args: { p_closed: boolean }; Returns: undefined };
+      admin_set_gold_price: {
+        Args: { p_country_share_bp: number; p_key: string; p_price: number; p_reason: string };
+        Returns: undefined;
+      };
+      admin_set_param: {
+        Args: { p_key: string; p_reason: string; p_value: number };
+        Returns: undefined;
+      };
       admin_start_independence_war: {
         Args: { p_country_code: string; p_damage_target: number };
         Returns: number;
@@ -393,6 +492,16 @@ export type Database = {
           game_day: string;
           next_day_starts_at: string;
           server_time: string;
+        }[];
+      };
+      get_gold_prices: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          beneficiary: string;
+          category: string;
+          country_share_bp: number;
+          key: string;
+          price: number;
         }[];
       };
       get_government: {
@@ -661,6 +770,16 @@ export type Database = {
           regiment_id: number;
         }[];
       };
+      get_my_sanctions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          ends_at: string;
+          kind: string;
+          note: string;
+          reason: string;
+          starts_at: string;
+        }[];
+      };
       get_my_shifts_today: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -672,6 +791,13 @@ export type Database = {
           net: number;
           produced: number;
           tax: number;
+        }[];
+      };
+      get_my_staff: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          email: string;
+          role: string;
         }[];
       };
       get_my_training: {

@@ -31,7 +31,10 @@ select set_config('game.fixed_now', '2026-11-07 10:00:00+00', true);
 update game.countries set is_active = true, color = coalesce(color, '#7BAFD4'), official_name_es = coalesce(official_name_es, name_es),
   official_name_en = coalesce(official_name_en, name_en), capital_region_code = coalesce(capital_region_code, code || '-01')
 where code in ('ARG', 'BRA');
-select pg_temp.new_player('admin@example.com', 'Admin Uno', 'ARG') as admin \gset
+-- Staff accounts are never citizens (ADR 0049).
+insert into auth.users (instance_id, id, aud, role, email, email_confirmed_at, created_at, updated_at)
+values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', 'admin@example.com', now(), now(), now())
+returning id as admin \gset
 select pg_temp.new_player('ana@example.com', 'Ana Gómez', 'ARG') as ana \gset
 select pg_temp.new_player('bea@example.com', 'Bea Lima', 'BRA') as bea \gset
 insert into game.admins (user_id) values (:'admin');

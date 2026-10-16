@@ -23,7 +23,10 @@ $$;
 
 set local game.fixed_now = '2026-10-09 15:00:00+00';
 
-select pg_temp.new_player('admin@example.com', 'Ada Admin', 'ARG') as admin \gset
+-- Staff accounts are never citizens (ADR 0049).
+insert into auth.users (instance_id, id, aud, role, email, email_confirmed_at, created_at, updated_at)
+values ('00000000-0000-0000-0000-000000000000', gen_random_uuid(), 'authenticated', 'authenticated', 'admin@example.com', now(), now(), now())
+returning id as admin \gset
 select pg_temp.new_player('camila@example.com', 'Camila Ríos', 'ARG') as player \gset
 insert into game.admins (user_id) values (:'admin');
 
@@ -68,7 +71,7 @@ select results_eq(
 select results_eq(
   $$ select actor_name, action, target, before, after from game.admin_log
      where action = 'apply_country' $$,
-  $$ values ('Ada Admin', 'apply_country', 'PRT', '{"is_active": true}'::jsonb, '{"is_active": false}'::jsonb) $$,
+  $$ values ('admin@example.com', 'apply_country', 'PRT', '{"is_active": true}'::jsonb, '{"is_active": false}'::jsonb) $$,
   'the log records who did it, with the state before and after'
 );
 select is(
